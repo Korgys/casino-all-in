@@ -11,8 +11,8 @@ public class TablePoker
     public string Nom {  get; set; }
     public Partie Partie { get; set; }
     public List<Joueur> Joueurs { get; set; }
-    public int JoueurInitialIndex { get; set; } = 0;
-    public int JoueurActuelIndex { get; set; } = 0;
+    public int JoueurInitialIndex { get; set; } = -1;
+    public int JoueurActuelIndex { get; set; }
 
     public void DemarrerPartie(List<Joueur> joueurs)
     {
@@ -24,71 +24,15 @@ public class TablePoker
         JoueurActuelIndex = JoueurInitialIndex;
     }
 
-    public Joueur ObtenirJoueurQuiDoitJouer()
-    {
-        return Joueurs[JoueurActuelIndex];
-    }
+    public Joueur ObtenirJoueurQuiDoitJouer() 
+        => Joueurs[JoueurActuelIndex];
 
     public List<JoueurActionType> ObtenirActionsPossibles(Joueur joueur)
-    {
-        var actionsPossibles = new List<JoueurActionType>();
-
-        if (!joueur.EstCouche)
-        {
-            actionsPossibles.Add(JoueurActionType.SeCoucher);
-
-            // Si le joueur a assez de jetons
-            if (Partie.MiseActuelle <= joueur.Jetons)
-            {
-                if (Partie.MiseActuelle == 0) actionsPossibles.Add(JoueurActionType.Miser);
-                else actionsPossibles.Add(JoueurActionType.Suivre);
-                actionsPossibles.Add(JoueurActionType.Relancer);
-            }
-            else
-            {
-                actionsPossibles.Add(JoueurActionType.Tapis);
-            }
-
-            if (Partie.MiseActuelle == 0)
-            {
-                actionsPossibles.Add(JoueurActionType.Check);
-            }
-        }
-
-        return actionsPossibles.OrderBy(a => (int)a).ToList();
-    }
+        => Partie.ObtenirActionsPossibles(joueur).OrderBy(a => (int) a).ToList();
 
     public void TraiterActionJoueur(Joueur joueur, JoueurAction choix)
     {
-        if (!ObtenirActionsPossibles(joueur).Contains(choix.TypeAction)) 
-        {
-            throw new InvalidOperationException("Action de joueur non autorisée");
-        }
-
-        switch (choix.TypeAction)
-        {
-            case JoueurActionType.SeCoucher:
-                Partie.TraiterCoucher(joueur);
-                break;
-            case JoueurActionType.Miser:
-                Partie.TraiterMiser(joueur, choix.Montant);
-                break;
-            case JoueurActionType.Suivre:
-                Partie.TraiterSuivre(joueur);
-                break;
-            case JoueurActionType.Relancer:
-                Partie.TraiterRelancer(joueur, choix.Montant);
-                break;
-            case JoueurActionType.Tapis:
-                Partie.TraiterTapis(joueur);
-                break;
-            case JoueurActionType.Check:
-                Partie.TraiterCheck(joueur);
-                break;
-            default:
-                throw new ArgumentException("Action de joueur invalide");
-        }
-
+        Partie.AppliquerAction(joueur, choix);
         PasserAuJoueurSuivant();
     }
 
@@ -101,9 +45,13 @@ public class TablePoker
             if (JoueurActuelIndex == 0)
             {
                 Partie.AvancerPhase();
+                if (!Partie.EnCours())
+                {
+                    return;
+                }
             }
-        } while(Joueurs[JoueurActuelIndex].DerniereAction == JoueurActionType.SeCoucher 
+        } while (Joueurs[JoueurActuelIndex].DerniereAction == JoueurActionType.SeCoucher
             || Joueurs[JoueurActuelIndex].DerniereAction == JoueurActionType.Tapis
-            || !ObtenirActionsPossibles(Joueurs[JoueurActuelIndex]).Any());
+            || ObtenirActionsPossibles(Joueurs[JoueurActuelIndex]).Count == 0);
     }
 }

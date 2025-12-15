@@ -1,8 +1,10 @@
 ﻿using casino.core.Jeux.Poker.Cartes;
 using casino.core.Jeux.Poker.Joueurs;
+using casino.core.Jeux.Poker.Parties.Phases;
 using casino.core.Jeux.Poker.Scores;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace casino.core.Jeux.Poker.Parties;
@@ -13,6 +15,7 @@ public class Partie
     public CartesCommunes CartesCommunes { get; set; } = new CartesCommunes();
     public Joueur Gagnant { get; set; }
     public Phase Phase { get; set; } = Phase.PreFlop;
+    public IPhaseState PhaseState { get; internal set; } = new PreFlopState();
     public int Pot { get; set; } = 0;
     public int MiseDeDepart { get; set; } = 10;
     public int MiseActuelle { get; internal set; }
@@ -26,30 +29,20 @@ public class Partie
 
     public void AvancerPhase()
     {
-        switch (Phase)
-        {
-            case Phase.PreFlop:
-                Phase = Phase.Flop;
-                // Tirer 3 cartes pour le flop
-                CartesCommunes.Flop1 = JeuDeCartes.Instance.TirerCarte();
-                CartesCommunes.Flop2 = JeuDeCartes.Instance.TirerCarte();
-                CartesCommunes.Flop3 = JeuDeCartes.Instance.TirerCarte();
-                break;
-            case Phase.Flop:
-                Phase = Phase.Turn;
-                CartesCommunes.Turn = JeuDeCartes.Instance.TirerCarte();
-                break;
-            case Phase.Turn:
-                Phase = Phase.River;
-                CartesCommunes.River = JeuDeCartes.Instance.TirerCarte();
-                break;
-            case Phase.River:
-                TerminerPartie();
-                break;
-        }
+        PhaseState.Avancer(this);
     }
 
     public bool EnCours() => Phase != Phase.Showdown;
+
+    public IEnumerable<JoueurActionType> ObtenirActionsPossibles(Joueur joueur)
+    {
+        return PhaseState.ObtenirActionsPossibles(joueur, this);
+    }
+
+    public void AppliquerAction(Joueur joueur, JoueurAction action)
+    {
+        PhaseState.AppliquerAction(joueur, action, this);
+    }
 
     public void TraiterCoucher(Joueur joueur)
     {
@@ -147,7 +140,7 @@ public class Partie
         }
     }
 
-    private void TerminerPartie()
+    internal void TerminerPartie()
     {
         Phase = Phase.Showdown;
 
