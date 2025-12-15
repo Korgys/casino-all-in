@@ -163,7 +163,7 @@ public class Partie
     private Joueur DeterminerGagnantParMain()
     {
         return Joueurs
-            .Where(j => !j.EstCouche)
+            .Where(j => j.DerniereAction != JoueurActionType.SeCoucher)
             .Select(j => new
             {
                 Joueur = j,

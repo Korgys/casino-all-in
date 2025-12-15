@@ -43,7 +43,7 @@ public class TablePoker
         do
         {
             JoueurActuelIndex = (JoueurActuelIndex + 1) % Joueurs.Count;
-            if (JoueurActuelIndex == 0)
+            if (JoueurActuelIndex == JoueurInitialIndex)
             {
                 Partie.AvancerPhase();
                 if (!Partie.EnCours())

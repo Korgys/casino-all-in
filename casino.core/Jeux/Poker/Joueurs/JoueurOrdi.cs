@@ -1,5 +1,13 @@
-﻿namespace casino.core.Jeux.Poker.Joueurs;
+using casino.core.Jeux.Poker.Joueurs.Strategies;
 
-public class JoueurOrdi(string nom, int jetons) : Joueur(nom, jetons)
+namespace casino.core.Jeux.Poker.Joueurs;
+
+public class JoueurOrdi : Joueur
 {
+    public IJoueurStrategy Strategie { get; }
+
+    public JoueurOrdi(string nom, int jetons, IJoueurStrategy? strategie = null) : base(nom, jetons)
+    {
+        Strategie = strategie ?? new StrategieRandom();
+    }
 }

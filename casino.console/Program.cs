@@ -3,6 +3,7 @@ using casino.core.Jeux.Poker.Joueurs;
 using casino.core.Jeux.Poker.Parties;
 using casino.core.Jeux.Poker.Parties.Phases;
 using casino.core.Jeux.Poker.Scores;
+using casino.core.Jeux.Poker.Joueurs.Strategies;
 
 namespace casino.console;
 
@@ -16,9 +17,9 @@ public class Program
         var joueurs = new List<Joueur>
         {
             joueur,
-            new JoueurOrdi("Ordi", 1000),
-            new JoueurOrdi("Ordi2", 1000),
-            new JoueurOrdi("Ordi3", 1000)
+            new JoueurOrdi("Ordi Agressif", 1000, new StrategieAgressive()),
+            new JoueurOrdi("Ordi Conserv", 1000, new StrategieConservatrice()),
+            new JoueurOrdi("Ordi Random", 1000, new StrategieRandom())
         };
         var table = new TablePoker();
         table.Nom = "Table Poker";
@@ -45,51 +46,11 @@ public class Program
                 else // joue pour l'ordi
                 {
                     Thread.Sleep(Random.Shared.Next(500, 2500)); // pause de quelques secondes
-                    var cpu = table.ObtenirJoueurQuiDoitJouer();
+                    var cpu = (JoueurOrdi)table.ObtenirJoueurQuiDoitJouer();
                     var actionsPossibles = table.ObtenirActionsPossibles(cpu);
-
-                    // Si bon jeu, chances de relancer
-                    var rang = EvaluateurScore.EvaluerScore(cpu.Main, table.Partie.CartesCommunes).Rang;
-                    if (actionsPossibles.Contains(JoueurActionType.Relancer)
-                        && rang >= RangMain.DoublePaire
-                        && cpu.Jetons - table.Partie.MiseActuelle > 0
-                        && Random.Shared.NextDouble() <= 0.4)
-                    {
-                        int facteur = 30;
-                        if (rang == RangMain.Brelan) facteur = 50;
-                        else if (rang >= RangMain.Suite) facteur = 100;
-
-                        int resteJetons = cpu.Jetons - table.Partie.MiseActuelle;
-                        int pourcentage = Random.Shared.Next(1, facteur);
-                        int relance = table.Partie.MiseActuelle + (resteJetons * pourcentage / 100);
-                        relance = Math.Max(relance, table.Partie.MiseActuelle + 1);
-
-                        var joueurAction = new JoueurAction(JoueurActionType.Relancer, relance);
-                        table.TraiterActionJoueur(cpu, joueurAction);
-                    }
-                    else
-                    {
-                        // Si mauvais jeu, probabilité de se coucher à partir du Turn
-                        if (actionsPossibles.Contains(JoueurActionType.SeCoucher)
-                            && table.Partie.Phase >= Phase.Turn
-                            && rang == RangMain.CarteHaute
-                            && Random.Shared.NextDouble() < 0.4)
-                        {
-                            table.TraiterActionJoueur(cpu, new JoueurAction(JoueurActionType.SeCoucher));
-                        }
-                        else
-                        {
-                            // Action suivre par défaut, sinon tapis, sinon action restante.
-                            var joueurAction = new JoueurAction(
-                                actionsPossibles
-                                .OrderByDescending(a => a == JoueurActionType.Miser)
-                                .ThenByDescending(a => a == JoueurActionType.Suivre)
-                                .ThenByDescending(a => a == JoueurActionType.Tapis)
-                                .First(),
-                                table.Partie.MiseDeDepart);
-                            table.TraiterActionJoueur(cpu, joueurAction);
-                        }
-                    }
+                    var contexte = new ContexteDeJeu(table.Partie, cpu, actionsPossibles);
+                    var joueurAction = cpu.Strategie.ProposerAction(contexte);
+                    table.TraiterActionJoueur(cpu, joueurAction);
                 }
             }
 
