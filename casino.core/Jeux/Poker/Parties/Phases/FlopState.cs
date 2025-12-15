@@ -8,6 +8,6 @@ public class FlopState : PhaseStateBase
     {
         context.Phase = Phase.Turn;
         context.PhaseState = new TurnState();
-        context.CartesCommunes.Turn = JeuDeCartes.Instance.TirerCarte();
+        context.CartesCommunes.Turn = context.Deck.TirerCarte();
     }
 }

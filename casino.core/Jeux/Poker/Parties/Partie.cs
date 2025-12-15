@@ -1,4 +1,4 @@
-﻿using casino.core.Jeux.Poker.Cartes;
+using casino.core.Jeux.Poker.Cartes;
 using casino.core.Jeux.Poker.Joueurs;
 using casino.core.Jeux.Poker.Parties.Phases;
 using casino.core.Jeux.Poker.Scores;
@@ -11,6 +11,7 @@ namespace casino.core.Jeux.Poker.Parties;
 
 public class Partie
 {
+    internal IDeck Deck { get; }
     public List<Joueur> Joueurs { get; set; }
     public CartesCommunes CartesCommunes { get; set; } = new CartesCommunes();
     public Joueur Gagnant { get; set; }
@@ -20,10 +21,11 @@ public class Partie
     public int MiseDeDepart { get; set; } = 10;
     public int MiseActuelle { get; internal set; }
 
-    public Partie(List<Joueur> joueurs)
+    public Partie(List<Joueur> joueurs, IDeck deck)
     {
         Joueurs = joueurs;
-        JeuDeCartes.Instance.Melanger();
+        Deck = deck;
+        Deck.Melanger();
         DistribuerCartes();
     }
 
@@ -136,7 +138,7 @@ public class Partie
     {
         foreach (var joueur in Joueurs.Where(j => j.Jetons > 0 && j.DerniereAction != JoueurActionType.SeCoucher))
         {
-            joueur.Main = new CartesMain(JeuDeCartes.Instance.TirerCarte(), JeuDeCartes.Instance.TirerCarte());
+            joueur.Main = new CartesMain(Deck.TirerCarte(), Deck.TirerCarte());
         }
     }
 
@@ -169,7 +171,7 @@ public class Partie
             })
             .OrderByDescending(js => js.Score.Rang)
             .ThenByDescending(js => js.Score.Valeur)
-            .ThenByDescending(js => 
+            .ThenByDescending(js =>
                 js.Joueur.Main.AsEnumerable().Union(CartesCommunes.AsEnumerable())
                 .Select(c => c.Rang)
                 .OrderByDescending(r => (int)r)

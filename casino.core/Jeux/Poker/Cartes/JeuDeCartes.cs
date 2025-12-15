@@ -1,24 +1,13 @@
-﻿namespace casino.core.Jeux.Poker.Cartes;
+namespace casino.core.Jeux.Poker.Cartes;
 
-public class JeuDeCartes
+public class JeuDeCartes : IDeck
 {
-    private static JeuDeCartes _instance;
-    private List<Carte> _cartes;
-    private Random _random = new Random();
+    private readonly List<Carte> _cartes;
+    private readonly Random _random = new();
 
-    public static JeuDeCartes Instance
+    public JeuDeCartes()
     {
-        get
-        {
-            if (_instance == null)
-                _instance = new JeuDeCartes();
-
-            return _instance;
-        }
-    }
-
-    private JeuDeCartes()
-    {
+        _cartes = new List<Carte>();
         Melanger();
     }
 
@@ -27,7 +16,7 @@ public class JeuDeCartes
     /// </summary>
     public void Melanger()
     {
-        _cartes = new List<Carte>();
+        _cartes.Clear();
 
         foreach (Couleur couleur in Enum.GetValues(typeof(Couleur)))
         {
@@ -53,4 +42,3 @@ public class JeuDeCartes
         return carte;
     }
 }
-

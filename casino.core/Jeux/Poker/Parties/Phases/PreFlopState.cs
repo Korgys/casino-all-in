@@ -8,8 +8,8 @@ public class PreFlopState : PhaseStateBase
     {
         context.Phase = Phase.Flop;
         context.PhaseState = new FlopState();
-        context.CartesCommunes.Flop1 = JeuDeCartes.Instance.TirerCarte();
-        context.CartesCommunes.Flop2 = JeuDeCartes.Instance.TirerCarte();
-        context.CartesCommunes.Flop3 = JeuDeCartes.Instance.TirerCarte();
+        context.CartesCommunes.Flop1 = context.Deck.TirerCarte();
+        context.CartesCommunes.Flop2 = context.Deck.TirerCarte();
+        context.CartesCommunes.Flop3 = context.Deck.TirerCarte();
     }
 }

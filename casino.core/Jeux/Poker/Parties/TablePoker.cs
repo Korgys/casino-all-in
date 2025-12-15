@@ -1,4 +1,5 @@
-﻿using casino.core.Jeux.Poker.Joueurs;
+using casino.core.Jeux.Poker.Cartes;
+using casino.core.Jeux.Poker.Joueurs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +15,17 @@ public class TablePoker
     public int JoueurInitialIndex { get; set; } = -1;
     public int JoueurActuelIndex { get; set; }
 
-    public void DemarrerPartie(List<Joueur> joueurs)
+    public void DemarrerPartie(List<Joueur> joueurs, IDeck deck)
     {
         joueurs.ForEach(j => j.Reinitialiser());
 
         Joueurs = joueurs;
-        Partie = new Partie(joueurs);
+        Partie = new Partie(joueurs, deck);
         JoueurInitialIndex = (JoueurInitialIndex + 1) % joueurs.Count;
         JoueurActuelIndex = JoueurInitialIndex;
     }
 
-    public Joueur ObtenirJoueurQuiDoitJouer() 
+    public Joueur ObtenirJoueurQuiDoitJouer()
         => Joueurs[JoueurActuelIndex];
 
     public List<JoueurActionType> ObtenirActionsPossibles(Joueur joueur)

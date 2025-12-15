@@ -26,7 +26,8 @@ public class Program
         // On joue tant qu'il n'y a des jetons
         while (joueur.Jetons > 0)
         {
-            table.DemarrerPartie(joueurs);
+            var deck = new JeuDeCartes();
+            table.DemarrerPartie(joueurs, deck);
 
             // Boucle principale de la partie
             while (table.Partie.EnCours())

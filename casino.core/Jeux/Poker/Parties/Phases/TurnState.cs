@@ -8,6 +8,6 @@ public class TurnState : PhaseStateBase
     {
         context.Phase = Phase.River;
         context.PhaseState = new RiverState();
-        context.CartesCommunes.River = JeuDeCartes.Instance.TirerCarte();
+        context.CartesCommunes.River = context.Deck.TirerCarte();
     }
 }
