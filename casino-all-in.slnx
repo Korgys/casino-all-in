@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="casino.console/casino.console.csproj" Id="4413ea68-4c5d-4bb7-a5ad-08df3732ee82" />
+  <Project Path="casino.core/casino.core.csproj" Id="024c5dec-c093-4dff-a2c7-66af97b83caf" />
+</Solution>
