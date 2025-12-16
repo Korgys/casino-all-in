@@ -4,6 +4,7 @@ using casino.core.Jeux.Poker.Parties;
 using casino.core.Jeux.Poker.Parties.Phases;
 using casino.core.Jeux.Poker.Scores;
 using casino.core.Jeux.Poker.Joueurs.Strategies;
+using casino.core.Jeux.Poker.Actions;
 
 namespace casino.console;
 
@@ -61,7 +62,7 @@ public class Program
         Console.WriteLine("\nAppuyez sur une touche pour quitter...");
     }
 
-    private static JoueurAction ObtenirChoixJoueur(JoueurHumain joueur, List<JoueurActionType> actionsPossibles, int minimumMise)
+    private static core.Jeux.Poker.Actions.Action ObtenirChoixJoueur(JoueurHumain joueur, List<TypeAction> actionsPossibles, int minimumMise)
     {
         int choix = -1;
 
@@ -73,11 +74,11 @@ public class Program
         }
 
         // Gestion de la mise
-        if (choix == (int)JoueurActionType.Miser)
+        if (choix == (int)TypeAction.Miser)
         {
-            return new JoueurAction((JoueurActionType)choix, minimumMise);
+            return new core.Jeux.Poker.Actions.Action((TypeAction)choix, minimumMise);
         }
-        else if (choix == (int)JoueurActionType.Relancer)
+        else if (choix == (int)TypeAction.Relancer)
         {
             int mise = 0;
             while (mise == 0 && mise <= joueur.Jetons)
@@ -85,19 +86,19 @@ public class Program
                 Console.Write("De combien voulez-vous relancer ? ");
                 int.TryParse(Console.ReadLine(), out mise);
             }
-            return new JoueurAction((JoueurActionType)choix, mise);
+            return new core.Jeux.Poker.Actions.Action((TypeAction)choix, mise);
         }
 
-        return new JoueurAction((JoueurActionType)choix, 0);
+        return new core.Jeux.Poker.Actions.Action((TypeAction)choix, 0);
     }
 
-    private static void AfficherActionsPossibles(List<JoueurActionType> actionsPossibles, int minimumMise)
+    private static void AfficherActionsPossibles(List<TypeAction> actionsPossibles, int minimumMise)
     {
         // Affichage des actions
         Console.WriteLine("\nActions possibles : ");
         foreach (var actionPossible in actionsPossibles)
         {
-            if (actionPossible == JoueurActionType.Miser)
+            if (actionPossible == TypeAction.Miser)
             {
                 Console.Write($"{(int)actionPossible}: {actionPossible} (");
                 EcrireMontantCouleur(minimumMise);
@@ -119,7 +120,7 @@ public class Program
             : ConsoleColor.Cyan;
     }
 
-    private static void AvecCouleur(ConsoleColor color, Action action)
+    private static void AvecCouleur(ConsoleColor color, System.Action action)
     {
         var old = Console.ForegroundColor;
         Console.ForegroundColor = color;
@@ -188,7 +189,7 @@ public class Program
         // Affiche les infos des joueurs
         foreach (Joueur joueur in table.Joueurs)
         {
-            bool estCouche = joueur.DerniereAction == JoueurActionType.SeCoucher;
+            bool estCouche = joueur.DerniereAction == TypeAction.SeCoucher;
 
             if (estCouche)
             {
@@ -211,7 +212,7 @@ public class Program
             Console.Write("=> ");
         }
 
-        if (joueur.Jetons == 0 || joueur.DerniereAction == JoueurActionType.SeCoucher)
+        if (joueur.Jetons == 0 || joueur.DerniereAction == TypeAction.SeCoucher)
         {
             AvecCouleur(ConsoleColor.Gray, () => Console.Write($"{joueur.Nom}"));
         }
@@ -222,14 +223,14 @@ public class Program
         EcrireMontantCouleur(joueur.Jetons);
         Console.Write("):");
 
-        if (joueur is JoueurHumain || (!p.EnCours() && joueur.DerniereAction != JoueurActionType.SeCoucher))
+        if (joueur is JoueurHumain || (!p.EnCours() && joueur.DerniereAction != TypeAction.SeCoucher))
         {
             Console.Write(" ");
             EcrireMainCouleur(joueur.Main);
             Console.Write($" ({EvaluateurScore.EvaluerScore(joueur.Main, p.CartesCommunes)})");
         }
 
-        if (joueur.DerniereAction != JoueurActionType.Aucune)
+        if (joueur.DerniereAction != TypeAction.Aucune)
         {
             Console.Write($" [{joueur.DerniereAction}]");
         }

@@ -1,42 +1,43 @@
+using casino.core.Jeux.Poker.Actions;
 using System;
 using System.Linq;
 
 namespace casino.core.Jeux.Poker.Joueurs.Strategies;
 
-public class StrategieAgressive : IJoueurStrategy
+public class StrategieAgressive : IStrategieJoueur
 {
-    public JoueurAction ProposerAction(ContexteDeJeu contexte)
+    public Actions.Action ProposerAction(ContexteDeJeu contexte)
     {
         var actions = contexte.ActionsPossibles;
         var joueur = contexte.JoueurCourant;
         var relanceMinimum = Math.Max(contexte.Partie.MiseActuelle + contexte.Partie.MiseDeDepart, contexte.MiseMinimum);
 
-        if (actions.Contains(JoueurActionType.Relancer) && joueur.Jetons > contexte.Partie.MiseActuelle)
+        if (actions.Contains(TypeAction.Relancer) && joueur.Jetons > contexte.Partie.MiseActuelle)
         {
             int mise = Math.Min(joueur.Jetons, relanceMinimum);
-            return new JoueurAction(JoueurActionType.Relancer, mise);
+            return new Actions.Action(TypeAction.Relancer, mise);
         }
 
-        if (actions.Contains(JoueurActionType.Miser))
+        if (actions.Contains(TypeAction.Miser))
         {
-            return new JoueurAction(JoueurActionType.Miser, contexte.MiseMinimum);
+            return new Actions.Action(TypeAction.Miser, contexte.MiseMinimum);
         }
 
-        if (actions.Contains(JoueurActionType.Suivre))
+        if (actions.Contains(TypeAction.Suivre))
         {
-            return new JoueurAction(JoueurActionType.Suivre);
+            return new Actions.Action(TypeAction.Suivre);
         }
 
-        if (actions.Contains(JoueurActionType.Tapis))
+        if (actions.Contains(TypeAction.Tapis))
         {
-            return new JoueurAction(JoueurActionType.Tapis);
+            return new Actions.Action(TypeAction.Tapis);
         }
 
-        if (actions.Contains(JoueurActionType.Check))
+        if (actions.Contains(TypeAction.Check))
         {
-            return new JoueurAction(JoueurActionType.Check);
+            return new Actions.Action(TypeAction.Check);
         }
 
-        return new JoueurAction(JoueurActionType.SeCoucher);
+        return new Actions.Action(TypeAction.SeCoucher);
     }
 }

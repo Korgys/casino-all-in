@@ -1,3 +1,4 @@
+using casino.core.Jeux.Poker.Actions;
 using casino.core.Jeux.Poker.Cartes;
 using casino.core.Jeux.Poker.Joueurs;
 using casino.core.Jeux.Poker.Parties.Phases;
@@ -12,19 +13,21 @@ namespace casino.core.Jeux.Poker.Parties;
 public class Partie
 {
     internal IDeck Deck { get; }
+    internal IActionService ActionService { get; }
     public List<Joueur> Joueurs { get; set; }
     public CartesCommunes CartesCommunes { get; set; } = new CartesCommunes();
     public Joueur Gagnant { get; set; }
     public Phase Phase { get; set; } = Phase.PreFlop;
-    public IPhaseState PhaseState { get; internal set; } = new PreFlopState();
+    public IPhaseState PhaseState { get; internal set; } = new PreFlopPhaseState();
     public int Pot { get; set; } = 0;
     public int MiseDeDepart { get; set; } = 10;
     public int MiseActuelle { get; internal set; }
 
-    public Partie(List<Joueur> joueurs, IDeck deck)
+    public Partie(List<Joueur> joueurs, IDeck deck, IActionService? actionService = null)
     {
         Joueurs = joueurs;
         Deck = deck;
+        ActionService = actionService ?? new ActionService();
         Deck.Melanger();
         DistribuerCartes();
     }
@@ -36,107 +39,19 @@ public class Partie
 
     public bool EnCours() => Phase != Phase.Showdown;
 
-    public IEnumerable<JoueurActionType> ObtenirActionsPossibles(Joueur joueur)
+    public IEnumerable<TypeAction> ObtenirActionsPossibles(Joueur joueur)
     {
         return PhaseState.ObtenirActionsPossibles(joueur, this);
     }
 
-    public void AppliquerAction(Joueur joueur, JoueurAction action)
+    public void AppliquerAction(Joueur joueur, Actions.Action action)
     {
         PhaseState.AppliquerAction(joueur, action, this);
     }
 
-    public void TraiterCoucher(Joueur joueur)
-    {
-        joueur.EstCouche = true;
-        joueur.DerniereAction = JoueurActionType.SeCoucher;
-
-        if (Joueurs.Count(j => !j.EstCouche) == 1)
-        {
-            TerminerPartie();
-        }
-    }
-
-    public void TraiterMiser(Joueur joueur, int montant)
-    {
-        if (MiseActuelle > montant)
-        {
-            throw new InvalidOperationException("La mise ne peut pas être inférieur à la mise de départ/actuelle.");
-        }
-
-        joueur.DerniereAction = JoueurActionType.Miser;
-        MiseActuelle = montant;
-        joueur.Jetons -= MiseActuelle;
-        Pot += MiseActuelle;
-    }
-
-    public void TraiterSuivre(Joueur joueur)
-    {
-        if (joueur.Jetons - MiseActuelle < 0)
-        {
-            throw new InvalidOperationException("Le joueur n'a pas assez de jetons pour suivre la mise actuelle.");
-        }
-        else if (joueur.Jetons - MiseActuelle == 0)
-        {
-            TraiterTapis(joueur);
-        }
-        else if (MiseActuelle == 0)
-        {
-            TraiterCheck(joueur);
-        }
-        else
-        {
-            joueur.DerniereAction = JoueurActionType.Suivre;
-            joueur.Jetons -= MiseActuelle;
-            Pot += MiseActuelle;
-        }
-    }
-
-    public void TraiterRelancer(Joueur joueur, int montant)
-    {
-        if (montant < MiseActuelle)
-        {
-            throw new ArgumentException("La relance doit être supérieure ou égale à la mise actuelle.");
-        }
-        else if (montant > joueur.Jetons)
-        {
-            throw new ArgumentException("Le joueur n'a pas assez de jetons pour relancer autant.");
-        }
-        else if (montant == joueur.Jetons)
-        {
-            TraiterTapis(joueur);
-        }
-        else
-        {
-            joueur.DerniereAction = JoueurActionType.Relancer;
-            joueur.Jetons -= montant;
-            MiseActuelle = montant;
-            Pot += montant;
-        }
-    }
-
-    public void TraiterTapis(Joueur joueur)
-    {
-        joueur.DerniereAction = JoueurActionType.Tapis;
-        Pot += joueur.Jetons;
-        joueur.Jetons = 0;
-        joueur.EstTapis = true;
-    }
-
-    public void TraiterCheck(Joueur joueur)
-    {
-        if (MiseActuelle != 0)
-        {
-            throw new InvalidOperationException("Le joueur ne peut pas checker car il y a une mise sur la table.");
-        }
-
-        // Le joueur peut checker
-        joueur.DerniereAction = JoueurActionType.Check;
-    }
-
     private void DistribuerCartes()
     {
-        foreach (var joueur in Joueurs.Where(j => j.Jetons > 0 && j.DerniereAction != JoueurActionType.SeCoucher))
+        foreach (var joueur in Joueurs.Where(j => j.Jetons > 0 && j.DerniereAction != TypeAction.SeCoucher))
         {
             joueur.Main = new CartesMain(Deck.TirerCarte(), Deck.TirerCarte());
         }
@@ -163,7 +78,7 @@ public class Partie
     private Joueur DeterminerGagnantParMain()
     {
         return Joueurs
-            .Where(j => j.DerniereAction != JoueurActionType.SeCoucher)
+            .Where(j => j.DerniereAction != TypeAction.SeCoucher)
             .Select(j => new
             {
                 Joueur = j,

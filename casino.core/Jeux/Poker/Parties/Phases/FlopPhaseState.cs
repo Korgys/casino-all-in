@@ -2,7 +2,7 @@ using casino.core.Jeux.Poker.Cartes;
 
 namespace casino.core.Jeux.Poker.Parties.Phases;
 
-public class FlopState : PhaseStateBase
+public class FlopPhaseState : PhaseStateBase
 {
     public override void Avancer(Partie context)
     {

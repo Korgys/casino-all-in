@@ -1,3 +1,4 @@
+using casino.core.Jeux.Poker.Actions;
 using casino.core.Jeux.Poker.Joueurs;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,12 @@ public class ShowdownState : IPhaseState
         // Partie terminée, aucune phase supplémentaire.
     }
 
-    public IEnumerable<JoueurActionType> ObtenirActionsPossibles(Joueur joueur, Partie context)
+    public IEnumerable<TypeAction> ObtenirActionsPossibles(Joueur joueur, Partie context)
     {
-        return Array.Empty<JoueurActionType>();
+        return Array.Empty<TypeAction>();
     }
 
-    public void AppliquerAction(Joueur joueur, JoueurAction action, Partie context)
+    public void AppliquerAction(Joueur joueur, Actions.Action action, Partie context)
     {
         throw new InvalidOperationException("Aucune action n'est autorisée pendant le showdown.");
     }

@@ -1,3 +1,4 @@
+using casino.core.Jeux.Poker.Actions;
 using casino.core.Jeux.Poker.Cartes;
 using casino.core.Jeux.Poker.Joueurs;
 using System;
@@ -28,10 +29,10 @@ public class TablePoker
     public Joueur ObtenirJoueurQuiDoitJouer()
         => Joueurs[JoueurActuelIndex];
 
-    public List<JoueurActionType> ObtenirActionsPossibles(Joueur joueur)
+    public List<TypeAction> ObtenirActionsPossibles(Joueur joueur)
         => Partie.ObtenirActionsPossibles(joueur).OrderBy(a => (int) a).ToList();
 
-    public void TraiterActionJoueur(Joueur joueur, JoueurAction choix)
+    public void TraiterActionJoueur(Joueur joueur, Actions.Action choix)
     {
         Partie.AppliquerAction(joueur, choix);
         PasserAuJoueurSuivant();
@@ -51,8 +52,8 @@ public class TablePoker
                     return;
                 }
             }
-        } while (Joueurs[JoueurActuelIndex].DerniereAction == JoueurActionType.SeCoucher
-            || Joueurs[JoueurActuelIndex].DerniereAction == JoueurActionType.Tapis
+        } while (Joueurs[JoueurActuelIndex].DerniereAction == TypeAction.SeCoucher
+            || Joueurs[JoueurActuelIndex].DerniereAction == TypeAction.Tapis
             || ObtenirActionsPossibles(Joueurs[JoueurActuelIndex]).Count == 0);
     }
 }

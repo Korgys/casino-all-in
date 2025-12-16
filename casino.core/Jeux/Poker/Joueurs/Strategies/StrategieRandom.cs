@@ -1,23 +1,24 @@
+using casino.core.Jeux.Poker.Actions;
 using System;
 using System.Linq;
 
 namespace casino.core.Jeux.Poker.Joueurs.Strategies;
 
-public class StrategieRandom : IJoueurStrategy
+public class StrategieRandom : IStrategieJoueur
 {
-    public JoueurAction ProposerAction(ContexteDeJeu contexte)
+    public Actions.Action ProposerAction(ContexteDeJeu contexte)
     {
         var actions = contexte.ActionsPossibles;
         var action = actions[Random.Shared.Next(actions.Count)];
 
         int montant = action switch
         {
-            JoueurActionType.Miser => contexte.MiseMinimum,
-            JoueurActionType.Relancer => CalculerRelance(contexte),
+            TypeAction.Miser => contexte.MiseMinimum,
+            TypeAction.Relancer => CalculerRelance(contexte),
             _ => 0
         };
 
-        return new JoueurAction(action, montant);
+        return new Actions.Action(action, montant);
     }
 
     private static int CalculerRelance(ContexteDeJeu contexte)

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace casino.core.Jeux.Poker.Joueurs;
+namespace casino.core.Jeux.Poker.Actions;
 
-public class JoueurAction
+public class Action
 {
-    public JoueurActionType TypeAction { get; set; }
+    public TypeAction TypeAction { get; set; }
     public int Montant { get; set; } // Montant associé à l'action (si applicable)
-    public JoueurAction(JoueurActionType typeAction, int montant = 0)
+    public Action(TypeAction typeAction, int montant = 0)
     {
         TypeAction = typeAction;
         Montant = montant;

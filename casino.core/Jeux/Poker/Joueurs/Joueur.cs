@@ -1,4 +1,5 @@
-﻿using casino.core.Jeux.Poker.Parties;
+﻿using casino.core.Jeux.Poker.Actions;
+using casino.core.Jeux.Poker.Parties;
 
 namespace casino.core.Jeux.Poker.Joueurs;
 
@@ -17,7 +18,7 @@ public class Joueur
 
     public bool EstCouche { get; set; } = false;
     public bool EstTapis { get; set; } = false;
-    public JoueurActionType DerniereAction { get; internal set; }
+    public TypeAction DerniereAction { get; internal set; }
 
     public Joueur(string nom, int jetons)
     {
@@ -27,7 +28,7 @@ public class Joueur
 
     internal void Reinitialiser()
     {
-        DerniereAction = Jetons > 0 ? JoueurActionType.Aucune : JoueurActionType.SeCoucher;
+        DerniereAction = Jetons > 0 ? TypeAction.Aucune : TypeAction.SeCoucher;
         EstCouche = Jetons < 0;
         EstTapis = false;
     }

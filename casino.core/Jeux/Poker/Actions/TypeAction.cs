@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace casino.core.Jeux.Poker.Joueurs;
+namespace casino.core.Jeux.Poker.Actions;
 
-public enum JoueurActionType
+public enum TypeAction
 {
     Aucune = 0,
     SeCoucher = 1,
