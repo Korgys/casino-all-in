@@ -6,38 +6,38 @@ namespace casino.core.Jeux.Poker.Joueurs.Strategies;
 
 public class StrategieAgressive : IStrategieJoueur
 {
-    public Actions.Action ProposerAction(ContexteDeJeu contexte)
+    public Actions.ActionJeu ProposerAction(ContexteDeJeu contexte)
     {
         var actions = contexte.ActionsPossibles;
         var joueur = contexte.JoueurCourant;
         var relanceMinimum = Math.Max(contexte.Partie.MiseActuelle + contexte.Partie.MiseDeDepart, contexte.MiseMinimum);
 
-        if (actions.Contains(TypeAction.Relancer) && joueur.Jetons > contexte.Partie.MiseActuelle)
+        if (actions.Contains(TypeActionJeu.Relancer) && joueur.Jetons > contexte.Partie.MiseActuelle)
         {
             int mise = Math.Min(joueur.Jetons, relanceMinimum);
-            return new Actions.Action(TypeAction.Relancer, mise);
+            return new Actions.ActionJeu(TypeActionJeu.Relancer, mise);
         }
 
-        if (actions.Contains(TypeAction.Miser))
+        if (actions.Contains(TypeActionJeu.Miser))
         {
-            return new Actions.Action(TypeAction.Miser, contexte.MiseMinimum);
+            return new Actions.ActionJeu(TypeActionJeu.Miser, contexte.MiseMinimum);
         }
 
-        if (actions.Contains(TypeAction.Suivre))
+        if (actions.Contains(TypeActionJeu.Suivre))
         {
-            return new Actions.Action(TypeAction.Suivre);
+            return new Actions.ActionJeu(TypeActionJeu.Suivre);
         }
 
-        if (actions.Contains(TypeAction.Tapis))
+        if (actions.Contains(TypeActionJeu.Tapis))
         {
-            return new Actions.Action(TypeAction.Tapis);
+            return new Actions.ActionJeu(TypeActionJeu.Tapis);
         }
 
-        if (actions.Contains(TypeAction.Check))
+        if (actions.Contains(TypeActionJeu.Check))
         {
-            return new Actions.Action(TypeAction.Check);
+            return new Actions.ActionJeu(TypeActionJeu.Check);
         }
 
-        return new Actions.Action(TypeAction.SeCoucher);
+        return new Actions.ActionJeu(TypeActionJeu.SeCoucher);
     }
 }

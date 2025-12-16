@@ -4,7 +4,7 @@ using System.Text;
 
 namespace casino.core.Jeux.Poker.Actions;
 
-public enum TypeAction
+public enum TypeActionJeu
 {
     Aucune = 0,
     SeCoucher = 1,

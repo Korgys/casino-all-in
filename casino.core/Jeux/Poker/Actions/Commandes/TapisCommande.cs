@@ -15,7 +15,7 @@ public class TapisCommande : IJoueurCommande
 
     public void Execute(Partie partie)
     {
-        _joueur.DerniereAction = TypeAction.Tapis;
+        _joueur.DerniereAction = TypeActionJeu.Tapis;
         partie.Pot += _joueur.Jetons;
         _joueur.Jetons = 0;
         _joueur.EstTapis = true;

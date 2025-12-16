@@ -4,5 +4,5 @@ namespace casino.core.Jeux.Poker.Joueurs.Strategies;
 
 public interface IStrategieJoueur
 {
-    Actions.Action ProposerAction(ContexteDeJeu contexte);
+    Actions.ActionJeu ProposerAction(ContexteDeJeu contexte);
 }

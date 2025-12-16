@@ -10,35 +10,35 @@ public abstract class PhaseStateBase : IPhaseState
 {
     public abstract void Avancer(Partie context);
 
-    public virtual IEnumerable<TypeAction> ObtenirActionsPossibles(Joueur joueur, Partie context)
+    public virtual IEnumerable<TypeActionJeu> ObtenirActionsPossibles(Joueur joueur, Partie context)
     {
-        var actionsPossibles = new List<TypeAction>();
+        var actionsPossibles = new List<TypeActionJeu>();
 
         if (!joueur.EstCouche)
         {
-            actionsPossibles.Add(TypeAction.SeCoucher);
+            actionsPossibles.Add(TypeActionJeu.SeCoucher);
 
             if (context.MiseActuelle <= joueur.Jetons)
             {
-                if (context.MiseActuelle == 0) actionsPossibles.Add(TypeAction.Miser);
-                else actionsPossibles.Add(TypeAction.Suivre);
-                actionsPossibles.Add(TypeAction.Relancer);
+                if (context.MiseActuelle == 0) actionsPossibles.Add(TypeActionJeu.Miser);
+                else actionsPossibles.Add(TypeActionJeu.Suivre);
+                actionsPossibles.Add(TypeActionJeu.Relancer);
             }
             else
             {
-                actionsPossibles.Add(TypeAction.Tapis);
+                actionsPossibles.Add(TypeActionJeu.Tapis);
             }
 
             if (context.MiseActuelle == 0)
             {
-                actionsPossibles.Add(TypeAction.Check);
+                actionsPossibles.Add(TypeActionJeu.Check);
             }
         }
 
         return actionsPossibles.OrderBy(a => (int)a).ToList();
     }
 
-    public virtual void AppliquerAction(Joueur joueur, Actions.Action action, Partie context)
+    public virtual void AppliquerAction(Joueur joueur, Actions.ActionJeu action, Partie context)
     {
         context.ActionService.ExecuterAction(context, joueur, action);
     }

@@ -7,6 +7,6 @@ using System.Collections.Generic;
 public interface IPhaseState
 {
     void Avancer(Partie context);
-    IEnumerable<TypeAction> ObtenirActionsPossibles(Joueur joueur, Partie context);
-    void AppliquerAction(Joueur joueur, Action action, Partie context);
+    IEnumerable<TypeActionJeu> ObtenirActionsPossibles(Joueur joueur, Partie context);
+    void AppliquerAction(Joueur joueur, ActionJeu action, Partie context);
 }

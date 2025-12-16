@@ -34,7 +34,7 @@ public class RelancerCommande : IJoueurCommande
             return;
         }
 
-        _joueur.DerniereAction = TypeAction.Relancer;
+        _joueur.DerniereAction = TypeActionJeu.Relancer;
         _joueur.Jetons -= _montant;
         partie.MiseActuelle = _montant;
         partie.Pot += _montant;

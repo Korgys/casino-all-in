@@ -10,11 +10,11 @@ public class ContexteDeJeu
 {
     public Partie Partie { get; }
     public Joueur JoueurCourant { get; }
-    public IReadOnlyList<TypeAction> ActionsPossibles { get; }
+    public IReadOnlyList<TypeActionJeu> ActionsPossibles { get; }
     public Score ScoreJoueur { get; }
     public int MiseMinimum => Math.Max(Partie.MiseActuelle, Partie.MiseDeDepart);
 
-    public ContexteDeJeu(Partie partie, Joueur joueurCourant, IReadOnlyList<TypeAction> actionsPossibles)
+    public ContexteDeJeu(Partie partie, Joueur joueurCourant, IReadOnlyList<TypeActionJeu> actionsPossibles)
     {
         Partie = partie;
         JoueurCourant = joueurCourant;

@@ -33,7 +33,7 @@ public class SuivreCommande : IJoueurCommande
             return;
         }
 
-        _joueur.DerniereAction = TypeAction.Suivre;
+        _joueur.DerniereAction = TypeActionJeu.Suivre;
         _joueur.Jetons -= partie.MiseActuelle;
         partie.Pot += partie.MiseActuelle;
     }

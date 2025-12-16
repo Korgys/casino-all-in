@@ -6,19 +6,19 @@ namespace casino.core.Jeux.Poker.Joueurs.Strategies;
 
 public class StrategieRandom : IStrategieJoueur
 {
-    public Actions.Action ProposerAction(ContexteDeJeu contexte)
+    public Actions.ActionJeu ProposerAction(ContexteDeJeu contexte)
     {
         var actions = contexte.ActionsPossibles;
         var action = actions[Random.Shared.Next(actions.Count)];
 
         int montant = action switch
         {
-            TypeAction.Miser => contexte.MiseMinimum,
-            TypeAction.Relancer => CalculerRelance(contexte),
+            TypeActionJeu.Miser => contexte.MiseMinimum,
+            TypeActionJeu.Relancer => CalculerRelance(contexte),
             _ => 0
         };
 
-        return new Actions.Action(action, montant);
+        return new Actions.ActionJeu(action, montant);
     }
 
     private static int CalculerRelance(ContexteDeJeu contexte)

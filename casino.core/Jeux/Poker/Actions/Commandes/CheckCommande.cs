@@ -21,6 +21,6 @@ public class CheckCommande : IJoueurCommande
             throw new InvalidOperationException("Le joueur ne peut pas checker car il y a une mise sur la table.");
         }
 
-        _joueur.DerniereAction = TypeAction.Check;
+        _joueur.DerniereAction = TypeActionJeu.Check;
     }
 }

@@ -18,7 +18,7 @@ public class Joueur
 
     public bool EstCouche { get; set; } = false;
     public bool EstTapis { get; set; } = false;
-    public TypeAction DerniereAction { get; internal set; }
+    public TypeActionJeu DerniereAction { get; internal set; }
 
     public Joueur(string nom, int jetons)
     {
@@ -28,7 +28,7 @@ public class Joueur
 
     internal void Reinitialiser()
     {
-        DerniereAction = Jetons > 0 ? TypeAction.Aucune : TypeAction.SeCoucher;
+        DerniereAction = Jetons > 0 ? TypeActionJeu.Aucune : TypeActionJeu.SeCoucher;
         EstCouche = Jetons < 0;
         EstTapis = false;
     }

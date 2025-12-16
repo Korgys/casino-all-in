@@ -29,10 +29,10 @@ public class TablePoker
     public Joueur ObtenirJoueurQuiDoitJouer()
         => Joueurs[JoueurActuelIndex];
 
-    public List<TypeAction> ObtenirActionsPossibles(Joueur joueur)
+    public List<TypeActionJeu> ObtenirActionsPossibles(Joueur joueur)
         => Partie.ObtenirActionsPossibles(joueur).OrderBy(a => (int) a).ToList();
 
-    public void TraiterActionJoueur(Joueur joueur, Actions.Action choix)
+    public void TraiterActionJoueur(Joueur joueur, Actions.ActionJeu choix)
     {
         Partie.AppliquerAction(joueur, choix);
         PasserAuJoueurSuivant();
@@ -52,8 +52,8 @@ public class TablePoker
                     return;
                 }
             }
-        } while (Joueurs[JoueurActuelIndex].DerniereAction == TypeAction.SeCoucher
-            || Joueurs[JoueurActuelIndex].DerniereAction == TypeAction.Tapis
+        } while (Joueurs[JoueurActuelIndex].DerniereAction == TypeActionJeu.SeCoucher
+            || Joueurs[JoueurActuelIndex].DerniereAction == TypeActionJeu.Tapis
             || ObtenirActionsPossibles(Joueurs[JoueurActuelIndex]).Count == 0);
     }
 }

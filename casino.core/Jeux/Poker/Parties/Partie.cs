@@ -39,19 +39,19 @@ public class Partie
 
     public bool EnCours() => Phase != Phase.Showdown;
 
-    public IEnumerable<TypeAction> ObtenirActionsPossibles(Joueur joueur)
+    public IEnumerable<TypeActionJeu> ObtenirActionsPossibles(Joueur joueur)
     {
         return PhaseState.ObtenirActionsPossibles(joueur, this);
     }
 
-    public void AppliquerAction(Joueur joueur, Actions.Action action)
+    public void AppliquerAction(Joueur joueur, Actions.ActionJeu action)
     {
         PhaseState.AppliquerAction(joueur, action, this);
     }
 
     private void DistribuerCartes()
     {
-        foreach (var joueur in Joueurs.Where(j => j.Jetons > 0 && j.DerniereAction != TypeAction.SeCoucher))
+        foreach (var joueur in Joueurs.Where(j => j.Jetons > 0 && j.DerniereAction != TypeActionJeu.SeCoucher))
         {
             joueur.Main = new CartesMain(Deck.TirerCarte(), Deck.TirerCarte());
         }
@@ -78,7 +78,7 @@ public class Partie
     private Joueur DeterminerGagnantParMain()
     {
         return Joueurs
-            .Where(j => j.DerniereAction != TypeAction.SeCoucher)
+            .Where(j => j.DerniereAction != TypeActionJeu.SeCoucher)
             .Select(j => new
             {
                 Joueur = j,

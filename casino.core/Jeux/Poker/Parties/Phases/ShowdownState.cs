@@ -12,12 +12,12 @@ public class ShowdownState : IPhaseState
         // Partie terminée, aucune phase supplémentaire.
     }
 
-    public IEnumerable<TypeAction> ObtenirActionsPossibles(Joueur joueur, Partie context)
+    public IEnumerable<TypeActionJeu> ObtenirActionsPossibles(Joueur joueur, Partie context)
     {
-        return Array.Empty<TypeAction>();
+        return Array.Empty<TypeActionJeu>();
     }
 
-    public void AppliquerAction(Joueur joueur, Actions.Action action, Partie context)
+    public void AppliquerAction(Joueur joueur, Actions.ActionJeu action, Partie context)
     {
         throw new InvalidOperationException("Aucune action n'est autorisée pendant le showdown.");
     }

@@ -33,7 +33,7 @@ public class MiserCommande : IJoueurCommande
             throw new InvalidOperationException("Le joueur n'a pas assez de jetons pour miser autant.");
         }
 
-        _joueur.DerniereAction = TypeAction.Miser;
+        _joueur.DerniereAction = TypeActionJeu.Miser;
         partie.MiseActuelle = _montant;
         _joueur.Jetons -= _montant;
         partie.Pot += _montant;

@@ -1,104 +1,109 @@
-﻿using casino.core.Jeux.Poker.Cartes;
-using casino.core.Jeux.Poker.Joueurs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using casino.core;
+using casino.core.Events;
+using casino.core.Jeux.Poker;
+using casino.core.Jeux.Poker.Actions;
+using casino.core.Jeux.Poker.Cartes;
 using casino.core.Jeux.Poker.Parties;
 using casino.core.Jeux.Poker.Parties.Phases;
 using casino.core.Jeux.Poker.Scores;
-using casino.core.Jeux.Poker.Joueurs.Strategies;
-using casino.core.Jeux.Poker.Actions;
+using ActionModel = casino.core.Jeux.Poker.Actions.ActionJeu;
 
 namespace casino.console;
 
 public class Program
 {
+    private static PokerGameState? _dernierEtat;
+
     public static void Main(string[] args)
     {
         Console.WriteLine("=== Casino All-In ===\n");
 
-        var joueur = new JoueurHumain("Player", 1000);
-        var joueurs = new List<Joueur>
+        IGameFactory factory = new ConsoleGameFactory();
+        var game = factory.Create("poker", ObtenirChoixJoueur, DemanderContinuerNouvellePartie);
+
+        if (game == null)
         {
-            joueur,
-            new JoueurOrdi("Ordi Agressif", 1000, new StrategieAgressive()),
-            new JoueurOrdi("Ordi Conserv", 1000, new StrategieConservatrice()),
-            new JoueurOrdi("Ordi Random", 1000, new StrategieRandom())
-        };
-        var table = new TablePoker();
-        table.Nom = "Table Poker";
-
-        // On joue tant qu'il n'y a des jetons
-        while (joueur.Jetons > 0)
-        {
-            var deck = new JeuDeCartes();
-            table.DemarrerPartie(joueurs, deck);
-
-            // Boucle principale de la partie
-            while (table.Partie.EnCours())
-            {
-                AfficherEtatTable(table);
-
-                if (table.ObtenirJoueurQuiDoitJouer() is JoueurHumain)
-                {
-                    var actionsPossibles = table.ObtenirActionsPossibles(joueur);
-                    AfficherActionsPossibles(actionsPossibles, table.Partie.MiseDeDepart);
-
-                    var choix = ObtenirChoixJoueur(joueur, actionsPossibles, table.Partie.MiseDeDepart);
-                    table.TraiterActionJoueur(joueur, choix);
-                }
-                else // joue pour l'ordi
-                {
-                    Thread.Sleep(Random.Shared.Next(500, 2500)); // pause de quelques secondes
-                    var cpu = (JoueurOrdi)table.ObtenirJoueurQuiDoitJouer();
-                    var actionsPossibles = table.ObtenirActionsPossibles(cpu);
-                    var contexte = new ContexteDeJeu(table.Partie, cpu, actionsPossibles);
-                    var joueurAction = cpu.Strategie.ProposerAction(contexte);
-                    table.TraiterActionJoueur(cpu, joueurAction);
-                }
-            }
-
-            AfficherEtatTable(table);
-            if (!DemanderContinuerNouvellePartie()) break;
+            Console.WriteLine("Jeu demandé indisponible.");
+            return;
         }
+
+        game.StateUpdated += OnStateUpdated;
+        game.GameEnded += OnGameEnded;
+
+        game.Run();
 
         Console.WriteLine("\nAppuyez sur une touche pour quitter...");
     }
 
-    private static core.Jeux.Poker.Actions.Action ObtenirChoixJoueur(JoueurHumain joueur, List<TypeAction> actionsPossibles, int minimumMise)
+    private static void OnStateUpdated(object? sender, GameStateEventArgs e)
     {
+        if (e.State is PokerGameState etat)
+        {
+            _dernierEtat = etat;
+            AfficherEtatTable(etat);
+        }
+    }
+
+    private static void OnGameEnded(object? sender, GameEndedEventArgs e)
+    {
+        if (_dernierEtat != null)
+        {
+            AfficherEtatTable(_dernierEtat);
+        }
+
+        Console.WriteLine($"\n{e.WinnerName} remporte le pot de {e.Pot}c.");
+    }
+
+    private static ActionModel ObtenirChoixJoueur(RequeteAction request)
+    {
+        var etat = (PokerGameState)request.EtatTable;
+        var joueur = etat.Joueurs.First(j => j.Nom == request.JoueurNom);
+
         int choix = -1;
 
-        // Récupérer le choix d'action
-        while (!actionsPossibles.Any(a => (int)a == choix))
+        while (!request.ActionsPossibles.Any(a => (int)a == choix))
         {
+            AfficherActionsPossibles(request.ActionsPossibles, request.MiseMinimum);
             Console.Write("Quel est votre choix ? ");
             int.TryParse(Console.ReadLine(), out choix);
         }
 
-        // Gestion de la mise
-        if (choix == (int)TypeAction.Miser)
+        if ((TypeActionJeu)choix == TypeActionJeu.Miser)
         {
-            return new core.Jeux.Poker.Actions.Action((TypeAction)choix, minimumMise);
+            return new ActionModel((TypeActionJeu)choix, request.MiseMinimum);
         }
-        else if (choix == (int)TypeAction.Relancer)
+
+        if ((TypeActionJeu)choix == TypeActionJeu.Relancer)
         {
             int mise = 0;
-            while (mise == 0 && mise <= joueur.Jetons)
+            while (mise == 0 || mise > joueur.Jetons)
             {
                 Console.Write("De combien voulez-vous relancer ? ");
                 int.TryParse(Console.ReadLine(), out mise);
             }
-            return new core.Jeux.Poker.Actions.Action((TypeAction)choix, mise);
+
+            return new ActionModel((TypeActionJeu)choix, mise);
         }
 
-        return new core.Jeux.Poker.Actions.Action((TypeAction)choix, 0);
+        return new ActionModel((TypeActionJeu)choix, 0);
     }
 
-    private static void AfficherActionsPossibles(List<TypeAction> actionsPossibles, int minimumMise)
+    private static bool DemanderContinuerNouvellePartie()
     {
-        // Affichage des actions
+        Console.Write("\nVoulez-vous continuer une nouvelle partie ? (o/n) : ");
+        var reponse = Console.ReadLine();
+        return reponse?.ToLower() == "o";
+    }
+
+    private static void AfficherActionsPossibles(IReadOnlyList<TypeActionJeu> actionsPossibles, int minimumMise)
+    {
         Console.WriteLine("\nActions possibles : ");
         foreach (var actionPossible in actionsPossibles)
         {
-            if (actionPossible == TypeAction.Miser)
+            if (actionPossible == TypeActionJeu.Miser)
             {
                 Console.Write($"{(int)actionPossible}: {actionPossible} (");
                 EcrireMontantCouleur(minimumMise);
@@ -167,86 +172,76 @@ public class Program
     // ETAT TABLE
     // ----------------------------
 
-    private static void AfficherEtatTable(TablePoker table)
+    private static void AfficherEtatTable(PokerGameState etat)
     {
         Console.Clear();
 
-        var p = table.Partie;
-        var nomJoueurTour = table.ObtenirJoueurQuiDoitJouer().Nom;
+        var nomJoueurTour = etat.JoueurActuel;
+        var partieEnCours = etat.Phase != Phase.Showdown.ToString();
 
         Console.Write($"Mise min : ");
-        EcrireMontantCouleur(p.MiseDeDepart);
+        EcrireMontantCouleur(etat.MiseDeDepart);
         Console.Write(" | Pot: ");
-        EcrireMontantCouleur(p.Pot);
+        EcrireMontantCouleur(etat.Pot);
         Console.Write(" | Mise actuelle: ");
-        EcrireMontantCouleur(p.MiseActuelle);
+        EcrireMontantCouleur(etat.MiseActuelle);
         Console.WriteLine();
 
         Console.Write("Cartes: ");
-        EcrireCartesCommunesCouleur(p.CartesCommunes);
+        EcrireCartesCommunesCouleur(etat.CartesCommunes);
         Console.WriteLine("\n");
 
-        // Affiche les infos des joueurs
-        foreach (Joueur joueur in table.Joueurs)
+        foreach (var joueur in etat.Joueurs)
         {
-            bool estCouche = joueur.DerniereAction == TypeAction.SeCoucher;
-
-            if (estCouche)
+            if (joueur.EstCouche)
             {
                 AvecCouleur(ConsoleColor.DarkGray, () =>
                 {
-                    AfficherLigneJoueur(joueur, nomJoueurTour, p);
+                    AfficherLigneJoueur(joueur, nomJoueurTour, etat, partieEnCours);
                 });
             }
             else
             {
-                AfficherLigneJoueur(joueur, nomJoueurTour, p);
+                AfficherLigneJoueur(joueur, nomJoueurTour, etat, partieEnCours);
             }
         }
     }
 
-    private static void AfficherLigneJoueur(Joueur joueur, string nomJoueurTour, Partie p)
+    private static void AfficherLigneJoueur(PokerPlayerState joueur, string nomJoueurTour, PokerGameState etat, bool partieEnCours)
     {
         if (nomJoueurTour == joueur.Nom)
         {
             Console.Write("=> ");
         }
 
-        if (joueur.Jetons == 0 || joueur.DerniereAction == TypeAction.SeCoucher)
+        if (joueur.Jetons == 0 || joueur.EstCouche)
         {
             AvecCouleur(ConsoleColor.Gray, () => Console.Write($"{joueur.Nom}"));
         }
-        else if (joueur is JoueurHumain) AvecCouleur(ConsoleColor.Cyan, () => Console.Write($"{joueur.Nom}"));
+        else if (joueur.EstHumain) AvecCouleur(ConsoleColor.Cyan, () => Console.Write($"{joueur.Nom}"));
         else AvecCouleur(ConsoleColor.DarkRed, () => Console.Write($"{joueur.Nom}"));
 
         Console.Write(" (");
         EcrireMontantCouleur(joueur.Jetons);
         Console.Write("):");
 
-        if (joueur is JoueurHumain || (!p.EnCours() && joueur.DerniereAction != TypeAction.SeCoucher))
+        if ((joueur.EstHumain || (!partieEnCours && !joueur.EstCouche)) && joueur.Main != null)
         {
             Console.Write(" ");
-            EcrireMainCouleur(joueur.Main);
-            Console.Write($" ({EvaluateurScore.EvaluerScore(joueur.Main, p.CartesCommunes)})");
+            EcrireMainCouleur(joueur.Main!);
+            Console.Write($" ({EvaluateurScore.EvaluerScore(joueur.Main!, etat.CartesCommunes)})");
         }
 
-        if (joueur.DerniereAction != TypeAction.Aucune)
+        if (joueur.DerniereAction != TypeActionJeu.Aucune)
         {
             Console.Write($" [{joueur.DerniereAction}]");
         }
 
-        if (!p.EnCours() && joueur.Nom == p.Gagnant?.Nom)
+        if (!partieEnCours && joueur.EstGagnant)
         {
             AvecCouleur(ConsoleColor.Green, () => Console.Write(" {GAGNANT}"));
         }
 
         Console.WriteLine();
-    }
-
-    private static bool DemanderContinuerNouvellePartie()
-    {
-        Console.Write("\nVoulez-vous continuer une nouvelle partie ? (o/n) : ");
-        var reponse = Console.ReadLine();
-        return reponse?.ToLower() == "o";
     }
 }

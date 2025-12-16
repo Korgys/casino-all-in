@@ -4,11 +4,11 @@ using System.Text;
 
 namespace casino.core.Jeux.Poker.Actions;
 
-public class Action
+public class ActionJeu
 {
-    public TypeAction TypeAction { get; set; }
+    public TypeActionJeu TypeAction { get; set; }
     public int Montant { get; set; } // Montant associé à l'action (si applicable)
-    public Action(TypeAction typeAction, int montant = 0)
+    public ActionJeu(TypeActionJeu typeAction, int montant = 0)
     {
         TypeAction = typeAction;
         Montant = montant;
