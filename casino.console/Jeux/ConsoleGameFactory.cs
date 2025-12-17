@@ -6,7 +6,7 @@ using casino.core.Jeux.Poker.Cartes;
 using casino.core.Jeux.Poker.Joueurs;
 using casino.core.Jeux.Poker.Joueurs.Strategies;
 
-namespace casino.console;
+namespace casino.console.Jeux;
 
 public class ConsoleGameFactory : IGameFactory
 {
@@ -37,4 +37,6 @@ public class ConsoleGameFactory : IGameFactory
             humanActionSelector,
             continuePlaying);
     }
+
+    // Other game creation methods can be added here
 }
