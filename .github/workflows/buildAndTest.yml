@@ -1,0 +1,59 @@
+name: Build + Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  buildAndTest:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test (with Coverage)
+      # Collect coverage using the built-in data collector (coverlet.collector must be referenced by each test project)
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      # Install ReportGenerator to turn Cobertura XML into HTML + text summary
+    - name: Install ReportGenerator tool
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+      # Generate HTML and Text summary reports
+    - name: Generate coverage report
+      run: |
+        reportgenerator \
+          -reports:"**/TestResults/**/coverage.cobertura.xml" \
+          -targetdir:"coveragereport" \
+          -reporttypes:"Html;TextSummary"
+
+    # Print the summary to the job log
+    - name: Print coverage summary
+      run: cat coveragereport/Summary.txt
+
+    # Always upload the nice HTML report for inspection (even if threshold fails)
+    - name: Upload coverage report artifact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coveragereport
+        path: coveragereport
+
+    # Fail the build if Line coverage < 10%
+    - name: Enforce minimum coverage (10% lines)
+      run: |
+        LINE_COV=$(grep -Po 'Line coverage:\s*\K[0-9.]+(?=%)' coveragereport/Summary.txt || echo 0)
+        echo "Detected line coverage: ${LINE_COV}%"
+        THRESHOLD=10
+        awk -v a="$LINE_COV" -v b="$THRESHOLD" 'BEGIN { 
+          printf("Minimum required: %s%%\n", b);
+          exit (a>=b)?0:1 
+        }'
