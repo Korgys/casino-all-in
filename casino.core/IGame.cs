@@ -1,4 +1,4 @@
-﻿using casino.core.Events;
+﻿using casino.core.Common.Events;
 
 namespace casino.core;
 

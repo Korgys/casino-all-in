@@ -1,4 +1,4 @@
-﻿namespace casino.core.Events;
+﻿namespace casino.core.Common.Events;
 
 public class GameEndedEventArgs : EventArgs
 {

@@ -1,7 +1,7 @@
 using casino.console.jeux.Poker;
 using casino.console.Jeux;
 using casino.core;
-using casino.core.Events;
+using casino.core.Common.Events;
 using casino.core.Jeux.Poker;
 using System;
 
