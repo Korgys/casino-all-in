@@ -3,5 +3,6 @@
     <File Path=".editorconfig" />
   </Folder>
   <Project Path="casino.console/casino.console.csproj" Id="4413ea68-4c5d-4bb7-a5ad-08df3732ee82" />
+  <Project Path="casino.core.tests/casino.core.tests.csproj" Id="a80d4dd7-f2f1-4ce1-aa38-be734cce48eb" />
   <Project Path="casino.core/casino.core.csproj" Id="024c5dec-c093-4dff-a2c7-66af97b83caf" />
 </Solution>
