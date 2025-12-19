@@ -1,9 +1,8 @@
-﻿using casino.core.Jeux.Poker.Cartes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace casino.core.Jeux.Poker.Parties;
+namespace casino.core.Jeux.Poker.Cartes;
 
 public class CartesCommunes
 {

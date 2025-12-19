@@ -13,4 +13,18 @@ public class Carte
     {
         return $"{Rang.ToShortString()} {Couleur}";
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Carte other)
+            return false;
+
+        return Rang == other.Rang && Couleur == other.Couleur;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Rang, Couleur);
+    }
+
 }

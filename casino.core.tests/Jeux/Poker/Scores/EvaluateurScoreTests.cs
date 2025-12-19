@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using casino.core.Jeux.Poker.Cartes;
-using casino.core.Jeux.Poker.Parties;
 using casino.core.Jeux.Poker.Scores;
 
 namespace casino.core.tests.Jeux.Poker.Scores

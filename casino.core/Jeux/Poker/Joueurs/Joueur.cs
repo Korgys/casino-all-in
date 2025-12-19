@@ -1,5 +1,5 @@
 ﻿using casino.core.Jeux.Poker.Actions;
-using casino.core.Jeux.Poker.Parties;
+using casino.core.Jeux.Poker.Cartes;
 
 namespace casino.core.Jeux.Poker.Joueurs;
 
