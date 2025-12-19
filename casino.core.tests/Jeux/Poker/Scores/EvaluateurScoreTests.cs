@@ -20,7 +20,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
                 C(RangCarte.Dame, Couleur.Coeur),
                 C(RangCarte.Valet, Couleur.Coeur),
                 C(RangCarte.Dix, Couleur.Coeur),
-                C(RangCarte.Deux, Couleur.Trèfle),
+                C(RangCarte.Deux, Couleur.Trefle),
                 C(RangCarte.Trois, Couleur.Pique)
             );
 
@@ -64,9 +64,9 @@ namespace casino.core.tests.Jeux.Poker.Scores
 
             var communes = Communes(
                 C(RangCarte.Roi, Couleur.Carreau),
-                C(RangCarte.Roi, Couleur.Trèfle),
+                C(RangCarte.Roi, Couleur.Trefle),
                 C(RangCarte.Dix, Couleur.Coeur),
-                C(RangCarte.Deux, Couleur.Trèfle),
+                C(RangCarte.Deux, Couleur.Trefle),
                 C(RangCarte.Trois, Couleur.Pique)
             );
 
@@ -87,7 +87,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
 
             var communes = Communes(
                 C(RangCarte.Dame, Couleur.Carreau),
-                C(RangCarte.Deux, Couleur.Trèfle),
+                C(RangCarte.Deux, Couleur.Trefle),
                 C(RangCarte.Deux, Couleur.Coeur),
                 C(RangCarte.Neuf, Couleur.Pique),
                 C(RangCarte.Valet, Couleur.Carreau)
@@ -113,7 +113,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
                 C(RangCarte.Roi, Couleur.Coeur),
                 C(RangCarte.Roi, Couleur.Pique),
                 C(RangCarte.Roi, Couleur.Carreau),
-                C(RangCarte.Deux, Couleur.Trèfle)
+                C(RangCarte.Deux, Couleur.Trefle)
             );
 
             var score = EvaluateurScore.EvaluerScore(main, communes);
@@ -156,9 +156,9 @@ namespace casino.core.tests.Jeux.Poker.Scores
 
             var communes = Communes(
                 C(RangCarte.Sept, Couleur.Carreau),
-                C(RangCarte.Huit, Couleur.Trèfle),
+                C(RangCarte.Huit, Couleur.Trefle),
                 C(RangCarte.Neuf, Couleur.Coeur),
-                C(RangCarte.As, Couleur.Trèfle),
+                C(RangCarte.As, Couleur.Trefle),
                 C(RangCarte.Deux, Couleur.Coeur)
             );
 
@@ -179,9 +179,9 @@ namespace casino.core.tests.Jeux.Poker.Scores
 
             var communes = Communes(
                 C(RangCarte.Sept, Couleur.Carreau),
-                C(RangCarte.As, Couleur.Trèfle),
+                C(RangCarte.As, Couleur.Trefle),
                 C(RangCarte.Dix, Couleur.Coeur),
-                C(RangCarte.Deux, Couleur.Trèfle),
+                C(RangCarte.Deux, Couleur.Trefle),
                 C(RangCarte.Trois, Couleur.Pique)
             );
 
@@ -203,8 +203,8 @@ namespace casino.core.tests.Jeux.Poker.Scores
             var communes = Communes(
                 C(RangCarte.Dame, Couleur.Carreau),
                 C(RangCarte.Cinq, Couleur.Coeur),
-                C(RangCarte.As, Couleur.Trèfle),
-                C(RangCarte.Deux, Couleur.Trèfle),
+                C(RangCarte.As, Couleur.Trefle),
+                C(RangCarte.Deux, Couleur.Trefle),
                 C(RangCarte.Trois, Couleur.Pique)
             );
 
@@ -225,9 +225,9 @@ namespace casino.core.tests.Jeux.Poker.Scores
 
             var communes = Communes(
                 C(RangCarte.As, Couleur.Carreau),
-                C(RangCarte.Dix, Couleur.Trèfle),
+                C(RangCarte.Dix, Couleur.Trefle),
                 C(RangCarte.Neuf, Couleur.Coeur),
-                C(RangCarte.Deux, Couleur.Trèfle),
+                C(RangCarte.Deux, Couleur.Trefle),
                 C(RangCarte.Trois, Couleur.Pique)
             );
 
@@ -248,10 +248,10 @@ namespace casino.core.tests.Jeux.Poker.Scores
 
             var communes = Communes(
                 C(RangCarte.Neuf, Couleur.Carreau),
-                C(RangCarte.Huit, Couleur.Trèfle),
+                C(RangCarte.Huit, Couleur.Trefle),
                 C(RangCarte.Six, Couleur.Coeur),
                 C(RangCarte.Quatre, Couleur.Pique),
-                C(RangCarte.Deux, Couleur.Trèfle)
+                C(RangCarte.Deux, Couleur.Trefle)
             );
 
             var score = EvaluateurScore.EvaluerScore(main, communes);

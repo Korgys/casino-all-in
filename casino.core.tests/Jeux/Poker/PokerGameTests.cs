@@ -22,10 +22,10 @@ public class PokerGameTests
         {
             new Carte(RangCarte.As, Couleur.Pique),        // Alice 1
             new Carte(RangCarte.Roi, Couleur.Coeur),       // Alice 2
-            new Carte(RangCarte.Neuf, Couleur.Trèfle),     // Bob 1
+            new Carte(RangCarte.Neuf, Couleur.Trefle),     // Bob 1
             new Carte(RangCarte.Huit, Couleur.Carreau),    // Bob 2
             new Carte(RangCarte.Deux, Couleur.Coeur),      // Flop 1
-            new Carte(RangCarte.Trois, Couleur.Trèfle),    // Flop 2
+            new Carte(RangCarte.Trois, Couleur.Trefle),    // Flop 2
             new Carte(RangCarte.Quatre, Couleur.Carreau),  // Flop 3
             new Carte(RangCarte.Cinq, Couleur.Pique),      // Turn
             new Carte(RangCarte.Six, Couleur.Coeur)        // River

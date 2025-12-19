@@ -11,7 +11,7 @@ public class CouleurTests
     [TestMethod]
     [DataRow(Couleur.Coeur, "♥")]
     [DataRow(Couleur.Carreau, "♦")]
-    [DataRow(Couleur.Trèfle, "♣")]
+    [DataRow(Couleur.Trefle, "♣")]
     [DataRow(Couleur.Pique, "♠")]
     public void ToSymbol_DoitRetournerLeBonSymbole(Couleur couleur, string attendu)
     {

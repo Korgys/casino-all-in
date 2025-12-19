@@ -4,7 +4,7 @@ public enum Couleur
 {
     Coeur,
     Carreau,
-    Trèfle,
+    Trefle,
     Pique
 }
 
@@ -16,7 +16,7 @@ public static class CouleurExtensions
         {
             Couleur.Coeur => "♥",
             Couleur.Carreau => "♦",
-            Couleur.Trèfle => "♣",
+            Couleur.Trefle => "♣",
             Couleur.Pique => "♠",
             _ => throw new ArgumentOutOfRangeException(nameof(couleur), couleur, null)
         };

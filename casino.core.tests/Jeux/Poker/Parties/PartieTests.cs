@@ -21,7 +21,7 @@ public class PartieTests
         {
             new Carte(RangCarte.As, Couleur.Coeur),
             new Carte(RangCarte.Roi, Couleur.Carreau),
-            new Carte(RangCarte.Dame, Couleur.Trèfle),
+            new Carte(RangCarte.Dame, Couleur.Trefle),
             new Carte(RangCarte.Valet, Couleur.Pique)
         });
         var joueurActif = new JoueurHumain("Alice", 100);
@@ -108,7 +108,7 @@ public class PartieTests
                 new Carte(RangCarte.Dix, Couleur.Coeur),
                 new Carte(RangCarte.Neuf, Couleur.Coeur),
                 new Carte(RangCarte.Deux, Couleur.Carreau),
-                new Carte(RangCarte.Trois, Couleur.Trèfle)),
+                new Carte(RangCarte.Trois, Couleur.Trefle)),
             Pot = 60
         };
 

@@ -28,7 +28,7 @@ public class CartesCommunesTests
         var flop1 = new Carte(RangCarte.Deux, Couleur.Carreau);
         var flop2 = new Carte(RangCarte.Trois, Couleur.Coeur);
         var flop3 = new Carte(RangCarte.Quatre, Couleur.Pique);
-        var turn = new Carte(RangCarte.As, Couleur.Trèfle);
+        var turn = new Carte(RangCarte.As, Couleur.Trefle);
         var river = new Carte(RangCarte.Roi, Couleur.Coeur);
 
         var communes = new CartesCommunes

@@ -18,13 +18,13 @@ public class TablePokerTests
     {
         new Carte(RangCarte.As, Couleur.Pique),
         new Carte(RangCarte.Roi, Couleur.Coeur),
-        new Carte(RangCarte.Dame, Couleur.Trèfle),
+        new Carte(RangCarte.Dame, Couleur.Trefle),
         new Carte(RangCarte.Valet, Couleur.Carreau),
         new Carte(RangCarte.Neuf, Couleur.Pique),
         new Carte(RangCarte.Huit, Couleur.Carreau),
         new Carte(RangCarte.Sept, Couleur.Pique),
         new Carte(RangCarte.Six, Couleur.Coeur),
-        new Carte(RangCarte.Cinq, Couleur.Trèfle)
+        new Carte(RangCarte.Cinq, Couleur.Trefle)
     };
 
     [TestMethod]

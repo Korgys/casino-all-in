@@ -22,7 +22,7 @@ public class ContexteDeJeuTests
         };
         var communes = JoueurTestHelper.CreerCartesCommunes(
             new Carte(RangCarte.As, Couleur.Pique),
-            new Carte(RangCarte.Dame, Couleur.Trèfle),
+            new Carte(RangCarte.Dame, Couleur.Trefle),
             new Carte(RangCarte.Neuf, Couleur.Carreau));
         var actions = new List<TypeActionJeu> { TypeActionJeu.Check, TypeActionJeu.Miser };
 

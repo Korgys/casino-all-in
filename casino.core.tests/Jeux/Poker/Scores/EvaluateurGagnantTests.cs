@@ -21,7 +21,7 @@ public class EvaluateurGagnantTests
             C(RangCarte.Deux, Couleur.Coeur),
             C(RangCarte.Trois, Couleur.Carreau),
             C(RangCarte.Quatre, Couleur.Pique),
-            C(RangCarte.Cinq, Couleur.Trèfle),
+            C(RangCarte.Cinq, Couleur.Trefle),
             C(RangCarte.Six, Couleur.Coeur)
         );
 
@@ -44,7 +44,7 @@ public class EvaluateurGagnantTests
             C(RangCarte.Deux, Couleur.Coeur),
             C(RangCarte.Trois, Couleur.Carreau),
             C(RangCarte.Quatre, Couleur.Pique),
-            C(RangCarte.Huit, Couleur.Trèfle),
+            C(RangCarte.Huit, Couleur.Trefle),
             C(RangCarte.Neuf, Couleur.Coeur)
         );
 
@@ -78,7 +78,7 @@ public class EvaluateurGagnantTests
             C(RangCarte.Deux, Couleur.Coeur),
             C(RangCarte.Trois, Couleur.Carreau),
             C(RangCarte.Quatre, Couleur.Pique),
-            C(RangCarte.Cinq, Couleur.Trèfle),
+            C(RangCarte.Cinq, Couleur.Trefle),
             C(RangCarte.Neuf, Couleur.Coeur)
         );
 
@@ -112,7 +112,7 @@ public class EvaluateurGagnantTests
             C(RangCarte.Dame, Couleur.Coeur),
             C(RangCarte.Deux, Couleur.Carreau),
             C(RangCarte.Cinq, Couleur.Pique),
-            C(RangCarte.Huit, Couleur.Trèfle),
+            C(RangCarte.Huit, Couleur.Trefle),
             C(RangCarte.Neuf, Couleur.Coeur)
         );
 
@@ -146,7 +146,7 @@ public class EvaluateurGagnantTests
             C(RangCarte.As, Couleur.Pique),
             C(RangCarte.Sept, Couleur.Carreau),
             C(RangCarte.Six, Couleur.Pique),
-            C(RangCarte.Cinq, Couleur.Trèfle),
+            C(RangCarte.Cinq, Couleur.Trefle),
             C(RangCarte.Deux, Couleur.Coeur)
         );
 

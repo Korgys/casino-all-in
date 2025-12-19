@@ -41,7 +41,7 @@ public class StrategieRandomTests
         {
             Main = new CartesMain(
                 new Carte(RangCarte.Dame, Couleur.Carreau),
-                new Carte(RangCarte.Neuf, Couleur.Trèfle))
+                new Carte(RangCarte.Neuf, Couleur.Trefle))
         };
         var partie = JoueurTestHelper.CreerPartieAvecJoueur(joueur, joueur.Main, miseDeDepart: 25);
         var contexte = new ContexteDeJeu(partie, joueur, new List<TypeActionJeu> { TypeActionJeu.Miser });
@@ -89,7 +89,7 @@ public class StrategieAgressiveTests
         {
             Main = new CartesMain(
                 new Carte(RangCarte.Valet, Couleur.Carreau),
-                new Carte(RangCarte.Dix, Couleur.Trèfle))
+                new Carte(RangCarte.Dix, Couleur.Trefle))
         };
         var partie = JoueurTestHelper.CreerPartieAvecJoueur(joueur, joueur.Main);
         JoueurTestHelper.DefinirMiseActuelle(partie, 20);
@@ -141,7 +141,7 @@ public class StrategieConservatriceTests
         };
         var communes = JoueurTestHelper.CreerCartesCommunes(
             new Carte(RangCarte.Roi, Couleur.Pique),
-            new Carte(RangCarte.Roi, Couleur.Trèfle),
+            new Carte(RangCarte.Roi, Couleur.Trefle),
             new Carte(RangCarte.Dame, Couleur.Coeur));
         var partie = JoueurTestHelper.CreerPartieAvecJoueur(joueur, joueur.Main, communes);
         var contexte = new ContexteDeJeu(partie, joueur, new List<TypeActionJeu> { TypeActionJeu.Suivre, TypeActionJeu.Miser });
@@ -162,11 +162,11 @@ public class StrategieConservatriceTests
         {
             Main = new CartesMain(
                 new Carte(RangCarte.Deux, Couleur.Carreau),
-                new Carte(RangCarte.Sept, Couleur.Trèfle))
+                new Carte(RangCarte.Sept, Couleur.Trefle))
         };
         var communes = JoueurTestHelper.CreerCartesCommunes(
             new Carte(RangCarte.Dix, Couleur.Pique),
-            new Carte(RangCarte.Neuf, Couleur.Trèfle),
+            new Carte(RangCarte.Neuf, Couleur.Trefle),
             new Carte(RangCarte.Huit, Couleur.Coeur));
         var partie = JoueurTestHelper.CreerPartieAvecJoueur(joueur, joueur.Main, communes);
         var contexte = new ContexteDeJeu(partie, joueur, new List<TypeActionJeu> { TypeActionJeu.SeCoucher });

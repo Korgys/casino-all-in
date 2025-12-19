@@ -54,8 +54,8 @@ public class CarteTests
     public void Equals_DeuxCartesIdentiques_DoitRetournerTrue()
     {
         // Arrange
-        var carte1 = new Carte(RangCarte.Roi, Couleur.Trèfle);
-        var carte2 = new Carte(RangCarte.Roi, Couleur.Trèfle);
+        var carte1 = new Carte(RangCarte.Roi, Couleur.Trefle);
+        var carte2 = new Carte(RangCarte.Roi, Couleur.Trefle);
 
         // Act
         var equals = carte1.Equals(carte2);
@@ -68,7 +68,7 @@ public class CarteTests
     public void Equals_DeuxCartesDifferentes_DoitRetournerFalse()
     {
         // Arrange
-        var carte1 = new Carte(RangCarte.Roi, Couleur.Trèfle);
+        var carte1 = new Carte(RangCarte.Roi, Couleur.Trefle);
         var carte2 = new Carte(RangCarte.Roi, Couleur.Coeur);
 
         // Act
