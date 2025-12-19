@@ -29,7 +29,7 @@ public class Joueur
     internal void Reinitialiser()
     {
         DerniereAction = Jetons > 0 ? TypeActionJeu.Aucune : TypeActionJeu.SeCoucher;
-        EstCouche = Jetons < 0;
+        EstCouche = Jetons <= 0;
         EstTapis = false;
     }
 }

@@ -11,7 +11,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_QuinteFlushRoyale_RetourneQuinteFlushRoyale_As()
         {
             // Construit une main + communes contenant 10-J-Q-K-A de la même couleur.
-            var main = Main(
+            var main = C(
                 C(RangCarte.As, Couleur.Coeur),
                 C(RangCarte.Roi, Couleur.Coeur)
             );
@@ -34,7 +34,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_QuinteFlush_Wheel_RetourneQuinteFlush_5()
         {
             // Construit une quinte flush A-2-3-4-5 (As bas) de la même couleur.
-            var main = Main(
+            var main = C(
                 C(RangCarte.As, Couleur.Pique),
                 C(RangCarte.Deux, Couleur.Pique)
             );
@@ -57,7 +57,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_Carre_RetourneCarre_ValeurDuCarre()
         {
             // Construit un carré de Rois.
-            var main = Main(
+            var main = C(
                 C(RangCarte.Roi, Couleur.Coeur),
                 C(RangCarte.Roi, Couleur.Pique)
             );
@@ -80,7 +80,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_Full_RetourneFull_ValeurDuBrelan()
         {
             // Construire un full : Dames par les Dames + Deux par les Deux.
-            var main = Main(
+            var main = C(
                 C(RangCarte.Dame, Couleur.Coeur),
                 C(RangCarte.Dame, Couleur.Pique)
             );
@@ -103,7 +103,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_Full_DeuxBrelans_RetourneFull_MeilleurBrelanCommeTrips()
         {
             // Construit deux brelans (A et K) : le full doit choisir le meilleur brelan comme trips (A).
-            var main = Main(
+            var main = C(
                 C(RangCarte.As, Couleur.Coeur),
                 C(RangCarte.As, Couleur.Pique)
             );
@@ -126,7 +126,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_Couleur_RetourneCouleur_PlusHauteCarteDeLaCouleur()
         {
             // Construit une couleur (non suite) et vérifier la plus haute carte.
-            var main = Main(
+            var main = C(
                 C(RangCarte.As, Couleur.Carreau),
                 C(RangCarte.Neuf, Couleur.Carreau)
             );
@@ -149,7 +149,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_Suite_RetourneSuite_CarteHaute()
         {
             // Construit une suite 5-6-7-8-9 et vérifier la carte haute (9).
-            var main = Main(
+            var main = C(
                 C(RangCarte.Cinq, Couleur.Coeur),
                 C(RangCarte.Six, Couleur.Pique)
             );
@@ -172,7 +172,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_Brelan_RetourneBrelan_ValeurDuBrelan()
         {
             // Construit un brelan de 7.
-            var main = Main(
+            var main = C(
                 C(RangCarte.Sept, Couleur.Coeur),
                 C(RangCarte.Sept, Couleur.Pique)
             );
@@ -195,7 +195,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_DoublePaire_RetourneDoublePaire_PaireLaPlusHaute()
         {
             // Construit une double paire (Dames + 5) -> valeur attendue : Dame.
-            var main = Main(
+            var main = C(
                 C(RangCarte.Dame, Couleur.Coeur),
                 C(RangCarte.Cinq, Couleur.Pique)
             );
@@ -218,7 +218,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_Paire_RetournePaire_ValeurDeLaPaire()
         {
             // Construit une paire de Valets.
-            var main = Main(
+            var main = C(
                 C(RangCarte.Valet, Couleur.Coeur),
                 C(RangCarte.Valet, Couleur.Pique)
             );
@@ -241,7 +241,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         public void EvaluerScore_CarteHaute_RetourneCarteHaute_MaxRang()
         {
             // Construit une main sans combinaison et vérifier la carte haute (As).
-            var main = Main(
+            var main = C(
                 C(RangCarte.As, Couleur.Coeur),
                 C(RangCarte.Dix, Couleur.Pique)
             );
@@ -263,7 +263,7 @@ namespace casino.core.tests.Jeux.Poker.Scores
         private static Carte C(RangCarte rang, Couleur couleur)
             => new Carte(rang, couleur);
 
-        private static CartesMain Main(Carte a, Carte b)
+        private static CartesMain C(Carte a, Carte b)
             => new CartesMain(a, b);
 
         private static CartesCommunes Communes(Carte a, Carte b, Carte c, Carte d, Carte e)

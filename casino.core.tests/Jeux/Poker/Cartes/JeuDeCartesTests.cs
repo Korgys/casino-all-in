@@ -26,7 +26,7 @@ public class JeuDeCartesTests
         Assert.AreEqual(52, deck.CartesRestantes);
 
         var cartes = TirerTout(deck);
-        Assert.AreEqual(52, cartes.Count);
+        Assert.HasCount(52, cartes);
 
         // Vérifier unicité (rang + couleur)
         var uniques = cartes
