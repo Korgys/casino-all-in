@@ -57,7 +57,7 @@ public class Partie
         }
     }
 
-    internal void TerminerPartie()
+    public void TerminerPartie()
     {
         Phase = Phase.Showdown;
 
@@ -70,29 +70,8 @@ public class Partie
         else
         {
             // Gagnant par la meilleure main
-            Gagnant = DeterminerGagnantParMain();
+            Gagnant = EvaluateurGagnant.DeterminerGagnantParMain(Joueurs, CartesCommunes);
             Gagnant.Jetons += Pot;
         }
-    }
-
-    private Joueur DeterminerGagnantParMain()
-    {
-        return Joueurs
-            .Where(j => j.DerniereAction != TypeActionJeu.SeCoucher)
-            .Select(j => new
-            {
-                Joueur = j,
-                Score = EvaluateurScore.EvaluerScore(j.Main, CartesCommunes)
-            })
-            .OrderByDescending(js => js.Score.Rang)
-            .ThenByDescending(js => js.Score.Valeur)
-            .ThenByDescending(js =>
-                js.Joueur.Main.AsEnumerable().Union(CartesCommunes.AsEnumerable())
-                .Select(c => c.Rang)
-                .OrderByDescending(r => (int)r)
-                .Take(5)
-                .Sum(s => (int)s)) // Tie-breaker par la somme des rangs des 5 meilleures cartes
-            .Select(js => js.Joueur)
-            .First();
     }
 }

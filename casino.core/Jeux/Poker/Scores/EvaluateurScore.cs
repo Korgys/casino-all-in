@@ -2,7 +2,7 @@
 
 namespace casino.core.Jeux.Poker.Scores;
 
-public class EvaluateurScore
+public static class EvaluateurScore
 {
     public static Score EvaluerScore(CartesMain main, CartesCommunes cartesCommunes)
     {
