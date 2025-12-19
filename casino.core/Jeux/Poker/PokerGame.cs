@@ -12,20 +12,18 @@ public class PokerGame : GameBase
     private readonly Func<RequeteAction, Actions.ActionJeu> _humanActionSelector;
     private readonly Func<IDeck> _deckFactory;
     private readonly TablePoker _table;
-    private readonly JoueurHumain _joueurHumain;
+    private readonly List<JoueurHumain> _joueursHumain;
     private readonly List<Joueur> _joueurs;
 
     public PokerGame(
-        JoueurHumain joueurHumain,
-        IEnumerable<Joueur> autresJoueurs,
+        IEnumerable<Joueur> joueurs,
         Func<IDeck> deckFactory,
         Func<RequeteAction, Actions.ActionJeu> humanActionSelector,
         Func<bool> continuePlaying)
         : base("Poker")
     {
-        _joueurHumain = joueurHumain;
-        _joueurs = new List<Joueur> { joueurHumain };
-        _joueurs.AddRange(autresJoueurs);
+        _joueurs = joueurs.ToList();
+        _joueursHumain = _joueurs.Where(j => j is JoueurHumain).Cast<JoueurHumain>().ToList();
         _deckFactory = deckFactory;
         _humanActionSelector = humanActionSelector;
         _continuePlaying = continuePlaying;
@@ -39,7 +37,7 @@ public class PokerGame : GameBase
 
     protected override void ExecuteGameLoop()
     {
-        while (_joueurHumain.Jetons > 0)
+        while (_joueursHumain.Any(j => j.Jetons > 0))
         {
             var deck = _deckFactory();
             _table.DemarrerPartie(_joueurs, deck);
@@ -53,7 +51,7 @@ public class PokerGame : GameBase
             OnGameEnded(gagnant.Nom, _table.Partie.Pot);
             OnStateUpdated(CreerEtatTable());
 
-            if (_joueurHumain.Jetons <= 0)
+            if (_joueursHumain.Any(j => j.Jetons > 0))
             {
                 break;
             }

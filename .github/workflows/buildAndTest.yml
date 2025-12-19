@@ -111,11 +111,11 @@ jobs:
           name: coveragereport
           path: coveragereport
 
-      - name: Enforce minimum coverage (50% lines)
+      - name: Enforce minimum coverage (60% lines)
         run: |
           LINE_COV=$(grep -Po 'Line coverage:\s*\K[0-9.]+(?=%)' coveragereport/Summary.txt || echo 0)
           echo "Detected line coverage: ${LINE_COV}%"
-          THRESHOLD=50
+          THRESHOLD=60
           awk -v a="$LINE_COV" -v b="$THRESHOLD" 'BEGIN {
             printf("Minimum required: %s%%\n", b);
             exit (a>=b)?0:1

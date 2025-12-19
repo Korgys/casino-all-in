@@ -30,13 +30,6 @@ public class ConsoleGameFactory : IGameFactory
             new JoueurOrdi("Ordi Random", 1000, new StrategieRandom())
         };
 
-        return new PokerGame(
-            joueur,
-            joueurs.Skip(1),
-            () => new JeuDeCartes(),
-            humanActionSelector,
-            continuePlaying);
+        return new PokerGame(joueurs, () => new JeuDeCartes(), humanActionSelector, continuePlaying);
     }
-
-    // Other game creation methods can be added here
 }

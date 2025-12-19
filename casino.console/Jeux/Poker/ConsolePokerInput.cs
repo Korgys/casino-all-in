@@ -26,7 +26,7 @@ public class ConsolePokerInput
         return choice switch
         {
             TypeActionJeu.Miser => new ActionModel(choice, request.MiseMinimum),
-            TypeActionJeu.Relancer => new ActionModel(choice, ReadRaiseAmount(player.Jetons)),
+            TypeActionJeu.Relancer => new ActionModel(choice, ReadRaiseAmount(player.Jetons, state.MiseActuelle)),
             _ => new ActionModel(choice, 0),
         };
     }
@@ -53,7 +53,7 @@ public class ConsolePokerInput
         }
     }
 
-    private static int ReadRaiseAmount(int maxJetons)
+    private static int ReadRaiseAmount(int maxJetons, int miseActuelle)
     {
         while (true)
         {
@@ -61,7 +61,8 @@ public class ConsolePokerInput
             if (!int.TryParse(Console.ReadLine(), out var amount))
                 continue;
 
-            if (amount > 0 && amount <= maxJetons)
+            // Relance seulement si le montant est correct et supérieur à la mise actuelle
+            if (amount > 0 && amount <= maxJetons && miseActuelle < amount)
                 return amount;
         }
     }

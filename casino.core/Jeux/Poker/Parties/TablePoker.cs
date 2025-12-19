@@ -26,11 +26,8 @@ public class TablePoker
         JoueurActuelIndex = JoueurInitialIndex;
     }
 
-    public Joueur ObtenirJoueurQuiDoitJouer()
-        => Joueurs[JoueurActuelIndex];
-
     public List<TypeActionJeu> ObtenirActionsPossibles(Joueur joueur)
-        => Partie.ObtenirActionsPossibles(joueur).OrderBy(a => (int) a).ToList();
+        => Partie.ObtenirActionsPossibles(joueur).OrderBy(a => (int)a).ToList();
 
     public void TraiterActionJoueur(Joueur joueur, Actions.ActionJeu choix)
     {
@@ -38,9 +35,26 @@ public class TablePoker
         PasserAuJoueurSuivant();
     }
 
+    public Joueur ObtenirJoueurQuiDoitJouer()
+    {
+        if (!Partie.EnCours()) 
+            return Joueurs[JoueurActuelIndex];
+
+        if (!Joueurs.Any(JoueurPeutJouer))
+            throw new InvalidOperationException("Aucun joueur en jeu à la table.");
+
+        while (!JoueurPeutJouer(Joueurs[JoueurActuelIndex]))
+        {
+            // Passe au joueur suivant si celui-ci est couché
+            JoueurActuelIndex = (JoueurActuelIndex + 1) % Joueurs.Count;
+        }
+
+        return Joueurs[JoueurActuelIndex];
+    }
+
     private void PasserAuJoueurSuivant()
     {
-        // Passer au joueur suivant tant qu'il n'y a pas d'actions possibles
+        // Passe au joueur suivant tant qu'il n'y a pas d'actions possibles
         do
         {
             JoueurActuelIndex = (JoueurActuelIndex + 1) % Joueurs.Count;
@@ -52,8 +66,18 @@ public class TablePoker
                     return;
                 }
             }
-        } while (Joueurs[JoueurActuelIndex].DerniereAction == TypeActionJeu.SeCoucher
-            || Joueurs[JoueurActuelIndex].DerniereAction == TypeActionJeu.Tapis
-            || ObtenirActionsPossibles(Joueurs[JoueurActuelIndex]).Count == 0);
+        } while (!JoueurPeutJouer(Joueurs[JoueurActuelIndex]));
+    }
+
+    private bool JoueurPeutJouer(Joueur joueur)
+    {
+        // Retourner false si le joueur ne peut pas jouer.
+        if (joueur.DerniereAction == TypeActionJeu.SeCoucher)
+            return false;
+
+        if (joueur.DerniereAction == TypeActionJeu.Tapis)
+            return false;
+
+        return ObtenirActionsPossibles(joueur).Any();
     }
 }
