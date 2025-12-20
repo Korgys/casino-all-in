@@ -79,7 +79,8 @@ public class PartieTests
         partie.TerminerPartie();
 
         // Assert
-        Assert.AreEqual(joueurActif, partie.Gagnant, "Le seul joueur encore actif doit être déclaré gagnant.");
+        Assert.HasCount(1, partie.Gagnants, "Il doit y avoir un seul gagnant.");
+        Assert.AreEqual(joueurActif, partie.Gagnants.First(), "Le seul joueur encore actif doit être déclaré gagnant.");
         Assert.AreEqual(150, joueurActif.Jetons, "Le pot doit être ajouté aux jetons du gagnant.");
         Assert.AreEqual(Phase.Showdown, partie.Phase, "La partie doit se terminer en passant au showdown.");
     }
@@ -89,18 +90,8 @@ public class PartieTests
     {
         // Arrange
         var deck = new FakeDeck(Enumerable.Repeat(new Carte(RangCarte.Deux, Couleur.Pique), 10));
-        var alice = new JoueurHumain("Alice", 100)
-        {
-            Main = new CartesMain(
-                new Carte(RangCarte.As, Couleur.Coeur),
-                new Carte(RangCarte.Roi, Couleur.Coeur))
-        };
-        var bob = new JoueurHumain("Bob", 100)
-        {
-            Main = new CartesMain(
-                new Carte(RangCarte.As, Couleur.Pique),
-                new Carte(RangCarte.As, Couleur.Carreau))
-        };
+        var alice = new JoueurHumain("Alice", 100);
+        var bob = new JoueurHumain("Bob", 100);
         var partie = new Partie(new List<Joueur> { alice, bob }, deck)
         {
             CartesCommunes = JoueurTestHelper.CreerCartesCommunes(
@@ -112,11 +103,20 @@ public class PartieTests
             Pot = 60
         };
 
+        // Important : assigner les mains après l'initialisation de la partie
+        alice.Main = new CartesMain(
+            new Carte(RangCarte.As, Couleur.Coeur),
+            new Carte(RangCarte.Roi, Couleur.Coeur));
+        bob.Main = new CartesMain(
+            new Carte(RangCarte.As, Couleur.Pique),
+            new Carte(RangCarte.As, Couleur.Carreau));
+
         // Act
         partie.TerminerPartie();
 
         // Assert
-        Assert.AreEqual(alice, partie.Gagnant, "Le joueur avec la meilleure main doit être désigné gagnant.");
+        Assert.HasCount(1, partie.Gagnants, "Il doit y avoir un seul gagnant.");
+        Assert.AreEqual(alice, partie.Gagnants.First(), "Le joueur avec la meilleure main doit être désigné gagnant.");
         Assert.AreEqual(160, alice.Jetons, "Le pot doit être ajouté aux jetons du gagnant.");
         Assert.AreEqual(100, bob.Jetons, "Les jetons des autres joueurs ne doivent pas changer.");
         Assert.AreEqual(Phase.Showdown, partie.Phase, "La partie doit être marquée comme terminée.");
