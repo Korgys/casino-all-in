@@ -14,11 +14,11 @@ public abstract class PhaseStateBase : IPhaseState
     {
         var actionsPossibles = new List<TypeActionJeu>();
 
-        if (!joueur.EstCouche)
+        if (!joueur.EstCouche() && !joueur.EstTapis())
         {
             actionsPossibles.Add(TypeActionJeu.SeCoucher);
 
-            if (context.MiseActuelle <= joueur.Jetons)
+            if (joueur.Jetons >= context.MiseActuelle)
             {
                 if (context.MiseActuelle == 0) actionsPossibles.Add(TypeActionJeu.Miser);
                 else actionsPossibles.Add(TypeActionJeu.Suivre);

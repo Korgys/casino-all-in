@@ -118,17 +118,17 @@ public static class EvaluateurScore
 
     private static int ComparerLexico(IReadOnlyList<RangCarte> a, IReadOnlyList<RangCarte> b)
     {
-        int len = Math.Max(a.Count, b.Count);
-        for (int i = 0; i < len; i++)
-        {
-            var va = i < a.Count ? a[i] : (RangCarte)0;
-            var vb = i < b.Count ? b[i] : (RangCarte)0;
+        ArgumentNullException.ThrowIfNull(a);
+        ArgumentNullException.ThrowIfNull(b);
 
-            int cmp = va.CompareTo(vb);
+        int min = Math.Min(a.Count, b.Count);
+        for (int i = 0; i < min; i++)
+        {
+            int cmp = a[i].CompareTo(b[i]);
             if (cmp != 0) return cmp;
         }
 
-        return 0;
+        return a.Count.CompareTo(b.Count);
     }
 
     private static bool ComporteQuinteFlushRoyale(IEnumerable<Carte> cartes)

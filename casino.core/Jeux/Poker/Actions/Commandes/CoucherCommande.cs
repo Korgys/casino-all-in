@@ -16,10 +16,9 @@ public class CoucherCommande : IJoueurCommande
 
     public void Execute(Partie partie)
     {
-        _joueur.EstCouche = true;
         _joueur.DerniereAction = TypeActionJeu.SeCoucher;
 
-        if (partie.Joueurs.Count(j => !j.EstCouche) == 1)
+        if (partie.Joueurs.Count(j => !j.EstCouche()) == 1)
         {
             partie.TerminerPartie();
         }

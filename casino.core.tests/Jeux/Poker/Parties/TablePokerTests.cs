@@ -33,8 +33,8 @@ public class TablePokerTests
         // Arrange
         var joueurs = new List<Joueur>
         {
-            new JoueurHumain("Alice", 100) { DerniereAction = TypeActionJeu.Tapis, EstCouche = true, EstTapis = true },
-            new JoueurHumain("Bob", 0) { DerniereAction = TypeActionJeu.Miser, EstCouche = false, EstTapis = false }
+            new JoueurHumain("Alice", 100) { DerniereAction = TypeActionJeu.Tapis },
+            new JoueurHumain("Bob", 0) { DerniereAction = TypeActionJeu.Miser }
         };
         var table = new TablePoker();
 
@@ -45,7 +45,7 @@ public class TablePokerTests
         Assert.AreEqual(0, table.JoueurInitialIndex);
         Assert.AreEqual(table.JoueurInitialIndex, table.JoueurActuelIndex);
         Assert.IsTrue(table.Joueurs.All(j => j.DerniereAction == (j.Jetons > 0 ? TypeActionJeu.Aucune : TypeActionJeu.SeCoucher)));
-        Assert.IsTrue(table.Joueurs.All(j => !j.EstCouche || j.Jetons == 0));
+        Assert.IsTrue(table.Joueurs.All(j => !j.EstCouche() || j.Jetons == 0));
 
         // Act - deuxième partie pour vérifier la rotation
         table.DemarrerPartie(joueurs, new FakeDeck(CreerCartesParDefaut()));

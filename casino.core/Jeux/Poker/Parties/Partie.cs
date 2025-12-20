@@ -62,9 +62,9 @@ public class Partie
         Phase = Phase.Showdown;
 
         // Gagnant par abandon
-        if (Joueurs.Count(j => !j.EstCouche) == 1)
+        if (Joueurs.Count(j => !j.EstCouche()) == 1)
         {
-            var gagnant = Joueurs.First(j => !j.EstCouche);
+            var gagnant = Joueurs.First(j => !j.EstCouche());
             Gagnants = new List<Joueur> { gagnant };
             gagnant.Jetons += Pot;
             return;

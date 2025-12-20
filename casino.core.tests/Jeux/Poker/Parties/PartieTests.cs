@@ -69,7 +69,7 @@ public class PartieTests
         // Arrange
         var deck = new FakeDeck(Enumerable.Repeat(new Carte(RangCarte.Deux, Couleur.Coeur), 6));
         var joueurActif = new JoueurHumain("Alice", 100);
-        var joueurCouche = new JoueurHumain("Bob", 50) { EstCouche = true };
+        var joueurCouche = new JoueurHumain("Bob", 50) { DerniereAction = TypeActionJeu.SeCoucher };
         var partie = new Partie(new List<Joueur> { joueurActif, joueurCouche }, deck)
         {
             Pot = 50

@@ -115,4 +115,63 @@ public class PokerGameTests
         Assert.AreEqual("Alice, Bob", gagnant);
         Assert.IsTrue(etatFinal.Joueurs.All(j => j.EstGagnant));
     }
+
+    [TestMethod]
+    public void Run_ContinueTantQueJetonsEtDemandePourRelancer()
+    {
+        // Arrange
+        var human = new JoueurHumain("Alice", 100);
+        var autreHumain = new JoueurHumain("Bob", 100);
+        var deckCards = new[]
+        {
+            new Carte(RangCarte.As, Couleur.Pique),
+            new Carte(RangCarte.Roi, Couleur.Coeur),
+            new Carte(RangCarte.Neuf, Couleur.Trefle),
+            new Carte(RangCarte.Huit, Couleur.Carreau),
+            new Carte(RangCarte.Deux, Couleur.Coeur),
+            new Carte(RangCarte.Trois, Couleur.Trefle),
+            new Carte(RangCarte.Quatre, Couleur.Carreau),
+            new Carte(RangCarte.Cinq, Couleur.Pique),
+            new Carte(RangCarte.Six, Couleur.Coeur)
+        };
+
+        var deckFactory = () => new FakeDeck(deckCards);
+
+        var actionsParJoueur = new Dictionary<string, Queue<ActionJeu>>
+        {
+            ["Alice"] = new Queue<ActionJeu>(Enumerable.Repeat(new ActionJeu(TypeActionJeu.Check), 10)),
+            ["Bob"] = new Queue<ActionJeu>(Enumerable.Repeat(new ActionJeu(TypeActionJeu.Check), 10))
+        };
+
+        var continuer = new Queue<bool>(new[] { true, false });
+        var continueCalled = 0;
+        var pokerGame = new PokerGame(
+            new[] { human, autreHumain },
+            deckFactory,
+            context => actionsParJoueur[context.JoueurNom].Dequeue(),
+            () =>
+            {
+                continueCalled++;
+                return continuer.Dequeue();
+            });
+
+        var events = new List<string>();
+        pokerGame.StateUpdated += (_, _) => events.Add("state");
+        pokerGame.GameEnded += (_, _) => events.Add("ended");
+
+        // Act
+        pokerGame.Run();
+
+        // Assert
+        Assert.AreEqual(2, events.Count(e => e == "ended"));
+        Assert.AreEqual(2, continueCalled);
+
+        var indexesGameEnded = events
+            .Select((evt, index) => (evt, index))
+            .Where(e => e.evt == "ended")
+            .Select(e => e.index)
+            .ToList();
+
+        Assert.IsTrue(indexesGameEnded.All(idx => events.Skip(idx + 1).Any(e => e == "state")), "StateUpdated doit être déclenché après chaque fin de partie.");
+    }
 }

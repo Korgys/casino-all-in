@@ -60,7 +60,7 @@ public class EvaluateurGagnantTests
         var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreEqual(1, gagnants.Count);
+        Assert.HasCount(1, gagnants);
         Assert.AreSame(j2, gagnants[0], "Ignorer les joueurs couchés même s'ils auraient une meilleure main.");
     }
 
@@ -92,7 +92,7 @@ public class EvaluateurGagnantTests
         var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreEqual(1, gagnants.Count);
+        Assert.HasCount(1, gagnants);
         Assert.AreSame(j1, gagnants[0], "Choisir le joueur avec la main la plus forte (RangMain le plus élevé).");
     }
 
@@ -124,7 +124,7 @@ public class EvaluateurGagnantTests
         var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreEqual(1, gagnants.Count);
+        Assert.HasCount(1, gagnants);
         Assert.AreSame(j1, gagnants[0], "À rang égal, choisir la meilleure valeur (paire de Dames > paire de 9).");
     }
 
@@ -158,7 +158,7 @@ public class EvaluateurGagnantTests
         var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreEqual(1, gagnants.Count);
+        Assert.HasCount(1, gagnants);
         Assert.AreSame(j1, gagnants[0], "À rang et valeur égaux, départager par les kickers ordonnés.");
     }
 
@@ -184,7 +184,7 @@ public class EvaluateurGagnantTests
         var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreEqual(2, gagnants.Count);
+        Assert.HasCount(2, gagnants);
         CollectionAssert.Contains(gagnants.ToList(), j1);
         CollectionAssert.Contains(gagnants.ToList(), j2);
     }

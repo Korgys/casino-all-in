@@ -18,6 +18,5 @@ public class TapisCommande : IJoueurCommande
         _joueur.DerniereAction = TypeActionJeu.Tapis;
         partie.Pot += _joueur.Jetons;
         _joueur.Jetons = 0;
-        _joueur.EstTapis = true;
     }
 }
