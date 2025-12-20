@@ -4,9 +4,6 @@ using casino.core.Jeux.Poker.Joueurs;
 using casino.core.Jeux.Poker.Parties;
 using casino.core.Jeux.Poker.Scores;
 using casino.core.tests.Fakes;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace casino.core.tests.Jeux.Poker.Scores;
 
@@ -14,7 +11,7 @@ namespace casino.core.tests.Jeux.Poker.Scores;
 public class EvaluateurGagnantTests
 {
     [TestMethod]
-    public void DeterminerGagnantParMain_QuandTousLesJoueursSeCouchent_DoitLeverArgumentException()
+    public void DeterminerGagnantsParMain_QuandTousLesJoueursSeCouchent_DoitLeverArgumentException()
     {
         // Arrange
         var cartesCommunes = Communes(
@@ -26,20 +23,19 @@ public class EvaluateurGagnantTests
         );
 
         var joueurs = new List<Joueur>
-            {
-                CreerJoueurHumain("J1", C(C(RangCarte.As, Couleur.Coeur), C(RangCarte.Roi, Couleur.Carreau)), TypeActionJeu.SeCoucher),
-                CreerJoueurHumain("J2", C(C(RangCarte.Dame, Couleur.Coeur), C(RangCarte.Valet, Couleur.Carreau)), TypeActionJeu.SeCoucher)
-            };
+        {
+            CreerJoueurHumain("J1", Main(C(RangCarte.As, Couleur.Coeur), C(RangCarte.Roi, Couleur.Carreau)), TypeActionJeu.SeCoucher),
+            CreerJoueurHumain("J2", Main(C(RangCarte.Dame, Couleur.Coeur), C(RangCarte.Valet, Couleur.Carreau)), TypeActionJeu.SeCoucher)
+        };
 
         // Act + Assert
-        Assert.Throws<ArgumentException>(() => EvaluateurGagnant.DeterminerGagnantParMain(joueurs, cartesCommunes));
+        Assert.Throws<ArgumentException>(() => EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes));
     }
 
     [TestMethod]
-    public void DeterminerGagnantParMain_DoitIgnorerLesJoueursCouches()
+    public void DeterminerGagnantsParMain_DoitIgnorerLesJoueursCouches()
     {
         // Arrange
-        // Cartes communes neutres
         var cartesCommunes = Communes(
             C(RangCarte.Deux, Couleur.Coeur),
             C(RangCarte.Trois, Couleur.Carreau),
@@ -48,32 +44,30 @@ public class EvaluateurGagnantTests
             C(RangCarte.Neuf, Couleur.Coeur)
         );
 
-        // J1 (couché) aurait un gros jeu (As + Roi)
         var j1 = CreerJoueurHumain(
             "J1",
-            C(C(RangCarte.As, Couleur.Coeur), C(RangCarte.Roi, Couleur.Carreau)),
+            Main(C(RangCarte.As, Couleur.Coeur), C(RangCarte.Roi, Couleur.Carreau)),
             TypeActionJeu.SeCoucher);
 
-        // J2 (en jeu) a un jeu plus faible
         var j2 = CreerJoueurHumain(
             "J2",
-            C(C(RangCarte.Dame, Couleur.Coeur), C(RangCarte.Valet, Couleur.Carreau)),
+            Main(C(RangCarte.Dame, Couleur.Coeur), C(RangCarte.Valet, Couleur.Carreau)),
             TypeActionJeu.Miser);
 
         var joueurs = new List<Joueur> { j1, j2 };
 
         // Act
-        var gagnant = EvaluateurGagnant.DeterminerGagnantParMain(joueurs, cartesCommunes);
+        var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreSame(j2, gagnant, "Ignorer les joueurs couchés même s'ils auraient une meilleure main.");
+        Assert.AreEqual(1, gagnants.Count);
+        Assert.AreSame(j2, gagnants[0], "Ignorer les joueurs couchés même s'ils auraient une meilleure main.");
     }
 
     [TestMethod]
-    public void DeterminerGagnantParMain_DoitChoisirLaMainLaPlusForte_ParRang()
+    public void DeterminerGagnantsParMain_DoitChoisirLaMainLaPlusForte_ParRang()
     {
         // Arrange
-        // Cartes communes : 2-3-4-5-9 (permet une suite A-2-3-4-5 si le joueur a un As)
         var cartesCommunes = Communes(
             C(RangCarte.Deux, Couleur.Coeur),
             C(RangCarte.Trois, Couleur.Carreau),
@@ -82,32 +76,30 @@ public class EvaluateurGagnantTests
             C(RangCarte.Neuf, Couleur.Coeur)
         );
 
-        // J1 : possède un As => fait une Suite (wheel) A-2-3-4-5
         var j1 = CreerJoueurHumain(
             "J1",
-            C(C(RangCarte.As, Couleur.Pique), C(RangCarte.Dame, Couleur.Coeur)),
+            Main(C(RangCarte.As, Couleur.Pique), C(RangCarte.Dame, Couleur.Coeur)),
             TypeActionJeu.Miser);
 
-        // J2 : pas d'As => souvent juste CarteHaute / Paire faible selon règles
         var j2 = CreerJoueurHumain(
             "J2",
-            C(C(RangCarte.Roi, Couleur.Pique), C(RangCarte.Valet, Couleur.Carreau)),
+            Main(C(RangCarte.Roi, Couleur.Pique), C(RangCarte.Valet, Couleur.Carreau)),
             TypeActionJeu.Miser);
 
         var joueurs = new List<Joueur> { j1, j2 };
 
         // Act
-        var gagnant = EvaluateurGagnant.DeterminerGagnantParMain(joueurs, cartesCommunes);
+        var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreSame(j1, gagnant, "Choisir le joueur avec la main la plus forte (RangMain le plus élevé).");
+        Assert.AreEqual(1, gagnants.Count);
+        Assert.AreSame(j1, gagnants[0], "Choisir le joueur avec la main la plus forte (RangMain le plus élevé).");
     }
 
     [TestMethod]
-    public void DeterminerGagnantParMain_QuandMemeRang_DoitDepartagerParValeur()
+    public void DeterminerGagnantsParMain_QuandMemeRang_DoitDepartagerParValeur()
     {
         // Arrange
-        // Cartes communes : une Dame + des cartes basses
         var cartesCommunes = Communes(
             C(RangCarte.Dame, Couleur.Coeur),
             C(RangCarte.Deux, Couleur.Carreau),
@@ -116,32 +108,30 @@ public class EvaluateurGagnantTests
             C(RangCarte.Neuf, Couleur.Coeur)
         );
 
-        // J1 : Paire de Dames (Dame en main + Dame en communes) => Valeur paire = Dame
         var j1 = CreerJoueurHumain(
             "J1",
-            C(C(RangCarte.Dame, Couleur.Pique), C(RangCarte.Trois, Couleur.Coeur)),
+            Main(C(RangCarte.Dame, Couleur.Pique), C(RangCarte.Trois, Couleur.Coeur)),
             TypeActionJeu.Miser);
 
-        // J2 : Paire de 9 (9 en main + 9 en communes) => Valeur paire = 9
         var j2 = CreerJoueurHumain(
             "J2",
-            C(C(RangCarte.Neuf, Couleur.Pique), C(RangCarte.Quatre, Couleur.Coeur)),
+            Main(C(RangCarte.Neuf, Couleur.Pique), C(RangCarte.Quatre, Couleur.Coeur)),
             TypeActionJeu.Miser);
 
         var joueurs = new List<Joueur> { j1, j2 };
 
         // Act
-        var gagnant = EvaluateurGagnant.DeterminerGagnantParMain(joueurs, cartesCommunes);
+        var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreSame(j1, gagnant, "À rang égal, choisir la meilleure valeur (paire de Dames > paire de 9).");
+        Assert.AreEqual(1, gagnants.Count);
+        Assert.AreSame(j1, gagnants[0], "À rang égal, choisir la meilleure valeur (paire de Dames > paire de 9).");
     }
 
     [TestMethod]
-    public void DeterminerGagnantParMain_QuandMemeRangEtMemeValeur_DoitUtiliserLeTieBreakerSommeTop5()
+    public void DeterminerGagnantsParMain_QuandMemeRangEtMemeValeur_DoitDepartagerParKickers()
     {
         // Arrange
-        // Cartes communes : As + 7 + 6 + 5 + 2 (donne une paire d'As pour quiconque a un As en main)
         var cartesCommunes = Communes(
             C(RangCarte.As, Couleur.Pique),
             C(RangCarte.Sept, Couleur.Carreau),
@@ -150,31 +140,59 @@ public class EvaluateurGagnantTests
             C(RangCarte.Deux, Couleur.Coeur)
         );
 
-        // Deux joueurs ont la même paire (As) donc Rang = Paire, Valeur = As.
-        // On force le tie-breaker via les kickers : K > Q donc somme top5 plus élevée pour J1.
+        // Paire d'As pour les deux.
+        // Kickers : K > Q => J1 gagne.
         var j1 = CreerJoueurHumain(
             "J1",
-            C(C(RangCarte.As, Couleur.Coeur), C(RangCarte.Roi, Couleur.Carreau)),
+            Main(C(RangCarte.As, Couleur.Coeur), C(RangCarte.Roi, Couleur.Carreau)),
             TypeActionJeu.Miser);
 
         var j2 = CreerJoueurHumain(
             "J2",
-            C(C(RangCarte.As, Couleur.Carreau), C(RangCarte.Dame, Couleur.Coeur)),
+            Main(C(RangCarte.As, Couleur.Carreau), C(RangCarte.Dame, Couleur.Coeur)),
             TypeActionJeu.Miser);
 
         var joueurs = new List<Joueur> { j1, j2 };
 
         // Act
-        var gagnant = EvaluateurGagnant.DeterminerGagnantParMain(joueurs, cartesCommunes);
+        var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
 
         // Assert
-        Assert.AreSame(j1, gagnant, "À rang et valeur égaux, départager par la somme des 5 meilleurs rangs.");
+        Assert.AreEqual(1, gagnants.Count);
+        Assert.AreSame(j1, gagnants[0], "À rang et valeur égaux, départager par les kickers ordonnés.");
+    }
+
+    [TestMethod]
+    public void DeterminerGagnantsParMain_QuandEgaliteParfaite_DoitRetournerTousLesGagnants()
+    {
+        // Arrange
+        // Board "quinte max" : 10-J-Q-K-A, tout le monde a la même main -> égalité parfaite
+        var cartesCommunes = Communes(
+            C(RangCarte.Dix, Couleur.Coeur),
+            C(RangCarte.Valet, Couleur.Carreau),
+            C(RangCarte.Dame, Couleur.Pique),
+            C(RangCarte.Roi, Couleur.Trefle),
+            C(RangCarte.As, Couleur.Coeur)
+        );
+
+        var j1 = CreerJoueurHumain("J1", Main(C(RangCarte.Deux, Couleur.Pique), C(RangCarte.Trois, Couleur.Coeur)), TypeActionJeu.Miser);
+        var j2 = CreerJoueurHumain("J2", Main(C(RangCarte.Quatre, Couleur.Pique), C(RangCarte.Cinq, Couleur.Coeur)), TypeActionJeu.Miser);
+
+        var joueurs = new List<Joueur> { j1, j2 };
+
+        // Act
+        var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(joueurs, cartesCommunes);
+
+        // Assert
+        Assert.AreEqual(2, gagnants.Count);
+        CollectionAssert.Contains(gagnants.ToList(), j1);
+        CollectionAssert.Contains(gagnants.ToList(), j2);
     }
 
     private static Carte C(RangCarte rang, Couleur couleur)
         => new Carte(rang, couleur);
 
-    private static CartesMain C(Carte a, Carte b)
+    private static CartesMain Main(Carte a, Carte b)
         => new CartesMain(a, b);
 
     private static CartesCommunes Communes(Carte a, Carte b, Carte c, Carte d, Carte e)
@@ -183,15 +201,8 @@ public class EvaluateurGagnantTests
     private static Joueur CreerJoueurHumain(string nom, CartesMain main, TypeActionJeu derniereAction)
     {
         var j = new JoueurHumain(nom, 1000);
-
-        // Affecter la main.
         j.Main = main;
-
-        // Petit hack pour définir la dernière action car cellle-ci est en internal set
-        Partie partie = new Partie(new List<Joueur> { j }, new FakeDeck(new List<Carte>()));
-        ActionJeu actionJeu = new ActionJeu(derniereAction, derniereAction == TypeActionJeu.Miser || derniereAction == TypeActionJeu.Relancer ? 10 : 0);
-        partie.AppliquerAction(j, actionJeu);
-        j = (JoueurHumain)partie.Joueurs.First();
+        j.DerniereAction = derniereAction; // possible grâce au InternalsVisibleTo dans casino.core
 
         return j;
     }
