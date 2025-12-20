@@ -93,6 +93,7 @@ public class TablePokerTests
 
         // Assert
         Assert.AreEqual(Phase.Showdown, table.Partie.Phase);
-        Assert.AreEqual("Bob", table.Partie.Gagnant?.Nom);
+        Assert.HasCount(1, table.Partie.Gagnants);
+        Assert.AreEqual("Bob", table.Partie.Gagnants.First().Nom);
     }
 }

@@ -23,7 +23,7 @@ public class PokerGame : GameBase
         : base("Poker")
     {
         _joueurs = joueurs.ToList();
-        _joueursHumain = _joueurs.Where(j => j is JoueurHumain).Cast<JoueurHumain>().ToList();
+        _joueursHumain = _joueurs.OfType<JoueurHumain>().ToList();
         _deckFactory = deckFactory;
         _humanActionSelector = humanActionSelector;
         _continuePlaying = continuePlaying;
@@ -41,25 +41,29 @@ public class PokerGame : GameBase
         {
             var deck = _deckFactory();
             _table.DemarrerPartie(_joueurs, deck);
+
             OnPhaseAdvanced(_table.Partie.Phase.ToString());
             OnPotUpdated(_table.Partie.Pot, _table.Partie.MiseActuelle);
             OnStateUpdated(CreerEtatTable());
 
             JouerPartie();
 
-            var gagnant = _table.Partie.Gagnant ?? _joueurs.First();
-            OnGameEnded(gagnant.Nom, _table.Partie.Pot);
+            var gagnants = _table.Partie.Gagnants;
+
+            var gagnantsLabel = (gagnants is null || gagnants.Count == 0)
+                ? _joueurs.First().Nom
+                : string.Join(", ", gagnants.Select(g => g.Nom));
+
+            OnGameEnded(gagnantsLabel, _table.Partie.Pot);
             OnStateUpdated(CreerEtatTable());
 
-            if (_joueursHumain.Any(j => j.Jetons > 0))
-            {
+            // Si plus aucun humain n'a de jetons, fin du jeu.
+            if (!_joueursHumain.Any(j => j.Jetons > 0))
                 break;
-            }
 
+            // Si on ne veut pas continuer, fin du jeu.
             if (!_continuePlaying())
-            {
                 break;
-            }
         }
     }
 
@@ -95,21 +99,14 @@ public class PokerGame : GameBase
             }
 
             if (phaseAvantAction != _table.Partie.Phase)
-            {
                 OnPhaseAdvanced(_table.Partie.Phase.ToString());
-            }
 
             OnPotUpdated(_table.Partie.Pot, _table.Partie.MiseActuelle);
         }
     }
 
-    protected override void ResolveGame()
-    {
-    }
-
-    protected override void CleanupGame()
-    {
-    }
+    protected override void ResolveGame() { }
+    protected override void CleanupGame() { }
 
     private PokerGameState CreerEtatTable()
     {
@@ -128,7 +125,7 @@ public class PokerGame : GameBase
                 j.DerniereAction == Actions.TypeActionJeu.SeCoucher,
                 j.DerniereAction,
                 j.Main,
-                partie?.Gagnant?.Nom == j.Nom)).ToList(),
+                partie?.Gagnants?.Any(g => g.Nom == j.Nom) == true)).ToList(),
             partie == null ? string.Empty : _table.ObtenirJoueurQuiDoitJouer().Nom);
     }
 }

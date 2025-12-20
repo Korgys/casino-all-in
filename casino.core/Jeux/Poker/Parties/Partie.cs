@@ -16,7 +16,7 @@ public class Partie
     internal IActionService ActionService { get; }
     public List<Joueur> Joueurs { get; set; }
     public CartesCommunes CartesCommunes { get; set; } = new CartesCommunes();
-    public Joueur Gagnant { get; set; }
+    public IReadOnlyList<Joueur> Gagnants { get; private set; } = new List<Joueur>();
     public Phase Phase { get; set; } = Phase.PreFlop;
     public IPhaseState PhaseState { get; internal set; } = new PreFlopPhaseState();
     public int Pot { get; set; } = 0;
@@ -64,14 +64,32 @@ public class Partie
         // Gagnant par abandon
         if (Joueurs.Count(j => !j.EstCouche) == 1)
         {
-            Gagnant = Joueurs.First(j => !j.EstCouche);
-            Gagnant.Jetons += Pot;
+            var gagnant = Joueurs.First(j => !j.EstCouche);
+            Gagnants = new List<Joueur> { gagnant };
+            gagnant.Jetons += Pot;
+            return;
         }
-        else
-        {
-            // Gagnant par la meilleure main
-            Gagnant = EvaluateurGagnant.DeterminerGagnantParMain(Joueurs, CartesCommunes);
-            Gagnant.Jetons += Pot;
-        }
+
+        // Gagnants par la meilleure main (peut être une égalité)
+        var gagnants = EvaluateurGagnant.DeterminerGagnantsParMain(Joueurs, CartesCommunes);
+        Gagnants = gagnants;
+
+        RepartirPot(gagnants);
+    }
+
+    private void RepartirPot(IReadOnlyList<Joueur> gagnants)
+    {
+        if (gagnants.Count == 0)
+            return;
+
+        int part = Pot / gagnants.Count;
+        int reste = Pot % gagnants.Count;
+
+        foreach (var g in gagnants)
+            g.Jetons += part;
+
+        // Distribuer le reste de manière déterministe (simple)
+        for (int i = 0; i < reste; i++)
+            gagnants[i].Jetons += 1;
     }
 }
