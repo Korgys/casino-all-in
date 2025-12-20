@@ -28,14 +28,25 @@ public class MiserCommande : IJoueurCommande
             throw new InvalidOperationException("La mise ne peut pas être inférieure à la mise de départ/actuelle.");
         }
 
-        if (_montant > _joueur.Jetons)
+        var miseJoueur = partie.ObtenirMisePour(_joueur);
+        var difference = _montant - miseJoueur;
+
+        if (difference <= 0)
+        {
+            throw new InvalidOperationException("La mise doit augmenter la contribution du joueur.");
+        }
+
+        if (difference > _joueur.Jetons)
         {
             throw new InvalidOperationException("Le joueur n'a pas assez de jetons pour miser autant.");
         }
 
         _joueur.DerniereAction = TypeActionJeu.Miser;
+        // Mettre à jour la contribution du joueur et le pot en fonction de la différence,
+        // pas du montant total, pour gérer les mises partielles déjà effectuées.
+        _joueur.Jetons -= difference;
+        partie.DefinirMisePour(_joueur, _montant);
         partie.MiseActuelle = _montant;
-        _joueur.Jetons -= _montant;
-        partie.Pot += _montant;
+        partie.Pot += difference;
     }
 }

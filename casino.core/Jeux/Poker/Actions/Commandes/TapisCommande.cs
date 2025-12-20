@@ -15,8 +15,12 @@ public class TapisCommande : IJoueurCommande
 
     public void Execute(Partie partie)
     {
+        var miseAvant = partie.ObtenirMisePour(_joueur);
+        var contribution = miseAvant + _joueur.Jetons;
         _joueur.DerniereAction = TypeActionJeu.Tapis;
         partie.Pot += _joueur.Jetons;
+        partie.DefinirMisePour(_joueur, contribution);
+        partie.MiseActuelle = Math.Max(partie.MiseActuelle, contribution);
         _joueur.Jetons = 0;
     }
 }

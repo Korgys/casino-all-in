@@ -96,4 +96,39 @@ public class TablePokerTests
         Assert.HasCount(1, table.Partie.Gagnants);
         Assert.AreEqual("Bob", table.Partie.Gagnants.First().Nom);
     }
+
+    [TestMethod]
+    public void RelanceTardive_ForceUnNouveauTourDepuisLeJoueurInitial()
+    {
+        // Arrange
+        var joueurs = new List<Joueur>
+        {
+            new JoueurHumain("Alice", 100),
+            new JoueurHumain("Bob", 100),
+            new JoueurHumain("Charlie", 100)
+        };
+        var table = new TablePoker();
+        table.DemarrerPartie(joueurs, new FakeDeck(CreerCartesParDefaut()));
+
+        // Alice check, Bob check
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Check));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Check));
+
+        // Charlie mise tardivement
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Miser, 20));
+
+        // La phase ne doit pas avancer sans que les premiers joueurs rejouent
+        Assert.AreEqual(Phase.PreFlop, table.Partie.Phase);
+        Assert.AreEqual(table.JoueurInitialIndex, table.JoueurActuelIndex);
+        Assert.AreEqual(20, table.Partie.MiseActuelle);
+
+        // Alice et Bob doivent suivre avant d'avancer
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Suivre));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Suivre));
+
+        Assert.AreEqual(Phase.Flop, table.Partie.Phase);
+        Assert.AreEqual(table.JoueurInitialIndex, table.JoueurActuelIndex);
+        Assert.AreEqual(0, table.Partie.MiseActuelle);
+        Assert.IsTrue(table.Joueurs.Where(j => !j.EstCouche() && !j.EstTapis()).All(j => j.DerniereAction == TypeActionJeu.Aucune));
+    }
 }

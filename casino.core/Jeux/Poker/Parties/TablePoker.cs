@@ -54,19 +54,34 @@ public class TablePoker
 
     private void PasserAuJoueurSuivant()
     {
-        // Passe au joueur suivant tant qu'il n'y a pas d'actions possibles
-        do
+        // Si la partie est terminée, ne rien faire
+        if (!Partie.EnCours())
         {
-            JoueurActuelIndex = (JoueurActuelIndex + 1) % Joueurs.Count;
-            if (JoueurActuelIndex == JoueurInitialIndex)
+            return;
+        }
+
+        // Vérifie si le tour d'enchère est terminé
+        if (Partie.EstTourEnchereCloture())
+        {
+            // Avance à la phase suivante
+            Partie.AvancerPhase();
+            if (!Partie.EnCours())
             {
-                Partie.AvancerPhase();
-                if (!Partie.EnCours())
-                {
-                    return;
-                }
+                return;
             }
-        } while (!JoueurPeutJouer(Joueurs[JoueurActuelIndex]));
+
+            JoueurActuelIndex = JoueurInitialIndex;
+        }
+        else
+        {
+            // Passe au joueur suivant tant qu'il n'y a pas d'actions possibles
+            var essais = 0;
+            do
+            {
+                JoueurActuelIndex = (JoueurActuelIndex + 1) % Joueurs.Count;
+                essais++;
+            } while (!JoueurPeutJouer(Joueurs[JoueurActuelIndex]) && essais <= Joueurs.Count);
+        }
     }
 
     private bool JoueurPeutJouer(Joueur joueur)

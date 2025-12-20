@@ -18,25 +18,29 @@ public class RelancerCommande : IJoueurCommande
 
     public void Execute(Partie partie)
     {
-        if (_montant < partie.MiseActuelle)
+        var contributionActuelle = partie.ObtenirMisePour(_joueur);
+        var difference = _montant - contributionActuelle;
+
+        if (_montant <= partie.MiseActuelle)
         {
             throw new ArgumentException("La relance doit être supérieure ou égale à la mise actuelle.");
         }
 
-        if (_montant > _joueur.Jetons)
+        if (difference > _joueur.Jetons)
         {
             throw new ArgumentException("Le joueur n'a pas assez de jetons pour relancer autant.");
         }
 
-        if (_montant == _joueur.Jetons)
+        if (difference == _joueur.Jetons)
         {
             new TapisCommande(_joueur).Execute(partie);
             return;
         }
 
         _joueur.DerniereAction = TypeActionJeu.Relancer;
-        _joueur.Jetons -= _montant;
+        _joueur.Jetons -= difference;
         partie.MiseActuelle = _montant;
-        partie.Pot += _montant;
+        partie.DefinirMisePour(_joueur, _montant);
+        partie.Pot += difference;
     }
 }

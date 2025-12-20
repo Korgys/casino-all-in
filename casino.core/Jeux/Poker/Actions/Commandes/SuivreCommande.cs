@@ -16,25 +16,28 @@ public class SuivreCommande : IJoueurCommande
 
     public void Execute(Partie partie)
     {
-        if (_joueur.Jetons - partie.MiseActuelle < 0)
+        var contributionActuelle = partie.ObtenirMisePour(_joueur);
+        var difference = partie.MiseActuelle - contributionActuelle;
+
+        if (difference <= 0)
+        {
+            throw new InvalidOperationException("Aucune mise supplémentaire à suivre.");
+        }
+
+        if (_joueur.Jetons - difference < 0)
         {
             throw new InvalidOperationException("Le joueur n'a pas assez de jetons pour suivre la mise actuelle.");
         }
 
-        if (partie.MiseActuelle == 0)
-        {
-            new CheckCommande(_joueur).Execute(partie);
-            return;
-        }
-
-        if (_joueur.Jetons - partie.MiseActuelle == 0)
+        if (_joueur.Jetons - difference == 0)
         {
             new TapisCommande(_joueur).Execute(partie);
             return;
         }
 
         _joueur.DerniereAction = TypeActionJeu.Suivre;
-        _joueur.Jetons -= partie.MiseActuelle;
-        partie.Pot += partie.MiseActuelle;
+        _joueur.Jetons -= difference;
+        partie.DefinirMisePour(_joueur, partie.MiseActuelle);
+        partie.Pot += difference;
     }
 }

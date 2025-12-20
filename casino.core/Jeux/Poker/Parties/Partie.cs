@@ -23,6 +23,8 @@ public class Partie
     public int MiseDeDepart { get; set; } = 10;
     public int MiseActuelle { get; internal set; }
 
+    private readonly Dictionary<Joueur, int> _misesParJoueur = new();
+
     public Partie(List<Joueur> joueurs, IDeck deck, IActionService? actionService = null)
     {
         Joueurs = joueurs;
@@ -30,11 +32,16 @@ public class Partie
         ActionService = actionService ?? new ActionService();
         Deck.Melanger();
         DistribuerCartes();
+        InitialiserMisesJoueurs();
     }
 
     public void AvancerPhase()
     {
         PhaseState.Avancer(this);
+        if (Phase != Phase.Showdown)
+        {
+            ReinitialiserMisesEtActions();
+        }
     }
 
     public bool EnCours() => Phase != Phase.Showdown;
@@ -54,6 +61,57 @@ public class Partie
         foreach (var joueur in Joueurs.Where(j => j.Jetons > 0 && j.DerniereAction != TypeActionJeu.SeCoucher))
         {
             joueur.Main = new CartesMain(Deck.TirerCarte(), Deck.TirerCarte());
+        }
+    }
+
+    internal int ObtenirMisePour(Joueur joueur)
+    {
+        return _misesParJoueur.TryGetValue(joueur, out var mise) ? mise : 0;
+    }
+
+    internal void DefinirMisePour(Joueur joueur, int mise)
+    {
+        _misesParJoueur[joueur] = mise;
+    }
+
+    internal bool EstTourEnchereCloture()
+    {
+        if (!EnCours())
+        {
+            return true;
+        }
+
+        var joueursActifs = Joueurs.Where(j => !j.EstCouche() && !j.EstTapis()).ToList();
+
+        if (!joueursActifs.Any())
+        {
+            return true;
+        }
+
+        int miseDuTour = ObtenirMisePour(joueursActifs.First());
+        return joueursActifs.All(j => ObtenirMisePour(j) == miseDuTour && j.DerniereAction != TypeActionJeu.Aucune);
+    }
+
+    internal void ReinitialiserMisesEtActions()
+    {
+        MiseActuelle = 0;
+
+        foreach (var joueur in Joueurs)
+        {
+            _misesParJoueur[joueur] = 0;
+
+            if (!joueur.EstCouche() && !joueur.EstTapis())
+            {
+                joueur.DerniereAction = TypeActionJeu.Aucune;
+            }
+        }
+    }
+
+    private void InitialiserMisesJoueurs()
+    {
+        foreach (var joueur in Joueurs)
+        {
+            _misesParJoueur[joueur] = 0;
         }
     }
 

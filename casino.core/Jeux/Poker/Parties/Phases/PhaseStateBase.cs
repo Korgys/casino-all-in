@@ -16,22 +16,41 @@ public abstract class PhaseStateBase : IPhaseState
 
         if (!joueur.EstCouche() && !joueur.EstTapis())
         {
+            var miseJoueur = context.ObtenirMisePour(joueur);
+            var difference = context.MiseActuelle - miseJoueur;
+
             actionsPossibles.Add(TypeActionJeu.SeCoucher);
 
-            if (joueur.Jetons >= context.MiseActuelle)
+            if (difference > 0)
             {
-                if (context.MiseActuelle == 0) actionsPossibles.Add(TypeActionJeu.Miser);
-                else actionsPossibles.Add(TypeActionJeu.Suivre);
-                actionsPossibles.Add(TypeActionJeu.Relancer);
+                if (difference < joueur.Jetons)
+                {
+                    actionsPossibles.Add(TypeActionJeu.Suivre);
+                    actionsPossibles.Add(TypeActionJeu.Relancer);
+                    actionsPossibles.Add(TypeActionJeu.Tapis);
+                }
+                else if (difference == joueur.Jetons)
+                {
+                    actionsPossibles.Add(TypeActionJeu.Tapis);
+                }
+                else
+                {
+                    actionsPossibles.Add(TypeActionJeu.Tapis);
+                }
             }
-            else
-            {
-                actionsPossibles.Add(TypeActionJeu.Tapis);
-            }
-
-            if (context.MiseActuelle == 0)
+            else // difference <= 0, aucune mise à rattraper
             {
                 actionsPossibles.Add(TypeActionJeu.Check);
+
+                if (context.MiseActuelle == 0)
+                {
+                    actionsPossibles.Add(TypeActionJeu.Miser);
+                }
+
+                if (joueur.Jetons > 0 && (context.MiseActuelle == 0 || joueur.Jetons + miseJoueur > context.MiseActuelle))
+                {
+                    actionsPossibles.Add(TypeActionJeu.Relancer);
+                }
             }
         }
 
