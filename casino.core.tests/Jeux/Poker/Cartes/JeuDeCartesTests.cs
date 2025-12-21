@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using casino.core.Common.Randoms;
+using casino.core.Common.Utils;
 
 namespace casino.core.tests.Jeux.Poker.Cartes;
 

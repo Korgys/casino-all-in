@@ -1,4 +1,4 @@
-using casino.core.Common.Randoms;
+using casino.core.Common.Utils;
 using System;
 
 namespace casino.core.Jeux.Poker.Cartes;
@@ -34,7 +34,7 @@ public class JeuDeCartes : IDeck
     }
 
     /// <summary>
-    /// Tirer une carte du dessus (index 0) pour simplifier et rendre testable.
+    /// Tire une carte du dessus (index 0) pour simplifier et rendre testable.
     /// </summary>
     public Carte TirerCarte()
     {
@@ -47,6 +47,10 @@ public class JeuDeCartes : IDeck
         return carte;
     }
 
+    /// <summary>
+    /// Crée un jeu de cartes avec 52 cartes (4 couleurs, 13 rangs).
+    /// </summary>
+    /// <returns></returns>
     private static IEnumerable<Carte> CreerPaquetStandard()
     {
         foreach (Couleur couleur in Enum.GetValues<Couleur>())
