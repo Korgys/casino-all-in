@@ -126,6 +126,6 @@ public class PokerGame : GameBase
                 j.DerniereAction,
                 j.Main,
                 partie?.Gagnants?.Any(g => g.Nom == j.Nom) == true)).ToList(),
-            partie == null ? string.Empty : _table.ObtenirJoueurQuiDoitJouer().Nom);
+            partie == null || _table.GestionnaireDeTour == null ? string.Empty : _table.ObtenirJoueurQuiDoitJouer().Nom);
     }
 }

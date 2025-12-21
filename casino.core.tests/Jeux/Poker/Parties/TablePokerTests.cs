@@ -27,6 +27,21 @@ public class TablePokerTests
         new Carte(RangCarte.Cinq, Couleur.Trefle)
     };
 
+    private static IEnumerable<Carte> CreerCartesPourAllIn() => new[]
+    {
+        new Carte(RangCarte.As, Couleur.Coeur),
+        new Carte(RangCarte.Roi, Couleur.Coeur),
+        new Carte(RangCarte.Dame, Couleur.Pique),
+        new Carte(RangCarte.Valet, Couleur.Pique),
+        new Carte(RangCarte.Dix, Couleur.Trefle),
+        new Carte(RangCarte.Neuf, Couleur.Trefle),
+        new Carte(RangCarte.Huit, Couleur.Coeur),
+        new Carte(RangCarte.Sept, Couleur.Coeur),
+        new Carte(RangCarte.Six, Couleur.Coeur),
+        new Carte(RangCarte.Cinq, Couleur.Carreau),
+        new Carte(RangCarte.Quatre, Couleur.Carreau)
+    };
+
     [TestMethod]
     public void DemarrerPartie_ReinitialiseEtRotationDuJoueurInitial()
     {
@@ -53,6 +68,29 @@ public class TablePokerTests
         // Assert
         Assert.AreEqual(1, table.JoueurInitialIndex);
         Assert.AreEqual(table.JoueurInitialIndex, table.JoueurActuelIndex);
+    }
+
+    [TestMethod]
+    public void TousLesJoueursMoinsUnSeCouchent_TermineLaPartieEtDeclareLeGagnant()
+    {
+        // Arrange
+        var joueurs = new List<Joueur>
+        {
+            new JoueurHumain("Alice", 100),
+            new JoueurHumain("Bob", 80),
+            new JoueurHumain("Charlie", 120)
+        };
+        var table = new TablePoker();
+        table.DemarrerPartie(joueurs, new FakeDeck(CreerCartesParDefaut()));
+
+        // Act - Alice puis Bob se couchent
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.SeCoucher));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.SeCoucher));
+
+        // Assert
+        Assert.AreEqual(Phase.Showdown, table.Partie.Phase);
+        Assert.AreEqual("Charlie", table.Partie.Gagnants.Single().Nom);
+        Assert.AreEqual(0, table.Partie.MiseActuelle);
     }
 
     [TestMethod]
@@ -95,6 +133,32 @@ public class TablePokerTests
         Assert.AreEqual(Phase.Showdown, table.Partie.Phase);
         Assert.HasCount(1, table.Partie.Gagnants);
         Assert.AreEqual("Bob", table.Partie.Gagnants.First().Nom);
+    }
+
+    [TestMethod]
+    public void TousLesJoueursSontATapis_LeTourDeMiseEstClotureAutomatiquement()
+    {
+        // Arrange
+        var joueurs = new List<Joueur>
+        {
+            new JoueurHumain("Alice", 100),
+            new JoueurHumain("Bob", 100),
+            new JoueurHumain("Charlie", 100)
+        };
+        var table = new TablePoker();
+        table.DemarrerPartie(joueurs, new FakeDeck(CreerCartesPourAllIn()));
+
+        // Act : Alice ouvre en relançant son tapis, Bob et Charlie suivent en tapis
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Relancer, 100));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Tapis));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Tapis));
+
+        // Assert
+        Assert.AreEqual(Phase.Showdown, table.Partie.Phase);
+        Assert.AreEqual(300, table.Partie.Pot);
+        Assert.AreEqual(0, table.Partie.MiseActuelle);
+        Assert.IsNotNull(table.Partie.CartesCommunes.Flop1);
+        Assert.IsNotNull(table.Partie.CartesCommunes.River);
     }
 
     [TestMethod]
