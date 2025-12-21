@@ -1,4 +1,7 @@
-﻿using casino.core.Jeux.Poker.Cartes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using casino.core.Jeux.Poker.Cartes;
 
 namespace casino.core.Jeux.Poker.Scores;
 
@@ -6,156 +9,166 @@ public static class EvaluateurScore
 {
     public static Score EvaluerScore(CartesMain main, CartesCommunes cartesCommunes)
     {
-        var cartes = main.AsEnumerable().Union(cartesCommunes.AsEnumerable()).ToList();
+        ArgumentNullException.ThrowIfNull(main);
+        ArgumentNullException.ThrowIfNull(cartesCommunes);
+
+        // Hold'em : 2 privatives + 0..5 communes => 2..7 cartes
+        var cartes = main.AsEnumerable().Concat(cartesCommunes.AsEnumerable()).ToArray();
+
+        // Centralisation des rangs triés (utile pour carte haute / kickers)
+        // GroupBy faits une seule fois
+        var rangsDistinctDesc = cartes
+            .Select(c => c.Rang)
+            .Distinct()
+            .OrderByDescending(r => r)
+            .ToArray();
+        var groupesParRang = cartes
+            .GroupBy(c => c.Rang)
+            .ToArray();
+        var groupesParCouleur = cartes
+            .GroupBy(c => c.Couleur)
+            .ToArray();
 
         // Ordre poker standard (du plus fort au plus faible)
-        if (ComporteQuinteFlushRoyale(cartes)) // QuinteFlushRoyale
-            // Compare uniquement sur le rang (royale = max).
+
+        // Quinte flush royale
+        if (ComporteQuinteFlushRoyale(groupesParCouleur))
             return new Score(RangMain.QuinteFlushRoyale, RangCarte.As, kickers: Array.Empty<RangCarte>());
-        else if (ValeurQuinteFlush(cartes) is RangCarte vQuinteFlush) // QuinteFlush
-            // Départage les quintes flush par la carte haute.
+
+        // Quinte flush
+        if (ValeurQuinteFlush(groupesParCouleur) is RangCarte vQuinteFlush)
             return new Score(RangMain.QuinteFlush, vQuinteFlush, kickers: Array.Empty<RangCarte>());
-        else if (ValeurCarre(cartes) is RangCarte vCarre) // Carre
-            return new Score(RangMain.Carre, vCarre, DeterminerMeilleurKickersHorsGroupe(cartes, rangsExclus: new[] { vCarre }, combien: 1));
-        else if (ValeurFull(cartes) is RangCarte vTripsFull) // Full
-            return new Score(RangMain.Full, vTripsFull, new[] { ValeurPairePourFull(cartes, vTripsFull) ?? (RangCarte)0 });
-        else if (ValeurCouleur(cartes) is RangCarte _) // Couleur
+
+        // Carré
+        if (ValeurCarre(groupesParRang) is RangCarte vCarre)
         {
-            // Utilise la valeur comme 1er kicker
-            var top5 = ValeursCouleurTop5(cartes);
-            return new Score(RangMain.Couleur, top5[0], top5.Skip(1));
+            var kicker = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vCarre }, combien: 1);
+            return new Score(RangMain.Carre, vCarre, kicker);
         }
-        else if (ValeurSuite(cartes) is RangCarte vSuite) // Suite
+
+        // Full
+        if (ValeurFull(groupesParRang, out var tripsFull, out var paireFull))
+            return new Score(RangMain.Full, tripsFull, new[] { paireFull });
+
+        // Couleur
+        if (TryGetFlushTop5(groupesParCouleur, out var flushTop5))
+            return new Score(RangMain.Couleur, flushTop5[0], flushTop5.Skip(1).ToArray());
+
+        // Suite
+        if (ValeurSuite(rangsDistinctDesc) is RangCarte vSuite)
             return new Score(RangMain.Suite, vSuite, kickers: Array.Empty<RangCarte>());
-        else if (ValeurBrelan(cartes) is RangCarte vBrelan) // Brelan
-            return new Score(RangMain.Brelan, vBrelan, DeterminerMeilleurKickersHorsGroupe(cartes, rangsExclus: new[] { vBrelan }, 2));
-        else if (ValeurDoublePaire(cartes) is RangCarte vPaireHaute) // Double Paire
+
+        // Brelan
+        if (ValeurBrelan(groupesParRang) is RangCarte vBrelan)
         {
-            var paireBasse = ValeurSecondePaire(cartes, vPaireHaute) ?? (RangCarte)0;
-            var kicker = DeterminerMeilleurKickersHorsGroupe(cartes, rangsExclus: new[] { vPaireHaute, paireBasse }, combien: 1);
-            return new Score(RangMain.DoublePaire, vPaireHaute, new[] { paireBasse }.Concat(kicker));
+            var kickers = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vBrelan }, combien: 2);
+            return new Score(RangMain.Brelan, vBrelan, kickers);
         }
-        else if (ValeurPaire(cartes) is RangCarte vPaire) // Paire
+
+        // Double paire
+        if (ValeurDoublePaire(groupesParRang, out var paireHaute, out var paireBasse))
         {
-            var kickers = DeterminerMeilleurKickersHorsGroupe(cartes, rangsExclus: new[] { vPaire }, combien: 3);
+            var kicker = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { paireHaute, paireBasse }, combien: 1);
+            return new Score(RangMain.DoublePaire, paireHaute, new[] { paireBasse }.Concat(kicker).ToArray());
+        }
+
+        // Paire
+        if (ValeurPaire(groupesParRang) is RangCarte vPaire)
+        {
+            var kickers = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vPaire }, combien: 3);
             return new Score(RangMain.Paire, vPaire, kickers);
         }
-        else // Carte haute
+
+        // Carte haute
+        if (rangsDistinctDesc.Length == 0)
+            return new Score(RangMain.CarteHaute, RangCarte.Deux, Array.Empty<RangCarte>());
+
+        var topCarteHaute = rangsDistinctDesc[0];
+        var kickersCarteHaute = rangsDistinctDesc.Skip(1).Take(4).ToArray();
+        return new Score(RangMain.CarteHaute, topCarteHaute, kickersCarteHaute);
+    }
+
+    /// <summary>
+    /// Prend les meilleurs rangs hors exclus, déjà triés décroissant (rangsDistinctDesc).
+    /// Retourne un tableau figé (pas de lazy enumerable).
+    /// </summary>
+    private static RangCarte[] DeterminerMeilleursKickers(
+        RangCarte[] rangsDistinctDesc,
+        RangCarte[] exclus,
+        int combien)
+    {
+        if (combien <= 0) return Array.Empty<RangCarte>();
+        if (exclus.Length == 0) return rangsDistinctDesc.Take(combien).ToArray();
+
+        var res = new List<RangCarte>(capacity: combien);
+        for (int i = 0; i < rangsDistinctDesc.Length && res.Count < combien; i++)
         {
-            var top5 = cartes.Select(c => c.Rang).OrderByDescending(r => (int)r).Distinct().Take(5).ToList();
-            return new Score(RangMain.CarteHaute, top5[0], top5.Skip(1));
-        }
-    }
-
-    private static IEnumerable<RangCarte> DeterminerMeilleurKickersHorsGroupe(IEnumerable<Carte> cartes, IEnumerable<RangCarte> rangsExclus, int combien)
-    {
-        var exclus = rangsExclus.ToHashSet();
-        // Prends les meilleures cartes hors rangs exclus.
-        return cartes
-            .Select(c => c.Rang)
-            .Where(r => !exclus.Contains(r))
-            .OrderByDescending(r => (int)r)
-            .Distinct()
-            .Take(combien)
-            .ToList();
-    }
-
-    private static RangCarte? ValeurSecondePaire(IEnumerable<Carte> cartes, RangCarte paireHaute)
-    {
-        return cartes
-            .GroupBy(c => c.Rang)
-            .Where(g => g.Count() >= 2 && g.Key != paireHaute)
-            .Select(g => g.Key)
-            .OrderByDescending(r => r)
-            .Cast<RangCarte?>()
-            .FirstOrDefault();
-    }
-
-    private static RangCarte? ValeurPairePourFull(IEnumerable<Carte> cartes, RangCarte trips)
-    {
-        // Cherche la meilleure paire hors trips (ou 2e brelan).
-        var groupes = cartes.GroupBy(c => c.Rang).ToList();
-
-        var paires = groupes
-            .Where(g => g.Key != trips && g.Count() >= 2)
-            .Select(g => g.Key)
-            .OrderByDescending(r => r)
-            .ToList();
-
-        if (paires.Count > 0)
-            return paires[0];
-
-        var autresBrelans = groupes
-            .Where(g => g.Key != trips && g.Count() >= 3)
-            .Select(g => g.Key)
-            .OrderByDescending(r => r)
-            .ToList();
-
-        return autresBrelans.Count > 0 ? autresBrelans[0] : null;
-    }
-
-    private static List<RangCarte> ValeursCouleurTop5(IEnumerable<Carte> cartes)
-    {
-        // Prendre la meilleure couleur et ses 5 meilleures cartes.
-        List<RangCarte>? best = null;
-
-        foreach (var grp in cartes.GroupBy(c => c.Couleur))
-        {
-            var top5 = grp.Select(c => c.Rang)
-                          .OrderByDescending(r => (int)r)
-                          .Distinct()
-                          .Take(5)
-                          .ToList();
-
-            if (top5.Count < 5) continue;
-
-            if (best is null || ComparerLexico(top5, best) > 0)
-                best = top5;
+            var r = rangsDistinctDesc[i];
+            if (!exclus.Contains(r)) // Note : exclus est petit, donc Contains() est OK, mais on pourrait optimiser avec un HashSet si besoin
+                res.Add(r);
         }
 
-        return best ?? new List<RangCarte> { (RangCarte)0 };
+        return res.ToArray();
     }
 
-    private static int ComparerLexico(IReadOnlyList<RangCarte> a, IReadOnlyList<RangCarte> b)
+    private static bool TryGetFlushTop5(IEnumerable<IGrouping<Couleur, Carte>> groupesParCouleur, out RangCarte[] top5)
     {
-        ArgumentNullException.ThrowIfNull(a);
-        ArgumentNullException.ThrowIfNull(b);
-
-        int min = Math.Min(a.Count, b.Count);
-        for (int i = 0; i < min; i++)
-        {
-            int cmp = a[i].CompareTo(b[i]);
-            if (cmp != 0) return cmp;
-        }
-
-        return a.Count.CompareTo(b.Count);
-    }
-
-    private static bool ComporteQuinteFlushRoyale(IEnumerable<Carte> cartes)
-    {
-        // Une quinte flush dont la carte haute est As (donc 10-J-Q-K-A)
-        // -> suffit de détecter une quinte flush avec high = As et présence du 10.
-        foreach (var grp in cartes.GroupBy(c => c.Couleur))
+        foreach (var grp in groupesParCouleur)
         {
             if (grp.Count() < 5) continue;
 
-            var high = ValeurSuite(grp.Select(c => c.Rang));
-            if (high == RangCarte.As && grp.Any(c => c.Rang == RangCarte.Dix))
+            var ranks = grp.Select(c => c.Rang)
+                           .Distinct()
+                           .OrderByDescending(r => r)
+                           .Take(5)
+                           .ToArray();
+
+            if (ranks.Length == 5)
+            {
+                top5 = ranks;
+                return true;
+            }
+        }
+
+        top5 = Array.Empty<RangCarte>();
+        return false;
+    }
+
+    private static bool ComporteQuinteFlushRoyale(IEnumerable<IGrouping<Couleur, Carte>> groupesParCouleur)
+    {
+        // Une quinte flush dont la carte haute est As (10-J-Q-K-A)
+        foreach (var grp in groupesParCouleur)
+        {
+            if (grp.Count() < 5) continue;
+
+            var rangsDistinctDesc = grp.Select(c => c.Rang)
+                                       .Distinct()
+                                       .OrderByDescending(r => r)
+                                       .ToArray();
+
+            // Pour être "royale", il faut la suite avec high = As et un 10 présent.
+            var high = ValeurSuite(rangsDistinctDesc);
+            if (high == RangCarte.As && rangsDistinctDesc.Contains(RangCarte.Dix))
                 return true;
         }
 
         return false;
     }
 
-    private static RangCarte? ValeurQuinteFlush(IEnumerable<Carte> cartes)
+    private static RangCarte? ValeurQuinteFlush(IEnumerable<IGrouping<Couleur, Carte>> groupesParCouleur)
     {
         RangCarte? best = null;
 
-        foreach (var grp in cartes.GroupBy(c => c.Couleur))
+        foreach (var grp in groupesParCouleur)
         {
             if (grp.Count() < 5) continue;
 
-            var high = ValeurSuite(grp.Select(c => c.Rang));
+            var rangsDistinctDesc = grp.Select(c => c.Rang)
+                                       .Distinct()
+                                       .OrderByDescending(r => r)
+                                       .ToArray();
+
+            var high = ValeurSuite(rangsDistinctDesc);
             if (high.HasValue && (!best.HasValue || high.Value > best.Value))
                 best = high;
         }
@@ -163,10 +176,9 @@ public static class EvaluateurScore
         return best;
     }
 
-    private static RangCarte? ValeurCarre(IEnumerable<Carte> cartes)
+    private static RangCarte? ValeurCarre(IEnumerable<IGrouping<RangCarte, Carte>> groupesParRang)
     {
-        return cartes
-            .GroupBy(c => c.Rang)
+        return groupesParRang
             .Where(g => g.Count() == 4)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
@@ -174,61 +186,55 @@ public static class EvaluateurScore
             .FirstOrDefault();
     }
 
-    private static RangCarte? ValeurFull(IEnumerable<Carte> cartes)
+    /// <summary>
+    /// Full house :
+    /// - trips = meilleur brelan
+    /// - paire = meilleure paire hors trips, ou second brelan utilisé comme paire
+    /// </summary>
+    private static bool ValeurFull(
+        IEnumerable<IGrouping<RangCarte, Carte>> groupesParRang,
+        out RangCarte trips,
+        out RangCarte paire)
     {
-        var groupes = cartes.GroupBy(c => c.Rang).ToList();
+        trips = default;
+        paire = default;
 
-        var brelans = groupes
+        var brelans = groupesParRang
             .Where(g => g.Count() >= 3)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
-            .ToList();
+            .ToArray();
 
-        if (brelans.Count == 0)
-            return null;
+        if (brelans.Length == 0)
+            return false;
 
-        // On choisit le meilleur brelan comme "trips"
-        var trips = brelans[0];
+        trips = brelans[0];
 
-        // Pour la paire : soit un vrai groupe de 2+, soit un autre brelan (qui compte comme paire)
-        var paires = groupes
-            .Where(g => g.Key != trips && g.Count() >= 2)
+        var paires = groupesParRang
+            .Where(g => g.Key != brelans[0] && g.Count() >= 2)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
-            .ToList();
+            .ToArray();
 
-        // Cas spécial : deux brelans -> le second brelan sert de paire
-        if (paires.Count == 0 && brelans.Count >= 2)
-            paires.Add(brelans[1]);
-
-        return paires.Count > 0 ? trips : (RangCarte?)null;
-    }
-
-    private static RangCarte? ValeurCouleur(IEnumerable<Carte> cartes)
-    {
-        RangCarte? best = null;
-
-        foreach (var grp in cartes.GroupBy(c => c.Couleur))
+        if (paires.Length > 0)
         {
-            if (grp.Count() < 5) continue;
-
-            var high = grp.Max(c => c.Rang);
-            if (!best.HasValue || high > best.Value)
-                best = high;
+            paire = paires[0];
+            return true;
         }
 
-        return best;
+        // Cas spécial : 2 brelans => le second brelan sert de paire
+        if (brelans.Length >= 2)
+        {
+            paire = brelans[1];
+            return true;
+        }
+
+        return false;
     }
 
-    private static RangCarte? ValeurSuite(IEnumerable<Carte> cartes)
+    private static RangCarte? ValeurBrelan(IEnumerable<IGrouping<RangCarte, Carte>> groupesParRang)
     {
-        return ValeurSuite(cartes.Select(c => c.Rang));
-    }
-
-    private static RangCarte? ValeurBrelan(IEnumerable<Carte> cartes)
-    {
-        return cartes
-            .GroupBy(c => c.Rang)
+        return groupesParRang
             .Where(g => g.Count() >= 3)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
@@ -236,25 +242,31 @@ public static class EvaluateurScore
             .FirstOrDefault();
     }
 
-    private static RangCarte? ValeurDoublePaire(IEnumerable<Carte> cartes)
+    private static bool ValeurDoublePaire(
+        IEnumerable<IGrouping<RangCarte, Carte>> groupesParRang,
+        out RangCarte paireHaute,
+        out RangCarte paireBasse)
     {
-        var paires = cartes
-            .GroupBy(c => c.Rang)
+        paireHaute = default;
+        paireBasse = default;
+
+        var paires = groupesParRang
             .Where(g => g.Count() >= 2)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
-            .ToList();
+            .ToArray();
 
-        if (paires.Count >= 2)
-            return paires[0]; // paire la plus haute
+        if (paires.Length < 2)
+            return false;
 
-        return null;
+        paireHaute = paires[0];
+        paireBasse = paires[1];
+        return true;
     }
 
-    private static RangCarte? ValeurPaire(IEnumerable<Carte> cartes)
+    private static RangCarte? ValeurPaire(IEnumerable<IGrouping<RangCarte, Carte>> groupesParRang)
     {
-        return cartes
-            .GroupBy(c => c.Rang)
+        return groupesParRang
             .Where(g => g.Count() >= 2)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
@@ -263,15 +275,15 @@ public static class EvaluateurScore
     }
 
     /// <summary>
-    /// Retourne la carte haute d'une suite (ex: 9 pour 5-6-7-8-9).
+    /// Retourne la carte haute d'une suite à partir d'un tableau de rangs distincts triés décroissant.
     /// Gère A-2-3-4-5 => high = 5.
     /// Retourne null si pas de suite.
     /// </summary>
-    private static RangCarte? ValeurSuite(IEnumerable<RangCarte> rangCartes)
+    private static RangCarte? ValeurSuite(IReadOnlyList<RangCarte> rangsDistinctDesc)
     {
-        var values = rangCartes
+        // On repasse en croissant d'int pour la détection de suite.
+        var values = rangsDistinctDesc
             .Select(r => (int)r)
-            .Distinct()
             .OrderBy(v => v)
             .ToList();
 
@@ -279,7 +291,7 @@ public static class EvaluateurScore
             return null;
 
         // As bas : si on a un As (14), on ajoute 1 pour représenter A comme 1
-        if (values.Contains(14))
+        if (values.Contains((int)RangCarte.As))
             values.Insert(0, 1);
 
         int consecutive = 1;
@@ -293,16 +305,12 @@ public static class EvaluateurScore
                 if (consecutive >= 5)
                     bestHigh = values[i];
             }
-            else if (values[i] != values[i - 1])
+            else
             {
                 consecutive = 1;
             }
         }
 
-        if (bestHigh == -1)
-            return null;
-
-        // bestHigh vaut 5 pour wheel, ou 14 pour broadway, etc.
-        return (RangCarte)bestHigh;
+        return bestHigh == -1 ? null : (RangCarte)bestHigh;
     }
 }

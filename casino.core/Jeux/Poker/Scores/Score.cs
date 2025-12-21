@@ -50,7 +50,6 @@ public sealed class Score : IComparable<Score>
 
     public override string ToString()
     {
-        var ks = Kickers.Count == 0 ? "" : $" | Kickers: {string.Join("-", Kickers)}";
-        return $"{Rang} de {Valeur}{ks}";
+        return $"{Rang} de {Valeur}";
     }
 }

@@ -9,6 +9,13 @@ namespace casino.core.Jeux.Poker.Scores;
 
 public static class EvaluateurGagnant
 {
+    /// <summary>
+    /// Détermine le(s) gagnant(s) parmi les joueurs encore en jeu, basé sur la meilleure main.
+    /// </summary>
+    /// <param name="joueurs"></param>
+    /// <param name="cartesCommunes"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static IReadOnlyList<Joueur> DeterminerGagnantsParMain(IEnumerable<Joueur> joueurs, CartesCommunes cartesCommunes)
     {
         // Calcule le score des joueurs en jeu
