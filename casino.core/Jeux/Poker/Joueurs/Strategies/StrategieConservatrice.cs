@@ -36,6 +36,11 @@ public class StrategieConservatrice : IStrategieJoueur
             return new Actions.ActionJeu(TypeActionJeu.SeCoucher);
         }
 
+        if (actions.First() == TypeActionJeu.Miser)
+        {
+            return new Actions.ActionJeu(TypeActionJeu.Miser, contexte.MiseMinimum);
+        }
+
         return new Actions.ActionJeu(actions.First());
     }
 }

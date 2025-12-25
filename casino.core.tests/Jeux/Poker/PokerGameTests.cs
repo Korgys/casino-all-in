@@ -21,23 +21,36 @@ public class PokerGameTests
 
         var deckCards = new[]
         {
-        new Carte(RangCarte.As, Couleur.Pique),        // Alice 1
-        new Carte(RangCarte.Roi, Couleur.Coeur),       // Alice 2
-        new Carte(RangCarte.Neuf, Couleur.Trefle),     // Bob 1
-        new Carte(RangCarte.Huit, Couleur.Carreau),    // Bob 2
-        new Carte(RangCarte.As, Couleur.Coeur),        // Flop 1 (paire d'As pour Alice)
-        new Carte(RangCarte.Deux, Couleur.Coeur),      // Flop 2
-        new Carte(RangCarte.Trois, Couleur.Trefle),    // Flop 3
-        new Carte(RangCarte.Sept, Couleur.Pique),      // Turn
-        new Carte(RangCarte.Dame, Couleur.Carreau)     // River
-    };
+            new Carte(RangCarte.As, Couleur.Pique),        // Alice 1
+            new Carte(RangCarte.Roi, Couleur.Coeur),       // Alice 2
+            new Carte(RangCarte.Neuf, Couleur.Trefle),     // Bob 1
+            new Carte(RangCarte.Huit, Couleur.Carreau),    // Bob 2
+            new Carte(RangCarte.As, Couleur.Coeur),        // Flop 1 (paire d'As pour Alice)
+            new Carte(RangCarte.Deux, Couleur.Coeur),      // Flop 2
+            new Carte(RangCarte.Trois, Couleur.Trefle),    // Flop 3
+            new Carte(RangCarte.Sept, Couleur.Pique),      // Turn
+            new Carte(RangCarte.Dame, Couleur.Carreau)     // River
+        };
 
         var deckFactory = () => new FakeDeck(deckCards);
 
+        // 1er tour : Alice (premier joueur) doit miser, Bob peut suivre.
         var actionsParJoueur = new Dictionary<string, Queue<ActionJeu>>
         {
-            ["Alice"] = new Queue<ActionJeu>(Enumerable.Repeat(new ActionJeu(TypeActionJeu.Check), 4)),
-            ["Bob"] = new Queue<ActionJeu>(Enumerable.Repeat(new ActionJeu(TypeActionJeu.Check), 4))
+            ["Alice"] = new Queue<ActionJeu>(new[]
+            {
+                new ActionJeu(TypeActionJeu.Miser, 10), // 1er tour, 1er joueur : mise obligatoire (>= 10 géré dans PokerGame)
+                new ActionJeu(TypeActionJeu.Check),
+                new ActionJeu(TypeActionJeu.Check),
+                new ActionJeu(TypeActionJeu.Check)
+            }),
+            ["Bob"] = new Queue<ActionJeu>(new[]
+            {
+                new ActionJeu(TypeActionJeu.Suivre), // Il suit la mise d’Alice
+                new ActionJeu(TypeActionJeu.Check),
+                new ActionJeu(TypeActionJeu.Check),
+                new ActionJeu(TypeActionJeu.Check)
+            })
         };
 
         PokerGameState? etatFinal = null;
@@ -88,10 +101,23 @@ public class PokerGameTests
 
         var deckFactory = () => new FakeDeck(deckCards);
 
+        // Idem : 1er tour, Alice doit miser, Bob suit.
         var actionsParJoueur = new Dictionary<string, Queue<ActionJeu>>
         {
-            ["Alice"] = new Queue<ActionJeu>(Enumerable.Repeat(new ActionJeu(TypeActionJeu.Check), 4)),
-            ["Bob"] = new Queue<ActionJeu>(Enumerable.Repeat(new ActionJeu(TypeActionJeu.Check), 4))
+            ["Alice"] = new Queue<ActionJeu>(new[]
+            {
+                new ActionJeu(TypeActionJeu.Miser, 10),
+                new ActionJeu(TypeActionJeu.Check),
+                new ActionJeu(TypeActionJeu.Check),
+                new ActionJeu(TypeActionJeu.Check)
+            }),
+            ["Bob"] = new Queue<ActionJeu>(new[]
+            {
+                new ActionJeu(TypeActionJeu.Suivre),
+                new ActionJeu(TypeActionJeu.Check),
+                new ActionJeu(TypeActionJeu.Check),
+                new ActionJeu(TypeActionJeu.Check)
+            })
         };
 
         PokerGameState? etatFinal = null;
@@ -139,8 +165,28 @@ public class PokerGameTests
 
         var actionsParJoueur = new Dictionary<string, Queue<ActionJeu>>
         {
-            ["Alice"] = new Queue<ActionJeu>(Enumerable.Repeat(new ActionJeu(TypeActionJeu.Check), 10)),
-            ["Bob"] = new Queue<ActionJeu>(Enumerable.Repeat(new ActionJeu(TypeActionJeu.Check), 10))
+            ["Alice"] = new Queue<ActionJeu>(new[]
+            {
+                new ActionJeu(TypeActionJeu.Miser, 10),
+                new ActionJeu(TypeActionJeu.Miser, 10),
+                new ActionJeu(TypeActionJeu.Miser, 10),
+                new ActionJeu(TypeActionJeu.Miser, 10),
+                new ActionJeu(TypeActionJeu.Suivre),
+                new ActionJeu(TypeActionJeu.Suivre),
+                new ActionJeu(TypeActionJeu.Suivre),
+                new ActionJeu(TypeActionJeu.Suivre)
+            }),
+            ["Bob"] = new Queue<ActionJeu>(new[]
+            {
+                new ActionJeu(TypeActionJeu.Suivre),
+                new ActionJeu(TypeActionJeu.Suivre),
+                new ActionJeu(TypeActionJeu.Suivre),
+                new ActionJeu(TypeActionJeu.Suivre),
+                new ActionJeu(TypeActionJeu.Miser, 10),
+                new ActionJeu(TypeActionJeu.Miser, 10),
+                new ActionJeu(TypeActionJeu.Miser, 10),
+                new ActionJeu(TypeActionJeu.Miser, 10)
+            })
         };
 
         var continuer = new Queue<bool>(new[] { true, false });
@@ -172,6 +218,7 @@ public class PokerGameTests
             .Select(e => e.index)
             .ToList();
 
-        Assert.IsTrue(indexesGameEnded.All(idx => events.Skip(idx + 1).Any(e => e == "state")), "StateUpdated doit être déclenché après chaque fin de partie.");
+        Assert.IsTrue(indexesGameEnded.All(idx => events.Skip(idx + 1).Any(e => e == "state")),
+            "StateUpdated doit être déclenché après chaque fin de partie.");
     }
 }

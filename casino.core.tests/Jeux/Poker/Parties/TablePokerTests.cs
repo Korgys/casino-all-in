@@ -84,13 +84,15 @@ public class TablePokerTests
         table.DemarrerPartie(joueurs, new FakeDeck(CreerCartesParDefaut()));
 
         // Act - Alice puis Bob se couchent
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Miser, 10));
         table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.SeCoucher));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Relancer, 20));
         table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.SeCoucher));
 
         // Assert
         Assert.AreEqual(Phase.Showdown, table.Partie.Phase);
         Assert.AreEqual("Charlie", table.Partie.Gagnants.Single().Nom);
-        Assert.AreEqual(0, table.Partie.MiseActuelle);
+        Assert.AreEqual(20, table.Partie.MiseActuelle);
     }
 
     [TestMethod]
@@ -106,11 +108,13 @@ public class TablePokerTests
         table.DemarrerPartie(joueurs, new FakeDeck(CreerCartesParDefaut()));
 
         // Act
+        table.TraiterActionJoueur(table.Joueurs[table.JoueurActuelIndex], new ActionJeu(TypeActionJeu.Miser, 10));
+        table.TraiterActionJoueur(table.Joueurs[table.JoueurActuelIndex], new ActionJeu(TypeActionJeu.Suivre));
         table.TraiterActionJoueur(table.Joueurs[table.JoueurActuelIndex], new ActionJeu(TypeActionJeu.Check));
         table.TraiterActionJoueur(table.Joueurs[table.JoueurActuelIndex], new ActionJeu(TypeActionJeu.Check));
 
         // Assert
-        Assert.AreEqual(Phase.Flop, table.Partie.Phase);
+        Assert.AreEqual(Phase.Turn, table.Partie.Phase);
         Assert.AreEqual(table.JoueurInitialIndex, table.JoueurActuelIndex);
     }
 
@@ -127,12 +131,13 @@ public class TablePokerTests
         table.DemarrerPartie(joueurs, new FakeDeck(CreerCartesParDefaut()));
 
         // Act
+        table.TraiterActionJoueur(table.Joueurs[table.JoueurActuelIndex], new ActionJeu(TypeActionJeu.Miser, 10));
         table.TraiterActionJoueur(table.Joueurs[table.JoueurActuelIndex], new ActionJeu(TypeActionJeu.SeCoucher));
 
         // Assert
         Assert.AreEqual(Phase.Showdown, table.Partie.Phase);
         Assert.HasCount(1, table.Partie.Gagnants);
-        Assert.AreEqual("Bob", table.Partie.Gagnants.First().Nom);
+        Assert.AreEqual("Alice", table.Partie.Gagnants.First().Nom);
     }
 
     [TestMethod]
@@ -175,11 +180,11 @@ public class TablePokerTests
         table.DemarrerPartie(joueurs, new FakeDeck(CreerCartesParDefaut()));
 
         // Alice check, Bob check
-        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Check));
-        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Check));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Miser, 10));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Suivre));
 
         // Charlie mise tardivement
-        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Miser, 20));
+        table.TraiterActionJoueur(table.ObtenirJoueurQuiDoitJouer(), new ActionJeu(TypeActionJeu.Relancer, 20));
 
         // La phase ne doit pas avancer sans que les premiers joueurs rejouent
         Assert.AreEqual(Phase.PreFlop, table.Partie.Phase);

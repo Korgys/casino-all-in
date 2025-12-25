@@ -22,6 +22,7 @@ public class Partie
     public int Pot { get; set; } = 0;
     public int MiseDeDepart { get; set; } = 10;
     public int MiseActuelle { get; internal set; }
+    public int NombrePartiesJouees { get; set; } = 0;
 
     private readonly Dictionary<Joueur, int> _misesParJoueur = new();
 
@@ -81,15 +82,18 @@ public class Partie
             return true;
         }
 
-        var joueursActifs = Joueurs.Where(j => !j.EstCouche() && !j.EstTapis()).ToList();
+        var joueursNonCouches = Joueurs.Where(j => !j.EstCouche()).ToList();
 
-        if (!joueursActifs.Any())
+        if (!joueursNonCouches.Any())
         {
             return true;
         }
 
-        int miseDuTour = ObtenirMisePour(joueursActifs.First());
-        return joueursActifs.All(j => ObtenirMisePour(j) == miseDuTour && j.DerniereAction != TypeActionJeu.Aucune);
+        var miseMax = joueursNonCouches.Max(ObtenirMisePour);
+
+        return joueursNonCouches.All(j =>
+            j.EstTapis() ||
+            (ObtenirMisePour(j) == miseMax && j.DerniereAction != TypeActionJeu.Aucune));
     }
 
     internal void ReinitialiserMisesEtActions()
@@ -133,6 +137,11 @@ public class Partie
         Gagnants = gagnants;
 
         RepartirPot(gagnants);
+
+        // Augmente la mise de départ toutes les N parties
+        NombrePartiesJouees++;
+        if (NombrePartiesJouees % Joueurs.Count == 0)
+            MiseDeDepart *= 2;
     }
 
     private void RepartirPot(IReadOnlyList<Joueur> gagnants)
