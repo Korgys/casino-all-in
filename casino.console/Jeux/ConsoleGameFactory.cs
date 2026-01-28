@@ -25,6 +25,7 @@ public class ConsoleGameFactory : IGameFactory
         var joueurs = new List<Joueur>
         {
             joueur,
+            new JoueurOrdi("Ordi Opportuniste", 1000, new StrategieOpportuniste()),
             new JoueurOrdi("Ordi Agressif", 1000, new StrategieAgressive()),
             new JoueurOrdi("Ordi Conserv", 1000, new StrategieConservatrice()),
             new JoueurOrdi("Ordi Random", 1000, new StrategieRandom())

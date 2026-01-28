@@ -105,6 +105,12 @@ public class JeuDeCartesTests
             // Retourner 0 pour rendre le mélange déterministe.
             return 0;
         }
+
+        public int Next(int minInclusive, int maxExclusive)
+        {
+            // Retourner minInclusive pour rendre le mélange déterministe.
+            return minInclusive;
+        }
     }
 
     private sealed class FakeRandomSequence : IRandom
@@ -128,6 +134,14 @@ public class JeuDeCartesTests
 
             // Ramener dans [0; maxExclusive[
             return maxExclusive == 0 ? 0 : Math.Abs(v) % maxExclusive;
+        }
+
+        public int Next(int minInclusive, int maxExclusive)
+        {
+            int v = _values[_index % _values.Length];
+            _index++;
+
+            return Math.Min(minInclusive, maxExclusive == 0 ? 0 : Math.Abs(v) % maxExclusive);
         }
     }
 }

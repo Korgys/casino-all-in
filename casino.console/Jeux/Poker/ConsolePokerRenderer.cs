@@ -12,6 +12,8 @@ namespace casino.console.jeux.Poker;
 
 public class ConsolePokerRenderer
 {
+    private static Dictionary<string, int> probabiliteVictoireParJoueur = new();
+
     public static void RenderTable(PokerGameState state)
     {
         Console.Clear();
@@ -65,9 +67,9 @@ public class ConsolePokerRenderer
         Console.WriteLine();
     }
 
-    private static void RenderPlayerLine(PokerPlayerState p, string currentPlayerName, PokerGameState state, bool isHandInProgress)
+    private static void RenderPlayerLine(PokerPlayerState p, string joueurActuelNom, PokerGameState state, bool isHandInProgress)
     {
-        if (currentPlayerName == p.Nom)
+        if (joueurActuelNom == p.Nom)
             Console.Write("=> ");
 
         WritePlayerName(p);
@@ -84,7 +86,7 @@ public class ConsolePokerRenderer
         {
             Console.Write(" ");
             WriteHand(p.Main!);
-            Console.Write($" ({EvaluateurScore.EvaluerScore(p.Main!, state.CartesCommunes)})");
+            EcrireScoreAndProbabiliteVictoire(p, state, joueurActuelNom);
         }
 
         if (p.DerniereAction != TypeActionJeu.Aucune)
@@ -97,6 +99,56 @@ public class ConsolePokerRenderer
         }
 
         Console.WriteLine();
+    }
+
+    private static void EcrireScoreAndProbabiliteVictoire(PokerPlayerState joueur, PokerGameState state, string joueurActuelNom)
+    {
+        var score = EvaluateurScore.EvaluerScore(joueur.Main!, state.CartesCommunes);
+        Console.Write($" ({score}");
+
+        // Calcule la probabilité de victoire uniquement pour le joueur actuel ou si fin de partie
+        if (joueurActuelNom == joueur.Nom || state.Phase == Phase.Showdown.ToString())
+        {
+            var probabilite = CalculerProbabiliteGagner(joueur, state);
+            if (probabilite is not null)
+            {
+                Console.Write($" | {probabilite.Value:F0}%");
+                // Mémorise la probabilité pour l'afficher sur les tours des autres joueurs
+                probabiliteVictoireParJoueur[joueur.Nom] = (int)Math.Round(probabilite.Value);
+            }
+        }
+        // Sinon, affiche la probabilité précédente si disponible
+        else if (probabiliteVictoireParJoueur.TryGetValue(joueur.Nom, out var probabilitePrecedente)) 
+        {
+            Console.Write($" | {probabilitePrecedente:F0}%");
+        }
+
+        Console.Write(")");
+    }
+
+    private static double? CalculerProbabiliteGagner(PokerPlayerState joueur, PokerGameState state)
+    {
+        if (joueur.Main is null)
+            return null;
+
+        // Compter seulement les adversaires encore en jeu.
+        var adversaires = state.Joueurs.Count(j => !j.EstCouche && j.Nom != joueur.Nom);
+        if (adversaires <= 0)
+            return 100d;
+
+        try
+        {
+            return EvaluateurProbabilite.EstimerProbabiliteDeGagner(
+                joueur.Main,
+                state.CartesCommunes,
+                adversaires,
+                simulations: 2000);
+        }
+        catch
+        {
+            // L'affichage ne doit jamais interrompre la partie : en cas de problème, on masque la proba.
+            return null;
+        }
     }
 
     // ----------------------------
