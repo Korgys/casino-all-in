@@ -1,0 +1,342 @@
+using casino.core.Common.Utils;
+using casino.core.Games.Poker.Cartes;
+
+namespace casino.core.Games.Poker.Scores;
+
+public static class EvaluateurProbabilite
+{
+    private const int TotalCommonCards = 5;
+
+    /// <summary>
+    /// Estime la probabilité (0..100) que le Player gagne la manche contre un nombre d'adversaires.
+    /// Les égalités comptent comme une part de victoire proportionnelle (ex: split à 3 Players => 33.33%).
+    /// 
+    /// - Si un IRandom est fourni, l'exécution est séquentielle (utile pour les tests).
+    /// - Sinon, au-delà d'un certain nombre de simulations, l'exécution est parallélisée.
+    /// </summary>
+    public static double EstimerProbabiliteDeGagner(
+        HandCards mainPlayer,
+        TableCards communityCards,
+        int nombreAdversaires,
+        int simulations = 2000,
+        IRandom? random = null)
+    {
+        ArgumentNullException.ThrowIfNull(mainPlayer);
+        ArgumentNullException.ThrowIfNull(communityCards);
+        ArgumentOutOfRangeException.ThrowIfLessThan(nombreAdversaires, 0);
+        ArgumentOutOfRangeException.ThrowIfLessThan(simulations, 1);
+
+        if (nombreAdversaires == 0)
+            return 100d;
+
+        // --- Cartes connues (main + board partiel) ---
+        var cartesConnues = new List<Card>(7)
+        {
+            mainPlayer.Premiere,
+            mainPlayer.Seconde
+        };
+
+        if (communityCards.Flop1 is not null) cartesConnues.Add(communityCards.Flop1);
+        if (communityCards.Flop2 is not null) cartesConnues.Add(communityCards.Flop2);
+        if (communityCards.Flop3 is not null) cartesConnues.Add(communityCards.Flop3);
+        if (communityCards.Turn is not null) cartesConnues.Add(communityCards.Turn);
+        if (communityCards.River is not null) cartesConnues.Add(communityCards.River);
+
+        ValiderCartesConnues(cartesConnues);
+
+        int cartesCommunesConnues = 0;
+        if (communityCards.Flop1 is not null) cartesCommunesConnues++;
+        if (communityCards.Flop2 is not null) cartesCommunesConnues++;
+        if (communityCards.Flop3 is not null) cartesCommunesConnues++;
+        if (communityCards.Turn is not null) cartesCommunesConnues++;
+        if (communityCards.River is not null) cartesCommunesConnues++;
+
+        if (cartesCommunesConnues > TotalCommonCards)
+            throw new ArgumentException("Il ne peut pas y avoir plus de 5 cartes communes.", nameof(communityCards));
+
+        int cartesCommunesManquantes = TotalCommonCards - cartesCommunesConnues;
+        int cartesNecessaires = cartesCommunesManquantes + nombreAdversaires * 2;
+
+        var paquetRestant = ConstruirePaquetRestant(cartesConnues);
+        if (cartesNecessaires > paquetRestant.Count)
+            throw new ArgumentException("Pas assez de cartes restantes pour simuler la partie.");
+
+        int totalRestantes = paquetRestant.Count;
+
+        // Si un RNG est fourni, on reste séquentiel pour garder la reproductibilité des tests.
+        if (random is not null || simulations < 1000)
+        {
+            var randomizer = random ?? new CasinoRandom();
+            return EstimerSequential(
+                mainPlayer,
+                communityCards,
+                nombreAdversaires,
+                simulations,
+                paquetRestant,
+                totalRestantes,
+                cartesNecessaires,
+                randomizer);
+        }
+
+        // Sinon : parallélisation
+        return EstimerParallel(
+            mainPlayer,
+            communityCards,
+            nombreAdversaires,
+            simulations,
+            paquetRestant,
+            totalRestantes,
+            cartesNecessaires);
+    }
+
+    // =========================
+    //       SÉQUENTIEL
+    // =========================
+
+    private static double EstimerSequential(
+        HandCards mainPlayer,
+        TableCards cartesCommunes,
+        int nombreAdversaires,
+        int simulations,
+        List<Card> paquetRestant,
+        int totalRestantes,
+        int cartesNecessaires,
+        IRandom randomizer)
+    {
+        var indices = CreerIndices(totalRestantes);
+        double gains = 0d;
+
+        for (int sim = 0; sim < simulations; sim++)
+        {
+            gains += SimulerUneManche(
+                mainPlayer,
+                cartesCommunes,
+                nombreAdversaires,
+                paquetRestant,
+                indices,
+                cartesNecessaires,
+                totalRestantes,
+                randomizer);
+        }
+
+        return gains / simulations * 100d;
+    }
+
+    // =========================
+    //       PARALLÈLE
+    // =========================
+
+    private static double EstimerParallel(
+        HandCards mainPlayer,
+        TableCards communityCards,
+        int nombreAdversaires,
+        int simulations,
+        List<Card> paquetRestant,
+        int totalRestantes,
+        int cartesNecessaires)
+    {
+        // Nombre de threads logiques à utiliser
+        int maxWorkers = Environment.ProcessorCount;
+        int workers = Math.Min(maxWorkers, simulations);
+
+        double totalGains = 0d;
+        object sync = new();
+
+        System.Threading.Tasks.Parallel.For(
+            fromInclusive: 0,
+            toExclusive: workers,
+            workerId =>
+            {
+                // Répartition des simulations par worker
+                int simsForWorker = simulations / workers;
+                if (workerId < simulations % workers)
+                    simsForWorker++;
+
+                if (simsForWorker <= 0)
+                    return;
+
+                // RNG indépendant par worker
+                var localRandom = new CasinoRandom();
+                var localIndices = CreerIndices(totalRestantes);
+                double localGains = 0d;
+
+                for (int i = 0; i < simsForWorker; i++)
+                {
+                    localGains += SimulerUneManche(
+                        mainPlayer,
+                        communityCards,
+                        nombreAdversaires,
+                        paquetRestant,
+                        localIndices,
+                        cartesNecessaires,
+                        totalRestantes,
+                        localRandom);
+                }
+
+                lock (sync)
+                {
+                    totalGains += localGains;
+                }
+            });
+
+        return totalGains / simulations * 100d;
+    }
+
+    // =========================
+    //       COEUR SIMULATION
+    // =========================
+
+    private static double SimulerUneManche(
+        HandCards mainPlayer,
+        TableCards communityCards,
+        int nombreAdversaires,
+        List<Card> paquetRestant,
+        int[] indices,
+        int cartesNecessaires,
+        int totalRestantes,
+        IRandom randomizer)
+    {
+        // Mélange partiel des indices pour obtenir les cartes nécessaires
+        MelangerIndicesPartiel(indices, cartesNecessaires, totalRestantes, randomizer);
+
+        int indexPioche = 0;
+
+        // Distribution des mains adverses
+        var mainsAdversaires = new HandCards[nombreAdversaires];
+        for (int i = 0; i < nombreAdversaires; i++)
+        {
+            var c1 = paquetRestant[indices[indexPioche++]];
+            var c2 = paquetRestant[indices[indexPioche++]];
+            mainsAdversaires[i] = new HandCards(c1, c2);
+        }
+
+        // Construction du board complet
+        var board = ConstruireCartesCommunesDepuisIndices(
+            communityCards,
+            paquetRestant,
+            indices,
+            ref indexPioche);
+
+        // Évaluation des scores
+        var scorePlayer = EvaluateurScore.EvaluerScore(mainPlayer, board);
+
+        var meilleurScore = scorePlayer;
+        int gagnants = 1; // le Player au départ
+
+        for (int i = 0; i < mainsAdversaires.Length; i++)
+        {
+            var scoreAdv = EvaluateurScore.EvaluerScore(mainsAdversaires[i], board);
+            int cmp = scoreAdv.CompareTo(meilleurScore);
+
+            if (cmp > 0)
+            {
+                meilleurScore = scoreAdv;
+                gagnants = 1;
+            }
+            else if (cmp == 0)
+            {
+                gagnants++;
+            }
+        }
+
+        // Si le Player fait partie des meilleurs, il récupère 1/gagnants
+        if (scorePlayer.CompareTo(meilleurScore) == 0)
+            return 1d / gagnants;
+
+        return 0d;
+    }
+
+    // =========================
+    //       UTILITAIRES
+    // =========================
+
+    private static void ValiderCartesConnues(IEnumerable<Card> cartesConnues)
+    {
+        var vues = new HashSet<Card>();
+
+        foreach (var carte in cartesConnues)
+        {
+            if (!vues.Add(carte))
+                throw new ArgumentException("Les cartes fournies contiennent des doublons.");
+        }
+    }
+
+    private static List<Card> ConstruirePaquetRestant(IEnumerable<Card> cartesConnues)
+    {
+        var dejaConnues = new HashSet<Card>(cartesConnues);
+        var paquet = new List<Card>(capacity: 52);
+
+        foreach (Couleur couleur in Enum.GetValues<Couleur>())
+        {
+            foreach (RangCarte rang in Enum.GetValues<RangCarte>())
+            {
+                var carte = new Card(rang, couleur);
+                if (!dejaConnues.Contains(carte))
+                    paquet.Add(carte);
+            }
+        }
+
+        return paquet;
+    }
+
+    private static TableCards ConstruireCartesCommunesDepuisIndices(
+        TableCards existantes,
+        List<Card> paquetRestant,
+        int[] indices,
+        ref int indexPioche)
+    {
+        var communes = new TableCards
+        {
+            Flop1 = existantes.Flop1,
+            Flop2 = existantes.Flop2,
+            Flop3 = existantes.Flop3,
+            Turn = existantes.Turn,
+            River = existantes.River
+        };
+
+        communes.Flop1 ??= PiocherDepuisIndices(paquetRestant, indices, ref indexPioche);
+        communes.Flop2 ??= PiocherDepuisIndices(paquetRestant, indices, ref indexPioche);
+        communes.Flop3 ??= PiocherDepuisIndices(paquetRestant, indices, ref indexPioche);
+        communes.Turn ??= PiocherDepuisIndices(paquetRestant, indices, ref indexPioche);
+        communes.River ??= PiocherDepuisIndices(paquetRestant, indices, ref indexPioche);
+
+        return communes;
+    }
+
+    private static Card PiocherDepuisIndices(
+        List<Card> paquetRestant,
+        int[] indices,
+        ref int indexPioche)
+    {
+        if (indexPioche >= indices.Length)
+            throw new InvalidOperationException("Plus de cartes dans la pioche.");
+
+        return paquetRestant[indices[indexPioche++]];
+    }
+
+    private static int[] CreerIndices(int n)
+    {
+        var indices = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            indices[i] = i;
+        }
+        return indices;
+    }
+
+    /// <summary>
+    /// Fisher-Yates partiel : on ne randomise que les cartesNecessaires premières positions.
+    /// </summary>
+    private static void MelangerIndicesPartiel(
+        int[] indices,
+        int cartesNecessaires,
+        int tailleTotale,
+        IRandom random)
+    {
+        for (int i = 0; i < cartesNecessaires; i++)
+        {
+            int j = random.Next(i, tailleTotale);
+            (indices[i], indices[j]) = (indices[j], indices[i]);
+        }
+    }
+}

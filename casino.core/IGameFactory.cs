@@ -1,4 +1,4 @@
-﻿using casino.core.Jeux.Poker.Actions;
+﻿using casino.core.Games.Poker.Actions;
 
 namespace casino.core;
 

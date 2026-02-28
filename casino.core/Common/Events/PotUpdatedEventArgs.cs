@@ -1,14 +1,18 @@
 ﻿namespace casino.core.Common.Events;
 
+/// <summary>
+/// Provides data for the event that occurs when the pot 
+/// or the current bet is updated in a game session.
+/// </summary>
 public class PotUpdatedEventArgs : EventArgs
 {
-    public PotUpdatedEventArgs(int pot, int miseActuelle)
+    public PotUpdatedEventArgs(int pot, int currentBet)
     {
         Pot = pot;
-        MiseActuelle = miseActuelle;
+        CurrentBet = currentBet;
     }
 
     public int Pot { get; }
 
-    public int MiseActuelle { get; }
+    public int CurrentBet { get; }
 }

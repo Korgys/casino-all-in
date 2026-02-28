@@ -1,5 +1,5 @@
 ﻿using casino.core.Common.Utils;
-using casino.core.Jeux.Poker.Cartes;
+using casino.core.Games.Poker.Cartes;
 using System;
 using System.Collections.Generic;
 using System.Text;

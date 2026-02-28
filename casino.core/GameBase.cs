@@ -32,8 +32,8 @@ public abstract class GameBase : IGame
     protected void OnPhaseAdvanced(string phase)
         => PhaseAdvanced?.Invoke(this, new GamePhaseEventArgs(phase));
 
-    protected void OnPotUpdated(int pot, int miseActuelle)
-        => PotUpdated?.Invoke(this, new PotUpdatedEventArgs(pot, miseActuelle));
+    protected void OnPotUpdated(int pot, int currentBet)
+        => PotUpdated?.Invoke(this, new PotUpdatedEventArgs(pot, currentBet));
 
     protected void OnGameEnded(string winnerName, int pot)
         => GameEnded?.Invoke(this, new GameEndedEventArgs(winnerName, pot));
