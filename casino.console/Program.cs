@@ -4,6 +4,7 @@ using casino.core;
 using casino.core.Common.Events;
 using casino.core.Jeux.Poker;
 using System;
+using System.Text;
 
 namespace casino.console;
 
@@ -13,6 +14,10 @@ public static class Program
 
     public static void Main(string[] args)
     {
+        // Configurer la console pour supporter les caractères Unicode (pour les symboles des cartes)
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.InputEncoding = Encoding.UTF8;
+
         Console.WriteLine("=== Casino All-In ===\n");
 
         IGameFactory factory = new ConsoleGameFactory();

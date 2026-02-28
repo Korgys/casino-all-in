@@ -11,7 +11,7 @@ public class Carte
     }
     public override string ToString()
     {
-        return $"{Rang.ToShortString()} {Couleur}";
+        return $"{Rang.ToShortString()}{Couleur.ToSymbol()}";
     }
 
     public override bool Equals(object? obj)

@@ -67,6 +67,6 @@ public class CartesMainTests
         var s = main.ToString();
 
         // Assert
-        Assert.AreEqual("A Pique, K Coeur", s);
+        Assert.AreEqual("A♠, K♥", s);
     }
 }

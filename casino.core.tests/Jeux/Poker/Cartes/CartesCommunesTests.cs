@@ -79,7 +79,7 @@ public class CartesCommunesTests
         var s = communes.ToString();
 
         // Assert
-        Assert.AreEqual("A Pique, 10 Coeur", s);
+        Assert.AreEqual("A♠, 10♥", s);
     }
 
     [TestMethod]

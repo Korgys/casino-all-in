@@ -33,7 +33,7 @@ public class CarteTests
         var result = carte.ToString();
 
         // Assert
-        Assert.AreEqual("A Pique", result, "Le format ToString n'est pas conforme.");
+        Assert.AreEqual("A♠", result, "Le format ToString n'est pas conforme.");
     }
 
     [TestMethod]

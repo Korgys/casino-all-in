@@ -19,9 +19,8 @@ public class ConsolePokerRenderer
         Console.Clear();
 
         var currentPlayerName = state.JoueurActuel;
-        var isHandInProgress = state.Phase != Phase.Showdown.ToString();
 
-        Console.Write("Mise min : ");
+        Console.Write("Mise min: ");
         WriteAmount(state.MiseDeDepart);
         Console.Write(" | Pot: ");
         WriteAmount(state.Pot);
@@ -34,53 +33,53 @@ public class ConsolePokerRenderer
         Console.WriteLine("\n");
 
         foreach (var p in state.Joueurs)
-        {
-            if (p.EstCouche)
-            {
-                using (ConsoleColorScope.Foreground(ConsoleColor.DarkGray))
-                    RenderPlayerLine(p, currentPlayerName, state, isHandInProgress);
-            }
-            else
-            {
-                RenderPlayerLine(p, currentPlayerName, state, isHandInProgress);
-            }
-        }
+            RenderPlayerLine(p, currentPlayerName, state);
     }
 
     public static void RenderPossibleActions(IReadOnlyList<TypeActionJeu> actions, int minimumBet)
     {
-        Console.WriteLine("\nActions possibles :");
+        Console.Write("\nActions : ");
         foreach (var a in actions)
         {
             // Afficher la mise minimale pour l'action "Miser"
             if (a == TypeActionJeu.Miser)
             {
-                Console.Write($"{(int)a}: {a} (");
+                Console.Write($"{(int)a}. {a} (");
                 WriteAmount(minimumBet);
-                Console.WriteLine(").");
+                Console.Write(")     ");
             }
             else // Autres actions sans montant associé
             {
-                Console.WriteLine($"{(int)a}: {a}.");
+                Console.Write($"{(int)a}. {a}     ");
             }
         }
         Console.WriteLine();
     }
 
-    private static void RenderPlayerLine(PokerPlayerState p, string joueurActuelNom, PokerGameState state, bool isHandInProgress)
+    private static void RenderPlayerLine(PokerPlayerState p, string joueurActuelNom, PokerGameState state)
     {
+        if (p.EstCouche)
+            ConsoleColorScope.Foreground(ConsoleColor.DarkGray);
+
         if (joueurActuelNom == p.Nom)
             Console.Write("=> ");
 
         WritePlayerName(p);
 
-        Console.Write(" (");
-        WriteAmount(p.Jetons);
-        Console.Write("):");
+        if (p.EstCouche)
+        {
+            Console.Write($" ({p.Jetons}c):");
+        }
+        else
+        {
+            Console.Write(" (");
+            WriteAmount(p.Jetons);
+            Console.Write("):");
+        }
 
-        var canShowHand =
+        bool canShowHand =
             p.Main is not null &&
-            (p.EstHumain || (!isHandInProgress && !p.EstCouche));
+            (p.EstHumain || (state.Phase == Phase.Showdown.ToString() && !p.EstCouche));
 
         if (canShowHand)
         {
@@ -92,13 +91,14 @@ public class ConsolePokerRenderer
         if (p.DerniereAction != TypeActionJeu.Aucune)
             Console.Write($" [{p.DerniereAction}]");
 
-        if (!isHandInProgress && p.EstGagnant)
+        if (p.EstGagnant)
         {
             using (ConsoleColorScope.Foreground(ConsoleColor.Green))
                 Console.Write(" {GAGNANT}");
         }
 
         Console.WriteLine();
+        ConsoleColorScope.Foreground(ConsoleColor.White);
     }
 
     private static void EcrireScoreAndProbabiliteVictoire(PokerPlayerState joueur, PokerGameState state, string joueurActuelNom)
@@ -118,7 +118,7 @@ public class ConsolePokerRenderer
             }
         }
         // Sinon, affiche la probabilité précédente si disponible
-        else if (probabiliteVictoireParJoueur.TryGetValue(joueur.Nom, out var probabilitePrecedente)) 
+        else if (probabiliteVictoireParJoueur.TryGetValue(joueur.Nom, out var probabilitePrecedente))
         {
             Console.Write($" | {probabilitePrecedente:F0}%");
         }
@@ -158,7 +158,7 @@ public class ConsolePokerRenderer
     private static void WritePlayerName(PokerPlayerState p)
     {
         var color =
-            (p.Jetons == 0 || p.EstCouche) ? ConsoleColor.Gray :
+            (p.EstCouche || (p.Jetons == 0 && p.DerniereAction != TypeActionJeu.Tapis)) ? ConsoleColor.DarkGray :
             p.EstHumain ? ConsoleColor.Cyan :
             ConsoleColor.DarkRed;
 
