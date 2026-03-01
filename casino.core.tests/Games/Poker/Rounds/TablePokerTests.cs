@@ -43,6 +43,34 @@ public class TablePokerTests
     };
 
     [TestMethod]
+    public void DemarrerRound_ReinitialiseEtRotationDuPlayerInitial()
+    {
+        // Arrange
+        var Players = new List<Player>
+        {
+            new HumanPlayer("Alice", 100) { LastAction = TypeGameAction.Tapis },
+            new HumanPlayer("Bob", 0) { LastAction = TypeGameAction.Miser }
+        };
+        var table = new TablePoker();
+
+        // Act - première partie
+        table.DemarrerRound(Players, new FakeDeck(CreerCartesParDefaut()));
+
+        // Assert
+        Assert.AreEqual(0, table.PlayerInitialIndex);
+        Assert.AreEqual(table.PlayerInitialIndex, table.CurrentPlayerIndex);
+        Assert.IsTrue(table.Players.All(j => j.LastAction == (j.Chips > 0 ? TypeGameAction.Aucune : TypeGameAction.SeCoucher)));
+        Assert.IsTrue(table.Players.All(j => !j.IsFolded() || j.Chips == 0));
+
+        // Act - deuxième partie pour vérifier la rotation
+        table.DemarrerRound(Players, new FakeDeck(CreerCartesParDefaut()));
+
+        // Assert
+        Assert.AreEqual(1, table.PlayerInitialIndex);
+        Assert.AreEqual(table.PlayerInitialIndex, table.PlayerActuelIndex);
+    }
+
+    [TestMethod]
     public void TousLesPlayersMoinsUnSeCouchent_TermineLaRoundEtDeclareLeGagnant()
     {
         // Arrange

@@ -14,11 +14,11 @@ public class GameContext
     public Score PlayerScore { get; }
     public int MinimumBet => Math.Max(Round.CurrentBet, Round.StartingBet);
 
-    public GameContext(Round partie, Player CurrentPlayer, IReadOnlyList<TypeGameAction> actionsPossibles)
+    public GameContext(Round partie, Player currentPlayer, IReadOnlyList<TypeGameAction> actionsPossibles)
     {
         Round = partie;
-        CurrentPlayer = CurrentPlayer;
+        CurrentPlayer = currentPlayer;
         AvailableActions = actionsPossibles;
-        PlayerScore = ScoreEvaluator.EvaluerScore(CurrentPlayer.Hand, partie.CommunityCards);
+        PlayerScore = ScoreEvaluator.EvaluerScore(currentPlayer.Hand, partie.CommunityCards);
     }
 }

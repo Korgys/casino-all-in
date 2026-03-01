@@ -12,11 +12,11 @@ public class TurnManager
     public int PlayerInitialIndex { get; }
     public int PlayerActuelIndex { get; private set; }
 
-    public TurnManager(Round partie, int PlayerInitialIndex)
+    public TurnManager(Round partie, int playerInitialIndex)
     {
         _partie = partie ?? throw new ArgumentNullException(nameof(partie));
-        PlayerInitialIndex = PlayerInitialIndex;
-        PlayerActuelIndex = PlayerInitialIndex;
+        PlayerInitialIndex = playerInitialIndex;
+        PlayerActuelIndex = playerInitialIndex;
     }
 
     public Player GetPlayerToAct()
