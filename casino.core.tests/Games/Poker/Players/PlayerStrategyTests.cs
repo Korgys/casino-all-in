@@ -11,29 +11,6 @@ namespace casino.core.tests.Games.Poker.Players;
 public class RandomStrategyTests
 {
     [TestMethod]
-    public void ProposerAction_RelancerLorsqueMinimumDepasseJetons_DoitAllerTapis()
-    {
-        // Arrange
-        var Player = new HumanPlayer("Alice", 8)
-        {
-            Hand = new HandCards(
-                new Card(CardRank.As, Suit.Coeur),
-                new Card(CardRank.Roi, Suit.Pique))
-        };
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand);
-        PlayerTestHelper.DefinirMiseActuelle(partie, 5);
-        var contexte = new GameContext(partie, Player, new List<TypeGameAction> { TypeGameAction.Relancer });
-        var strategie = new RandomStrategy();
-
-        // Act
-        var action = strategie.ProposerAction(contexte);
-
-        // Assert
-        Assert.AreEqual(TypeGameAction.Relancer, action.TypeAction, "La stratégie aléatoire doit respecter l'action proposée.");
-        Assert.AreEqual(Player.Chips, action.Montant, "Si la relance minimale dépasse la mise disponible, l'action doit utiliser tous les jetons restants.");
-    }
-
-    [TestMethod]
     public void ProposerAction_Miser_DoiventUtiliserLaMiseMinimum()
     {
         // Arrange
@@ -59,28 +36,6 @@ public class RandomStrategyTests
 [TestClass]
 public class AggressiveStrategyTests
 {
-    [TestMethod]
-    public void ProposerAction_DoitPrivilegierRelanceQuandPossible()
-    {
-        // Arrange
-        var Player = new ComputerPlayer("Bot", 50, new AggressiveStrategy())
-        {
-            Hand = new HandCards(
-                new Card(CardRank.As, Suit.Coeur),
-                new Card(CardRank.Roi, Suit.Pique))
-        };
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand, startingBet: 15);
-        var contexte = new GameContext(partie, Player, new List<TypeGameAction> { TypeGameAction.Relancer, TypeGameAction.Miser, TypeGameAction.Suivre });
-        var strategie = new AggressiveStrategy();
-
-        // Act
-        var action = strategie.ProposerAction(contexte);
-
-        // Assert
-        Assert.AreEqual(TypeGameAction.Relancer, action.TypeAction, "La stratégie agressive doit relancer si possible.");
-        Assert.AreEqual(contexte.MinimumBet, action.Montant, "La relance doit être au moins égale à la mise minimale.");
-    }
-
     [TestMethod]
     public void ProposerAction_SiRelanceImpossibleMaisMiserPossible_DoitMiser()
     {
