@@ -1,10 +1,14 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Rounds;
+using casino.core.Properties.Langages;
 using System;
 
 namespace casino.core.Games.Poker.Actions.Commands;
 
+/// <summary>
+/// Represents a command that allows a player to raise in a poker game, increasing the current bet by a specified amount.
+/// </summary>
 public class RaiseCommand : IPlayerCommand
 {
     private readonly Player _player;
@@ -22,14 +26,10 @@ public class RaiseCommand : IPlayerCommand
         var difference = _amount - currentBet;
 
         if (_amount <= round.CurrentBet)
-        {
-            throw new ArgumentException("La relance doit être supérieure ou égale à la mise actuelle.");
-        }
+            throw new ArgumentException(Resources.ErrorTheRaiseMustBeGreaterOrEqualThanTheCurrentBet);
 
         if (difference > _player.Chips)
-        {
-            throw new ArgumentException("Le Player n'a pas assez de jetons pour relancer autant.");
-        }
+            throw new ArgumentException(Resources.ErrorThePlayerDoesNotHaveEnoughChipsToRaiseThatAmount);
 
         if (difference == _player.Chips)
         {
@@ -37,6 +37,7 @@ public class RaiseCommand : IPlayerCommand
             return;
         }
 
+        // Update the player's last action, chips, current bet, and the round's pot
         _player.LastAction = PokerTypeAction.Raise;
         _player.Chips -= difference;
         round.CurrentBet = _amount;

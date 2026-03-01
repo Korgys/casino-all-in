@@ -19,7 +19,7 @@ public class CarteTests
         var carte = new Card(rang, couleur);
 
         // Assert
-        Assert.AreEqual(rang, carte.Rang, "Le rang devrait être celui passé au constructeur.");
+        Assert.AreEqual(rang, carte.Rank, "Le rang devrait être celui passé au constructeur.");
         Assert.AreEqual(couleur, carte.Suit, "La couleur devrait être celle passée au constructeur.");
     }
 

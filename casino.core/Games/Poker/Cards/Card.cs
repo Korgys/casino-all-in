@@ -2,16 +2,16 @@
 
 public class Card
 {
-    public CardRank Rang { get; }
+    public CardRank Rank { get; }
     public Suit Suit { get; }
-    public Card(CardRank rang, Suit suit)
+    public Card(CardRank rank, Suit suit)
     {
-        Rang = rang;
+        Rank = rank;
         Suit = suit;
     }
     public override string ToString()
     {
-        return $"{Rang.ToShortString()}{Suit.ToSymbol()}";
+        return $"{Rank.ToShortString()}{Suit.ToSymbol()}";
     }
 
     public override bool Equals(object? obj)
@@ -19,12 +19,11 @@ public class Card
         if (obj is not Card other)
             return false;
 
-        return Rang == other.Rang && Suit == other.Suit;
+        return Rank == other.Rank && Suit == other.Suit;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Rang, Suit);
+        return HashCode.Combine(Rank, Suit);
     }
-
 }

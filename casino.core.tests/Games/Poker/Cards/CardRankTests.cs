@@ -22,13 +22,13 @@ public class CardRankTests
     [DataRow(CardRank.Dame, "Q")]
     [DataRow(CardRank.Roi, "K")]
     [DataRow(CardRank.As, "A")]
-    public void ToShortString_DoitRetournerLeBonFormat(CardRank rang, string attendu)
+    public void ToShortString_ShouldReturnCorrectString(CardRank rank, string expected)
     {
         // Act
-        var result = rang.ToShortString();
+        var result = rank.ToShortString();
 
         // Assert
-        Assert.AreEqual(attendu, result);
+        Assert.AreEqual(expected, result);
     }
 
     [TestMethod]

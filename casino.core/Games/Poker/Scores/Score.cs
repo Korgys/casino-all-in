@@ -50,6 +50,6 @@ public sealed class Score : IComparable<Score>
 
     public override string ToString()
     {
-        return $"{Rank} de {CardValue}";
+        return $"{Rank.ToDisplayString()} de {CardValue}";
     }
 }

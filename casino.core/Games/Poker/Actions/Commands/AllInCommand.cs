@@ -5,6 +5,10 @@ using casino.core.Games.Poker.Rounds;
 
 namespace casino.core.Games.Poker.Actions.Commands;
 
+/// <summary>
+/// Represents the action of a player going all-in in a poker game. 
+/// When executed, it updates the player's chips, the current bet, and the pot accordingly.
+/// </summary>
 public class AllInCommand : IPlayerCommand
 {
     private readonly Player _player;

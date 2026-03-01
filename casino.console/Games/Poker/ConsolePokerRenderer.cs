@@ -47,13 +47,13 @@ public class ConsolePokerRenderer
             // Afficher la mise minimale pour l'action "Miser"
             if (a == PokerTypeAction.Bet)
             {
-                Console.Write($"{(int)a}. {a} (");
+                Console.Write($"{(int)a}. {a.ToDisplayString()} (");
                 ConsolePokerWriter.WriteAmount(minimumBet);
                 Console.Write(")     ");
             }
             else // Autres actions sans montant associé
             {
-                Console.Write($"{(int)a}. {a}     ");
+                Console.Write($"{(int)a}. {a.ToDisplayString()}     ");
             }
         }
         Console.WriteLine();
@@ -90,7 +90,7 @@ public class ConsolePokerRenderer
             WriteScoreAndProbabilityOfVictory(p, state, currentPlayerName);
         }
         if (p.LastAction != PokerTypeAction.None)
-            Console.Write($" [{p.LastAction}]");
+            Console.Write($" [{p.LastAction.ToDisplayString()}]");
 
         if (p.IsWinner)
         {

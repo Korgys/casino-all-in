@@ -1,6 +1,7 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Rounds;
+using casino.core.Properties.Langages;
 using System;
 
 namespace casino.core.Games.Poker.Actions.Commands;
@@ -24,9 +25,7 @@ public class CheckCommand : IPlayerCommand
     public void Execute(Round round)
     {
         if (round.CurrentBet != 0)
-        {
-            throw new InvalidOperationException("Le Player ne peut pas checker car il y a une mise sur la table.");
-        }
+            throw new InvalidOperationException(Resources.ErrorThePlayerCannotCheckBecauseThereIsABetOnTheTable);
 
         _player.LastAction = PokerTypeAction.Check;
     }

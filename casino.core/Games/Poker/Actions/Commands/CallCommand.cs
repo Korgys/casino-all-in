@@ -1,10 +1,14 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Rounds;
+using casino.core.Properties.Langages;
 using System;
 
 namespace casino.core.Games.Poker.Actions.Commands;
 
+/// <summary>
+/// Represents the action of calling the current bet in a poker game.
+/// </summary>
 public class CallCommand : IPlayerCommand
 {
     private readonly Player _player;
@@ -20,14 +24,10 @@ public class CallCommand : IPlayerCommand
         var diff = round.CurrentBet - contributionActuelle;
 
         if (diff <= 0)
-        {
-            throw new InvalidOperationException("Aucune mise supplémentaire à suivre.");
-        }
+            throw new InvalidOperationException(Resources.ErrorNoAdditionalBetToCall);
 
         if (_player.Chips - diff < 0)
-        {
-            throw new InvalidOperationException("Le joueur n'a pas assez de jetons pour suivre la mise actuelle.");
-        }
+            throw new InvalidOperationException(Resources.ErrorThePlayerDoesNotHaveEnoughChipsToCallTheCurrentBet);
 
         if (_player.Chips - diff == 0)
         {
@@ -35,6 +35,8 @@ public class CallCommand : IPlayerCommand
             return;
         }
 
+        // The player has enough chips to call the current bet
+        // Update the player's last action, chips, and the round's bet and pot
         _player.LastAction = PokerTypeAction.Call;
         _player.Chips -= diff;
         round.SetBetFor(_player, round.CurrentBet);

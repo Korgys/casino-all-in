@@ -1,10 +1,15 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Rounds;
+using casino.core.Properties.Langages;
 using System;
 
 namespace casino.core.Games.Poker.Actions.Commands;
 
+/// <summary>
+/// Represents a command to place a bet in a poker game. This command allows a player to increase their contribution to the pot by placing a bet. 
+/// The command checks for valid bet amounts and updates the player's chips, the current bet, and the pot accordingly.
+/// </summary>
 public class BetCommand : IPlayerCommand
 {
     private readonly Player _player;
@@ -19,31 +24,20 @@ public class BetCommand : IPlayerCommand
     public void Execute(Round round)
     {
         if (_amount <= 0)
-        {
-            throw new ArgumentException("Le montant de mise doit être supérieur à zéro.");
-        }
-
+            throw new ArgumentException(Resources.ErrorTheBetAmountShouldBeGreaterThanZero);
         if (round.CurrentBet > _amount)
-        {
-            throw new InvalidOperationException("La mise ne peut pas être inférieure à la mise de départ/actuelle.");
-        }
+            throw new InvalidOperationException(Resources.ErrorTheBetAmountCannotBeLowerThanTheInitialBetAmount);
 
         var currentBet = round.GetBetFor(_player);
         var diff = _amount - currentBet;
 
         if (diff <= 0)
-        {
-            throw new InvalidOperationException("La mise doit augmenter la contribution du Player.");
-        }
-
+            throw new InvalidOperationException(Resources.ErrorTheBetShouldIncreaseThePlayerContribution);
         if (diff > _player.Chips)
-        {
-            throw new InvalidOperationException("Le Player n'a pas assez de jetons pour miser autant.");
-        }
+            throw new InvalidOperationException(Resources.ErrorPlayerHasNotEnoughChips);
 
         _player.LastAction = PokerTypeAction.Bet;
-        // Mettre à jour la contribution du Player et le pot en fonction de la différence,
-        // pas du montant total, pour gérer les mises partielles déjà effectuées.
+        // Update the player contribution
         _player.Chips -= diff;
         round.SetBetFor(_player, _amount);
         round.CurrentBet = _amount;

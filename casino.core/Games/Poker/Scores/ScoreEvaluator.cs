@@ -18,12 +18,12 @@ public static class ScoreEvaluator
         // Centralisation des rangs triés (utile pour carte haute / kickers)
         // GroupBy faits une seule fois
         var rangsDistinctDesc = cards
-            .Select(c => c.Rang)
+            .Select(c => c.Rank)
             .Distinct()
             .OrderByDescending(r => r)
             .ToArray();
         var groupesParRang = cards
-            .GroupBy(c => c.Rang)
+            .GroupBy(c => c.Rank)
             .ToArray();
         var groupesParSuit = cards
             .GroupBy(c => c.Suit)
@@ -117,7 +117,7 @@ public static class ScoreEvaluator
         {
             if (grp.Count() < 5) continue;
 
-            var ranks = grp.Select(c => c.Rang)
+            var ranks = grp.Select(c => c.Rank)
                            .Distinct()
                            .OrderByDescending(r => r)
                            .Take(5)
@@ -141,7 +141,7 @@ public static class ScoreEvaluator
         {
             if (grp.Count() < 5) continue;
 
-            var rangsDistinctDesc = grp.Select(c => c.Rang)
+            var rangsDistinctDesc = grp.Select(c => c.Rank)
                                        .Distinct()
                                        .OrderByDescending(r => r)
                                        .ToArray();
@@ -163,7 +163,7 @@ public static class ScoreEvaluator
         {
             if (grp.Count() < 5) continue;
 
-            var rangsDistinctDesc = grp.Select(c => c.Rang)
+            var rangsDistinctDesc = grp.Select(c => c.Rank)
                                        .Distinct()
                                        .OrderByDescending(r => r)
                                        .ToArray();

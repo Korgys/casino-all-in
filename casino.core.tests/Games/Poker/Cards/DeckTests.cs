@@ -30,7 +30,7 @@ public class DeckTests
 
         // Vérifier unicité (rang + couleur)
         var uniques = cartes
-            .Select(c => (c.Rang, c.Suit))
+            .Select(c => (c.Rank, c.Suit))
             .Distinct()
             .Count();
 
@@ -77,8 +77,8 @@ public class DeckTests
         var deck2 = new Deck(new FakeRandomSequence(Enumerable.Repeat(0, 51).ToArray()));
 
         // Act
-        var seq1 = TirerTout(deck1).Select(c => (c.Rang, c.Suit)).ToList();
-        var seq2 = TirerTout(deck2).Select(c => (c.Rang, c.Suit)).ToList();
+        var seq1 = TirerTout(deck1).Select(c => (c.Rank, c.Suit)).ToList();
+        var seq2 = TirerTout(deck2).Select(c => (c.Rank, c.Suit)).ToList();
 
         // Assert
         CollectionAssert.AreEqual(seq1, seq2, "Avec le même random déterministe, l'ordre doit être identique.");

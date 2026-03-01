@@ -21,9 +21,8 @@ public class FoldCommand : IPlayerCommand
     {
         _player.LastAction = PokerTypeAction.Fold;
 
+        // Mark the player as folded
         if (round.Players.Count(j => !j.IsFolded()) == 1)
-        {
             round.EndGame();
-        }
     }
 }

@@ -19,7 +19,7 @@ public enum CardRank
     As = 14
 }
 
-public static class RangExtensions
+public static class CardRankExtensions
 {
     public static string ToShortString(this CardRank rang)
     {
