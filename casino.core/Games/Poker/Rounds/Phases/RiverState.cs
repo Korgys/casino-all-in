@@ -1,8 +1,8 @@
-namespace casino.core.Games.Poker.Parties.Phases;
+namespace casino.core.Games.Poker.Rounds.Phases;
 
 public class RiverState : PhaseStateBase
 {
-    public override void Avancer(Partie context)
+    public override void Avancer(Round context)
     {
         context.EndGame();
         context.PhaseState = new ShowdownState();

@@ -3,7 +3,7 @@ using casino.core.Games.Poker.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ActionModel = casino.core.Games.Poker.Actions.ActionJeu;
+using ActionModel = casino.core.Games.Poker.Actions.GameAction;
 
 namespace casino.console.Games.Poker;
 
@@ -12,17 +12,17 @@ namespace casino.console.Games.Poker;
 /// </summary>
 public class ConsolePokerInput
 {
-    public static ActionModel GetPlayerAction(RequeteAction request)
+    public static ActionModel GetPlayerAction(ActionRequest request)
     {
         var state = (PokerGameState)request.TableState;
         var player = state.Players.First(j => j.Name == request.PlayerName);
 
-        var choice = ReadActionChoice(request.ActionsPossibles, request.MinimumBet);
+        var choice = ReadActionChoice(request.AvailableActions, request.MinimumBet);
 
         return choice switch
         {
-            TypeActionJeu.Miser => new ActionModel(choice, request.MinimumBet),
-            TypeActionJeu.Relancer => new ActionModel(choice, ReadRaiseAmount(player.Chips, state.CurrentBet)),
+            PokerTypeAction.Bet => new ActionModel(choice, request.MinimumBet),
+            PokerTypeAction.Raise => new ActionModel(choice, ReadRaiseAmount(player.Chips, state.CurrentBet)),
             _ => new ActionModel(choice, 0),
         };
     }
@@ -34,7 +34,7 @@ public class ConsolePokerInput
         return answer is "o" or "oui" or "y" or "yes";
     }
 
-    private static TypeActionJeu ReadActionChoice(IReadOnlyList<TypeActionJeu> availableActions, int minimumBet)
+    private static PokerTypeAction ReadActionChoice(IReadOnlyList<PokerTypeAction> availableActions, int minimumBet)
     {
         while (true)
         {
@@ -45,7 +45,7 @@ public class ConsolePokerInput
                 continue;
 
             if (availableActions.Any(a => (int)a == raw))
-                return (TypeActionJeu)raw;
+                return (PokerTypeAction)raw;
         }
     }
 

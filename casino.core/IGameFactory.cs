@@ -4,6 +4,6 @@ namespace casino.core;
 
 public interface IGameFactory
 {
-    IGame? Create(string gameName, Func<RequeteAction, ActionJeu> humanActionSelector, Func<bool> continuePlaying);
-    IGame CreatePoker(Func<RequeteAction, ActionJeu> humanActionSelector, Func<bool> continuePlaying);
+    IGame? Create(string gameName, Func<ActionRequest, GameAction> humanActionSelector, Func<bool> continuePlaying);
+    IGame CreatePoker(Func<ActionRequest, GameAction> humanActionSelector, Func<bool> continuePlaying);
 }

@@ -1,5 +1,5 @@
 ﻿using casino.core.Common.Utils;
-using casino.core.Games.Poker.Cartes;
+using casino.core.Games.Poker.Cards;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +10,7 @@ namespace casino.core.tests.Commons.Utils;
 public class CasinoRandomTests
 {
     [TestMethod]
-    public void Melanger_DoitCreer52CartesUniques()
+    public void Shuffle_DoitCreer52CartesUniques()
     {
         // Arrange
         var random = new CasinoRandom();

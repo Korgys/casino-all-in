@@ -2,31 +2,31 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace casino.core.Games.Poker.Cartes;
+namespace casino.core.Games.Poker.Cards;
 
 public class HandCards
 {
-    public Card Premiere { get; }
-    public Card Seconde { get; }
+    public Card First { get; }
+    public Card Second { get; }
 
-    public HandCards(Card premiere, Card seconde)
+    public HandCards(Card first, Card second)
     {
-        Premiere = premiere;
-        Seconde = seconde;
+        First = first;
+        Second = second;
     }
 
     public IEnumerable<Card> AsEnumerable()
     {
-        var cartes = new List<Card>();
+        var cards = new List<Card>();
 
-        if (Premiere != null) cartes.Add(Premiere);
-        if (Seconde != null) cartes.Add(Seconde);
+        if (First != null) cards.Add(First);
+        if (Second != null) cards.Add(Second);
 
-        return cartes;
+        return cards;
     }
 
     public override string ToString()
     {
-        return $"{Premiere}, {Seconde}";
+        return $"{First}, {Second}";
     }
 }

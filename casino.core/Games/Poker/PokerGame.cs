@@ -1,29 +1,29 @@
 ﻿using casino.core;
 using casino.core.Games.Poker.Actions;
-using casino.core.Games.Poker.Cartes;
+using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
-using casino.core.Games.Poker.Parties;
+using casino.core.Games.Poker.Rounds;
 
 namespace casino.core.Games.Poker;
 
 public class PokerGame : GameBase
 {
     private readonly Func<bool> _continuePlaying;
-    private readonly Func<RequeteAction, Actions.ActionJeu> _humanActionSelector;
+    private readonly Func<ActionRequest, Actions.GameAction> _humanActionSelector;
     private readonly Func<IDeck> _deckFactory;
     private readonly TablePoker _table;
-    private readonly List<PlayerHumain> _playersHumain;
+    private readonly List<HumanPlayer> _playersHumain;
     private readonly List<Player> _players;
 
     public PokerGame(
         IEnumerable<Player> Players,
         Func<IDeck> deckFactory,
-        Func<RequeteAction, Actions.ActionJeu> humanActionSelector,
+        Func<ActionRequest, Actions.GameAction> humanActionSelector,
         Func<bool> continuePlaying)
         : base("Poker")
     {
         _players = Players.ToList();
-        _playersHumain = _players.OfType<PlayerHumain>().ToList();
+        _playersHumain = _players.OfType<HumanPlayer>().ToList();
         _deckFactory = deckFactory;
         _humanActionSelector = humanActionSelector;
         _continuePlaying = continuePlaying;
@@ -32,7 +32,7 @@ public class PokerGame : GameBase
 
     protected override void InitializeGame()
     {
-        OnStateUpdated(CreerEtatTable());
+        OnStateUpdated(BuildPokerGameState());
     }
 
     protected override void ExecuteGameLoop()
@@ -40,22 +40,22 @@ public class PokerGame : GameBase
         while (_playersHumain.Any(j => j.Chips > 0))
         {
             var deck = _deckFactory();
-            _table.DemarrerPartie(_players, deck);
+            _table.DemarrerRound(_players, deck);
 
-            OnPhaseAdvanced(_table.Partie.Phase.ToString());
-            OnPotUpdated(_table.Partie.Pot, _table.Partie.CurrentBet);
-            OnStateUpdated(CreerEtatTable());
+            OnPhaseAdvanced(_table.Round.Phase.ToString());
+            OnPotUpdated(_table.Round.Pot, _table.Round.CurrentBet);
+            OnStateUpdated(BuildPokerGameState());
 
-            JouerPartie();
+            PlayRound();
 
-            var winners = _table.Partie.Winners;
+            var winners = _table.Round.Winners;
 
             var gagnantsLabel = (winners is null || winners.Count == 0)
                 ? _players.First().Name
                 : string.Join(", ", winners.Select(g => g.Name));
 
-            OnGameEnded(gagnantsLabel, _table.Partie.Pot);
-            OnStateUpdated(CreerEtatTable());
+            OnGameEnded(gagnantsLabel, _table.Round.Pot);
+            OnStateUpdated(BuildPokerGameState());
 
             // Si plus aucun humain n'a de jetons, fin du jeu.
             if (!_playersHumain.Any(j => j.Chips > 0))
@@ -67,50 +67,47 @@ public class PokerGame : GameBase
         }
     }
 
-    private void JouerPartie()
+    private void PlayRound()
     {
-        while (_table.Partie.EnCours())
+        while (_table.Round.IsInProgress())
         {
-            OnStateUpdated(CreerEtatTable());
+            OnStateUpdated(BuildPokerGameState());
 
-            var phaseAvantAction = _table.Partie.Phase;
-            var PlayerActuel = _table.ObtenirPlayerQuiDoitJouer();
-            var actionsPossibles = _table.ObtenirActionsPossibles(PlayerActuel);
+            var phaseAvantAction = _table.Round.Phase;
+            var PlayerActuel = _table.GetPlayerToAct();
+            var actionsPossibles = _table.GetAvailableActions(PlayerActuel);
 
-            if (PlayerActuel is PlayerHumain humain)
+            if (PlayerActuel is HumanPlayer humain)
             {
-                var contexte = new RequeteAction(
+                var contexte = new ActionRequest(
                     humain.Name,
                     actionsPossibles,
-                    _table.Partie.StartingBet,
-                    _table.Partie.CurrentBet,
-                    _table.Partie.Pot,
-                    CreerEtatTable());
+                    _table.Round.StartingBet,
+                    _table.Round.CurrentBet,
+                    _table.Round.Pot,
+                    BuildPokerGameState());
 
                 var action = _humanActionSelector(contexte);
                 _table.TraiterActionPlayer(humain, action);
             }
-            else if (PlayerActuel is PlayerOrdi ordi)
+            else if (PlayerActuel is ComputerPlayer ordi)
             {
                 Thread.Sleep(Random.Shared.Next(500, 1500));
-                var contexte = new ContexteDeJeu(_table.Partie, ordi, actionsPossibles);
-                var action = ordi.Strategie.ProposerAction(contexte);
+                var contexte = new GameContext(_table.Round, ordi, actionsPossibles);
+                var action = ordi.Strategy.ProposerAction(contexte);
                 _table.TraiterActionPlayer(ordi, action);
             }
 
-            if (phaseAvantAction != _table.Partie.Phase)
-                OnPhaseAdvanced(_table.Partie.Phase.ToString());
+            if (phaseAvantAction != _table.Round.Phase)
+                OnPhaseAdvanced(_table.Round.Phase.ToString());
 
-            OnPotUpdated(_table.Partie.Pot, _table.Partie.CurrentBet);
+            OnPotUpdated(_table.Round.Pot, _table.Round.CurrentBet);
         }
     }
 
-    protected override void ResolveGame() { }
-    protected override void CleanupGame() { }
-
-    private PokerGameState CreerEtatTable()
+    private PokerGameState BuildPokerGameState()
     {
-        var partie = _table.Partie;
+        var partie = _table.Round;
 
         return new PokerGameState(
             partie?.Phase.ToString() ?? string.Empty,
@@ -121,11 +118,11 @@ public class PokerGame : GameBase
             _players.Select(j => new PokerPlayerState(
                 j.Name,
                 j.Chips,
-                j is PlayerHumain,
-                j.LastAction == Actions.TypeActionJeu.SeCoucher,
+                j is HumanPlayer,
+                j.LastAction == Actions.PokerTypeAction.Fold,
                 j.LastAction,
                 j.Hand,
                 partie?.Winners?.Any(g => g.Name == j.Name) == true)).ToList(),
-            partie == null || _table.GestionnaireDeTour == null ? string.Empty : _table.ObtenirPlayerQuiDoitJouer().Name);
+            partie == null || _table.TurnManager == null ? string.Empty : _table.GetPlayerToAct().Name);
     }
 }

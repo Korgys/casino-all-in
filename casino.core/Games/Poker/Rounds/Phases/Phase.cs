@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace casino.core.Games.Poker.Parties.Phases;
+namespace casino.core.Games.Poker.Rounds.Phases;
 
 public enum Phase
 {

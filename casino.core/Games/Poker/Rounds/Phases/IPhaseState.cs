@@ -1,4 +1,4 @@
-namespace casino.core.Games.Poker.Parties.Phases;
+namespace casino.core.Games.Poker.Rounds.Phases;
 
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public interface IPhaseState
 {
-    void Avancer(Partie context);
-    IEnumerable<TypeActionJeu> ObtenirActionsPossibles(Player Player, Partie context);
-    void AppliquerAction(Player Player, ActionJeu action, Partie context);
+    void Avancer(Round context);
+    IEnumerable<PokerTypeAction> GetAvailableActions(Player Player, Round context);
+    void ApplyAction(Player Player, GameAction action, Round context);
 }

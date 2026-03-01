@@ -1,8 +1,8 @@
-using casino.core.Games.Poker.Parties;
+using casino.core.Games.Poker.Rounds;
 
 namespace casino.core.Games.Poker.Actions.Commands;
 
 public interface IPlayerCommand
 {
-    void Execute(Partie partie);
+    void Execute(Round round);
 }

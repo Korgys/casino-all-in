@@ -1,5 +1,5 @@
 ﻿using casino.core.Games.Poker.Actions;
-using casino.core.Games.Poker.Cartes;
+using casino.core.Games.Poker.Cards;
 
 namespace casino.core.Games.Poker;
 
@@ -8,7 +8,7 @@ public record PokerPlayerState(
     int Chips,
     bool IsHuman,
     bool IsFolded,
-    TypeActionJeu LastAction,
+    PokerTypeAction LastAction,
     HandCards? Hand,
     bool IsWinner);
 

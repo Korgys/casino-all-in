@@ -1,6 +1,6 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
-using casino.core.Games.Poker.Parties;
+using casino.core.Games.Poker.Rounds;
 using System;
 
 namespace casino.core.Games.Poker.Actions.Commands;
@@ -8,45 +8,45 @@ namespace casino.core.Games.Poker.Actions.Commands;
 public class BetCommand : IPlayerCommand
 {
     private readonly Player _player;
-    private readonly int _montant;
+    private readonly int _amount;
 
-    public BetCommand(Player Player, int montant)
+    public BetCommand(Player player, int amount)
     {
-        _player = Player;
-        _montant = montant;
+        _player = player;
+        _amount = amount;
     }
 
-    public void Execute(Partie partie)
+    public void Execute(Round round)
     {
-        if (_montant <= 0)
+        if (_amount <= 0)
         {
             throw new ArgumentException("Le montant de mise doit être supérieur à zéro.");
         }
 
-        if (partie.CurrentBet > _montant)
+        if (round.CurrentBet > _amount)
         {
             throw new InvalidOperationException("La mise ne peut pas être inférieure à la mise de départ/actuelle.");
         }
 
-        var misePlayer = partie.GetBetFor(_player);
-        var difference = _montant - misePlayer;
+        var currentBet = round.GetBetFor(_player);
+        var diff = _amount - currentBet;
 
-        if (difference <= 0)
+        if (diff <= 0)
         {
             throw new InvalidOperationException("La mise doit augmenter la contribution du Player.");
         }
 
-        if (difference > _player.Chips)
+        if (diff > _player.Chips)
         {
             throw new InvalidOperationException("Le Player n'a pas assez de jetons pour miser autant.");
         }
 
-        _player.LastAction = TypeActionJeu.Miser;
+        _player.LastAction = PokerTypeAction.Bet;
         // Mettre à jour la contribution du Player et le pot en fonction de la différence,
         // pas du montant total, pour gérer les mises partielles déjà effectuées.
-        _player.Chips -= difference;
-        partie.SetBetFor(_player, _montant);
-        partie.CurrentBet = _montant;
-        partie.Pot += difference;
+        _player.Chips -= diff;
+        round.SetBetFor(_player, _amount);
+        round.CurrentBet = _amount;
+        round.Pot += diff;
     }
 }
