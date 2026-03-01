@@ -20,14 +20,10 @@ public abstract class GameBase : IGame
     {
         InitializeGame();
         ExecuteGameLoop();
-        ResolveGame();
-        CleanupGame();
     }
 
     protected abstract void InitializeGame();
     protected abstract void ExecuteGameLoop();
-    protected abstract void ResolveGame();
-    protected abstract void CleanupGame();
 
     protected void OnPhaseAdvanced(string phase)
         => PhaseAdvanced?.Invoke(this, new GamePhaseEventArgs(phase));

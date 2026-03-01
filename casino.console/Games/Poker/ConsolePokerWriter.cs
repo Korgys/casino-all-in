@@ -17,7 +17,7 @@ internal class ConsolePokerWriter
     public static void WritePlayerName(PokerPlayerState playerState)
     {
         var color =
-            (playerState.IsFolded || (playerState.Chips == 0 && playerState.LastAction != TypeGameAction.Tapis)) ? ConsoleColor.DarkGray :
+            (playerState.IsFolded || (playerState.Chips == 0 && playerState.LastAction != PokerTypeAction.AllIn)) ? ConsoleColor.DarkGray :
             playerState.IsHuman ? ConsoleColor.Cyan :
             ConsoleColor.DarkRed;
 
@@ -33,7 +33,7 @@ internal class ConsolePokerWriter
 
     public static void WriteCard(Card card)
     {
-        var color = (card.Suit == Suit.Coeur || card.Suit == Suit.Carreau)
+        var color = (card.Suit == Suit.Hearts || card.Suit == Suit.Diamonds)
             ? ConsoleColor.Red
             : ConsoleColor.Cyan;
 

@@ -11,34 +11,34 @@ public class ConservativeStrategy : IPlayerStrategy
         var actions = contexte.AvailableActions;
         var score = contexte.PlayerScore;
 
-        if (actions.Contains(TypeGameAction.Check))
+        if (actions.Contains(PokerTypeAction.Check))
         {
-            return new Actions.GameAction(TypeGameAction.Check);
+            return new Actions.GameAction(PokerTypeAction.Check);
         }
 
-        if (actions.Contains(TypeGameAction.Suivre) && (score.Rang >= HandRank.DoublePaire || contexte.Round.CurrentBet <= contexte.MinimumBet))
+        if (actions.Contains(PokerTypeAction.Call) && (score.Rank >= HandRank.TwoPair || contexte.Round.CurrentBet <= contexte.MinimumBet))
         {
-            return new Actions.GameAction(TypeGameAction.Suivre);
+            return new Actions.GameAction(PokerTypeAction.Call);
         }
 
-        if (actions.Contains(TypeGameAction.Miser) && score.Rang >= HandRank.Paire)
+        if (actions.Contains(PokerTypeAction.Bet) && score.Rank >= HandRank.OnePair)
         {
-            return new Actions.GameAction(TypeGameAction.Miser, contexte.MinimumBet);
+            return new Actions.GameAction(PokerTypeAction.Bet, contexte.MinimumBet);
         }
 
-        if (actions.Contains(TypeGameAction.Relancer) && score.Rang >= HandRank.Full)
+        if (actions.Contains(PokerTypeAction.Raise) && score.Rank >= HandRank.FullHouse)
         {
-            return new Actions.GameAction(TypeGameAction.Relancer, contexte.MinimumBet);
+            return new Actions.GameAction(PokerTypeAction.Raise, contexte.MinimumBet);
         }
 
-        if (actions.Contains(TypeGameAction.SeCoucher))
+        if (actions.Contains(PokerTypeAction.Fold))
         {
-            return new Actions.GameAction(TypeGameAction.SeCoucher);
+            return new Actions.GameAction(PokerTypeAction.Fold);
         }
 
-        if (actions.First() == TypeGameAction.Miser)
+        if (actions.First() == PokerTypeAction.Bet)
         {
-            return new Actions.GameAction(TypeGameAction.Miser, contexte.MinimumBet);
+            return new Actions.GameAction(PokerTypeAction.Bet, contexte.MinimumBet);
         }
 
         return new Actions.GameAction(actions.First());

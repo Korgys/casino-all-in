@@ -25,11 +25,11 @@ public class CartesCommunesTests
     public void AsEnumerable_DoitRetournerCartesNonNull_DansLOrdreFlopTurnRiver()
     {
         // Arrange
-        var flop1 = new Card(CardRank.Deux, Suit.Carreau);
-        var flop2 = new Card(CardRank.Trois, Suit.Coeur);
-        var flop3 = new Card(CardRank.Quatre, Suit.Pique);
-        var turn = new Card(CardRank.As, Suit.Trefle);
-        var river = new Card(CardRank.Roi, Suit.Coeur);
+        var flop1 = new Card(CardRank.Deux, Suit.Diamonds);
+        var flop2 = new Card(CardRank.Trois, Suit.Hearts);
+        var flop3 = new Card(CardRank.Quatre, Suit.Spades);
+        var turn = new Card(CardRank.As, Suit.Clubs);
+        var river = new Card(CardRank.Roi, Suit.Hearts);
 
         var communes = new TableCards
         {
@@ -71,8 +71,8 @@ public class CartesCommunesTests
         // Arrange
         var communes = new TableCards
         {
-            Flop1 = new Card(CardRank.As, Suit.Pique),   // "A Pique"
-            Turn = new Card(CardRank.Dix, Suit.Coeur)    // "10 Coeur"
+            Flop1 = new Card(CardRank.As, Suit.Spades),   // "A Pique"
+            Turn = new Card(CardRank.Dix, Suit.Hearts)    // "10 Coeur"
         };
 
         // Act
@@ -86,8 +86,8 @@ public class CartesCommunesTests
     public void AsEnumerable_QuandCartesIntermediairesNull_DoitIgnorerLesNulls()
     {
         // Arrange
-        var flop1 = new Card(CardRank.As, Suit.Pique);
-        var river = new Card(CardRank.Dame, Suit.Carreau);
+        var flop1 = new Card(CardRank.As, Suit.Spades);
+        var river = new Card(CardRank.Dame, Suit.Diamonds);
 
         var communes = new TableCards
         {

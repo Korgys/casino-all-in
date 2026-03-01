@@ -23,7 +23,7 @@ public class DeckTests
         deck.Shuffle();
 
         // Assert
-        Assert.AreEqual(52, deck.CartesRestantes);
+        Assert.AreEqual(52, deck.RemainingCards);
 
         var cartes = TirerTout(deck);
         Assert.HasCount(52, cartes);
@@ -43,14 +43,14 @@ public class DeckTests
         // Arrange
         var deck = new Deck(new FakeRandomToujoursZero());
         deck.Shuffle();
-        int avant = deck.CartesRestantes;
+        int avant = deck.RemainingCards;
 
         // Act
         var carte = deck.DrawCard();
 
         // Assert
         Assert.IsNotNull(carte);
-        Assert.AreEqual(avant - 1, deck.CartesRestantes);
+        Assert.AreEqual(avant - 1, deck.RemainingCards);
     }
 
     [TestMethod]
@@ -91,7 +91,7 @@ public class DeckTests
     private static List<Card> TirerTout(Deck deck)
     {
         var cartes = new List<Card>();
-        while (deck.CartesRestantes > 0)
+        while (deck.RemainingCards > 0)
         {
             cartes.Add(deck.DrawCard());
         }

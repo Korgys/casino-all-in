@@ -10,33 +10,33 @@ namespace casino.core.Games.Poker.Scores;
 public static class WinnerEvaluator
 {
     /// <summary>
-    /// Détermine le(s) gagnant(s) parmi les Players encore en jeu, basé sur la meilleure main.
+    /// Evaluate the winner of the table.
     /// </summary>
-    /// <param name="Players"></param>
-    /// <param name="communityCards"></param>
+    /// <param name="players"></param>
+    /// <param name="tableCards"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public static IReadOnlyList<Player> DeterminerGagnantsParMain(IEnumerable<Player> Players, TableCards communityCards)
+    public static IReadOnlyList<Player> DetermineWinnersByHand(IEnumerable<Player> players, TableCards tableCards)
     {
         // Calcule le score des Players en jeu
-        var PlayersEnJeu = Players
-            .Where(j => j.LastAction != TypeGameAction.SeCoucher)
+        var inGamePlayers = players
+            .Where(j => j.LastAction != PokerTypeAction.Fold)
             .Select(j => new
             {
                 Player = j,
-                Score = ScoreEvaluator.EvaluerScore(j.Hand, communityCards)
+                Score = ScoreEvaluator.EvaluateScore(j.Hand, tableCards)
             });
 
-        if (!PlayersEnJeu.Any())
+        if (!inGamePlayers.Any())
         {
             throw new ArgumentException("Au moins un Player doit être encore en jeu pour déterminer le gagnant par la main.");
         }
 
         // Récupère le meilleur score
-        var meilleurScore = PlayersEnJeu.Max(x => x.Score);
+        var meilleurScore = inGamePlayers.Max(x => x.Score);
 
         // Retourne tous ceux à égalité parfaite
-        return PlayersEnJeu
+        return inGamePlayers
             .Where(j => j.Score.CompareTo(meilleurScore) == 0)
             .Select(x => x.Player)
             .ToList();

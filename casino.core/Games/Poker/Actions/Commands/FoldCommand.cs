@@ -12,18 +12,18 @@ public class FoldCommand : IPlayerCommand
 {
     private readonly Player _player;
 
-    public FoldCommand(Player Player)
+    public FoldCommand(Player player)
     {
-        _player = Player;
+        _player = player;
     }
 
-    public void Execute(Round partie)
+    public void Execute(Round round)
     {
-        _player.LastAction = TypeGameAction.SeCoucher;
+        _player.LastAction = PokerTypeAction.Fold;
 
-        if (partie.Players.Count(j => !j.IsFolded()) == 1)
+        if (round.Players.Count(j => !j.IsFolded()) == 1)
         {
-            partie.EndGame();
+            round.EndGame();
         }
     }
 }

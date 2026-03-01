@@ -26,7 +26,7 @@ public class OpportunisticStrategyTests
             new Player("alice", 1000)
         };
         var round = new Round(players, new FakeDeck(CreerCartesSimples()));
-        var gameContext = new GameContext(round, player, new List<TypeGameAction> { TypeGameAction.Tapis });
+        var gameContext = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.AllIn });
         var strategy = new OpportunisticStrategy();
 
         // Act
@@ -34,8 +34,8 @@ public class OpportunisticStrategyTests
 
         // Assert
         Assert.IsNotNull(gameAction);
-        Assert.AreEqual(TypeGameAction.Tapis, gameAction.TypeAction);
+        Assert.AreEqual(PokerTypeAction.AllIn, gameAction.TypeAction);
     }
 
-    private static IEnumerable<Card> CreerCartesSimples() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Coeur), 10);
+    private static IEnumerable<Card> CreerCartesSimples() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10);
 }

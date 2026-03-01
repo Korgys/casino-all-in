@@ -21,8 +21,8 @@ public class ConsolePokerInput
 
         return choice switch
         {
-            TypeGameAction.Miser => new ActionModel(choice, request.MinimumBet),
-            TypeGameAction.Relancer => new ActionModel(choice, ReadRaiseAmount(player.Chips, state.CurrentBet)),
+            PokerTypeAction.Bet => new ActionModel(choice, request.MinimumBet),
+            PokerTypeAction.Raise => new ActionModel(choice, ReadRaiseAmount(player.Chips, state.CurrentBet)),
             _ => new ActionModel(choice, 0),
         };
     }
@@ -34,7 +34,7 @@ public class ConsolePokerInput
         return answer is "o" or "oui" or "y" or "yes";
     }
 
-    private static TypeGameAction ReadActionChoice(IReadOnlyList<TypeGameAction> availableActions, int minimumBet)
+    private static PokerTypeAction ReadActionChoice(IReadOnlyList<PokerTypeAction> availableActions, int minimumBet)
     {
         while (true)
         {
@@ -45,7 +45,7 @@ public class ConsolePokerInput
                 continue;
 
             if (availableActions.Any(a => (int)a == raw))
-                return (TypeGameAction)raw;
+                return (PokerTypeAction)raw;
         }
     }
 

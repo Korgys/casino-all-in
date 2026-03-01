@@ -21,15 +21,15 @@ public class PokerGameTests
 
         var deckCards = new[]
         {
-            new Card(CardRank.As, Suit.Pique),        // Alice 1
-            new Card(CardRank.Roi, Suit.Coeur),       // Alice 2
-            new Card(CardRank.Neuf, Suit.Trefle),     // Bob 1
-            new Card(CardRank.Huit, Suit.Carreau),    // Bob 2
-            new Card(CardRank.As, Suit.Coeur),        // Flop 1 (paire d'As pour Alice)
-            new Card(CardRank.Deux, Suit.Coeur),      // Flop 2
-            new Card(CardRank.Trois, Suit.Trefle),    // Flop 3
-            new Card(CardRank.Sept, Suit.Pique),      // Turn
-            new Card(CardRank.Dame, Suit.Carreau)     // River
+            new Card(CardRank.As, Suit.Spades),        // Alice 1
+            new Card(CardRank.Roi, Suit.Hearts),       // Alice 2
+            new Card(CardRank.Neuf, Suit.Clubs),     // Bob 1
+            new Card(CardRank.Huit, Suit.Diamonds),    // Bob 2
+            new Card(CardRank.As, Suit.Hearts),        // Flop 1 (paire d'As pour Alice)
+            new Card(CardRank.Deux, Suit.Hearts),      // Flop 2
+            new Card(CardRank.Trois, Suit.Clubs),    // Flop 3
+            new Card(CardRank.Sept, Suit.Spades),      // Turn
+            new Card(CardRank.Dame, Suit.Diamonds)     // River
         };
 
         var deckFactory = () => new FakeDeck(deckCards);
@@ -39,17 +39,17 @@ public class PokerGameTests
         {
             ["Alice"] = new Queue<GameAction>(new[]
             {
-                new GameAction(TypeGameAction.Miser, 10), // 1er tour, 1er Player : mise obligatoire (>= 10 géré dans PokerGame)
-                new GameAction(TypeGameAction.Check),
-                new GameAction(TypeGameAction.Check),
-                new GameAction(TypeGameAction.Check)
+                new GameAction(PokerTypeAction.Bet, 10), // 1er tour, 1er Player : mise obligatoire (>= 10 géré dans PokerGame)
+                new GameAction(PokerTypeAction.Check),
+                new GameAction(PokerTypeAction.Check),
+                new GameAction(PokerTypeAction.Check)
             }),
             ["Bob"] = new Queue<GameAction>(new[]
             {
-                new GameAction(TypeGameAction.Suivre), // Il suit la mise d’Alice
-                new GameAction(TypeGameAction.Check),
-                new GameAction(TypeGameAction.Check),
-                new GameAction(TypeGameAction.Check)
+                new GameAction(PokerTypeAction.Call), // Il suit la mise d’Alice
+                new GameAction(PokerTypeAction.Check),
+                new GameAction(PokerTypeAction.Check),
+                new GameAction(PokerTypeAction.Check)
             })
         };
 
@@ -88,15 +88,15 @@ public class PokerGameTests
         var autreHumain = new HumanPlayer("Bob", 100);
         var deckCards = new[]
         {
-            new Card(CardRank.As, Suit.Pique),        // Alice 1
-            new Card(CardRank.Roi, Suit.Coeur),       // Alice 2
-            new Card(CardRank.Neuf, Suit.Trefle),     // Bob 1
-            new Card(CardRank.Huit, Suit.Carreau),    // Bob 2
-            new Card(CardRank.Deux, Suit.Coeur),      // Flop 1
-            new Card(CardRank.Trois, Suit.Trefle),    // Flop 2
-            new Card(CardRank.Quatre, Suit.Carreau),  // Flop 3
-            new Card(CardRank.Cinq, Suit.Pique),      // Turn
-            new Card(CardRank.Six, Suit.Coeur)        // River
+            new Card(CardRank.As, Suit.Spades),        // Alice 1
+            new Card(CardRank.Roi, Suit.Hearts),       // Alice 2
+            new Card(CardRank.Neuf, Suit.Clubs),     // Bob 1
+            new Card(CardRank.Huit, Suit.Diamonds),    // Bob 2
+            new Card(CardRank.Deux, Suit.Hearts),      // Flop 1
+            new Card(CardRank.Trois, Suit.Clubs),    // Flop 2
+            new Card(CardRank.Quatre, Suit.Diamonds),  // Flop 3
+            new Card(CardRank.Cinq, Suit.Spades),      // Turn
+            new Card(CardRank.Six, Suit.Hearts)        // River
         };
 
         var deckFactory = () => new FakeDeck(deckCards);
@@ -106,17 +106,17 @@ public class PokerGameTests
         {
             ["Alice"] = new Queue<GameAction>(new[]
             {
-                new GameAction(TypeGameAction.Miser, 10),
-                new GameAction(TypeGameAction.Check),
-                new GameAction(TypeGameAction.Check),
-                new GameAction(TypeGameAction.Check)
+                new GameAction(PokerTypeAction.Bet, 10),
+                new GameAction(PokerTypeAction.Check),
+                new GameAction(PokerTypeAction.Check),
+                new GameAction(PokerTypeAction.Check)
             }),
             ["Bob"] = new Queue<GameAction>(new[]
             {
-                new GameAction(TypeGameAction.Suivre),
-                new GameAction(TypeGameAction.Check),
-                new GameAction(TypeGameAction.Check),
-                new GameAction(TypeGameAction.Check)
+                new GameAction(PokerTypeAction.Call),
+                new GameAction(PokerTypeAction.Check),
+                new GameAction(PokerTypeAction.Check),
+                new GameAction(PokerTypeAction.Check)
             })
         };
 
@@ -150,15 +150,15 @@ public class PokerGameTests
         var autreHumain = new HumanPlayer("Bob", 100);
         var deckCards = new[]
         {
-            new Card(CardRank.As, Suit.Pique),
-            new Card(CardRank.Roi, Suit.Coeur),
-            new Card(CardRank.Neuf, Suit.Trefle),
-            new Card(CardRank.Huit, Suit.Carreau),
-            new Card(CardRank.Deux, Suit.Coeur),
-            new Card(CardRank.Trois, Suit.Trefle),
-            new Card(CardRank.Quatre, Suit.Carreau),
-            new Card(CardRank.Cinq, Suit.Pique),
-            new Card(CardRank.Six, Suit.Coeur)
+            new Card(CardRank.As, Suit.Spades),
+            new Card(CardRank.Roi, Suit.Hearts),
+            new Card(CardRank.Neuf, Suit.Clubs),
+            new Card(CardRank.Huit, Suit.Diamonds),
+            new Card(CardRank.Deux, Suit.Hearts),
+            new Card(CardRank.Trois, Suit.Clubs),
+            new Card(CardRank.Quatre, Suit.Diamonds),
+            new Card(CardRank.Cinq, Suit.Spades),
+            new Card(CardRank.Six, Suit.Hearts)
         };
 
         var deckFactory = () => new FakeDeck(deckCards);
@@ -167,25 +167,25 @@ public class PokerGameTests
         {
             ["Alice"] = new Queue<GameAction>(new[]
             {
-                new GameAction(TypeGameAction.Miser, 10),
-                new GameAction(TypeGameAction.Miser, 10),
-                new GameAction(TypeGameAction.Miser, 10),
-                new GameAction(TypeGameAction.Miser, 10),
-                new GameAction(TypeGameAction.Suivre),
-                new GameAction(TypeGameAction.Suivre),
-                new GameAction(TypeGameAction.Suivre),
-                new GameAction(TypeGameAction.Suivre)
+                new GameAction(PokerTypeAction.Bet, 10),
+                new GameAction(PokerTypeAction.Bet, 10),
+                new GameAction(PokerTypeAction.Bet, 10),
+                new GameAction(PokerTypeAction.Bet, 10),
+                new GameAction(PokerTypeAction.Call),
+                new GameAction(PokerTypeAction.Call),
+                new GameAction(PokerTypeAction.Call),
+                new GameAction(PokerTypeAction.Call)
             }),
             ["Bob"] = new Queue<GameAction>(new[]
             {
-                new GameAction(TypeGameAction.Suivre),
-                new GameAction(TypeGameAction.Suivre),
-                new GameAction(TypeGameAction.Suivre),
-                new GameAction(TypeGameAction.Suivre),
-                new GameAction(TypeGameAction.Miser, 10),
-                new GameAction(TypeGameAction.Miser, 10),
-                new GameAction(TypeGameAction.Miser, 10),
-                new GameAction(TypeGameAction.Miser, 10)
+                new GameAction(PokerTypeAction.Call),
+                new GameAction(PokerTypeAction.Call),
+                new GameAction(PokerTypeAction.Call),
+                new GameAction(PokerTypeAction.Call),
+                new GameAction(PokerTypeAction.Bet, 10),
+                new GameAction(PokerTypeAction.Bet, 10),
+                new GameAction(PokerTypeAction.Bet, 10),
+                new GameAction(PokerTypeAction.Bet, 10)
             })
         };
 

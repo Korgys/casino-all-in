@@ -13,8 +13,8 @@ public class RandomStrategy : IPlayerStrategy
 
         int montant = action switch
         {
-            TypeGameAction.Miser => contexte.MinimumBet,
-            TypeGameAction.Relancer => CalculerRelance(contexte),
+            PokerTypeAction.Bet => contexte.MinimumBet,
+            PokerTypeAction.Raise => CalculerRelance(contexte),
             _ => 0
         };
 

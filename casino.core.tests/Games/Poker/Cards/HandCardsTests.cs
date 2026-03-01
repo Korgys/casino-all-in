@@ -12,8 +12,8 @@ public class CartesMainTests
     public void Constructeur_DoitInitialiserFirstEtSecond()
     {
         // Arrange
-        var c1 = new Card(CardRank.As, Suit.Pique);
-        var c2 = new Card(CardRank.Roi, Suit.Coeur);
+        var c1 = new Card(CardRank.As, Suit.Spades);
+        var c2 = new Card(CardRank.Roi, Suit.Hearts);
 
         // Act
         var main = new HandCards(c1, c2);
@@ -27,8 +27,8 @@ public class CartesMainTests
     public void AsEnumerable_DoitRetournerDeuxCartes_DansLeBonOrdre()
     {
         // Arrange
-        var c1 = new Card(CardRank.As, Suit.Pique);
-        var c2 = new Card(CardRank.Roi, Suit.Coeur);
+        var c1 = new Card(CardRank.As, Suit.Spades);
+        var c2 = new Card(CardRank.Roi, Suit.Hearts);
         var main = new HandCards(c1, c2);
 
         // Act
@@ -44,8 +44,8 @@ public class CartesMainTests
     public void AsEnumerable_QuandSecondEstNull_DoitRetournerSeulementFirst()
     {
         // Arrange
-        var c1 = new Card(CardRank.As, Suit.Pique);
-        var main = new HandCards(c1, seconde: null!);
+        var c1 = new Card(CardRank.As, Suit.Spades);
+        var main = new HandCards(c1, second: null!);
 
         // Act
         var cartes = main.AsEnumerable().ToList();
@@ -59,8 +59,8 @@ public class CartesMainTests
     public void ToString_DoitConcatenerLesDeuxCartes()
     {
         // Arrange
-        var c1 = new Card(CardRank.As, Suit.Pique);     // "A Pique"
-        var c2 = new Card(CardRank.Roi, Suit.Coeur);    // "K Coeur"
+        var c1 = new Card(CardRank.As, Suit.Spades);     // "A Pique"
+        var c2 = new Card(CardRank.Roi, Suit.Hearts);    // "K Coeur"
         var main = new HandCards(c1, c2);
 
         // Act

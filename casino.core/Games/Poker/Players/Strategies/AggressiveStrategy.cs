@@ -12,32 +12,32 @@ public class AggressiveStrategy : IPlayerStrategy
         var Player = contexte.CurrentPlayer;
         var relanceMinimum = Math.Max(contexte.Round.CurrentBet + contexte.Round.StartingBet, contexte.MinimumBet);
 
-        if (actions.Contains(TypeGameAction.Relancer) && Player.Chips > contexte.Round.CurrentBet)
+        if (actions.Contains(PokerTypeAction.Raise) && Player.Chips > contexte.Round.CurrentBet)
         {
             int mise = Math.Min(Player.Chips, relanceMinimum);
-            return new Actions.GameAction(TypeGameAction.Relancer, mise);
+            return new Actions.GameAction(PokerTypeAction.Raise, mise);
         }
 
-        if (actions.Contains(TypeGameAction.Miser))
+        if (actions.Contains(PokerTypeAction.Bet))
         {
-            return new Actions.GameAction(TypeGameAction.Miser, contexte.MinimumBet);
+            return new Actions.GameAction(PokerTypeAction.Bet, contexte.MinimumBet);
         }
 
-        if (actions.Contains(TypeGameAction.Suivre))
+        if (actions.Contains(PokerTypeAction.Call))
         {
-            return new Actions.GameAction(TypeGameAction.Suivre);
+            return new Actions.GameAction(PokerTypeAction.Call);
         }
 
-        if (actions.Contains(TypeGameAction.Tapis))
+        if (actions.Contains(PokerTypeAction.AllIn))
         {
-            return new Actions.GameAction(TypeGameAction.Tapis);
+            return new Actions.GameAction(PokerTypeAction.AllIn);
         }
 
-        if (actions.Contains(TypeGameAction.Check))
+        if (actions.Contains(PokerTypeAction.Check))
         {
-            return new Actions.GameAction(TypeGameAction.Check);
+            return new Actions.GameAction(PokerTypeAction.Check);
         }
 
-        return new Actions.GameAction(TypeGameAction.SeCoucher);
+        return new Actions.GameAction(PokerTypeAction.Fold);
     }
 }

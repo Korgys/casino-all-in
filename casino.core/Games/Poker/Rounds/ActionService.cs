@@ -26,12 +26,12 @@ public class ActionService : IActionService
 
     private static IPlayerCommand CreerCommande(Player Player, Actions.GameAction action) => action.TypeAction switch
     {
-        TypeGameAction.SeCoucher => new FoldCommand(Player),
-        TypeGameAction.Miser => new BetCommand(Player, action.Montant),
-        TypeGameAction.Suivre => new CallCommand(Player),
-        TypeGameAction.Relancer => new RaiseCommand(Player, action.Montant),
-        TypeGameAction.Tapis => new AllInCommand(Player),
-        TypeGameAction.Check => new CheckCommand(Player),
+        PokerTypeAction.Fold => new FoldCommand(Player),
+        PokerTypeAction.Bet => new BetCommand(Player, action.Amount),
+        PokerTypeAction.Call => new CallCommand(Player),
+        PokerTypeAction.Raise => new RaiseCommand(Player, action.Amount),
+        PokerTypeAction.AllIn => new AllInCommand(Player),
+        PokerTypeAction.Check => new CheckCommand(Player),
         _ => throw new ArgumentException("Action de Player invalide")
     };
 }

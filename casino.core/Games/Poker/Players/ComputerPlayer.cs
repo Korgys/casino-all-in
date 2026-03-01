@@ -6,8 +6,8 @@ public class ComputerPlayer : Player
 {
     public IPlayerStrategy Strategy { get; }
 
-    public ComputerPlayer(string name, int chips, IPlayerStrategy? strategie = null) : base(name, chips)
+    public ComputerPlayer(string name, int chips, IPlayerStrategy? strategy = null) : base(name, chips)
     {
-        Strategy = strategie ?? new RandomStrategy();
+        Strategy = strategy ?? new RandomStrategy();
     }
 }

@@ -15,7 +15,7 @@ namespace casino.core.tests.Games.Poker.Actions.Commands;
 [TestClass]
 public class CommandsTests
 {
-    private static IEnumerable<Card> CreerCartesSimples() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Coeur), 10);
+    private static IEnumerable<Card> CreerCartesSimples() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10);
 
     [TestMethod]
     public void CheckCommand_QuandPasDeMise_MetDerniereActionCheck()
@@ -26,7 +26,7 @@ public class CommandsTests
         var cmd = new CheckCommand(Player);
         cmd.Execute(partie);
 
-        Assert.AreEqual(TypeGameAction.Check, Player.LastAction);
+        Assert.AreEqual(PokerTypeAction.Check, Player.LastAction);
     }
 
     [TestMethod]
@@ -51,7 +51,7 @@ public class CommandsTests
         var cmd = new BetCommand(Player, 25);
         cmd.Execute(partie);
 
-        Assert.AreEqual(TypeGameAction.Miser, Player.LastAction);
+        Assert.AreEqual(PokerTypeAction.Bet, Player.LastAction);
         Assert.AreEqual(75, Player.Chips);
         Assert.AreEqual(25, partie.CurrentBet);
         Assert.AreEqual(25, partie.GetBetFor(Player));
@@ -80,7 +80,7 @@ public class CommandsTests
         var cmd = new RaiseCommand(Player, 50);
         cmd.Execute(partie);
 
-        Assert.AreEqual(TypeGameAction.Relancer, Player.LastAction);
+        Assert.AreEqual(PokerTypeAction.Raise, Player.LastAction);
         Assert.AreEqual(150, Player.Chips);
         Assert.AreEqual(50, partie.CurrentBet);
         Assert.AreEqual(50, partie.GetBetFor(Player));
@@ -98,7 +98,7 @@ public class CommandsTests
         var cmd = new RaiseCommand(Player, 20);
         cmd.Execute(partie);
 
-        Assert.AreEqual(TypeGameAction.Tapis, Player.LastAction);
+        Assert.AreEqual(PokerTypeAction.AllIn, Player.LastAction);
         Assert.AreEqual(0, Player.Chips);
         Assert.AreEqual(20, partie.GetBetFor(Player));
         Assert.IsGreaterThanOrEqualTo(20, partie.CurrentBet);
@@ -131,7 +131,7 @@ public class CommandsTests
         var cmd = new CallCommand(Player);
         cmd.Execute(partie);
 
-        Assert.AreEqual(TypeGameAction.Suivre, Player.LastAction);
+        Assert.AreEqual(PokerTypeAction.Call, Player.LastAction);
         Assert.AreEqual(70, Player.Chips); // 100 - (40-10) = 70
         Assert.AreEqual(40, partie.GetBetFor(Player));
         Assert.IsGreaterThanOrEqualTo(30, partie.Pot);
@@ -163,7 +163,7 @@ public class CommandsTests
         var cmd = new AllInCommand(Player);
         cmd.Execute(partie);
 
-        Assert.AreEqual(TypeGameAction.Tapis, Player.LastAction);
+        Assert.AreEqual(PokerTypeAction.AllIn, Player.LastAction);
         Assert.AreEqual(0, Player.Chips);
         Assert.AreEqual(35, partie.GetBetFor(Player)); // 5 + 30
         Assert.IsGreaterThanOrEqualTo(35, partie.CurrentBet);

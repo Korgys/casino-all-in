@@ -39,13 +39,13 @@ public class ConsolePokerRenderer
             RenderPlayerLine(p, currentPlayerName, state);
     }
 
-    public static void RenderAvailableActions(IReadOnlyList<TypeGameAction> actions, int minimumBet)
+    public static void RenderAvailableActions(IReadOnlyList<PokerTypeAction> actions, int minimumBet)
     {
         Console.Write("\nActions : ");
         foreach (var a in actions)
         {
             // Afficher la mise minimale pour l'action "Miser"
-            if (a == TypeGameAction.Miser)
+            if (a == PokerTypeAction.Bet)
             {
                 Console.Write($"{(int)a}. {a} (");
                 ConsolePokerWriter.WriteAmount(minimumBet);
@@ -89,7 +89,7 @@ public class ConsolePokerRenderer
             ConsolePokerWriter.WriteHand(p.Hand!);
             WriteScoreAndProbabilityOfVictory(p, state, currentPlayerName);
         }
-        if (p.LastAction != TypeGameAction.Aucune)
+        if (p.LastAction != PokerTypeAction.None)
             Console.Write($" [{p.LastAction}]");
 
         if (p.IsWinner)
@@ -104,7 +104,7 @@ public class ConsolePokerRenderer
 
     private static void WriteScoreAndProbabilityOfVictory(PokerPlayerState player, PokerGameState state, string currentPlayerName)
     {
-        var score = ScoreEvaluator.EvaluerScore(player.Hand!, state.CommunityCards);
+        var score = ScoreEvaluator.EvaluateScore(player.Hand!, state.CommunityCards);
         Console.Write($" ({score}");
 
         // Calcule la probabilité de victoire uniquement pour le Player actuel ou si fin de partie
@@ -139,7 +139,7 @@ public class ConsolePokerRenderer
 
         try
         {
-            return ProbabilityEvaluator.EstimerProbabiliteDeGagner(
+            return ProbabilityEvaluator.EstimateWinProbability(
                 player.Hand,
                 state.CommunityCards,
                 adversaires,

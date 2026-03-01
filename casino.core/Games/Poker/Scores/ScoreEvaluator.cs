@@ -7,25 +7,25 @@ namespace casino.core.Games.Poker.Scores;
 
 public static class ScoreEvaluator
 {
-    public static Score EvaluerScore(HandCards main, TableCards communityCards)
+    public static Score EvaluateScore(HandCards main, TableCards communityCards)
     {
         ArgumentNullException.ThrowIfNull(main);
         ArgumentNullException.ThrowIfNull(communityCards);
 
         // Hold'em : 2 privatives + 0..5 communes => 2..7 cartes
-        var cartes = main.AsEnumerable().Concat(communityCards.AsEnumerable()).ToArray();
+        var cards = main.AsEnumerable().Concat(communityCards.AsEnumerable()).ToArray();
 
         // Centralisation des rangs triés (utile pour carte haute / kickers)
         // GroupBy faits une seule fois
-        var rangsDistinctDesc = cartes
+        var rangsDistinctDesc = cards
             .Select(c => c.Rang)
             .Distinct()
             .OrderByDescending(r => r)
             .ToArray();
-        var groupesParRang = cartes
+        var groupesParRang = cards
             .GroupBy(c => c.Rang)
             .ToArray();
-        var groupesParSuit = cartes
+        var groupesParSuit = cards
             .GroupBy(c => c.Suit)
             .ToArray();
 
@@ -33,59 +33,59 @@ public static class ScoreEvaluator
 
         // Quinte flush royale
         if (ComporteQuinteFlushRoyale(groupesParSuit))
-            return new Score(HandRank.QuinteFlushRoyale, CardRank.As, kickers: Array.Empty<CardRank>());
+            return new Score(HandRank.RoyalFlush, CardRank.As, kickers: Array.Empty<CardRank>());
 
         // Quinte flush
         if (ValeurQuinteFlush(groupesParSuit) is CardRank vQuinteFlush)
-            return new Score(HandRank.QuinteFlush, vQuinteFlush, kickers: Array.Empty<CardRank>());
+            return new Score(HandRank.StraightFlush, vQuinteFlush, kickers: Array.Empty<CardRank>());
 
         // Carré
         if (ValeurCarre(groupesParRang) is CardRank vCarre)
         {
             var kicker = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vCarre }, combien: 1);
-            return new Score(HandRank.Carre, vCarre, kicker);
+            return new Score(HandRank.FourOfAKind, vCarre, kicker);
         }
 
         // Full
         if (ValeurFull(groupesParRang, out var tripsFull, out var paireFull))
-            return new Score(HandRank.Full, tripsFull, new[] { paireFull });
+            return new Score(HandRank.FullHouse, tripsFull, new[] { paireFull });
 
         // Suit
         if (TryGetFlushTop5(groupesParSuit, out var flushTop5))
-            return new Score(HandRank.Suit, flushTop5[0], flushTop5.Skip(1).ToArray());
+            return new Score(HandRank.Flush, flushTop5[0], flushTop5.Skip(1).ToArray());
 
         // Suite
         if (ValeurSuite(rangsDistinctDesc) is CardRank vSuite)
-            return new Score(HandRank.Suite, vSuite, kickers: Array.Empty<CardRank>());
+            return new Score(HandRank.Straight, vSuite, kickers: Array.Empty<CardRank>());
 
         // Brelan
         if (ValeurBrelan(groupesParRang) is CardRank vBrelan)
         {
             var kickers = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vBrelan }, combien: 2);
-            return new Score(HandRank.Brelan, vBrelan, kickers);
+            return new Score(HandRank.ThreeOfAKind, vBrelan, kickers);
         }
 
         // Double paire
         if (ValeurDoublePaire(groupesParRang, out var paireHaute, out var paireBasse))
         {
             var kicker = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { paireHaute, paireBasse }, combien: 1);
-            return new Score(HandRank.DoublePaire, paireHaute, new[] { paireBasse }.Concat(kicker).ToArray());
+            return new Score(HandRank.TwoPair, paireHaute, new[] { paireBasse }.Concat(kicker).ToArray());
         }
 
         // Paire
         if (ValeurPaire(groupesParRang) is CardRank vPaire)
         {
             var kickers = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vPaire }, combien: 3);
-            return new Score(HandRank.Paire, vPaire, kickers);
+            return new Score(HandRank.OnePair, vPaire, kickers);
         }
 
         // Carte haute
         if (rangsDistinctDesc.Length == 0)
-            return new Score(HandRank.CarteHaute, CardRank.Deux, Array.Empty<CardRank>());
+            return new Score(HandRank.HighCard, CardRank.Deux, Array.Empty<CardRank>());
 
         var topCarteHaute = rangsDistinctDesc[0];
         var kickersCarteHaute = rangsDistinctDesc.Skip(1).Take(4).ToArray();
-        return new Score(HandRank.CarteHaute, topCarteHaute, kickersCarteHaute);
+        return new Score(HandRank.HighCard, topCarteHaute, kickersCarteHaute);
     }
 
     /// <summary>

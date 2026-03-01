@@ -2,10 +2,10 @@
 
 public enum Suit
 {
-    Coeur,
-    Carreau,
-    Trefle,
-    Pique
+    Hearts,
+    Diamonds,
+    Clubs,
+    Spades
 }
 
 public static class SuitExtensions
@@ -14,10 +14,10 @@ public static class SuitExtensions
     {
         return couleur switch
         {
-            Suit.Coeur => "♥",
-            Suit.Carreau => "♦",
-            Suit.Trefle => "♣",
-            Suit.Pique => "♠",
+            Suit.Hearts => "♥",
+            Suit.Diamonds => "♦",
+            Suit.Clubs => "♣",
+            Suit.Spades => "♠",
             _ => throw new ArgumentOutOfRangeException(nameof(couleur), couleur, null)
         };
     }

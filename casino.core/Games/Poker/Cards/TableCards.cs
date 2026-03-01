@@ -14,15 +14,15 @@ public class TableCards
 
     public IEnumerable<Card> AsEnumerable()
     {
-        var cartes = new List<Card>();
+        var cards = new List<Card>();
 
-        if (Flop1 != null) cartes.Add(Flop1);
-        if (Flop2 != null) cartes.Add(Flop2);
-        if (Flop3 != null) cartes.Add(Flop3);
-        if (Turn != null) cartes.Add(Turn);
-        if (River != null) cartes.Add(River);
+        if (Flop1 != null) cards.Add(Flop1);
+        if (Flop2 != null) cards.Add(Flop2);
+        if (Flop3 != null) cards.Add(Flop3);
+        if (Turn != null) cards.Add(Turn);
+        if (River != null) cards.Add(River);
 
-        return cartes;
+        return cards;
     }
 
     public override string ToString()

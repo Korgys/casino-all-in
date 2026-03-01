@@ -61,12 +61,12 @@ public class PlayerTests
     public void ComputerPlayer_AvecStrategy_DoitUtiliserCelleFournie()
     {
         // Arrange
-        var strategie = new ConservativeStrategy();
+        var strategy = new ConservativeStrategy();
 
         // Act
-        var Player = new ComputerPlayer("Bot", 120, strategie);
+        var Player = new ComputerPlayer("Bot", 120, strategy);
 
         // Assert
-        Assert.AreSame(strategie, Player.Strategy, "La stratégie fournie doit être utilisée telle quelle.");
+        Assert.AreSame(strategy, Player.Strategy, "La stratégie fournie doit être utilisée telle quelle.");
     }
 }

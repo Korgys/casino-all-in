@@ -10,15 +10,15 @@ public class GameContext
 {
     public Round Round { get; }
     public Player CurrentPlayer { get; }
-    public IReadOnlyList<TypeGameAction> AvailableActions { get; }
+    public IReadOnlyList<PokerTypeAction> AvailableActions { get; }
     public Score PlayerScore { get; }
     public int MinimumBet => Math.Max(Round.CurrentBet, Round.StartingBet);
 
-    public GameContext(Round partie, Player currentPlayer, IReadOnlyList<TypeGameAction> actionsPossibles)
+    public GameContext(Round partie, Player currentPlayer, IReadOnlyList<PokerTypeAction> actionsPossibles)
     {
         Round = partie;
         CurrentPlayer = currentPlayer;
         AvailableActions = actionsPossibles;
-        PlayerScore = ScoreEvaluator.EvaluerScore(currentPlayer.Hand, partie.CommunityCards);
+        PlayerScore = ScoreEvaluator.EvaluateScore(currentPlayer.Hand, partie.CommunityCards);
     }
 }

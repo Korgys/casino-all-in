@@ -4,7 +4,7 @@ namespace casino.core.Games.Poker.Actions;
 
 public class ActionRequest
 {
-    public ActionRequest(string playerName, IReadOnlyList<TypeGameAction> actionsPossibles, int minimumBet, int currentBet, int pot, object tableState)
+    public ActionRequest(string playerName, IReadOnlyList<PokerTypeAction> actionsPossibles, int minimumBet, int currentBet, int pot, object tableState)
     {
         PlayerName = playerName;
         AvailableActions = actionsPossibles;
@@ -16,7 +16,7 @@ public class ActionRequest
 
     public string PlayerName { get; }
 
-    public IReadOnlyList<TypeGameAction> AvailableActions { get; }
+    public IReadOnlyList<PokerTypeAction> AvailableActions { get; }
 
     public int MinimumBet { get; }
 

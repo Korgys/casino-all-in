@@ -13,7 +13,7 @@ public class CarteTests
     {
         // Arrange
         var rang = CardRank.As;
-        var couleur = Suit.Coeur;
+        var couleur = Suit.Hearts;
 
         // Act
         var carte = new Card(rang, couleur);
@@ -27,7 +27,7 @@ public class CarteTests
     public void ToString_DoitRetournerRangCourtEtSuit()
     {
         // Arrange
-        var carte = new Card(CardRank.As, Suit.Pique);
+        var carte = new Card(CardRank.As, Suit.Spades);
 
         // Act
         var result = carte.ToString();
@@ -40,7 +40,7 @@ public class CarteTests
     public void ToString_DoitEtreDeterministe()
     {
         // Arrange
-        var carte = new Card(CardRank.Dix, Suit.Carreau);
+        var carte = new Card(CardRank.Dix, Suit.Diamonds);
 
         // Act
         var first = carte.ToString();
@@ -54,8 +54,8 @@ public class CarteTests
     public void Equals_DeuxCartesIdentiques_DoitRetournerTrue()
     {
         // Arrange
-        var carte1 = new Card(CardRank.Roi, Suit.Trefle);
-        var carte2 = new Card(CardRank.Roi, Suit.Trefle);
+        var carte1 = new Card(CardRank.Roi, Suit.Clubs);
+        var carte2 = new Card(CardRank.Roi, Suit.Clubs);
 
         // Act
         var equals = carte1.Equals(carte2);
@@ -68,8 +68,8 @@ public class CarteTests
     public void Equals_DeuxCartesDifferentes_DoitRetournerFalse()
     {
         // Arrange
-        var carte1 = new Card(CardRank.Roi, Suit.Trefle);
-        var carte2 = new Card(CardRank.Roi, Suit.Coeur);
+        var carte1 = new Card(CardRank.Roi, Suit.Clubs);
+        var carte2 = new Card(CardRank.Roi, Suit.Hearts);
 
         // Act
         var equals = carte1.Equals(carte2);
@@ -82,8 +82,8 @@ public class CarteTests
     public void GetHashCode_DeuxCartesIdentiques_DoitRetournerMemeValeur()
     {
         // Arrange
-        var carte1 = new Card(CardRank.Dame, Suit.Coeur);
-        var carte2 = new Card(CardRank.Dame, Suit.Coeur);
+        var carte1 = new Card(CardRank.Dame, Suit.Hearts);
+        var carte2 = new Card(CardRank.Dame, Suit.Hearts);
 
         // Act
         var hash1 = carte1.GetHashCode();

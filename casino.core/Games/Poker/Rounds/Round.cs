@@ -47,7 +47,7 @@ public class Round
 
     public bool IsInProgress() => Phase != Phase.Showdown;
 
-    public IEnumerable<TypeGameAction> GetAvailableActions(Player Player)
+    public IEnumerable<PokerTypeAction> GetAvailableActions(Player Player)
     {
         return PhaseState.GetAvailableActions(Player, this);
     }
@@ -59,7 +59,7 @@ public class Round
 
     private void DealCards()
     {
-        foreach (var Player in Players.Where(j => j.Chips > 0 && j.LastAction != TypeGameAction.SeCoucher))
+        foreach (var Player in Players.Where(j => j.Chips > 0 && j.LastAction != PokerTypeAction.Fold))
         {
             Player.Hand = new HandCards(Deck.DrawCard(), Deck.DrawCard());
         }
@@ -98,7 +98,7 @@ public class Round
 
         return PlayersNonCouches.All(j =>
             j.IsAllIn() ||
-            (GetBetFor(j) == miseMax && j.LastAction != TypeGameAction.Aucune));
+            (GetBetFor(j) == miseMax && j.LastAction != PokerTypeAction.None));
     }
 
     internal void ResetBetsAndActions()
@@ -111,7 +111,7 @@ public class Round
 
             if (!Player.IsFolded() && !Player.IsAllIn())
             {
-                Player.LastAction = TypeGameAction.Aucune;
+                Player.LastAction = PokerTypeAction.None;
             }
         }
     }
@@ -138,7 +138,7 @@ public class Round
         }
 
         // Gagnants par la meilleure main (peut �tre une �galit�)
-        var gagnants = WinnerEvaluator.DeterminerGagnantsParMain(Players, CommunityCards);
+        var gagnants = WinnerEvaluator.DetermineWinnersByHand(Players, CommunityCards);
         Winners = gagnants;
 
         DistributePot(gagnants);

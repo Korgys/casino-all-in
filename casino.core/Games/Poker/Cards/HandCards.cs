@@ -9,20 +9,20 @@ public class HandCards
     public Card First { get; }
     public Card Second { get; }
 
-    public HandCards(Card premiere, Card seconde)
+    public HandCards(Card first, Card second)
     {
-        First = premiere;
-        Second = seconde;
+        First = first;
+        Second = second;
     }
 
     public IEnumerable<Card> AsEnumerable()
     {
-        var cartes = new List<Card>();
+        var cards = new List<Card>();
 
-        if (First != null) cartes.Add(First);
-        if (Second != null) cartes.Add(Second);
+        if (First != null) cards.Add(First);
+        if (Second != null) cards.Add(Second);
 
-        return cartes;
+        return cards;
     }
 
     public override string ToString()

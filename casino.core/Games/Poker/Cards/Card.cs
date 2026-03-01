@@ -4,10 +4,10 @@ public class Card
 {
     public CardRank Rang { get; }
     public Suit Suit { get; }
-    public Card(CardRank rang, Suit couleur)
+    public Card(CardRank rang, Suit suit)
     {
         Rang = rang;
-        Suit = couleur;
+        Suit = suit;
     }
     public override string ToString()
     {

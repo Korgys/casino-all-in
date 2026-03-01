@@ -8,7 +8,7 @@ public record PokerPlayerState(
     int Chips,
     bool IsHuman,
     bool IsFolded,
-    TypeGameAction LastAction,
+    PokerTypeAction LastAction,
     HandCards? Hand,
     bool IsWinner);
 

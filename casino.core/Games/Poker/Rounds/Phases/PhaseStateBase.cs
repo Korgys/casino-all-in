@@ -10,9 +10,9 @@ public abstract class PhaseStateBase : IPhaseState
 {
     public abstract void Avancer(Round context);
 
-    public virtual IEnumerable<TypeGameAction> GetAvailableActions(Player Player, Round context)
+    public virtual IEnumerable<PokerTypeAction> GetAvailableActions(Player Player, Round context)
     {
-        var actionsPossibles = new List<TypeGameAction>();
+        var actionsPossibles = new List<PokerTypeAction>();
 
         // Un Player couché ou tapis n'a pas d'actions possibles
         if (Player.IsFolded() || Player.IsAllIn())
@@ -27,52 +27,52 @@ public abstract class PhaseStateBase : IPhaseState
         {
             if (Player.Chips <= 0)
             {
-                actionsPossibles.Add(TypeGameAction.SeCoucher);
+                actionsPossibles.Add(PokerTypeAction.Fold);
             }
             else if (Player.Chips <= context.StartingBet)
             {
-                actionsPossibles.Add(TypeGameAction.Tapis);
+                actionsPossibles.Add(PokerTypeAction.AllIn);
             }
             else
             {
-                actionsPossibles.Add(TypeGameAction.Miser);
-                actionsPossibles.Add(TypeGameAction.Relancer);
-                actionsPossibles.Add(TypeGameAction.Tapis);
+                actionsPossibles.Add(PokerTypeAction.Bet);
+                actionsPossibles.Add(PokerTypeAction.Raise);
+                actionsPossibles.Add(PokerTypeAction.AllIn);
             }
             return actionsPossibles.OrderBy(a => (int)a).ToList();
         }
 
-        actionsPossibles.Add(TypeGameAction.SeCoucher);
+        actionsPossibles.Add(PokerTypeAction.Fold);
 
         if (difference > 0)
         {
             if (difference < Player.Chips)
             {
-                actionsPossibles.Add(TypeGameAction.Suivre);
-                actionsPossibles.Add(TypeGameAction.Relancer);
-                actionsPossibles.Add(TypeGameAction.Tapis);
+                actionsPossibles.Add(PokerTypeAction.Call);
+                actionsPossibles.Add(PokerTypeAction.Raise);
+                actionsPossibles.Add(PokerTypeAction.AllIn);
             }
             else if (difference == Player.Chips)
             {
-                actionsPossibles.Add(TypeGameAction.Tapis);
+                actionsPossibles.Add(PokerTypeAction.AllIn);
             }
             else
             {
-                actionsPossibles.Add(TypeGameAction.Tapis);
+                actionsPossibles.Add(PokerTypeAction.AllIn);
             }
         }
         else // difference <= 0, aucune mise � rattraper
         {
-            actionsPossibles.Add(TypeGameAction.Check);
+            actionsPossibles.Add(PokerTypeAction.Check);
 
             if (context.CurrentBet == 0)
             {
-                actionsPossibles.Add(TypeGameAction.Miser);
+                actionsPossibles.Add(PokerTypeAction.Bet);
             }
 
             if (Player.Chips > 0 && (context.CurrentBet == 0 || Player.Chips + misePlayer > context.CurrentBet))
             {
-                actionsPossibles.Add(TypeGameAction.Relancer);
+                actionsPossibles.Add(PokerTypeAction.Raise);
             }
         }
 

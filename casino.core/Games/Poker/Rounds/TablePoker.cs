@@ -12,9 +12,8 @@ public class TablePoker
     public Round Round { get; private set; }
     public List<Player> Players { get; private set; }
     public TurnManager TurnManager { get; private set; }
-    public int PlayerInitialIndex => TurnManager?.PlayerInitialIndex ?? _playerInitialIndex;
-    public int CurrentPlayerIndex => TurnManager?.PlayerActuelIndex ?? _playerInitialIndex;
-    public int PlayerActuelIndex => CurrentPlayerIndex;
+    public int InitialPlayerIndex => TurnManager?.InitialPlayerIndex ?? _playerInitialIndex;
+    public int CurrentPlayerIndex => TurnManager?.CurrentPlayerIndex ?? _playerInitialIndex;
     private int _playerInitialIndex = -1;
 
     public void DemarrerRound(List<Player> Players, IDeck deck)
@@ -27,12 +26,12 @@ public class TablePoker
         TurnManager = new TurnManager(Round, _playerInitialIndex);
     }
 
-    public List<TypeGameAction> GetAvailableActions(Player Player)
+    public List<PokerTypeAction> GetAvailableActions(Player Player)
         => Round.GetAvailableActions(Player).OrderBy(a => (int)a).ToList();
 
     public void TraiterActionPlayer(Player Player, Actions.GameAction choix)
     {
-        TurnManager.TraiterActionPlayer(Player, choix);
+        TurnManager.ExecutePlayerAction(Player, choix);
     }
 
     public Player GetPlayerToAct()

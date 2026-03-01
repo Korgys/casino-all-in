@@ -16,18 +16,18 @@ public class CheckCommand : IPlayerCommand
 {
     private readonly Player _player;
 
-    public CheckCommand(Player Player)
+    public CheckCommand(Player player)
     {
-        _player = Player;
+        _player = player;
     }
 
-    public void Execute(Round partie)
+    public void Execute(Round round)
     {
-        if (partie.CurrentBet != 0)
+        if (round.CurrentBet != 0)
         {
             throw new InvalidOperationException("Le Player ne peut pas checker car il y a une mise sur la table.");
         }
 
-        _player.LastAction = TypeGameAction.Check;
+        _player.LastAction = PokerTypeAction.Check;
     }
 }

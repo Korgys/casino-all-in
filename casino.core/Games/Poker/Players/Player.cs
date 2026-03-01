@@ -16,9 +16,9 @@ public class Player
 
     public HandCards Hand { get; set; }
 
-    public bool IsFolded() => LastAction == TypeGameAction.SeCoucher;
-    public bool IsAllIn() => LastAction == TypeGameAction.Tapis;
-    public TypeGameAction LastAction { get; internal set; }
+    public bool IsFolded() => LastAction == PokerTypeAction.Fold;
+    public bool IsAllIn() => LastAction == PokerTypeAction.AllIn;
+    public PokerTypeAction LastAction { get; internal set; }
 
     public Player(string name, int chips)
     {
@@ -28,6 +28,6 @@ public class Player
 
     internal void Reset()
     {
-        LastAction = Chips > 0 ? TypeGameAction.Aucune : TypeGameAction.SeCoucher;
+        LastAction = Chips > 0 ? PokerTypeAction.None : PokerTypeAction.Fold;
     }
 }

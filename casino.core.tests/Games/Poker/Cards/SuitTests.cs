@@ -9,10 +9,10 @@ namespace casino.core.tests.Games.Poker.Cards;
 public class SuitTests
 {
     [TestMethod]
-    [DataRow(Suit.Coeur, "♥")]
-    [DataRow(Suit.Carreau, "♦")]
-    [DataRow(Suit.Trefle, "♣")]
-    [DataRow(Suit.Pique, "♠")]
+    [DataRow(Suit.Hearts, "♥")]
+    [DataRow(Suit.Diamonds, "♦")]
+    [DataRow(Suit.Clubs, "♣")]
+    [DataRow(Suit.Spades, "♠")]
     public void ToSymbol_DoitRetournerLeBonSymbole(Suit couleur, string attendu)
     {
         // Act

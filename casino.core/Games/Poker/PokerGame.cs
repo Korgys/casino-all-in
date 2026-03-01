@@ -32,7 +32,7 @@ public class PokerGame : GameBase
 
     protected override void InitializeGame()
     {
-        OnStateUpdated(CreerEtatTable());
+        OnStateUpdated(BuildPokerGameState());
     }
 
     protected override void ExecuteGameLoop()
@@ -44,9 +44,9 @@ public class PokerGame : GameBase
 
             OnPhaseAdvanced(_table.Round.Phase.ToString());
             OnPotUpdated(_table.Round.Pot, _table.Round.CurrentBet);
-            OnStateUpdated(CreerEtatTable());
+            OnStateUpdated(BuildPokerGameState());
 
-            JouerRound();
+            PlayRound();
 
             var winners = _table.Round.Winners;
 
@@ -55,7 +55,7 @@ public class PokerGame : GameBase
                 : string.Join(", ", winners.Select(g => g.Name));
 
             OnGameEnded(gagnantsLabel, _table.Round.Pot);
-            OnStateUpdated(CreerEtatTable());
+            OnStateUpdated(BuildPokerGameState());
 
             // Si plus aucun humain n'a de jetons, fin du jeu.
             if (!_playersHumain.Any(j => j.Chips > 0))
@@ -67,11 +67,11 @@ public class PokerGame : GameBase
         }
     }
 
-    private void JouerRound()
+    private void PlayRound()
     {
         while (_table.Round.IsInProgress())
         {
-            OnStateUpdated(CreerEtatTable());
+            OnStateUpdated(BuildPokerGameState());
 
             var phaseAvantAction = _table.Round.Phase;
             var PlayerActuel = _table.GetPlayerToAct();
@@ -85,7 +85,7 @@ public class PokerGame : GameBase
                     _table.Round.StartingBet,
                     _table.Round.CurrentBet,
                     _table.Round.Pot,
-                    CreerEtatTable());
+                    BuildPokerGameState());
 
                 var action = _humanActionSelector(contexte);
                 _table.TraiterActionPlayer(humain, action);
@@ -105,10 +105,7 @@ public class PokerGame : GameBase
         }
     }
 
-    protected override void ResolveGame() { }
-    protected override void CleanupGame() { }
-
-    private PokerGameState CreerEtatTable()
+    private PokerGameState BuildPokerGameState()
     {
         var partie = _table.Round;
 
@@ -122,7 +119,7 @@ public class PokerGame : GameBase
                 j.Name,
                 j.Chips,
                 j is HumanPlayer,
-                j.LastAction == Actions.TypeGameAction.SeCoucher,
+                j.LastAction == Actions.PokerTypeAction.Fold,
                 j.LastAction,
                 j.Hand,
                 partie?.Winners?.Any(g => g.Name == j.Name) == true)).ToList(),

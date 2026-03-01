@@ -7,6 +7,6 @@ using System.Collections.Generic;
 public interface IPhaseState
 {
     void Avancer(Round context);
-    IEnumerable<TypeGameAction> GetAvailableActions(Player Player, Round context);
+    IEnumerable<PokerTypeAction> GetAvailableActions(Player Player, Round context);
     void ApplyAction(Player Player, GameAction action, Round context);
 }

@@ -19,10 +19,10 @@ public class RoundTests
         // Arrange
         var deck = new FakeDeck(new[]
         {
-            new Card(CardRank.As, Suit.Coeur),
-            new Card(CardRank.Roi, Suit.Carreau),
-            new Card(CardRank.Dame, Suit.Trefle),
-            new Card(CardRank.Valet, Suit.Pique)
+            new Card(CardRank.As, Suit.Hearts),
+            new Card(CardRank.Roi, Suit.Diamonds),
+            new Card(CardRank.Dame, Suit.Clubs),
+            new Card(CardRank.Valet, Suit.Spades)
         });
         var PlayerActif = new HumanPlayer("Alice", 100);
         var PlayerSansJetons = new HumanPlayer("Bob", 0);
@@ -32,8 +32,8 @@ public class RoundTests
 
         // Assert
         Assert.IsNotNull(partie.Players.First(j => j.Name == "Alice").Hand, "Les Players avec des jetons doivent recevoir des cartes.");
-        Assert.AreEqual(new Card(CardRank.As, Suit.Coeur), PlayerActif.Hand.First, "La première carte doit provenir du deck fourni.");
-        Assert.AreEqual(new Card(CardRank.Roi, Suit.Carreau), PlayerActif.Hand.Second, "La seconde carte doit provenir du deck fourni.");
+        Assert.AreEqual(new Card(CardRank.As, Suit.Hearts), PlayerActif.Hand.First, "La première carte doit provenir du deck fourni.");
+        Assert.AreEqual(new Card(CardRank.Roi, Suit.Diamonds), PlayerActif.Hand.Second, "La seconde carte doit provenir du deck fourni.");
         Assert.IsNull(partie.Players.First(j => j.Name == "Bob").Hand, "Les Players sans jetons ne doivent pas recevoir de main.");
     }
 
@@ -43,11 +43,11 @@ public class RoundTests
         // Arrange
         var deck = new FakeDeck(new[]
         {
-            new Card(CardRank.As, Suit.Coeur),
-            new Card(CardRank.Roi, Suit.Coeur),
-            new Card(CardRank.Dame, Suit.Coeur),
-            new Card(CardRank.Valet, Suit.Coeur),
-            new Card(CardRank.Dix, Suit.Coeur)
+            new Card(CardRank.As, Suit.Hearts),
+            new Card(CardRank.Roi, Suit.Hearts),
+            new Card(CardRank.Dame, Suit.Hearts),
+            new Card(CardRank.Valet, Suit.Hearts),
+            new Card(CardRank.Dix, Suit.Hearts)
         });
         var Player = new HumanPlayer("Alice", 100);
         var partie = new Round(new List<Player> { Player }, deck);
@@ -58,18 +58,18 @@ public class RoundTests
         // Assert
         Assert.AreEqual(Phase.Flop, partie.Phase, "La phase doit passer au flop.");
         Assert.IsInstanceOfType<FlopPhaseState>(partie.PhaseState, "L'état doit être mis à jour pour le flop.");
-        Assert.AreEqual(new Card(CardRank.Dame, Suit.Coeur), partie.CommunityCards.Flop1, "La première carte du flop doit provenir du deck.");
-        Assert.AreEqual(new Card(CardRank.Valet, Suit.Coeur), partie.CommunityCards.Flop2, "La deuxième carte du flop doit provenir du deck.");
-        Assert.AreEqual(new Card(CardRank.Dix, Suit.Coeur), partie.CommunityCards.Flop3, "La troisième carte du flop doit provenir du deck.");
+        Assert.AreEqual(new Card(CardRank.Dame, Suit.Hearts), partie.CommunityCards.Flop1, "La première carte du flop doit provenir du deck.");
+        Assert.AreEqual(new Card(CardRank.Valet, Suit.Hearts), partie.CommunityCards.Flop2, "La deuxième carte du flop doit provenir du deck.");
+        Assert.AreEqual(new Card(CardRank.Dix, Suit.Hearts), partie.CommunityCards.Flop3, "La troisième carte du flop doit provenir du deck.");
     }
 
     [TestMethod]
     public void EndGame_DernierPlayerActif_DoitGagnerParAbandon()
     {
         // Arrange
-        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Coeur), 6));
+        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 6));
         var PlayerActif = new HumanPlayer("Alice", 100);
-        var PlayerCouche = new HumanPlayer("Bob", 50) { LastAction = TypeGameAction.SeCoucher };
+        var PlayerCouche = new HumanPlayer("Bob", 50) { LastAction = PokerTypeAction.Fold };
         var partie = new Round(new List<Player> { PlayerActif, PlayerCouche }, deck)
         {
             Pot = 50
@@ -89,27 +89,27 @@ public class RoundTests
     public void EndGame_DoitComparerLesMainsEtCrediterLePotAuMeilleurPlayer()
     {
         // Arrange
-        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Pique), 10));
+        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Spades), 10));
         var alice = new HumanPlayer("Alice", 100);
         var bob = new HumanPlayer("Bob", 100);
         var partie = new Round(new List<Player> { alice, bob }, deck)
         {
             CommunityCards = PlayerTestHelper.CreateCommunityCards(
-                new Card(CardRank.Dame, Suit.Coeur),
-                new Card(CardRank.Dix, Suit.Coeur),
-                new Card(CardRank.Neuf, Suit.Coeur),
-                new Card(CardRank.Deux, Suit.Carreau),
-                new Card(CardRank.Trois, Suit.Trefle)),
+                new Card(CardRank.Dame, Suit.Hearts),
+                new Card(CardRank.Dix, Suit.Hearts),
+                new Card(CardRank.Neuf, Suit.Hearts),
+                new Card(CardRank.Deux, Suit.Diamonds),
+                new Card(CardRank.Trois, Suit.Clubs)),
             Pot = 60
         };
 
         // Important : assigner les mains après l'initialisation de la partie
         alice.Hand = new HandCards(
-            new Card(CardRank.As, Suit.Coeur),
-            new Card(CardRank.Roi, Suit.Coeur));
+            new Card(CardRank.As, Suit.Hearts),
+            new Card(CardRank.Roi, Suit.Hearts));
         bob.Hand = new HandCards(
-            new Card(CardRank.As, Suit.Pique),
-            new Card(CardRank.As, Suit.Carreau));
+            new Card(CardRank.As, Suit.Spades),
+            new Card(CardRank.As, Suit.Diamonds));
 
         // Act
         partie.EndGame();

@@ -7,8 +7,8 @@ namespace casino.core.Games.Poker.Scores;
 
 public sealed class Score : IComparable<Score>
 {
-    public HandRank Rang { get; }
-    public CardRank Valeur { get; }
+    public HandRank Rank { get; }
+    public CardRank CardValue { get; }
 
     /// <summary>
     /// Stocker les valeurs de départage dans l'ordre décroissant (kickers).
@@ -17,8 +17,8 @@ public sealed class Score : IComparable<Score>
 
     public Score(HandRank rangMain, CardRank valeur, IEnumerable<CardRank>? kickers = null)
     {
-        Rang = rangMain;
-        Valeur = valeur;
+        Rank = rangMain;
+        CardValue = valeur;
         Kickers = (kickers ?? Array.Empty<CardRank>()).ToList().AsReadOnly();
     }
 
@@ -27,11 +27,11 @@ public sealed class Score : IComparable<Score>
         if (other is null) return 1;
 
         // Comparer d'abord le type de main.
-        int cmp = Rang.CompareTo(other.Rang);
+        int cmp = Rank.CompareTo(other.Rank);
         if (cmp != 0) return cmp;
 
         // Comparer ensuite la valeur principale (ex: valeur de la paire/brelan/...).
-        cmp = Valeur.CompareTo(other.Valeur);
+        cmp = CardValue.CompareTo(other.CardValue);
         if (cmp != 0) return cmp;
 
         // Comparer enfin les kickers (lexicographique).
@@ -50,6 +50,6 @@ public sealed class Score : IComparable<Score>
 
     public override string ToString()
     {
-        return $"{Rang} de {Valeur}";
+        return $"{Rank} de {CardValue}";
     }
 }

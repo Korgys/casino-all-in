@@ -12,9 +12,9 @@ public class ShowdownState : IPhaseState
         // Round terminée, aucune phase supplémentaire.
     }
 
-    public IEnumerable<TypeGameAction> GetAvailableActions(Player Player, Round context)
+    public IEnumerable<PokerTypeAction> GetAvailableActions(Player Player, Round context)
     {
-        return Array.Empty<TypeGameAction>();
+        return Array.Empty<PokerTypeAction>();
     }
 
     public void ApplyAction(Player Player, Actions.GameAction action, Round context)

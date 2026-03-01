@@ -7,105 +7,105 @@ namespace casino.core.Games.Poker.Rounds;
 
 public class TurnManager
 {
-    private readonly Round _partie;
+    private readonly Round _round;
 
-    public int PlayerInitialIndex { get; }
-    public int PlayerActuelIndex { get; private set; }
+    public int InitialPlayerIndex { get; }
+    public int CurrentPlayerIndex { get; private set; }
 
-    public TurnManager(Round partie, int playerInitialIndex)
+    public TurnManager(Round round, int initialPlayerIndex)
     {
-        _partie = partie ?? throw new ArgumentNullException(nameof(partie));
-        PlayerInitialIndex = playerInitialIndex;
-        PlayerActuelIndex = playerInitialIndex;
+        _round = round ?? throw new ArgumentNullException(nameof(round));
+        InitialPlayerIndex = initialPlayerIndex;
+        CurrentPlayerIndex = initialPlayerIndex;
     }
 
     public Player GetPlayerToAct()
     {
-        if (!_partie.IsInProgress())
+        if (!_round.IsInProgress())
         {
-            return _partie.Players[PlayerActuelIndex];
+            return _round.Players[CurrentPlayerIndex];
         }
 
-        PositionnerSurPlayerDisponible();
+        PositionOnAvailablePlayer();
 
-        if (!_partie.IsInProgress())
+        if (!_round.IsInProgress())
         {
-            return _partie.Players[PlayerActuelIndex];
+            return _round.Players[CurrentPlayerIndex];
         }
 
-        if (AucunPlayerPeutJouer())
+        if (NoPlayerCanAct())
         {
-            throw new InvalidOperationException("Aucun Player en jeu à la table.");
+            throw new InvalidOperationException("No active player at the table.");
         }
 
-        return _partie.Players[PlayerActuelIndex];
+        return _round.Players[CurrentPlayerIndex];
     }
 
-    public void TraiterActionPlayer(Player Player, GameAction action)
+    public void ExecutePlayerAction(Player player, GameAction action)
     {
-        _partie.ApplyAction(Player, action);
-        PasserAuPlayerSuivant();
+        _round.ApplyAction(player, action);
+        EndPlayerTurn();
     }
 
-    private void PasserAuPlayerSuivant()
+    private void EndPlayerTurn()
     {
-        if (!_partie.IsInProgress())
+        if (!_round.IsInProgress())
         {
             return;
         }
 
-        if (_partie.IsBettingRoundClosed())
+        if (_round.IsBettingRoundClosed())
         {
-            AvancerJusquALaProchainePhaseAvecActions();
+            AdvanceUntilNextPhaseWithActions();
             return;
         }
 
-        DeplacerIndexVersProchainPlayer();
+        MoveIndexToNextPlayer();
 
-        if (AucunPlayerPeutJouer())
+        if (NoPlayerCanAct())
         {
-            AvancerJusquALaProchainePhaseAvecActions();
+            AdvanceUntilNextPhaseWithActions();
         }
     }
 
-    private void PositionnerSurPlayerDisponible()
+    private void PositionOnAvailablePlayer()
     {
-        if (AucunPlayerPeutJouer())
+        if (NoPlayerCanAct())
         {
-            AvancerJusquALaProchainePhaseAvecActions();
+            AdvanceUntilNextPhaseWithActions();
             return;
         }
 
-        if (!PlayerPeutJouer(_partie.Players[PlayerActuelIndex]))
+        if (!PlayerCanAct(_round.Players[CurrentPlayerIndex]))
         {
-            DeplacerIndexVersProchainPlayer();
+            MoveIndexToNextPlayer();
         }
     }
 
-    private void AvancerJusquALaProchainePhaseAvecActions()
+    private void AdvanceUntilNextPhaseWithActions()
     {
-        while (_partie.IsInProgress())
+        while (_round.IsInProgress())
         {
-            if (!AucunPlayerPeutJouer() && !_partie.IsBettingRoundClosed())
+            if (!NoPlayerCanAct() && !_round.IsBettingRoundClosed())
             {
-                DeplacerIndexVersProchainPlayer();
+                MoveIndexToNextPlayer();
                 return;
             }
 
-            _partie.AdvancePhase();
+            _round.AdvancePhase();
 
-            if (!_partie.IsInProgress())
+            if (!_round.IsInProgress())
             {
                 return;
             }
 
-            PlayerActuelIndex = PlayerInitialIndex;
+            CurrentPlayerIndex = InitialPlayerIndex;
 
-            if (!AucunPlayerPeutJouer())
+            if (!NoPlayerCanAct())
             {
-                if (!PlayerPeutJouer(_partie.Players[PlayerActuelIndex]))
+                if (!PlayerCanAct(_round.Players[CurrentPlayerIndex]))
                 {
-                    DeplacerIndexVersProchainPlayer();
+                    MoveIndexToNextPlayer();
                 }
 
                 return;
@@ -113,26 +113,27 @@ public class TurnManager
         }
     }
 
-    private void DeplacerIndexVersProchainPlayer()
+    private void MoveIndexToNextPlayer()
     {
-        var essais = 0;
+        var attempts = 0;
         do
         {
-            PlayerActuelIndex = (PlayerActuelIndex + 1) % _partie.Players.Count;
-            essais++;
-        } while (!PlayerPeutJouer(_partie.Players[PlayerActuelIndex]) && essais <= _partie.Players.Count);
+            CurrentPlayerIndex = (CurrentPlayerIndex + 1) % _round.Players.Count;
+            attempts++;
+        }
+        while (!PlayerCanAct(_round.Players[CurrentPlayerIndex]) && attempts <= _round.Players.Count);
     }
 
-    private bool PlayerPeutJouer(Player Player)
+    private bool PlayerCanAct(Player player)
     {
-        if (Player.LastAction == TypeGameAction.SeCoucher)
+        if (player.LastAction == PokerTypeAction.Fold)
             return false;
 
-        if (Player.LastAction == TypeGameAction.Tapis)
+        if (player.LastAction == PokerTypeAction.AllIn)
             return false;
 
-        return _partie.GetAvailableActions(Player).Any();
+        return _round.GetAvailableActions(player).Any();
     }
 
-    private bool AucunPlayerPeutJouer() => !_partie.Players.Any(PlayerPeutJouer);
+    private bool NoPlayerCanAct() => !_round.Players.Any(PlayerCanAct);
 }
