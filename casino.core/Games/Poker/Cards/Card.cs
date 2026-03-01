@@ -1,17 +1,17 @@
-﻿namespace casino.core.Games.Poker.Cartes;
+﻿namespace casino.core.Games.Poker.Cards;
 
 public class Card
 {
-    public RangCarte Rang { get; }
-    public Couleur Couleur { get; }
-    public Card(RangCarte rang, Couleur couleur)
+    public CardRank Rang { get; }
+    public Suit Suit { get; }
+    public Card(CardRank rang, Suit couleur)
     {
         Rang = rang;
-        Couleur = couleur;
+        Suit = couleur;
     }
     public override string ToString()
     {
-        return $"{Rang.ToShortString()}{Couleur.ToSymbol()}";
+        return $"{Rang.ToShortString()}{Suit.ToSymbol()}";
     }
 
     public override bool Equals(object? obj)
@@ -19,12 +19,12 @@ public class Card
         if (obj is not Card other)
             return false;
 
-        return Rang == other.Rang && Couleur == other.Couleur;
+        return Rang == other.Rang && Suit == other.Suit;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Rang, Couleur);
+        return HashCode.Combine(Rang, Suit);
     }
 
 }

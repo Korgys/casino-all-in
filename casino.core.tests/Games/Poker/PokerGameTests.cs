@@ -2,7 +2,7 @@
 using System.Linq;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
-using casino.core.Games.Poker.Cartes;
+using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using casino.core.tests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,43 +13,43 @@ namespace casino.core.tests.Games.Poker;
 public class PokerGameTests
 {
     [TestMethod]
-    public void Run_SimplePartieDeuxPlayersUnGagnant()
+    public void Run_SimpleRoundDeuxPlayersUnGagnant()
     {
         // Arrange
-        var human = new PlayerHumain("Alice", 100);
-        var autreHumain = new PlayerHumain("Bob", 100);
+        var human = new HumanPlayer("Alice", 100);
+        var autreHumain = new HumanPlayer("Bob", 100);
 
         var deckCards = new[]
         {
-            new Card(RangCarte.As, Couleur.Pique),        // Alice 1
-            new Card(RangCarte.Roi, Couleur.Coeur),       // Alice 2
-            new Card(RangCarte.Neuf, Couleur.Trefle),     // Bob 1
-            new Card(RangCarte.Huit, Couleur.Carreau),    // Bob 2
-            new Card(RangCarte.As, Couleur.Coeur),        // Flop 1 (paire d'As pour Alice)
-            new Card(RangCarte.Deux, Couleur.Coeur),      // Flop 2
-            new Card(RangCarte.Trois, Couleur.Trefle),    // Flop 3
-            new Card(RangCarte.Sept, Couleur.Pique),      // Turn
-            new Card(RangCarte.Dame, Couleur.Carreau)     // River
+            new Card(CardRank.As, Suit.Pique),        // Alice 1
+            new Card(CardRank.Roi, Suit.Coeur),       // Alice 2
+            new Card(CardRank.Neuf, Suit.Trefle),     // Bob 1
+            new Card(CardRank.Huit, Suit.Carreau),    // Bob 2
+            new Card(CardRank.As, Suit.Coeur),        // Flop 1 (paire d'As pour Alice)
+            new Card(CardRank.Deux, Suit.Coeur),      // Flop 2
+            new Card(CardRank.Trois, Suit.Trefle),    // Flop 3
+            new Card(CardRank.Sept, Suit.Pique),      // Turn
+            new Card(CardRank.Dame, Suit.Carreau)     // River
         };
 
         var deckFactory = () => new FakeDeck(deckCards);
 
         // 1er tour : Alice (premier Player) doit miser, Bob peut suivre.
-        var actionsParPlayer = new Dictionary<string, Queue<ActionJeu>>
+        var actionsParPlayer = new Dictionary<string, Queue<GameAction>>
         {
-            ["Alice"] = new Queue<ActionJeu>(new[]
+            ["Alice"] = new Queue<GameAction>(new[]
             {
-                new ActionJeu(TypeActionJeu.Miser, 10), // 1er tour, 1er Player : mise obligatoire (>= 10 géré dans PokerGame)
-                new ActionJeu(TypeActionJeu.Check),
-                new ActionJeu(TypeActionJeu.Check),
-                new ActionJeu(TypeActionJeu.Check)
+                new GameAction(TypeGameAction.Miser, 10), // 1er tour, 1er Player : mise obligatoire (>= 10 géré dans PokerGame)
+                new GameAction(TypeGameAction.Check),
+                new GameAction(TypeGameAction.Check),
+                new GameAction(TypeGameAction.Check)
             }),
-            ["Bob"] = new Queue<ActionJeu>(new[]
+            ["Bob"] = new Queue<GameAction>(new[]
             {
-                new ActionJeu(TypeActionJeu.Suivre), // Il suit la mise d’Alice
-                new ActionJeu(TypeActionJeu.Check),
-                new ActionJeu(TypeActionJeu.Check),
-                new ActionJeu(TypeActionJeu.Check)
+                new GameAction(TypeGameAction.Suivre), // Il suit la mise d’Alice
+                new GameAction(TypeGameAction.Check),
+                new GameAction(TypeGameAction.Check),
+                new GameAction(TypeGameAction.Check)
             })
         };
 
@@ -81,42 +81,42 @@ public class PokerGameTests
 
 
     [TestMethod]
-    public void Run_SimplePartieDeuxPlayersDeuxGagnants()
+    public void Run_SimpleRoundDeuxPlayersDeuxGagnants()
     {
         // Arrange
-        var human = new PlayerHumain("Alice", 100);
-        var autreHumain = new PlayerHumain("Bob", 100);
+        var human = new HumanPlayer("Alice", 100);
+        var autreHumain = new HumanPlayer("Bob", 100);
         var deckCards = new[]
         {
-            new Card(RangCarte.As, Couleur.Pique),        // Alice 1
-            new Card(RangCarte.Roi, Couleur.Coeur),       // Alice 2
-            new Card(RangCarte.Neuf, Couleur.Trefle),     // Bob 1
-            new Card(RangCarte.Huit, Couleur.Carreau),    // Bob 2
-            new Card(RangCarte.Deux, Couleur.Coeur),      // Flop 1
-            new Card(RangCarte.Trois, Couleur.Trefle),    // Flop 2
-            new Card(RangCarte.Quatre, Couleur.Carreau),  // Flop 3
-            new Card(RangCarte.Cinq, Couleur.Pique),      // Turn
-            new Card(RangCarte.Six, Couleur.Coeur)        // River
+            new Card(CardRank.As, Suit.Pique),        // Alice 1
+            new Card(CardRank.Roi, Suit.Coeur),       // Alice 2
+            new Card(CardRank.Neuf, Suit.Trefle),     // Bob 1
+            new Card(CardRank.Huit, Suit.Carreau),    // Bob 2
+            new Card(CardRank.Deux, Suit.Coeur),      // Flop 1
+            new Card(CardRank.Trois, Suit.Trefle),    // Flop 2
+            new Card(CardRank.Quatre, Suit.Carreau),  // Flop 3
+            new Card(CardRank.Cinq, Suit.Pique),      // Turn
+            new Card(CardRank.Six, Suit.Coeur)        // River
         };
 
         var deckFactory = () => new FakeDeck(deckCards);
 
         // Idem : 1er tour, Alice doit miser, Bob suit.
-        var actionsParPlayer = new Dictionary<string, Queue<ActionJeu>>
+        var actionsParPlayer = new Dictionary<string, Queue<GameAction>>
         {
-            ["Alice"] = new Queue<ActionJeu>(new[]
+            ["Alice"] = new Queue<GameAction>(new[]
             {
-                new ActionJeu(TypeActionJeu.Miser, 10),
-                new ActionJeu(TypeActionJeu.Check),
-                new ActionJeu(TypeActionJeu.Check),
-                new ActionJeu(TypeActionJeu.Check)
+                new GameAction(TypeGameAction.Miser, 10),
+                new GameAction(TypeGameAction.Check),
+                new GameAction(TypeGameAction.Check),
+                new GameAction(TypeGameAction.Check)
             }),
-            ["Bob"] = new Queue<ActionJeu>(new[]
+            ["Bob"] = new Queue<GameAction>(new[]
             {
-                new ActionJeu(TypeActionJeu.Suivre),
-                new ActionJeu(TypeActionJeu.Check),
-                new ActionJeu(TypeActionJeu.Check),
-                new ActionJeu(TypeActionJeu.Check)
+                new GameAction(TypeGameAction.Suivre),
+                new GameAction(TypeGameAction.Check),
+                new GameAction(TypeGameAction.Check),
+                new GameAction(TypeGameAction.Check)
             })
         };
 
@@ -146,46 +146,46 @@ public class PokerGameTests
     public void Run_ContinueTantQueJetonsEtDemandePourRelancer()
     {
         // Arrange
-        var human = new PlayerHumain("Alice", 100);
-        var autreHumain = new PlayerHumain("Bob", 100);
+        var human = new HumanPlayer("Alice", 100);
+        var autreHumain = new HumanPlayer("Bob", 100);
         var deckCards = new[]
         {
-            new Card(RangCarte.As, Couleur.Pique),
-            new Card(RangCarte.Roi, Couleur.Coeur),
-            new Card(RangCarte.Neuf, Couleur.Trefle),
-            new Card(RangCarte.Huit, Couleur.Carreau),
-            new Card(RangCarte.Deux, Couleur.Coeur),
-            new Card(RangCarte.Trois, Couleur.Trefle),
-            new Card(RangCarte.Quatre, Couleur.Carreau),
-            new Card(RangCarte.Cinq, Couleur.Pique),
-            new Card(RangCarte.Six, Couleur.Coeur)
+            new Card(CardRank.As, Suit.Pique),
+            new Card(CardRank.Roi, Suit.Coeur),
+            new Card(CardRank.Neuf, Suit.Trefle),
+            new Card(CardRank.Huit, Suit.Carreau),
+            new Card(CardRank.Deux, Suit.Coeur),
+            new Card(CardRank.Trois, Suit.Trefle),
+            new Card(CardRank.Quatre, Suit.Carreau),
+            new Card(CardRank.Cinq, Suit.Pique),
+            new Card(CardRank.Six, Suit.Coeur)
         };
 
         var deckFactory = () => new FakeDeck(deckCards);
 
-        var actionsParPlayer = new Dictionary<string, Queue<ActionJeu>>
+        var actionsParPlayer = new Dictionary<string, Queue<GameAction>>
         {
-            ["Alice"] = new Queue<ActionJeu>(new[]
+            ["Alice"] = new Queue<GameAction>(new[]
             {
-                new ActionJeu(TypeActionJeu.Miser, 10),
-                new ActionJeu(TypeActionJeu.Miser, 10),
-                new ActionJeu(TypeActionJeu.Miser, 10),
-                new ActionJeu(TypeActionJeu.Miser, 10),
-                new ActionJeu(TypeActionJeu.Suivre),
-                new ActionJeu(TypeActionJeu.Suivre),
-                new ActionJeu(TypeActionJeu.Suivre),
-                new ActionJeu(TypeActionJeu.Suivre)
+                new GameAction(TypeGameAction.Miser, 10),
+                new GameAction(TypeGameAction.Miser, 10),
+                new GameAction(TypeGameAction.Miser, 10),
+                new GameAction(TypeGameAction.Miser, 10),
+                new GameAction(TypeGameAction.Suivre),
+                new GameAction(TypeGameAction.Suivre),
+                new GameAction(TypeGameAction.Suivre),
+                new GameAction(TypeGameAction.Suivre)
             }),
-            ["Bob"] = new Queue<ActionJeu>(new[]
+            ["Bob"] = new Queue<GameAction>(new[]
             {
-                new ActionJeu(TypeActionJeu.Suivre),
-                new ActionJeu(TypeActionJeu.Suivre),
-                new ActionJeu(TypeActionJeu.Suivre),
-                new ActionJeu(TypeActionJeu.Suivre),
-                new ActionJeu(TypeActionJeu.Miser, 10),
-                new ActionJeu(TypeActionJeu.Miser, 10),
-                new ActionJeu(TypeActionJeu.Miser, 10),
-                new ActionJeu(TypeActionJeu.Miser, 10)
+                new GameAction(TypeGameAction.Suivre),
+                new GameAction(TypeGameAction.Suivre),
+                new GameAction(TypeGameAction.Suivre),
+                new GameAction(TypeGameAction.Suivre),
+                new GameAction(TypeGameAction.Miser, 10),
+                new GameAction(TypeGameAction.Miser, 10),
+                new GameAction(TypeGameAction.Miser, 10),
+                new GameAction(TypeGameAction.Miser, 10)
             })
         };
 

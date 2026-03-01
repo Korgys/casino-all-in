@@ -1,6 +1,6 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
-using casino.core.Games.Poker.Parties;
+using casino.core.Games.Poker.Rounds;
 using System;
 
 namespace casino.core.Games.Poker.Actions.Commands;
@@ -14,7 +14,7 @@ public class CallCommand : IPlayerCommand
         _player = Player;
     }
 
-    public void Execute(Partie partie)
+    public void Execute(Round partie)
     {
         var contributionActuelle = partie.GetBetFor(_player);
         var difference = partie.CurrentBet - contributionActuelle;
@@ -35,7 +35,7 @@ public class CallCommand : IPlayerCommand
             return;
         }
 
-        _player.LastAction = TypeActionJeu.Suivre;
+        _player.LastAction = TypeGameAction.Suivre;
         _player.Chips -= difference;
         partie.SetBetFor(_player, partie.CurrentBet);
         partie.Pot += difference;

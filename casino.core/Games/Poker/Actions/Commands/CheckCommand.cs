@@ -1,6 +1,6 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
-using casino.core.Games.Poker.Parties;
+using casino.core.Games.Poker.Rounds;
 using System;
 
 namespace casino.core.Games.Poker.Actions.Commands;
@@ -21,13 +21,13 @@ public class CheckCommand : IPlayerCommand
         _player = Player;
     }
 
-    public void Execute(Partie partie)
+    public void Execute(Round partie)
     {
         if (partie.CurrentBet != 0)
         {
             throw new InvalidOperationException("Le Player ne peut pas checker car il y a une mise sur la table.");
         }
 
-        _player.LastAction = TypeActionJeu.Check;
+        _player.LastAction = TypeGameAction.Check;
     }
 }

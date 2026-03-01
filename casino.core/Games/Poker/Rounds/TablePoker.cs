@@ -1,40 +1,40 @@
 using casino.core.Games.Poker.Actions;
-using casino.core.Games.Poker.Cartes;
+using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace casino.core.Games.Poker.Parties;
+namespace casino.core.Games.Poker.Rounds;
 
 public class TablePoker
 {
     public string Name { get; set; }
-    public Partie Partie { get; private set; }
+    public Round Round { get; private set; }
     public List<Player> Players { get; private set; }
-    public GestionnaireDeTour GestionnaireDeTour { get; private set; }
-    public int PlayerInitialIndex => GestionnaireDeTour?.PlayerInitialIndex ?? _playerInitialIndex;
-    public int CurrentPlayerIndex => GestionnaireDeTour?.PlayerActuelIndex ?? _playerInitialIndex;
+    public TurnManager TurnManager { get; private set; }
+    public int PlayerInitialIndex => TurnManager?.PlayerInitialIndex ?? _playerInitialIndex;
+    public int CurrentPlayerIndex => TurnManager?.PlayerActuelIndex ?? _playerInitialIndex;
     public int PlayerActuelIndex => CurrentPlayerIndex;
     private int _playerInitialIndex = -1;
 
-    public void DemarrerPartie(List<Player> Players, IDeck deck)
+    public void DemarrerRound(List<Player> Players, IDeck deck)
     {
         Players.ForEach(j => j.Reset());
 
         this.Players = Players;
-        Partie = new Partie(this.Players, deck);
+        Round = new Round(this.Players, deck);
         _playerInitialIndex = (_playerInitialIndex + 1) % this.Players.Count;
-        GestionnaireDeTour = new GestionnaireDeTour(Partie, _playerInitialIndex);
+        TurnManager = new TurnManager(Round, _playerInitialIndex);
     }
 
-    public List<TypeActionJeu> ObtenirActionsPossibles(Player Player)
-        => Partie.ObtenirActionsPossibles(Player).OrderBy(a => (int)a).ToList();
+    public List<TypeGameAction> GetAvailableActions(Player Player)
+        => Round.GetAvailableActions(Player).OrderBy(a => (int)a).ToList();
 
-    public void TraiterActionPlayer(Player Player, Actions.ActionJeu choix)
+    public void TraiterActionPlayer(Player Player, Actions.GameAction choix)
     {
-        GestionnaireDeTour.TraiterActionPlayer(Player, choix);
+        TurnManager.TraiterActionPlayer(Player, choix);
     }
 
-    public Player ObtenirPlayerQuiDoitJouer()
-        => GestionnaireDeTour.ObtenirPlayerQuiDoitJouer();
+    public Player GetPlayerToAct()
+        => TurnManager.GetPlayerToAct();
 }

@@ -1,6 +1,6 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
-using casino.core.Games.Poker.Parties;
+using casino.core.Games.Poker.Rounds;
 using System;
 
 namespace casino.core.Games.Poker.Actions.Commands;
@@ -16,7 +16,7 @@ public class BetCommand : IPlayerCommand
         _montant = montant;
     }
 
-    public void Execute(Partie partie)
+    public void Execute(Round partie)
     {
         if (_montant <= 0)
         {
@@ -41,7 +41,7 @@ public class BetCommand : IPlayerCommand
             throw new InvalidOperationException("Le Player n'a pas assez de jetons pour miser autant.");
         }
 
-        _player.LastAction = TypeActionJeu.Miser;
+        _player.LastAction = TypeGameAction.Miser;
         // Mettre à jour la contribution du Player et le pot en fonction de la différence,
         // pas du montant total, pour gérer les mises partielles déjà effectuées.
         _player.Chips -= difference;

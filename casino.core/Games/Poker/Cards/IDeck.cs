@@ -1,7 +1,7 @@
-namespace casino.core.Games.Poker.Cartes;
+namespace casino.core.Games.Poker.Cards;
 
 public interface IDeck
 {
-    Card TirerCarte();
-    void Melanger();
+    Card DrawCard();
+    void Shuffle();
 }

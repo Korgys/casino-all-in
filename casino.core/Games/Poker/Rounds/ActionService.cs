@@ -4,18 +4,18 @@ using casino.core.Games.Poker.Players;
 using System;
 using System.Linq;
 
-namespace casino.core.Games.Poker.Parties;
+namespace casino.core.Games.Poker.Rounds;
 
 public interface IActionService
 {
-    void ExecuterAction(Partie partie, Player Player, Actions.ActionJeu action);
+    void ExecuterAction(Round partie, Player Player, Actions.GameAction action);
 }
 
 public class ActionService : IActionService
 {
-    public void ExecuterAction(Partie partie, Player Player, Actions.ActionJeu action)
+    public void ExecuterAction(Round partie, Player Player, Actions.GameAction action)
     {
-        if (!partie.PhaseState.ObtenirActionsPossibles(Player, partie).Contains(action.TypeAction))
+        if (!partie.PhaseState.GetAvailableActions(Player, partie).Contains(action.TypeAction))
         {
             throw new InvalidOperationException("Action de Player non autorisée");
         }
@@ -24,14 +24,14 @@ public class ActionService : IActionService
         commande.Execute(partie);
     }
 
-    private static IPlayerCommand CreerCommande(Player Player, Actions.ActionJeu action) => action.TypeAction switch
+    private static IPlayerCommand CreerCommande(Player Player, Actions.GameAction action) => action.TypeAction switch
     {
-        TypeActionJeu.SeCoucher => new FoldCommand(Player),
-        TypeActionJeu.Miser => new BetCommand(Player, action.Montant),
-        TypeActionJeu.Suivre => new CallCommand(Player),
-        TypeActionJeu.Relancer => new RaiseCommand(Player, action.Montant),
-        TypeActionJeu.Tapis => new AllInCommand(Player),
-        TypeActionJeu.Check => new CheckCommand(Player),
+        TypeGameAction.SeCoucher => new FoldCommand(Player),
+        TypeGameAction.Miser => new BetCommand(Player, action.Montant),
+        TypeGameAction.Suivre => new CallCommand(Player),
+        TypeGameAction.Relancer => new RaiseCommand(Player, action.Montant),
+        TypeGameAction.Tapis => new AllInCommand(Player),
+        TypeGameAction.Check => new CheckCommand(Player),
         _ => throw new ArgumentException("Action de Player invalide")
     };
 }

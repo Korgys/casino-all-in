@@ -1,6 +1,6 @@
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
-using casino.core.Games.Poker.Parties;
+using casino.core.Games.Poker.Rounds;
 using System.Linq;
 
 namespace casino.core.Games.Poker.Actions.Commands;
@@ -17,9 +17,9 @@ public class FoldCommand : IPlayerCommand
         _player = Player;
     }
 
-    public void Execute(Partie partie)
+    public void Execute(Round partie)
     {
-        _player.LastAction = TypeActionJeu.SeCoucher;
+        _player.LastAction = TypeGameAction.SeCoucher;
 
         if (partie.Players.Count(j => !j.IsFolded()) == 1)
         {

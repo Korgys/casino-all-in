@@ -1,0 +1,109 @@
+﻿using casino.core.Games.Poker.Cards;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace casino.core.tests.Games.Poker.Cards;
+
+[TestClass]
+public class CartesCommunesTests
+{
+    [TestMethod]
+    public void AsEnumerable_QuandAucuneCarte_DoitRetournerListeVide()
+    {
+        // Arrange
+        var communes = new TableCards();
+
+        // Act
+        var cartes = communes.AsEnumerable().ToList();
+
+        // Assert
+        Assert.IsEmpty(cartes);
+    }
+
+    [TestMethod]
+    public void AsEnumerable_DoitRetournerCartesNonNull_DansLOrdreFlopTurnRiver()
+    {
+        // Arrange
+        var flop1 = new Card(CardRank.Deux, Suit.Carreau);
+        var flop2 = new Card(CardRank.Trois, Suit.Coeur);
+        var flop3 = new Card(CardRank.Quatre, Suit.Pique);
+        var turn = new Card(CardRank.As, Suit.Trefle);
+        var river = new Card(CardRank.Roi, Suit.Coeur);
+
+        var communes = new TableCards
+        {
+            Flop1 = flop1,
+            Flop2 = flop2,
+            Flop3 = flop3,
+            Turn = turn,
+            River = river
+        };
+
+        // Act
+        var cartes = communes.AsEnumerable().ToList();
+
+        // Assert
+        Assert.HasCount(5, cartes);
+        Assert.AreSame(flop1, cartes[0]);
+        Assert.AreSame(flop2, cartes[1]);
+        Assert.AreSame(flop3, cartes[2]);
+        Assert.AreSame(turn, cartes[3]);
+        Assert.AreSame(river, cartes[4]);
+    }
+
+    [TestMethod]
+    public void ToString_QuandAucuneCarte_DoitRetournerChaineVide()
+    {
+        // Arrange
+        var communes = new TableCards();
+
+        // Act
+        var s = communes.ToString();
+
+        // Assert
+        Assert.AreEqual(string.Empty, s);
+    }
+
+    [TestMethod]
+    public void ToString_QuandCartesPresentes_DoitFaireJoinAvecVirgules()
+    {
+        // Arrange
+        var communes = new TableCards
+        {
+            Flop1 = new Card(CardRank.As, Suit.Pique),   // "A Pique"
+            Turn = new Card(CardRank.Dix, Suit.Coeur)    // "10 Coeur"
+        };
+
+        // Act
+        var s = communes.ToString();
+
+        // Assert
+        Assert.AreEqual("A♠, 10♥", s);
+    }
+
+    [TestMethod]
+    public void AsEnumerable_QuandCartesIntermediairesNull_DoitIgnorerLesNulls()
+    {
+        // Arrange
+        var flop1 = new Card(CardRank.As, Suit.Pique);
+        var river = new Card(CardRank.Dame, Suit.Carreau);
+
+        var communes = new TableCards
+        {
+            Flop1 = flop1,
+            // Flop2 null
+            // Flop3 null
+            // Turn null
+            River = river
+        };
+
+        // Act
+        var cartes = communes.AsEnumerable().ToList();
+
+        // Assert
+        Assert.HasCount(2, cartes);
+        Assert.AreSame(flop1, cartes[0]);
+        Assert.AreSame(river, cartes[1]);
+    }
+}

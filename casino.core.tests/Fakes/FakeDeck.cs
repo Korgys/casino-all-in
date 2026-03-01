@@ -1,4 +1,4 @@
-﻿using casino.core.Games.Poker.Cartes;
+﻿using casino.core.Games.Poker.Cards;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,12 +14,12 @@ public class FakeDeck : IDeck
         _cartes = new Queue<Card>(cartes);
     }
 
-    public Card TirerCarte()
+    public Card DrawCard()
     {
-        return _cartes.Count > 0 ? _cartes.Dequeue() : new Card(RangCarte.Deux, Couleur.Carreau);
+        return _cartes.Count > 0 ? _cartes.Dequeue() : new Card(CardRank.Deux, Suit.Carreau);
     }
 
-    public void Melanger()
+    public void Shuffle()
     {
         // Aucun mélange nécessaire pour les tests.
     }

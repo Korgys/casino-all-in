@@ -1,7 +1,7 @@
 ﻿using casino.console.Games.Commons;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
-using casino.core.Games.Poker.Cartes;
+using casino.core.Games.Poker.Cards;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +17,7 @@ internal class ConsolePokerWriter
     public static void WritePlayerName(PokerPlayerState playerState)
     {
         var color =
-            (playerState.IsFolded || (playerState.Chips == 0 && playerState.LastAction != TypeActionJeu.Tapis)) ? ConsoleColor.DarkGray :
+            (playerState.IsFolded || (playerState.Chips == 0 && playerState.LastAction != TypeGameAction.Tapis)) ? ConsoleColor.DarkGray :
             playerState.IsHuman ? ConsoleColor.Cyan :
             ConsoleColor.DarkRed;
 
@@ -33,7 +33,7 @@ internal class ConsolePokerWriter
 
     public static void WriteCard(Card card)
     {
-        var color = (card.Couleur == Couleur.Coeur || card.Couleur == Couleur.Carreau)
+        var color = (card.Suit == Suit.Coeur || card.Suit == Suit.Carreau)
             ? ConsoleColor.Red
             : ConsoleColor.Cyan;
 

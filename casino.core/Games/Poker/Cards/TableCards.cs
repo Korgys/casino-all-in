@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace casino.core.Games.Poker.Cartes;
+namespace casino.core.Games.Poker.Cards;
 
 public class TableCards
 {

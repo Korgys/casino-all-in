@@ -1,7 +1,7 @@
 using System;
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
-using casino.core.Games.Poker.Parties;
+using casino.core.Games.Poker.Rounds;
 
 namespace casino.core.Games.Poker.Actions.Commands;
 
@@ -14,11 +14,11 @@ public class AllInCommand : IPlayerCommand
         _player = Player;
     }
 
-    public void Execute(Partie partie)
+    public void Execute(Round partie)
     {
         var miseAvant = partie.GetBetFor(_player);
         var contribution = miseAvant + _player.Chips;
-        _player.LastAction = TypeActionJeu.Tapis;
+        _player.LastAction = TypeGameAction.Tapis;
         partie.Pot += _player.Chips;
         partie.SetBetFor(_player, contribution);
         partie.CurrentBet = Math.Max(partie.CurrentBet, contribution);
