@@ -4,5 +4,5 @@ namespace casino.core.Games.Poker.Players.Strategies;
 
 public interface IPlayerStrategy
 {
-    Actions.GameAction ProposerAction(GameContext contexte);
+    Actions.GameAction DecideAction(GameContext contexte);
 }

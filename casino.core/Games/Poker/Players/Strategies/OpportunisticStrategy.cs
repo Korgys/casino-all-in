@@ -1,4 +1,5 @@
-﻿using casino.core.Games.Poker.Actions;
+﻿using casino.core.Common.Utils;
+using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Rounds.Phases;
 using casino.core.Games.Poker.Scores;
 using System;
@@ -9,20 +10,21 @@ namespace casino.core.Games.Poker.Players.Strategies;
 
 public class OpportunisticStrategy : IPlayerStrategy
 {
-    public GameAction ProposerAction(GameContext contexte)
+    public GameAction DecideAction(GameContext context)
     {
-        var actions = contexte.AvailableActions;
+        var actions = context.AvailableActions;
         if (actions.Count == 1)
-            return new GameAction(actions.First());
+            return GetFirstGameAction(context);
 
-        int nbActifs = Math.Max(2, contexte.Round.Players.Count(j => !j.IsFolded()));
-        Phase phase = contexte.Round.Phase;
+
+        int nbActifs = Math.Max(2, context.Round.Players.Count(j => !j.IsFolded()));
+        Phase phase = context.Round.Phase;
 
         // pBrut est en 0..100
         double pBrut = ProbabilityEvaluator.EstimateWinProbability(
-            contexte.CurrentPlayer.Hand,
-            contexte.Round.CommunityCards,
-            contexte.Round.Players.Count,
+            context.CurrentPlayer.Hand,
+            context.Round.CommunityCards,
+            context.Round.Players.Count,
             simulations: 1000);
 
         // Normalisation 0..1
@@ -58,7 +60,7 @@ public class OpportunisticStrategy : IPlayerStrategy
             if (actions.Contains(PokerTypeAction.Call))
                 return new GameAction(PokerTypeAction.Call);
 
-            return new GameAction(actions.First());
+            return GetFirstGameAction(context);
         }
 
         // Proche du neutre => suivre/check
@@ -69,22 +71,30 @@ public class OpportunisticStrategy : IPlayerStrategy
 
             // Si pas de suivre (cas rare), petite mise min
             if (actions.Contains(PokerTypeAction.Bet))
-                return new GameAction(PokerTypeAction.Bet, contexte.MinimumBet);
+                return new GameAction(PokerTypeAction.Bet, context.MinimumBet);
 
             return new GameAction(actions.First());
         }
 
         // Bon avantage => relancer/miser
         if (actions.Contains(PokerTypeAction.Raise))
-            return new GameAction(PokerTypeAction.Raise, contexte.MinimumBet);
+            return new GameAction(PokerTypeAction.Raise, context.MinimumBet);
 
         if (actions.Contains(PokerTypeAction.Bet))
-            return new GameAction(PokerTypeAction.Bet, contexte.MinimumBet);
+            return new GameAction(PokerTypeAction.Bet, context.MinimumBet);
 
         if (actions.Contains(PokerTypeAction.Call))
             return new GameAction(PokerTypeAction.Call);
 
-        return new GameAction(actions.First());
+        return GetFirstGameAction(context);
+    }
+
+    private static GameAction GetFirstGameAction(GameContext context)
+    {
+        if (context.AvailableActions[0] == PokerTypeAction.Bet)
+            return new GameAction(context.AvailableActions[0], context.MinimumBet);
+        else
+            return new GameAction(context.AvailableActions[0]);
     }
 
     private static double BornerEntre0Et1(double x) => x < 0 ? 0 : (x > 1 ? 1 : x);

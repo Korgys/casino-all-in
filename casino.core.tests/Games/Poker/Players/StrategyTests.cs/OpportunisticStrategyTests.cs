@@ -16,7 +16,7 @@ namespace casino.core.tests.Games.Poker.Players.Strategies;
 public class OpportunisticStrategyTests
 {
     [TestMethod]
-    public void ProposerAction_ShouldAllInWhenOddsAreGoods()
+    public void DecideAction_ShouldAllInWhenOddsAreGoods()
     {
         // Arrange
         var player = new Player("bob", 1000);
@@ -30,11 +30,34 @@ public class OpportunisticStrategyTests
         var strategy = new OpportunisticStrategy();
 
         // Act
-        var gameAction = strategy.ProposerAction(gameContext);
+        var gameAction = strategy.DecideAction(gameContext);
 
         // Assert
         Assert.IsNotNull(gameAction);
         Assert.AreEqual(PokerTypeAction.AllIn, gameAction.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_ShouldBetWithMinimumBet()
+    {
+        // Arrange
+        var player = new Player("bob", 1000);
+        var players = new List<Player>()
+        {
+            player,
+            new Player("alice", 1000)
+        };
+        var round = new Round(players, new FakeDeck(CreerCartesSimples()));
+        var gameContext = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet });
+        var strategy = new OpportunisticStrategy();
+
+        // Act
+        var gameAction = strategy.DecideAction(gameContext);
+
+        // Assert
+        Assert.IsNotNull(gameAction);
+        Assert.AreEqual(PokerTypeAction.Bet, gameAction.TypeAction);
+        Assert.AreEqual(10, gameAction.Amount);
     }
 
     private static IEnumerable<Card> CreerCartesSimples() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10);

@@ -6,7 +6,7 @@ namespace casino.core.Games.Poker.Players.Strategies;
 
 public class ConservativeStrategy : IPlayerStrategy
 {
-    public Actions.GameAction ProposerAction(GameContext contexte)
+    public Actions.GameAction DecideAction(GameContext contexte)
     {
         var actions = contexte.AvailableActions;
         var score = contexte.PlayerScore;

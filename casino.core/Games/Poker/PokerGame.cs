@@ -94,7 +94,7 @@ public class PokerGame : GameBase
             {
                 Thread.Sleep(Random.Shared.Next(500, 1500));
                 var contexte = new GameContext(_table.Round, ordi, actionsPossibles);
-                var action = ordi.Strategy.ProposerAction(contexte);
+                var action = ordi.Strategy.DecideAction(contexte);
                 _table.TraiterActionPlayer(ordi, action);
             }
 
