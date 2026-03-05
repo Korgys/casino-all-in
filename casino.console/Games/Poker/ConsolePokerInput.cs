@@ -22,7 +22,7 @@ public class ConsolePokerInput
         return choice switch
         {
             PokerTypeAction.Bet => new ActionModel(choice, request.MinimumBet),
-            PokerTypeAction.Raise => new ActionModel(choice, ReadRaiseAmount(player.Chips, state.CurrentBet)),
+            PokerTypeAction.Raise => new ActionModel(choice, ReadRaiseAmount(player.Chips, state.CurrentBet, player.Contribution)),
             _ => new ActionModel(choice, 0),
         };
     }
@@ -49,16 +49,15 @@ public class ConsolePokerInput
         }
     }
 
-    private static int ReadRaiseAmount(int maxChips, int actualBet)
+    private static int ReadRaiseAmount(int maxChips, int actualBet, int currentContribution)
     {
         while (true)
         {
-            Console.Write("De combien voulez-vous relancer ? ");
+            Console.Write("Saisissez la mise totale cible (pas l'incrément) : ");
             if (!int.TryParse(Console.ReadLine(), out var amount))
                 continue;
-            // Allow raising only if the amount is greater than 0, less than or equal to the player's chips, 
-            // and greater than the current bet.
-            if (amount > 0 && amount <= maxChips && actualBet < amount)
+
+            if (amount > actualBet && amount - currentContribution <= maxChips)
                 return amount;
         }
     }

@@ -80,6 +80,11 @@ public class Round
         SetBetFor(Player, mise);
     }
 
+    public int GetBetForPlayer(Player Player)
+    {
+        return GetBetFor(Player);
+    }
+
     internal bool IsBettingRoundClosed()
     {
         if (!IsInProgress())

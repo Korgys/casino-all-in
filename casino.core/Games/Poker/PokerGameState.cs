@@ -6,6 +6,7 @@ namespace casino.core.Games.Poker;
 public record PokerPlayerState(
     string Name,
     int Chips,
+    int Contribution,
     bool IsHuman,
     bool IsFolded,
     PokerTypeAction LastAction,
