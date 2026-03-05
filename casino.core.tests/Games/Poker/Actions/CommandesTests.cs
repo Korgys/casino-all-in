@@ -29,6 +29,21 @@ public class CommandsTests
         Assert.AreEqual(PokerTypeAction.Check, Player.LastAction);
     }
 
+
+    [TestMethod]
+    public void CheckCommand_QuandMiseActuelleNonNulleMaisJoueurAligne_MetDerniereActionCheck()
+    {
+        var Player = new HumanPlayer("Alice", 100);
+        var partie = new Round(new List<Player> { Player }, new FakeDeck(CreerCartesSimples()));
+
+        PlayerTestHelper.DefinirMiseActuelle(partie, 10);
+        partie.SetBetForPlayer(Player, 10);
+
+        var cmd = new CheckCommand(Player);
+        cmd.Execute(partie);
+
+        Assert.AreEqual(PokerTypeAction.Check, Player.LastAction);
+    }
     [TestMethod]
     public void CheckCommand_QuandMiseActuelleNonNulle_LanceInvalidOperationException()
     {
