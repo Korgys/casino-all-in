@@ -60,7 +60,8 @@ public class PokerGameTests
             new[] { human, autreHumain },
             deckFactory,
             context => actionsParPlayer[context.PlayerName].Dequeue(),
-            () => false);
+            () => false,
+            new NoOpWaitStrategy());
 
         pokerGame.StateUpdated += (_, args) => etatFinal = args.State as PokerGameState;
         pokerGame.GameEnded += (_, args) => gagnant = args.WinnerName;
@@ -127,7 +128,8 @@ public class PokerGameTests
             new[] { human, autreHumain },
             deckFactory,
             context => actionsParPlayer[context.PlayerName].Dequeue(),
-            () => false);
+            () => false,
+            new NoOpWaitStrategy());
 
         pokerGame.StateUpdated += (_, args) => etatFinal = args.State as PokerGameState;
         pokerGame.GameEnded += (_, args) => gagnant = args.WinnerName;
@@ -199,7 +201,8 @@ public class PokerGameTests
             {
                 continueCalled++;
                 return continuer.Dequeue();
-            });
+            },
+            new NoOpWaitStrategy());
 
         var events = new List<string>();
         pokerGame.StateUpdated += (_, _) => events.Add("state");

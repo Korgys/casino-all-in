@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using casino.console.Games.Poker;
 using casino.core;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
@@ -34,6 +35,6 @@ public class ConsoleGameFactory : IGameFactory
             new ComputerPlayer("Ordi Random", 1000, new RandomStrategy())
         };
 
-        return new PokerGame(Players, () => new Deck(), humanActionSelector, continuePlaying);
+        return new PokerGame(Players, () => new Deck(), humanActionSelector, continuePlaying, new ConsoleWaitStrategy());
     }
 }

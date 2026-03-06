@@ -11,6 +11,7 @@ public class PokerGame : GameBase
     private readonly Func<bool> _continuePlaying;
     private readonly Func<ActionRequest, Actions.GameAction> _humanActionSelector;
     private readonly Func<IDeck> _deckFactory;
+    private readonly IWaitStrategy _waitStrategy;
     private readonly TablePoker _table;
     private readonly List<HumanPlayer> _playersHumain;
     private readonly List<Player> _players;
@@ -19,7 +20,8 @@ public class PokerGame : GameBase
         IEnumerable<Player> Players,
         Func<IDeck> deckFactory,
         Func<ActionRequest, Actions.GameAction> humanActionSelector,
-        Func<bool> continuePlaying)
+        Func<bool> continuePlaying,
+        IWaitStrategy waitStrategy)
         : base("Poker")
     {
         _players = Players.ToList();
@@ -27,6 +29,7 @@ public class PokerGame : GameBase
         _deckFactory = deckFactory;
         _humanActionSelector = humanActionSelector;
         _continuePlaying = continuePlaying;
+        _waitStrategy = waitStrategy;
         _table = new TablePoker { Name = "Table Poker" };
     }
 
@@ -92,7 +95,7 @@ public class PokerGame : GameBase
             }
             else if (PlayerActuel is ComputerPlayer ordi)
             {
-                Thread.Sleep(Random.Shared.Next(500, 1500));
+                _waitStrategy.Wait();
                 var contexte = new GameContext(_table.Round, ordi, actionsPossibles);
                 var action = ordi.Strategy.DecideAction(contexte);
                 _table.TraiterActionPlayer(ordi, action);
