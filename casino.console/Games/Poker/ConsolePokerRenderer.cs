@@ -11,14 +11,22 @@ using System.Linq;
 namespace casino.console.Games.Poker;
 
 /// <summary>
-/// Render the poker game state in the console, with colors and formatting to enhance readability.
+/// Renders the poker game state in the console with colors and formatting.
 /// </summary>
 public class ConsolePokerRenderer
 {
-    private static Dictionary<string, int> probabiliteVictoireParPlayer = new();
+    private readonly Dictionary<string, int> winProbabilityByPlayer = new();
+    private string? lastRenderedPhase;
 
-    public static void RenderTable(PokerGameState state)
+    public void ResetRoundCache()
     {
+        winProbabilityByPlayer.Clear();
+    }
+
+    public void RenderTable(PokerGameState state)
+    {
+        ResetRoundCacheIfNewRound(state.Phase);
+
         Console.Clear();
 
         var currentPlayerName = state.CurrentPlayer;
@@ -35,64 +43,76 @@ public class ConsolePokerRenderer
         ConsolePokerWriter.WriteCommunityCards(state.CommunityCards);
         Console.WriteLine("\n");
 
-        foreach (var p in state.Players)
-            RenderPlayerLine(p, currentPlayerName, state);
+        foreach (var player in state.Players)
+            RenderPlayerLine(player, currentPlayerName, state);
     }
 
     public static void RenderAvailableActions(IReadOnlyList<PokerTypeAction> actions, int minimumBet)
     {
         Console.Write("\nActions : ");
-        foreach (var a in actions)
+        foreach (var action in actions)
         {
-            // Afficher la mise minimale pour l'action "Miser"
-            if (a == PokerTypeAction.Bet)
+            if (action == PokerTypeAction.Bet)
             {
-                Console.Write($"{(int)a}. {a.ToDisplayString()} (");
+                Console.Write($"{(int)action}. {action.ToDisplayString()} (");
                 ConsolePokerWriter.WriteAmount(minimumBet);
                 Console.Write(")     ");
             }
-            else // Autres actions sans montant associé
+            else
             {
-                Console.Write($"{(int)a}. {a.ToDisplayString()}     ");
+                Console.Write($"{(int)action}. {action.ToDisplayString()}     ");
             }
         }
         Console.WriteLine();
     }
 
-    private static void RenderPlayerLine(PokerPlayerState p, string currentPlayerName, PokerGameState state)
+    private void ResetRoundCacheIfNewRound(string phase)
     {
-        if (p.IsFolded)
+        var preFlopPhase = Phase.PreFlop.ToString();
+        if (phase == preFlopPhase && lastRenderedPhase != preFlopPhase)
+        {
+            ResetRoundCache();
+        }
+
+        lastRenderedPhase = phase;
+    }
+
+    private void RenderPlayerLine(PokerPlayerState player, string currentPlayerName, PokerGameState state)
+    {
+        if (player.IsFolded)
             ConsoleColorScope.Foreground(ConsoleColor.DarkGray);
 
-        if (currentPlayerName == p.Name)
+        if (currentPlayerName == player.Name)
             Console.Write("=> ");
-        ConsolePokerWriter.WritePlayerName(p);
 
-        if (p.IsFolded)
+        ConsolePokerWriter.WritePlayerName(player);
+
+        if (player.IsFolded)
         {
-            Console.Write($" ({p.Chips}c):");
+            Console.Write($" ({player.Chips}c):");
         }
         else
         {
             Console.Write(" (");
-            ConsolePokerWriter.WriteAmount(p.Chips);
+            ConsolePokerWriter.WriteAmount(player.Chips);
             Console.Write("): ");
         }
 
         bool canShowHand =
-            p.Hand is not null &&
-            (p.IsHuman || (state.Phase == Phase.Showdown.ToString() && !p.IsFolded));
+            player.Hand is not null &&
+            (player.IsHuman || (state.Phase == Phase.Showdown.ToString() && !player.IsFolded));
 
         if (canShowHand)
         {
             Console.Write(" ");
-            ConsolePokerWriter.WriteHand(p.Hand!);
-            WriteScoreAndProbabilityOfVictory(p, state, currentPlayerName);
+            ConsolePokerWriter.WriteHand(player.Hand!);
+            WriteScoreAndProbabilityOfVictory(player, state, currentPlayerName);
         }
-        if (p.LastAction != PokerTypeAction.None)
-            Console.Write($" [{p.LastAction.ToDisplayString()}]");
 
-        if (p.IsWinner)
+        if (player.LastAction != PokerTypeAction.None)
+            Console.Write($" [{player.LastAction.ToDisplayString()}]");
+
+        if (player.IsWinner)
         {
             using (ConsoleColorScope.Foreground(ConsoleColor.Green))
                 Console.Write(" {GAGNANT}");
@@ -102,26 +122,23 @@ public class ConsolePokerRenderer
         ConsoleColorScope.Foreground(ConsoleColor.White);
     }
 
-    private static void WriteScoreAndProbabilityOfVictory(PokerPlayerState player, PokerGameState state, string currentPlayerName)
+    private void WriteScoreAndProbabilityOfVictory(PokerPlayerState player, PokerGameState state, string currentPlayerName)
     {
         var score = ScoreEvaluator.EvaluateScore(player.Hand!, state.CommunityCards);
         Console.Write($" ({score}");
 
-        // Calcule la probabilité de victoire uniquement pour le Player actuel ou si fin de partie
         if (currentPlayerName == player.Name || state.Phase == Phase.Showdown.ToString())
         {
-            var probabilite = CalculateProbabilityOfVictory(player, state);
-            if (probabilite is not null)
+            var probability = CalculateProbabilityOfVictory(player, state);
+            if (probability is not null)
             {
-                Console.Write($" | {probabilite.Value:F0}%");
-                // Mémorise la probabilité pour l'afficher sur les tours des autres Players
-                probabiliteVictoireParPlayer[player.Name] = (int)Math.Round(probabilite.Value);
+                Console.Write($" | {probability.Value:F0}%");
+                winProbabilityByPlayer[player.Name] = (int)Math.Round(probability.Value);
             }
         }
-        // Sinon, affiche la probabilité précédente si disponible
-        else if (probabiliteVictoireParPlayer.TryGetValue(player.Name, out var probabilitePrecedente))
+        else if (winProbabilityByPlayer.TryGetValue(player.Name, out var previousProbability))
         {
-            Console.Write($" | {probabilitePrecedente:F0}%");
+            Console.Write($" | {previousProbability:F0}%");
         }
 
         Console.Write(")");
@@ -132,9 +149,8 @@ public class ConsolePokerRenderer
         if (player.Hand is null)
             return null;
 
-        // Count only active opponents
-        var adversaires = state.Players.Count(j => !j.IsFolded && j.Name != player.Name);
-        if (adversaires <= 0)
+        var opponents = state.Players.Count(p => !p.IsFolded && p.Name != player.Name);
+        if (opponents <= 0)
             return 100d;
 
         try
@@ -142,12 +158,11 @@ public class ConsolePokerRenderer
             return ProbabilityEvaluator.EstimateWinProbability(
                 player.Hand,
                 state.CommunityCards,
-                adversaires,
+                opponents,
                 simulations: 2000);
         }
         catch
         {
-            // L'affichage ne doit jamais interrompre la partie : en cas de problème, on masque la proba.
             return null;
         }
     }
