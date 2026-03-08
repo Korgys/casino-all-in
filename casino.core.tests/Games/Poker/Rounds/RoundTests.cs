@@ -14,7 +14,7 @@ namespace casino.core.tests.Games.Poker.Rounds;
 public class RoundTests
 {
     [TestMethod]
-    public void Round_DoitDistribuerLesCartesUniquementAuxPlayersEligibles()
+    public void Round_ShouldDealCardsOnlyToEligiblePlayers()
     {
         // Arrange
         var deck = new FakeDeck(new[]
@@ -24,21 +24,21 @@ public class RoundTests
             new Card(CardRank.Dame, Suit.Clubs),
             new Card(CardRank.Valet, Suit.Spades)
         });
-        var PlayerActif = new HumanPlayer("Alice", 100);
-        var PlayerSansJetons = new HumanPlayer("Bob", 0);
+        var activePlayer = new HumanPlayer("Alice", 100);
+        var playerWithoutChips = new HumanPlayer("Bob", 0);
 
         // Act
-        var partie = new Round(new List<Player> { PlayerActif, PlayerSansJetons }, deck);
+        var round = new Round(new List<Player> { activePlayer, playerWithoutChips }, deck);
 
         // Assert
-        Assert.IsNotNull(partie.Players.First(j => j.Name == "Alice").Hand, "Les Players avec des jetons doivent recevoir des cartes.");
-        Assert.AreEqual(new Card(CardRank.As, Suit.Hearts), PlayerActif.Hand.First, "La première carte doit provenir du deck fourni.");
-        Assert.AreEqual(new Card(CardRank.Roi, Suit.Diamonds), PlayerActif.Hand.Second, "La seconde carte doit provenir du deck fourni.");
-        Assert.IsNull(partie.Players.First(j => j.Name == "Bob").Hand, "Les Players sans jetons ne doivent pas recevoir de main.");
+        Assert.IsNotNull(round.Players.First(j => j.Name == "Alice").Hand, "Players with chips must receive cards.");
+        Assert.AreEqual(new Card(CardRank.As, Suit.Hearts), activePlayer.Hand.First, "The first card must come from the provided deck.");
+        Assert.AreEqual(new Card(CardRank.Roi, Suit.Diamonds), activePlayer.Hand.Second, "The second card must come from the provided deck.");
+        Assert.IsNull(round.Players.First(j => j.Name == "Bob").Hand, "Players without chips must not receive a hand.");
     }
 
     [TestMethod]
-    public void AdvancePhase_PreFlopVersFlop_DoitRevelerTroisCartesEtMettreAJourLEtat()
+    public void AdvancePhase_PreFlopToFlop_ShouldRevealThreeCardsAndUpdateState()
     {
         // Arrange
         var deck = new FakeDeck(new[]
@@ -49,51 +49,57 @@ public class RoundTests
             new Card(CardRank.Valet, Suit.Hearts),
             new Card(CardRank.Dix, Suit.Hearts)
         });
-        var Player = new HumanPlayer("Alice", 100);
-        var partie = new Round(new List<Player> { Player }, deck);
+        var player = new HumanPlayer("Alice", 100);
+        var round = new Round(new List<Player> { player }, deck);
 
         // Act
-        partie.AdvancePhase();
+        round.AdvancePhase();
 
         // Assert
-        Assert.AreEqual(Phase.Flop, partie.Phase, "La phase doit passer au flop.");
-        Assert.IsInstanceOfType<FlopPhaseState>(partie.PhaseState, "L'état doit être mis à jour pour le flop.");
-        Assert.AreEqual(new Card(CardRank.Dame, Suit.Hearts), partie.CommunityCards.Flop1, "La première carte du flop doit provenir du deck.");
-        Assert.AreEqual(new Card(CardRank.Valet, Suit.Hearts), partie.CommunityCards.Flop2, "La deuxième carte du flop doit provenir du deck.");
-        Assert.AreEqual(new Card(CardRank.Dix, Suit.Hearts), partie.CommunityCards.Flop3, "La troisième carte du flop doit provenir du deck.");
+        Assert.AreEqual(Phase.Flop, round.Phase, "Phase should move to flop.");
+        Assert.IsInstanceOfType<FlopPhaseState>(round.PhaseState, "State should be updated to flop state.");
+        Assert.AreEqual(new Card(CardRank.Dame, Suit.Hearts), round.CommunityCards.Flop1, "First flop card must come from the deck.");
+        Assert.AreEqual(new Card(CardRank.Valet, Suit.Hearts), round.CommunityCards.Flop2, "Second flop card must come from the deck.");
+        Assert.AreEqual(new Card(CardRank.Dix, Suit.Hearts), round.CommunityCards.Flop3, "Third flop card must come from the deck.");
     }
 
     [TestMethod]
-    public void EndGame_DernierPlayerActif_DoitGagnerParAbandon()
+    public void EndGame_LastActivePlayer_ShouldWinByFold_AndUpdateBookkeeping()
     {
         // Arrange
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 6));
-        var PlayerActif = new HumanPlayer("Alice", 100);
-        var PlayerCouche = new HumanPlayer("Bob", 50) { LastAction = PokerTypeAction.Fold };
-        var partie = new Round(new List<Player> { PlayerActif, PlayerCouche }, deck)
+        var activePlayer = new HumanPlayer("Alice", 100);
+        var foldedPlayer = new HumanPlayer("Bob", 50) { LastAction = PokerTypeAction.Fold };
+        var round = new Round(new List<Player> { activePlayer, foldedPlayer }, deck)
         {
-            Pot = 50
+            Pot = 50,
+            StartingBet = 10,
+            NumberOfRoundsPlayed = 1
         };
 
         // Act
-        partie.EndGame();
+        round.EndGame();
 
         // Assert
-        Assert.HasCount(1, partie.Winners, "Il doit y avoir un seul gagnant.");
-        Assert.AreEqual(PlayerActif, partie.Winners.First(), "Le seul Player encore actif doit être déclaré gagnant.");
-        Assert.AreEqual(150, PlayerActif.Chips, "Le pot doit être ajouté aux jetons du gagnant.");
-        Assert.AreEqual(Phase.Showdown, partie.Phase, "La partie doit se terminer en passant au showdown.");
+        Assert.HasCount(1, round.Winners, "There must be a single winner.");
+        Assert.AreEqual(activePlayer, round.Winners.First(), "The only active player must be declared winner.");
+        Assert.AreEqual(150, activePlayer.Chips, "The pot must be added to the winner's chips.");
+        Assert.AreEqual(Phase.Showdown, round.Phase, "Round must end in showdown phase.");
+        Assert.AreEqual(2, round.NumberOfRoundsPlayed, "Played rounds counter must be incremented after resolution.");
+        Assert.AreEqual(20, round.StartingBet, "Starting bet must double when the increase threshold is reached.");
     }
 
     [TestMethod]
-    public void EndGame_DoitComparerLesMainsEtCrediterLePotAuMeilleurPlayer()
+    public void EndGame_Showdown_ShouldCompareHandsAndUpdateBookkeeping()
     {
         // Arrange
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Spades), 10));
         var alice = new HumanPlayer("Alice", 100);
         var bob = new HumanPlayer("Bob", 100);
-        var partie = new Round(new List<Player> { alice, bob }, deck)
+        var round = new Round(new List<Player> { alice, bob }, deck)
         {
+            StartingBet = 10,
+            NumberOfRoundsPlayed = 1,
             CommunityCards = PlayerTestHelper.CreateCommunityCards(
                 new Card(CardRank.Dame, Suit.Hearts),
                 new Card(CardRank.Dix, Suit.Hearts),
@@ -103,7 +109,7 @@ public class RoundTests
             Pot = 60
         };
 
-        // Important : assigner les mains après l'initialisation de la partie
+        // Important: assign hands after round initialization.
         alice.Hand = new HandCards(
             new Card(CardRank.As, Suit.Hearts),
             new Card(CardRank.Roi, Suit.Hearts));
@@ -112,13 +118,15 @@ public class RoundTests
             new Card(CardRank.As, Suit.Diamonds));
 
         // Act
-        partie.EndGame();
+        round.EndGame();
 
         // Assert
-        Assert.HasCount(1, partie.Winners, "Il doit y avoir un seul gagnant.");
-        Assert.AreEqual(alice, partie.Winners.First(), "Le Player avec la meilleure main doit être désigné gagnant.");
-        Assert.AreEqual(160, alice.Chips, "Le pot doit être ajouté aux jetons du gagnant.");
-        Assert.AreEqual(100, bob.Chips, "Les jetons des autres Players ne doivent pas changer.");
-        Assert.AreEqual(Phase.Showdown, partie.Phase, "La partie doit être marquée comme terminée.");
+        Assert.HasCount(1, round.Winners, "There must be a single winner.");
+        Assert.AreEqual(alice, round.Winners.First(), "Player with the best hand must be designated winner.");
+        Assert.AreEqual(160, alice.Chips, "The pot must be added to the winner's chips.");
+        Assert.AreEqual(100, bob.Chips, "Other players' chips must remain unchanged.");
+        Assert.AreEqual(Phase.Showdown, round.Phase, "Round must be marked as finished.");
+        Assert.AreEqual(2, round.NumberOfRoundsPlayed, "Played rounds counter must be incremented after resolution.");
+        Assert.AreEqual(20, round.StartingBet, "Starting bet must double when the increase threshold is reached.");
     }
 }
