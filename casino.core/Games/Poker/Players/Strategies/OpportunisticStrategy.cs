@@ -17,21 +17,23 @@ public class OpportunisticStrategy : IPlayerStrategy
             return GetFirstGameAction(context);
 
 
-        int nbActifs = Math.Max(2, context.Round.Players.Count(j => !j.IsFolded()));
+        int activePlayers = context.Round.Players.Count(j => !j.IsFolded());
+        int nbActives = Math.Max(2, activePlayers);
+        int opponents = Math.Max(0, activePlayers - 1);
         Phase phase = context.Round.Phase;
 
         // pBrut est en 0..100
         double pBrut = ProbabilityEvaluator.EstimateWinProbability(
             context.CurrentPlayer.Hand,
             context.Round.CommunityCards,
-            context.Round.Players.Count,
+            opponents,
             simulations: 1000);
 
         // Normalisation 0..1
         double p = BornerEntre0Et1(pBrut / 100.0);
 
         // Proba "neutre" ~ 1 / nbActifs
-        double neutre = 1.0 / nbActifs;
+        double neutre = 1.0 / nbActives;
 
         // Multiplicateurs par rapport au neutre (à ajuster)
         // Préflop on est + prudent (moins d'infos)
@@ -99,4 +101,3 @@ public class OpportunisticStrategy : IPlayerStrategy
 
     private static double BornerEntre0Et1(double x) => x < 0 ? 0 : (x > 1 ? 1 : x);
 }
-
