@@ -7,6 +7,7 @@ using casino.core.Games.Poker.Scores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace casino.console.Games.Poker;
 
@@ -15,6 +16,10 @@ namespace casino.console.Games.Poker;
 /// </summary>
 public class ConsolePokerRenderer
 {
+    internal static Func<HandCards, TableCards, int, int, double> EstimateWinProbability =
+        static (hand, communityCards, opponents, simulations) =>
+            ProbabilityEvaluator.EstimateWinProbability(hand, communityCards, opponents, simulations);
+
     private readonly Dictionary<string, int> winProbabilityByPlayer = new();
     private string? lastRenderedPhase;
 
@@ -155,15 +160,32 @@ public class ConsolePokerRenderer
 
         try
         {
-            return ProbabilityEvaluator.EstimateWinProbability(
+            return EstimateWinProbability(
                 player.Hand,
                 state.CommunityCards,
                 opponents,
-                simulations: 2000);
+                2000);
         }
-        catch
+        catch (ArgumentException)
         {
             return null;
+        }
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Trace.TraceError(
+                "Unexpected error when estimating poker win probability for player '{0}' in phase '{1}': {2}",
+                player.Name,
+                state.Phase,
+                ex);
+#if DEBUG
+            throw;
+#else
+            return null;
+#endif
         }
     }
 }
