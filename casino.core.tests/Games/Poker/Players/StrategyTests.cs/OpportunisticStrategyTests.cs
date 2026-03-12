@@ -5,6 +5,7 @@ using casino.core.Games.Poker.Players.Strategies;
 using casino.core.Games.Poker.Rounds;
 using casino.core.Games.Poker.Rounds.Phases;
 using casino.core.tests.Fakes;
+using casino.core.tests.Games.Poker.Players;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -108,6 +109,31 @@ public class OpportunisticStrategyTests
         Assert.IsNotNull(gameAction);
         Assert.AreEqual(PokerTypeAction.Raise, gameAction.TypeAction);
         Assert.AreEqual(gameContext.MinimumBet, gameAction.Amount);
+    }
+
+
+    [TestMethod]
+    public void DecideAction_WithRaiseAvailableAndExistingCurrentBet_ShouldRaiseAboveCurrentBet()
+    {
+        // Arrange
+        var player = new Player("bob", 1000);
+        var players = new List<Player>()
+        {
+            player,
+            new Player("alice", 1000)
+        };
+        var round = new Round(players, new FakeDeck(CreerCartesSimples()));
+        PlayerTestHelper.DefinirMiseActuelle(round, 14);
+        var gameContext = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise });
+        var strategy = new OpportunisticStrategy();
+
+        // Act
+        var gameAction = strategy.DecideAction(gameContext);
+
+        // Assert
+        Assert.IsNotNull(gameAction);
+        Assert.AreEqual(PokerTypeAction.Raise, gameAction.TypeAction);
+        Assert.AreEqual(15, gameAction.Amount);
     }
 
     private static IEnumerable<Card> CreerCartesSimples() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10);

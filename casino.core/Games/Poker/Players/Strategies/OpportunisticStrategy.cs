@@ -14,9 +14,13 @@ public class OpportunisticStrategy : IPlayerStrategy
     {
         var actions = context.AvailableActions;
         if (actions.Count == 1)
-            return GetFirstGameAction(context);
-
-
+        {
+            if (actions.First() == PokerTypeAction.Raise)
+                return new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context));
+            else 
+                return GetFirstGameAction(context);
+        }
+        
         int activePlayers = context.Round.Players.Count(j => !j.IsFolded());
         int nbActives = Math.Max(2, activePlayers);
         int opponents = Math.Max(0, activePlayers - 1);
@@ -78,9 +82,9 @@ public class OpportunisticStrategy : IPlayerStrategy
             return new GameAction(actions.First());
         }
 
-        // Bon avantage => relancer/miser
+        // Should raise if the probability is significantly better than the neutral threshold
         if (actions.Contains(PokerTypeAction.Raise))
-            return new GameAction(PokerTypeAction.Raise, context.MinimumBet);
+            return new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context)); // Raise with the minimum raise amount
 
         if (actions.Contains(PokerTypeAction.Bet))
             return new GameAction(PokerTypeAction.Bet, context.MinimumBet);
@@ -89,6 +93,23 @@ public class OpportunisticStrategy : IPlayerStrategy
             return new GameAction(PokerTypeAction.Call);
 
         return GetFirstGameAction(context);
+    }
+
+    /// <summary>
+    /// Calculates the minimum amount a player must raise in the current round, based on the game context.
+    /// </summary>
+    /// <remarks>The returned value ensures that the raise does not exceed the player's available chips and is
+    /// at least the minimum allowed by the game rules.</remarks>
+    /// <param name="context">The current game context containing round and player information. Cannot be null.</param>
+    /// <returns>The minimum valid raise amount for the current player, considering the current bet, minimum bet, and the
+    /// player's available chips.</returns>
+    private static int GetMinimumRaiseAmount(GameContext context)
+    {
+        var currentBet = context.Round.CurrentBet;
+        var minimumRaise = Math.Max(currentBet + 1, context.MinimumBet);
+        var playerMaximumBet = context.Round.GetBetFor(context.CurrentPlayer) + context.CurrentPlayer.Chips;
+
+        return Math.Min(minimumRaise, playerMaximumBet);
     }
 
     private static GameAction GetFirstGameAction(GameContext context)
