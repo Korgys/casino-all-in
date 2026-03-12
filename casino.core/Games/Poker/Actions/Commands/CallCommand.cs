@@ -40,6 +40,6 @@ public class CallCommand : IPlayerCommand
         _player.LastAction = PokerTypeAction.Call;
         _player.Chips -= diff;
         round.SetBetFor(_player, round.CurrentBet);
-        round.Pot += diff;
+        round.AddToPot(diff);
     }
 }

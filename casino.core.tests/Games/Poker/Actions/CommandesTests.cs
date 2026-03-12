@@ -37,7 +37,7 @@ public class CommandsTests
         var partie = new Round(new List<Player> { Player }, new FakeDeck(CreerCartesSimples()));
 
         PlayerTestHelper.DefinirMiseActuelle(partie, 10);
-        partie.SetBetForPlayer(Player, 10);
+        partie.SetBetFor(Player, 10);
 
         var cmd = new CheckCommand(Player);
         cmd.Execute(partie);
@@ -141,7 +141,7 @@ public class CommandsTests
         // Définir une mise actuelle que le Player doit suivre
         PlayerTestHelper.DefinirMiseActuelle(partie, 40);
         // Le Player a déjà contribué 10
-        partie.SetBetForPlayer(Player, 10);
+        partie.SetBetFor(Player, 10);
 
         var cmd = new CallCommand(Player);
         cmd.Execute(partie);
@@ -160,7 +160,7 @@ public class CommandsTests
 
         // Pas de mise à rattraper
         PlayerTestHelper.DefinirMiseActuelle(partie, 0);
-        partie.SetBetForPlayer(Player, 0);
+        partie.SetBetFor(Player, 0);
 
         var cmd = new CallCommand(Player);
         Assert.Throws<InvalidOperationException>(() => cmd.Execute(partie));
@@ -173,7 +173,7 @@ public class CommandsTests
         var partie = new Round(new List<Player> { Player }, new FakeDeck(CreerCartesSimples()));
 
         // Player a déjà contribué 5
-        partie.SetBetForPlayer(Player, 5);
+        partie.SetBetFor(Player, 5);
 
         var cmd = new AllInCommand(Player);
         cmd.Execute(partie);

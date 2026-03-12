@@ -10,7 +10,7 @@ public class TablePoker
 {
     public string Name { get; set; }
     public Round Round { get; private set; }
-    public List<Player> Players { get; private set; }
+    public IReadOnlyList<Player> Players { get; private set; } = new List<Player>();
     public TurnManager TurnManager { get; private set; }
     public int InitialPlayerIndex => TurnManager?.InitialPlayerIndex ?? _playerInitialIndex;
     public int CurrentPlayerIndex => TurnManager?.CurrentPlayerIndex ?? _playerInitialIndex;
@@ -20,7 +20,7 @@ public class TablePoker
     {
         Players.ForEach(j => j.Reset());
 
-        this.Players = Players;
+        this.Players = Players.ToList();
         Round = new Round(this.Players, deck);
         _playerInitialIndex = (_playerInitialIndex + 1) % this.Players.Count;
         TurnManager = new TurnManager(Round, _playerInitialIndex);

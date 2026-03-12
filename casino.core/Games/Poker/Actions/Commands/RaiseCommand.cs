@@ -40,8 +40,8 @@ public class RaiseCommand : IPlayerCommand
         // Update the player's last action, chips, current bet, and the round's pot
         _player.LastAction = PokerTypeAction.Raise;
         _player.Chips -= difference;
-        round.CurrentBet = _amount;
+        round.SetCurrentBet(_amount);
         round.SetBetFor(_player, _amount);
-        round.Pot += difference;
+        round.AddToPot(difference);
     }
 }

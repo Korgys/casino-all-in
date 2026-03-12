@@ -40,7 +40,7 @@ public class BetCommand : IPlayerCommand
         // Update the player contribution
         _player.Chips -= diff;
         round.SetBetFor(_player, _amount);
-        round.CurrentBet = _amount;
-        round.Pot += diff;
+        round.SetCurrentBet(_amount);
+        round.AddToPot(diff);
     }
 }

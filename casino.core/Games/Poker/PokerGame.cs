@@ -121,7 +121,7 @@ public class PokerGame : GameBase
             _players.Select(j => new PokerPlayerState(
                 j.Name,
                 j.Chips,
-                partie?.GetBetForPlayer(j) ?? 0,
+                partie?.GetBetFor(j) ?? 0,
                 j is HumanPlayer,
                 j.LastAction == Actions.PokerTypeAction.Fold,
                 j.LastAction,

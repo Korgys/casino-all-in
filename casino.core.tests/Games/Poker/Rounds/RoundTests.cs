@@ -70,12 +70,10 @@ public class RoundTests
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 6));
         var activePlayer = new HumanPlayer("Alice", 100);
         var foldedPlayer = new HumanPlayer("Bob", 50) { LastAction = PokerTypeAction.Fold };
-        var round = new Round(new List<Player> { activePlayer, foldedPlayer }, deck)
-        {
-            Pot = 50,
-            StartingBet = 10,
-            NumberOfRoundsPlayed = 1
-        };
+        var round = new Round(new List<Player> { activePlayer, foldedPlayer }, deck);
+        round.AddToPot(50);
+        round.StartingBet = 10;
+        round.NumberOfRoundsPlayed = 1;
 
         // Act
         round.EndGame();
@@ -96,18 +94,16 @@ public class RoundTests
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Spades), 10));
         var alice = new HumanPlayer("Alice", 100);
         var bob = new HumanPlayer("Bob", 100);
-        var round = new Round(new List<Player> { alice, bob }, deck)
-        {
-            StartingBet = 10,
-            NumberOfRoundsPlayed = 1,
-            CommunityCards = PlayerTestHelper.CreateCommunityCards(
-                new Card(CardRank.Dame, Suit.Hearts),
-                new Card(CardRank.Dix, Suit.Hearts),
-                new Card(CardRank.Neuf, Suit.Hearts),
-                new Card(CardRank.Deux, Suit.Diamonds),
-                new Card(CardRank.Trois, Suit.Clubs)),
-            Pot = 60
-        };
+        var round = new Round(new List<Player> { alice, bob }, deck);
+        round.StartingBet = 10;
+        round.NumberOfRoundsPlayed = 1;
+        round.SetCommunityCards(PlayerTestHelper.CreateCommunityCards(
+            new Card(CardRank.Dame, Suit.Hearts),
+            new Card(CardRank.Dix, Suit.Hearts),
+            new Card(CardRank.Neuf, Suit.Hearts),
+            new Card(CardRank.Deux, Suit.Diamonds),
+            new Card(CardRank.Trois, Suit.Clubs)));
+        round.AddToPot(60);
 
         // Important: assign hands after round initialization.
         alice.Hand = new HandCards(
@@ -129,4 +125,39 @@ public class RoundTests
         Assert.AreEqual(2, round.NumberOfRoundsPlayed, "Played rounds counter must be incremented after resolution.");
         Assert.AreEqual(20, round.StartingBet, "Starting bet must double when the increase threshold is reached.");
     }
+    [TestMethod]
+    public void Round_PublicApi_ShouldExposeReadOnlyStateMutatedViaMethodsOnly()
+    {
+        // Arrange
+        var deck = new FakeDeck(new[]
+        {
+            new Card(CardRank.As, Suit.Hearts),
+            new Card(CardRank.Roi, Suit.Hearts),
+            new Card(CardRank.Dame, Suit.Hearts),
+            new Card(CardRank.Valet, Suit.Hearts),
+            new Card(CardRank.Dix, Suit.Hearts),
+            new Card(CardRank.Neuf, Suit.Hearts),
+            new Card(CardRank.Huit, Suit.Hearts)
+        });
+        var alice = new HumanPlayer("Alice", 100);
+        var bob = new HumanPlayer("Bob", 100);
+        var round = new Round(new List<Player> { alice, bob }, deck);
+
+        // Assert read-only exposure
+        Assert.IsFalse(round.Players is List<Player>, "Players must not be exposed as mutable list.");
+
+        // Act through sanctioned methods
+        round.SetCurrentBet(20);
+        round.AddToPot(20);
+        round.AdvancePhase();
+
+        // Assert state was changed through explicit API
+        Assert.AreEqual(0, round.CurrentBet, "Current bet must reset when advancing phase.");
+        Assert.AreEqual(20, round.Pot);
+        Assert.AreEqual(Phase.Flop, round.Phase);
+        Assert.IsNotNull(round.CommunityCards.Flop1);
+        Assert.IsNotNull(round.CommunityCards.Flop2);
+        Assert.IsNotNull(round.CommunityCards.Flop3);
+    }
+
 }

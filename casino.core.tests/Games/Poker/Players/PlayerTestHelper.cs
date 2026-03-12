@@ -12,10 +12,8 @@ internal static class PlayerTestHelper
     internal static Round CreerRoundAvecPlayer(Player Player, HandCards? main = null, TableCards? communes = null, int startingBet = 10)
     {
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10));
-        var partie = new Round(new List<Player> { Player }, deck)
-        {
-            StartingBet = startingBet
-        };
+        var partie = new Round(new List<Player> { Player }, deck);
+        partie.StartingBet = startingBet;
 
         if (main != null)
         {
@@ -24,7 +22,7 @@ internal static class PlayerTestHelper
 
         if (communes != null)
         {
-            partie.CommunityCards = communes;
+            partie.SetCommunityCards(communes);
         }
 
         return partie;

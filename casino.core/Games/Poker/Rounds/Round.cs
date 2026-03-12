@@ -5,8 +5,8 @@ using casino.core.Games.Poker.Rounds.Phases;
 using casino.core.Games.Poker.Scores;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace casino.core.Games.Poker.Rounds;
 
@@ -14,21 +14,25 @@ public class Round
 {
     internal IDeck Deck { get; }
     internal IActionService ActionService { get; }
-    public List<Player> Players { get; set; }
-    public TableCards CommunityCards { get; set; } = new TableCards();
+    private readonly List<Player> _players;
+    private readonly ReadOnlyCollection<Player> _readOnlyPlayers;
+
+    public IReadOnlyList<Player> Players => _readOnlyPlayers;
+    public TableCards CommunityCards { get; private set; } = new TableCards();
     public IReadOnlyList<Player> Winners { get; private set; } = new List<Player>();
-    public Phase Phase { get; set; } = Phase.PreFlop;
+    public Phase Phase { get; private set; } = Phase.PreFlop;
     public IPhaseState PhaseState { get; internal set; } = new PreFlopPhaseState();
-    public int Pot { get; set; } = 0;
-    public int StartingBet { get; set; } = 10;
+    public int Pot { get; private set; } = 0;
+    public int StartingBet { get; internal set; } = 10;
     public int CurrentBet { get; internal set; }
-    public int NumberOfRoundsPlayed { get; set; } = 0;
+    public int NumberOfRoundsPlayed { get; internal set; } = 0;
 
     private readonly Dictionary<Player, int> _betsByPlayer = new();
 
-    public Round(List<Player> Players, IDeck deck, IActionService? actionService = null)
+    public Round(IReadOnlyList<Player> Players, IDeck deck, IActionService? actionService = null)
     {
-        this.Players = Players ?? throw new ArgumentNullException(nameof(Players));
+        _players = Players?.ToList() ?? throw new ArgumentNullException(nameof(Players));
+        _readOnlyPlayers = _players.AsReadOnly();
         Deck = deck ?? throw new ArgumentNullException(nameof(deck));
         ActionService = actionService ?? new ActionService();
         Deck.Shuffle();
@@ -57,6 +61,52 @@ public class Round
         PhaseState.ApplyAction(Player, action, this);
     }
 
+    internal void MoveToNextPhase(Phase phase, IPhaseState nextPhaseState)
+    {
+        Phase = phase;
+        PhaseState = nextPhaseState;
+    }
+
+    internal void RevealFlop(Card flop1, Card flop2, Card flop3)
+    {
+        CommunityCards.Flop1 = flop1;
+        CommunityCards.Flop2 = flop2;
+        CommunityCards.Flop3 = flop3;
+    }
+
+    internal void RevealTurn(Card turn)
+    {
+        CommunityCards.Turn = turn;
+    }
+
+    internal void RevealRiver(Card river)
+    {
+        CommunityCards.River = river;
+    }
+
+    internal void AddToPot(int amount)
+    {
+        if (amount < 0)
+            throw new ArgumentOutOfRangeException(nameof(amount));
+
+        Pot += amount;
+    }
+
+    internal void SetCurrentBet(int amount)
+    {
+        CurrentBet = amount;
+    }
+
+    internal void RaiseCurrentBetToAtLeast(int amount)
+    {
+        CurrentBet = Math.Max(CurrentBet, amount);
+    }
+
+    internal void SetCommunityCards(TableCards communityCards)
+    {
+        CommunityCards = communityCards ?? throw new ArgumentNullException(nameof(communityCards));
+    }
+
     private void DealCards()
     {
         foreach (var Player in Players.Where(j => j.Chips > 0 && j.LastAction != PokerTypeAction.Fold))
@@ -73,16 +123,6 @@ public class Round
     internal void SetBetFor(Player Player, int bet)
     {
         _betsByPlayer[Player] = bet;
-    }
-
-    public void SetBetForPlayer(Player Player, int bet)
-    {
-        SetBetFor(Player, bet);
-    }
-
-    public int GetBetForPlayer(Player Player)
-    {
-        return GetBetFor(Player);
     }
 
     internal bool IsBettingRoundClosed()
