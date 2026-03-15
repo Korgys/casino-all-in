@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
 using casino.core;
+using casino.core.Games.Blackjack;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
@@ -19,6 +21,7 @@ public class ConsoleGameFactory : IGameFactory
         return gameName.ToLower() switch
         {
             "poker" => CreatePoker(humanActionSelector, continuePlaying),
+            "blackjack" => CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame),
             _ => null
         };
     }
@@ -36,5 +39,10 @@ public class ConsoleGameFactory : IGameFactory
         };
 
         return new PokerGame(Players, () => new Deck(), humanActionSelector, continuePlaying, new ConsoleWaitStrategy());
+    }
+
+    public IGame CreateBlackjack(Func<BlackjackGameState, BlackjackAction> humanActionSelector, Func<bool> continuePlaying)
+    {
+        return new BlackjackGame(humanActionSelector, continuePlaying);
     }
 }

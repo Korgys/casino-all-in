@@ -1,4 +1,5 @@
 using casino.console.Games;
+using casino.core.Games.Blackjack;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
 
@@ -12,7 +13,7 @@ public class ConsoleGameFactoryTests
     {
         var factory = new ConsoleGameFactory();
 
-        var result = factory.Create("blackjack", _ => new GameAction(PokerTypeAction.Check), () => false);
+        var result = factory.Create("roulette", _ => new GameAction(PokerTypeAction.Check), () => false);
 
         Assert.IsNull(result);
     }
@@ -26,5 +27,16 @@ public class ConsoleGameFactoryTests
 
         Assert.IsNotNull(result);
         Assert.IsInstanceOfType<PokerGame>(result);
+    }
+
+    [TestMethod]
+    public void Create_ReturnsBlackjackGame_ForBlackjackNameCaseInsensitive()
+    {
+        var factory = new ConsoleGameFactory();
+
+        var result = factory.Create("BLACKJACK", _ => new GameAction(PokerTypeAction.Check), () => false);
+
+        Assert.IsNotNull(result);
+        Assert.IsInstanceOfType<BlackjackGame>(result);
     }
 }

@@ -1,6 +1,7 @@
 using casino.console.Games;
+using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
-using System;
+using casino.core.Games.Blackjack;
 using System.Text;
 
 namespace casino.console;
@@ -20,7 +21,7 @@ public static class Program
         Console.WriteLine("=== Casino All-In ===\n");
 
         var factory = new ConsoleGameFactory();
-        var game = factory.Create("poker", ConsolePokerInput.GetPlayerAction, ConsolePokerInput.AskContinueNewGame);
+        var game = BuildGame(factory);
 
         if (game is null) return;
 
@@ -30,11 +31,33 @@ public static class Program
             {
                 PokerRenderer.RenderTable(state);
             }
+
+            if (e.State is BlackjackGameState blackjackState)
+            {
+                ConsoleBlackjackRenderer.RenderTable(blackjackState);
+            }
         };
 
         game.Run();
 
         Console.WriteLine("\nAppuyez sur une touche pour quitter...");
         Console.ReadKey(intercept: true);
+    }
+
+    private static casino.core.IGame? BuildGame(ConsoleGameFactory factory)
+    {
+        Console.WriteLine("Choisissez un jeu :");
+        Console.WriteLine("1. Poker");
+        Console.WriteLine("2. Blackjack");
+        Console.Write("Votre choix: ");
+
+        var choice = (Console.ReadLine() ?? string.Empty).Trim();
+
+        return choice switch
+        {
+            "1" or "poker" => factory.CreatePoker(ConsolePokerInput.GetPlayerAction, ConsolePokerInput.AskContinueNewGame),
+            "2" or "blackjack" => factory.CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame),
+            _ => null
+        };
     }
 }

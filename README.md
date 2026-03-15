@@ -2,7 +2,7 @@
 
 ## Overview
 
-Casino All-In is a console-based Texas Hold'em project built with .NET. It is designed as a portfolio showcase to demonstrate:
+Casino All-In is a console-based casino project built with .NET. It is designed as a portfolio showcase to demonstrate:
 
 - Clean architecture separation (`casino.core` / `casino.console`)
 - Game logic modeling (deck, rounds, actions, scoring)
@@ -15,6 +15,7 @@ Casino All-In is a console-based Texas Hold'em project built with .NET. It is de
 ## Features
 
 - Playable **Texas Hold'em** game in the terminal with betting phases (Pre-Flop, Flop, Turn, River, Showdown).
+- Playable **Blackjack** game in the terminal (hit/stand loop, dealer draw rules, winner resolution).
 - Computer players with multiple strategies (aggressive, conservative, opportunistic, random).
 - Poker action flow support: fold, check, call, raise, bet, all-in.
 - Poker hand evaluation and winner resolution.
@@ -49,8 +50,9 @@ docker run --rm -it casino-all-in
 ## Usage
 
 1. Launch the app (CLI or Docker).
-2. Follow prompts in the terminal to choose actions (`check`, `call`, `raise`, `fold`, `all-in`, etc.).
-3. Play rounds until the game ends, then choose whether to start a new game.
+2. Choose a game (Poker or Blackjack).
+3. Follow prompts in the terminal to choose actions (`check`, `call`, `raise`, `fold`, `all-in`, `hit`, `stand`, etc.).
+4. Play rounds until the game ends, then choose whether to start a new game.
 
 ### Run tests
 
@@ -82,7 +84,7 @@ This project implements a simplified Texas Hold'em loop:
 
 ## Roadmap
 
-- [ ] Add additional casino games (Blackjack, Roulette, etc.).
+- [ ] Add additional casino games (Roulette, etc.).
 - [ ] Improve UI/UX with richer console animations/colors.
 - [ ] Add configurable game setup (number of bots, starting stacks, blinds).
 - [ ] Add localization options (FR/EN prompts and messages).
