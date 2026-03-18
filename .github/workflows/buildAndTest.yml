@@ -107,6 +107,7 @@ jobs:
 
       - name: Sonar Quality Gate
         uses: sonarsource/sonarqube-quality-gate-action@v1.2.0
+        continue-on-error: true # Don't fail the workflow if SonarQube is not reachable or if the report file is missing
         with:
           scanMetadataReportFile: ${{ steps.sonarfile.outputs.file }}
           pollingTimeoutSec: 600
