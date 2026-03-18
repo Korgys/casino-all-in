@@ -99,10 +99,16 @@ jobs:
           export PATH="$PATH:$HOME/.dotnet/tools"
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
+      - name: Find Sonar report file
+        id: sonarfile
+        run: |
+          FILE=$(find . -name "report-task.txt" | head -n 1)
+          echo "file=$FILE" >> $GITHUB_OUTPUT
+
       - name: Sonar Quality Gate
         uses: sonarsource/sonarqube-quality-gate-action@v1.2.0
         with:
-          scanMetadataReportFile: .scannerwork/report-task.txt
+          scanMetadataReportFile: ${{ steps.sonarfile.outputs.file }}
           pollingTimeoutSec: 600
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
