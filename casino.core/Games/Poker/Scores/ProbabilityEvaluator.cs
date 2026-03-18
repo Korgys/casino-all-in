@@ -51,9 +51,6 @@ public static class ProbabilityEvaluator
         if (communityCards.Turn is not null) knownCommunityCards++;
         if (communityCards.River is not null) knownCommunityCards++;
 
-        if (knownCommunityCards > TOTAL_TABLE_CARDS)
-            throw new ArgumentException("There cannot be more than 5 community cards.", nameof(communityCards));
-
         int missingCommunityCards = TOTAL_TABLE_CARDS - knownCommunityCards;
         int requiredCards = missingCommunityCards + numberOfOpponents * 2;
 
