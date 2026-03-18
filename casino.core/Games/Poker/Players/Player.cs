@@ -14,7 +14,7 @@ public class Player
         internal set => _chips = value > 0 ? value : 0;
     }
 
-    public HandCards Hand { get; set; }
+    public HandCards Hand { get; set; } = null!;
 
     public bool IsFolded() => LastAction == PokerTypeAction.Fold;
     public bool IsAllIn() => LastAction == PokerTypeAction.AllIn;

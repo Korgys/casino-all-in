@@ -8,10 +8,10 @@ namespace casino.core.Games.Poker.Rounds;
 
 public class TablePoker
 {
-    public string Name { get; set; }
-    public Round Round { get; private set; }
+    public string Name { get; set; } = string.Empty;
+    public Round Round { get; private set; } = null!;
     public IReadOnlyList<Player> Players { get; private set; } = new List<Player>();
-    public TurnManager TurnManager { get; private set; }
+    public TurnManager TurnManager { get; private set; } = null!;
     public int InitialPlayerIndex => TurnManager?.InitialPlayerIndex ?? _playerInitialIndex;
     public int CurrentPlayerIndex => TurnManager?.CurrentPlayerIndex ?? _playerInitialIndex;
     private int _playerInitialIndex = -1;
