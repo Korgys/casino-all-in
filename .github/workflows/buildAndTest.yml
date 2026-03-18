@@ -1,4 +1,4 @@
-name: CI Build and Test
+name: CI
 
 on:
   push:
@@ -7,126 +7,12 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
-    name: Build
+  ci:
+    name: Build, Test, Coverage & Sonar
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Setup .NET version
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.fsproj', '**/*.props', '**/*.targets', '**/*.sln*') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --no-restore
-
-  test:
-    name: Test (with coverage data)
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Setup .NET version
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.fsproj', '**/*.props', '**/*.targets', '**/*.sln*') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Test (with Coverage)
-        run: >
-          dotnet test --verbosity normal
-          --results-directory ./TestResults
-          --collect:"XPlat Code Coverage"
-          --
-          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
-
-      - name: Upload test results (includes coverage xml)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: testresults
-          path: TestResults
-
-  coverage:
-    name: Coverage report + threshold
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Download test results
-        uses: actions/download-artifact@v4
-        with:
-          name: testresults
-          path: TestResults
-
-      - name: Install ReportGenerator tool
-        run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Check coverage file exists
-        run: |
-          FILE_COUNT=$(find TestResults -name "coverage.cobertura.xml" | wc -l)
-          echo "Coverage files found: $FILE_COUNT"
-          test "$FILE_COUNT" -gt 0
-
-      - name: Generate coverage report
-        run: |
-          reportgenerator \
-            -reports:"TestResults/**/coverage.cobertura.xml" \
-            -targetdir:"coveragereport" \
-            -reporttypes:"Html;TextSummary"
-
-      - name: Print coverage summary
-        run: cat coveragereport/Summary.txt
-
-      - name: Upload coverage report artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coveragereport
-          path: coveragereport
-
-      - name: Enforce minimum coverage (70% lines)
-        run: |
-          LINE_COV=$(grep -Po 'Line coverage:\s*\K[0-9.]+(?=%)' coveragereport/Summary.txt || echo 0)
-          echo "Detected line coverage: ${LINE_COV}%"
-          THRESHOLD=70
-          awk -v a="$LINE_COV" -v b="$THRESHOLD" 'BEGIN {
-            printf("Minimum required: %s%%\n", b);
-            exit (a>=b)?0:1
-          }'
-
-  quality:
-    name: Code quality (SonarCloud)
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Checkout repository
+      - name: Checkout code repository
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
@@ -136,24 +22,66 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Cache NuGet
+      - name: Cache NuGet packages
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.fsproj', '**/*.props', '**/*.targets', '**/*.sln*') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Setup Java (required by Sonar analyzers)
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test with coverage
+        run: >
+          dotnet test --no-build
+          --results-directory ./TestResults
+          --collect:"XPlat Code Coverage"
+          --
+          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+
+      - name: Install ReportGenerator tool
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Generate coverage report
+        run: |
+          reportgenerator \
+            -reports:"TestResults/**/coverage.cobertura.xml" \
+            -targetdir:"coveragereport" \
+            -reporttypes:"TextSummary;HtmlInline"
+
+      - name: Print coverage summary
+        run: cat coveragereport/Summary.txt
+
+      - name: Enforce coverage (>= 70%)
+        run: |
+          LINE_COV=$(grep -Po 'Line coverage:\s*\K[0-9.]+(?=%)' coveragereport/Summary.txt || echo 0)
+          echo "Detected coverage: ${LINE_COV}%"
+          awk -v cov="$LINE_COV" 'BEGIN { exit (cov>=70)?0:1 }'
+
+      - name: Upload coverage report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coveragereport
+
+      - name: Setup Java
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Install SonarScanner for .NET
+      - name: Install SonarScanner
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: Begin SonarCloud analysis
+      - name: Sonar Begin
         run: |
           export PATH="$PATH:$HOME/.dotnet/tools"
           dotnet sonarscanner begin \
@@ -163,20 +91,18 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.cobertura.xml"
 
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build for analysis
+      - name: Build for Sonar
         run: dotnet build --no-restore
 
-      - name: End SonarCloud analysis
+      - name: Sonar End
         run: |
           export PATH="$PATH:$HOME/.dotnet/tools"
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
-      - name: SonarCloud Quality Gate check
+      - name: Sonar Quality Gate
         uses: sonarsource/sonarqube-quality-gate-action@v1.2.0
         with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
           pollingTimeoutSec: 600
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
