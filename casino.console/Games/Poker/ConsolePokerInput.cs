@@ -12,6 +12,11 @@ namespace casino.console.Games.Poker;
 /// </summary>
 public class ConsolePokerInput
 {
+    private const int MinimumPlayers = 2;
+    private const int MaximumPlayers = 6;
+    private const int MinimumInitialChips = 100;
+    private const int MaximumInitialChips = 5000;
+
     public static ActionModel GetPlayerAction(ActionRequest request)
     {
         var state = (PokerGameState)request.TableState;
@@ -25,6 +30,40 @@ public class ConsolePokerInput
             PokerTypeAction.Raise => new ActionModel(choice, ReadRaiseAmount(player.Chips, state.CurrentBet, player.Contribution)),
             _ => new ActionModel(choice, 0),
         };
+    }
+
+    public static PokerGameSetup PromptGameSetup()
+    {
+        Console.Clear();
+        Console.WriteLine("╔══════════════════════════════════════════════╗");
+        Console.WriteLine("║              PARAMÈTRES POKER               ║");
+        Console.WriteLine("╚══════════════════════════════════════════════╝");
+
+        var initialChips = ReadIntInRange(
+            $"Jetons de départ par joueur [{MinimumInitialChips}-{MaximumInitialChips}] (défaut 1000) : ",
+            MinimumInitialChips,
+            MaximumInitialChips,
+            defaultValue: 1000);
+
+        var playerCount = ReadIntInRange(
+            $"Nombre total de joueurs [{MinimumPlayers}-{MaximumPlayers}] (défaut 5) : ",
+            MinimumPlayers,
+            MaximumPlayers,
+            defaultValue: 5);
+
+        var opponents = new List<PokerOpponentSetup>();
+        for (var index = 1; index < playerCount; index++)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Niveaux disponibles pour l'adversaire {index} :");
+            RenderDifficultyOptions();
+            var difficulty = ReadDifficulty($"Choisissez la difficulté du joueur IA {index} (défaut {PokerDifficulty.Medium:D}) : ", PokerDifficulty.Medium);
+            opponents.Add(new PokerOpponentSetup(difficulty));
+        }
+
+        var setup = new PokerGameSetup(initialChips, playerCount, opponents);
+        RenderSetupSummary(setup);
+        return setup;
     }
 
     public static bool AskContinueNewGame()
@@ -60,5 +99,76 @@ public class ConsolePokerInput
             if (amount > actualBet && amount - currentContribution <= maxChips)
                 return amount;
         }
+    }
+
+    private static int ReadIntInRange(string prompt, int minValue, int maxValue, int defaultValue)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            var input = (Console.ReadLine() ?? string.Empty).Trim();
+
+            if (string.IsNullOrEmpty(input))
+                return defaultValue;
+
+            if (int.TryParse(input, out var value) && value >= minValue && value <= maxValue)
+                return value;
+
+            Console.WriteLine($"Veuillez saisir une valeur entre {minValue} et {maxValue}.");
+        }
+    }
+
+    private static PokerDifficulty ReadDifficulty(string prompt, PokerDifficulty defaultDifficulty)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            var input = (Console.ReadLine() ?? string.Empty).Trim();
+
+            if (string.IsNullOrEmpty(input))
+                return defaultDifficulty;
+
+            if (int.TryParse(input, out var raw)
+                && Enum.IsDefined(typeof(PokerDifficulty), raw))
+            {
+                return (PokerDifficulty)raw;
+            }
+
+            Console.WriteLine("Choix invalide. Sélectionnez 1, 2, 3 ou 4.");
+        }
+    }
+
+    private static void RenderDifficultyOptions()
+    {
+        foreach (var value in Enum.GetValues<PokerDifficulty>())
+        {
+            var description = value switch
+            {
+                PokerDifficulty.Easy => "Aléatoire",
+                PokerDifficulty.Medium => "Prudent",
+                PokerDifficulty.Hard => "Opportuniste",
+                PokerDifficulty.Expert => "Agressif",
+                _ => string.Empty
+            };
+
+            Console.WriteLine($"  {(int)value}. {new PokerOpponentSetup(value).Label,-10} - {description}");
+        }
+    }
+
+    private static void RenderSetupSummary(PokerGameSetup setup)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Résumé de la table :");
+        Console.WriteLine($"- Joueurs : {setup.PlayerCount}");
+        Console.WriteLine($"- Jetons initiaux : {setup.InitialChips}");
+
+        for (var index = 0; index < setup.Opponents.Count; index++)
+        {
+            Console.WriteLine($"- IA {index + 1} : {setup.Opponents[index].Label}");
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Appuyez sur Entrée pour lancer la partie...");
+        Console.ReadLine();
     }
 }

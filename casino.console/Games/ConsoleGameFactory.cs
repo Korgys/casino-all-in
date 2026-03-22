@@ -26,23 +26,43 @@ public class ConsoleGameFactory : IGameFactory
         };
     }
 
-    public IGame CreatePoker(Func<ActionRequest, GameAction> humanActionSelector, Func<bool> continuePlaying)
+    public IGame CreatePoker(
+        Func<ActionRequest, GameAction> humanActionSelector,
+        Func<bool> continuePlaying,
+        PokerGameSetup? setup = null)
     {
-        var Player = new HumanPlayer("Player", 1000);
-        var Players = new List<Player>
+        var configuration = setup ?? PokerGameSetup.CreateDefault();
+        var players = new List<Player>
         {
-            Player,
-            new ComputerPlayer("Ordi Opportuniste", 1000, new OpportunisticStrategy()),
-            new ComputerPlayer("Ordi Agressif", 1000, new AggressiveStrategy()),
-            new ComputerPlayer("Ordi Conserv", 1000, new ConservativeStrategy()),
-            new ComputerPlayer("Ordi Random", 1000, new RandomStrategy())
+            new HumanPlayer("Player", configuration.InitialChips)
         };
 
-        return new PokerGame(Players, () => new Deck(), humanActionSelector, continuePlaying, new ConsoleWaitStrategy());
+        for (var index = 0; index < configuration.Opponents.Count; index++)
+        {
+            var opponent = configuration.Opponents[index];
+            players.Add(new ComputerPlayer(
+                $"Ordi {index + 1} - {opponent.Label}",
+                configuration.InitialChips,
+                CreateStrategy(opponent.Difficulty)));
+        }
+
+        return new PokerGame(players, () => new Deck(), humanActionSelector, continuePlaying, new ConsoleWaitStrategy());
     }
 
     public IGame CreateBlackjack(Func<BlackjackGameState, BlackjackAction> humanActionSelector, Func<bool> continuePlaying)
     {
         return new BlackjackGame(humanActionSelector, continuePlaying);
+    }
+
+    private static IPlayerStrategy CreateStrategy(PokerDifficulty difficulty)
+    {
+        return difficulty switch
+        {
+            PokerDifficulty.Easy => new RandomStrategy(),
+            PokerDifficulty.Medium => new ConservativeStrategy(),
+            PokerDifficulty.Hard => new OpportunisticStrategy(),
+            PokerDifficulty.Expert => new AggressiveStrategy(),
+            _ => new RandomStrategy()
+        };
     }
 }

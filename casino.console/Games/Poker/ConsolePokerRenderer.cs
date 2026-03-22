@@ -36,17 +36,26 @@ public class ConsolePokerRenderer
 
         var currentPlayerName = state.CurrentPlayer;
 
-        Console.Write("Mise min: ");
+        Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
+        Console.Write("║ Phase: ");
+        Console.Write($"{state.Phase,-10}");
+        Console.Write(" | Mise min: ");
         ConsolePokerWriter.WriteAmount(state.StartingBet);
         Console.Write(" | Pot: ");
         ConsolePokerWriter.WriteAmount(state.Pot);
-        Console.Write(" | Mise actuelle: ");
-        ConsolePokerWriter.WriteAmount(state.CurrentBet);
+        Console.Write(" ║");
         Console.WriteLine();
-
-        Console.Write("Cartes: ");
+        Console.Write("║ Mise actuelle: ");
+        ConsolePokerWriter.WriteAmount(state.CurrentBet);
+        Console.Write(" | Joueur actif: ");
+        Console.Write($"{currentPlayerName,-18}");
+        Console.WriteLine("║");
+        Console.WriteLine("╠════════════════════════════════════════════════════════════╣");
+        Console.Write("║ Table: ");
         ConsolePokerWriter.WriteCommunityCards(state.CommunityCards);
-        Console.WriteLine("\n");
+        Console.WriteLine();
+        Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
+        Console.WriteLine();
 
         foreach (var player in state.Players)
             RenderPlayerLine(player, currentPlayerName, state);
@@ -54,21 +63,23 @@ public class ConsolePokerRenderer
 
     public static void RenderAvailableActions(IReadOnlyList<PokerTypeAction> actions, int minimumBet)
     {
-        Console.Write("\nActions : ");
+        Console.WriteLine();
+        Console.WriteLine("┌──────────────── Actions disponibles ────────────────┐");
         foreach (var action in actions)
         {
+            Console.Write("│ ");
+            Console.Write($"{(int)action}. {action.ToDisplayString()}");
+
             if (action == PokerTypeAction.Bet)
             {
-                Console.Write($"{(int)action}. {action.ToDisplayString()} (");
+                Console.Write(" (");
                 ConsolePokerWriter.WriteAmount(minimumBet);
-                Console.Write(")     ");
+                Console.Write(")");
             }
-            else
-            {
-                Console.Write($"{(int)action}. {action.ToDisplayString()}     ");
-            }
+
+            Console.WriteLine();
         }
-        Console.WriteLine();
+        Console.WriteLine("└──────────────────────────────────────────────────────┘");
     }
 
     private void ResetRoundCacheIfNewRound(string phase)
@@ -87,8 +98,7 @@ public class ConsolePokerRenderer
         if (player.IsFolded)
             ConsoleColorScope.Foreground(ConsoleColor.DarkGray);
 
-        if (currentPlayerName == player.Name)
-            Console.Write("=> ");
+        Console.Write(currentPlayerName == player.Name ? "▶ " : "  ");
 
         ConsolePokerWriter.WritePlayerName(player);
 

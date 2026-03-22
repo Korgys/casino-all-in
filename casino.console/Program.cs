@@ -18,8 +18,6 @@ public static class Program
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
 
-        Console.WriteLine("=== Casino All-In ===\n");
-
         var factory = new ConsoleGameFactory();
         var game = BuildGame(factory);
 
@@ -46,18 +44,32 @@ public static class Program
 
     private static casino.core.IGame? BuildGame(ConsoleGameFactory factory)
     {
-        Console.WriteLine("Choisissez un jeu :");
-        Console.WriteLine("1. Poker");
-        Console.WriteLine("2. Blackjack");
+        Console.Clear();
+        RenderMainMenu();
         Console.Write("Votre choix: ");
 
         var choice = (Console.ReadLine() ?? string.Empty).Trim();
 
-        return choice switch
+        return choice.ToLowerInvariant() switch
         {
-            "1" or "poker" => factory.CreatePoker(ConsolePokerInput.GetPlayerAction, ConsolePokerInput.AskContinueNewGame),
+            "1" or "poker" => factory.CreatePoker(
+                ConsolePokerInput.GetPlayerAction,
+                ConsolePokerInput.AskContinueNewGame,
+                ConsolePokerInput.PromptGameSetup()),
             "2" or "blackjack" => factory.CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame),
             _ => null
         };
+    }
+
+    private static void RenderMainMenu()
+    {
+        Console.WriteLine("╔══════════════════════════════════════════════╗");
+        Console.WriteLine("║               CASINO ALL-IN                 ║");
+        Console.WriteLine("╠══════════════════════════════════════════════╣");
+        Console.WriteLine("║  1. Poker                                   ║");
+        Console.WriteLine("║  2. BlackJack                               ║");
+        Console.WriteLine("║  3. Quitter                                 ║");
+        Console.WriteLine("╚══════════════════════════════════════════════╝");
+        Console.WriteLine();
     }
 }
