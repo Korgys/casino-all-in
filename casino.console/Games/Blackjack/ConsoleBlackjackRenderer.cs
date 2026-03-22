@@ -1,26 +1,133 @@
+using casino.console.Games.Commons;
 using casino.core.Games.Blackjack;
+using casino.core.Games.Poker.Cards;
 
 namespace casino.console.Games.Blackjack;
 
 public static class ConsoleBlackjackRenderer
 {
+    public static Action<int> Pause = Thread.Sleep;
+
     public static void RenderTable(BlackjackGameState state)
     {
-        Console.Clear();
+        try
+        {
+            Console.Clear();
+        }
+        catch
+        {
+            // Ignore any exceptions from Console.Clear (e.g., if the console is not available)
+        }
 
-        Console.WriteLine("=== Blackjack ===\n");
 
-        var dealerCards = state.IsDealerHoleCardHidden && state.DealerCards.Count > 1
-            ? $"{state.DealerCards[0]} ??"
-            : string.Join(" ", state.DealerCards);
+        RenderHeader();
+        Console.WriteLine();
 
-        Console.WriteLine($"Croupier : {dealerCards}");
-        Console.WriteLine($"Vous     : {string.Join(" ", state.PlayerCards)} (Total: {BlackjackScoreCalculator.Calculate(state.PlayerCards)})");
-
-        if (!state.IsDealerHoleCardHidden)
-            Console.WriteLine($"Total croupier: {BlackjackScoreCalculator.Calculate(state.DealerCards)}");
+        RenderHand("Croupier", state.DealerCards, state.IsDealerHoleCardHidden);
+        RenderHand("Vous", state.PlayerCards, hideHoleCard: false);
 
         Console.WriteLine();
-        Console.WriteLine(state.StatusMessage);
+        RenderStatus(state);
+        Console.WriteLine();
+        RenderStats(state);
+
+        if (state.IsRoundOver && state.RoundOutcome == BlackjackRoundOutcome.PlayerWin)
+            RenderWinAnimation();
+    }
+
+    private static void RenderHeader()
+    {
+        using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
+            Console.WriteLine("╔══════════════════════════════════════════════╗");
+
+        using (ConsoleColorScope.Foreground(ConsoleColor.Green))
+            Console.WriteLine("║                BLACKJACK ♠♥                  ║");
+
+        using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
+            Console.WriteLine("╚══════════════════════════════════════════════╝");
+    }
+
+    private static void RenderHand(string label, IReadOnlyList<Card> cards, bool hideHoleCard)
+    {
+        using (ConsoleColorScope.Foreground(label == "Vous" ? ConsoleColor.Cyan : ConsoleColor.Magenta))
+            Console.Write($"{label,-9}: ");
+
+        for (var index = 0; index < cards.Count; index++)
+        {
+            if (index > 0)
+                Console.Write(' ');
+
+            WriteCard(cards[index]);
+        }
+
+        var total = hideHoleCard && cards.Count > 0
+            ? BlackjackScoreCalculator.Calculate([cards[0]])
+            : BlackjackScoreCalculator.Calculate(cards);
+
+        using (ConsoleColorScope.Foreground(ConsoleColor.White))
+            Console.Write($"  (Total: {total})");
+
+        Console.WriteLine();
+    }
+
+    private static void RenderStatus(BlackjackGameState state)
+    {
+        var color = state.RoundOutcome switch
+        {
+            BlackjackRoundOutcome.PlayerWin => ConsoleColor.Green,
+            BlackjackRoundOutcome.DealerWin => ConsoleColor.Red,
+            BlackjackRoundOutcome.Push => ConsoleColor.Yellow,
+            _ => ConsoleColor.White
+        };
+
+        using (ConsoleColorScope.Foreground(color))
+            Console.WriteLine(state.StatusMessage);
+    }
+
+    private static void RenderStats(BlackjackGameState state)
+    {
+        using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
+            Console.Write("Stats");
+
+        Console.Write("  |  ");
+
+        using (ConsoleColorScope.Foreground(ConsoleColor.Green))
+            Console.Write($"Victoires: {state.PlayerWins}");
+
+        Console.Write("  |  ");
+
+        using (ConsoleColorScope.Foreground(ConsoleColor.Red))
+            Console.Write($"Défaites: {state.DealerWins}");
+
+        Console.Write("  |  ");
+
+        using (ConsoleColorScope.Foreground(ConsoleColor.DarkYellow))
+            Console.Write($"Égalités: {state.Pushes}");
+
+        Console.WriteLine();
+    }
+
+    private static void WriteCard(Card card)
+    {
+        var color = card.Suit is Suit.Hearts or Suit.Diamonds
+            ? ConsoleColor.Red
+            : ConsoleColor.Cyan;
+
+        using (ConsoleColorScope.Foreground(color))
+            Console.Write(card);
+    }
+
+    private static void RenderWinAnimation()
+    {
+        var colors = new[] { ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Cyan };
+        const string message = "✨ BLACKJACK ! Vous gagnez ! ✨";
+
+        foreach (var color in colors)
+        {
+            using (ConsoleColorScope.Foreground(color))
+                Console.WriteLine(message);
+
+            Pause(60);
+        }
     }
 }

@@ -9,4 +9,8 @@ public class BlackjackGameState
     public required bool IsDealerHoleCardHidden { get; init; }
     public required bool IsRoundOver { get; init; }
     public required string StatusMessage { get; init; }
+    public required BlackjackRoundOutcome RoundOutcome { get; init; }
+    public required int PlayerWins { get; init; }
+    public required int DealerWins { get; init; }
+    public required int Pushes { get; init; }
 }

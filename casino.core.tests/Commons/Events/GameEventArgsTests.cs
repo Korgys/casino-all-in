@@ -1,6 +1,6 @@
 ﻿using casino.core.Common.Events;
 
-namespace casino.core.tests.Common.Events;
+namespace casino.core.tests.Commons.Events;
 
 [TestClass]
 public class GameEventArgsTests
