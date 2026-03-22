@@ -32,12 +32,12 @@ public class CartesMainTests
         var main = new HandCards(c1, c2);
 
         // Act
-        var cartes = main.AsEnumerable().ToList();
+        var cards = main.AsEnumerable().ToList();
 
         // Assert
-        Assert.HasCount(2, cartes);
-        Assert.AreSame(c1, cartes[0]);
-        Assert.AreSame(c2, cartes[1]);
+        Assert.HasCount(2, cards);
+        Assert.AreSame(c1, cards[0]);
+        Assert.AreSame(c2, cards[1]);
     }
 
     [TestMethod]
@@ -48,11 +48,11 @@ public class CartesMainTests
         var main = new HandCards(c1, second: null!);
 
         // Act
-        var cartes = main.AsEnumerable().ToList();
+        var cards = main.AsEnumerable().ToList();
 
         // Assert
-        Assert.HasCount(1, cartes);
-        Assert.AreSame(c1, cartes[0]);
+        Assert.HasCount(1, cards);
+        Assert.AreSame(c1, cards[0]);
     }
 
     [TestMethod]

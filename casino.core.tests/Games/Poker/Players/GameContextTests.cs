@@ -11,50 +11,44 @@ namespace casino.core.tests.Games.Poker.Players;
 public class GameContextTests
 {
     [TestMethod]
-    public void Constructeur_DoitCalculerScoreEtConserverActions()
+    public void Constructor_ShouldCalculateScoreAndKeepAvailableActions()
     {
-        // Arrange
-        var Player = new HumanPlayer("Alice", 100)
+        var player = new HumanPlayer("Alice", 100)
         {
             Hand = new HandCards(
                 new Card(CardRank.As, Suit.Hearts),
                 new Card(CardRank.Roi, Suit.Diamonds))
         };
-        var communes = PlayerTestHelper.CreateCommunityCards(
+        var communityCards = PlayerTestHelper.CreateCommunityCards(
             new Card(CardRank.As, Suit.Spades),
             new Card(CardRank.Dame, Suit.Clubs),
             new Card(CardRank.Neuf, Suit.Diamonds));
-        var actions = new List<PokerTypeAction> { PokerTypeAction.Check, PokerTypeAction.Bet };
+        var availableActions = new List<PokerTypeAction> { PokerTypeAction.Check, PokerTypeAction.Bet };
 
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand, communes);
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, communityCards);
 
-        // Act
-        var contexte = new GameContext(partie, Player, actions);
+        var context = new GameContext(round, player, availableActions);
 
-        // Assert
-        Assert.AreEqual(HandRank.OnePair, contexte.PlayerScore.Rank, "Le score doit détecter la paire d'As.");
-        Assert.AreEqual(CardRank.As, contexte.PlayerScore.CardValue, "La valeur de la main doit correspondre à l'As.");
-        CollectionAssert.AreEquivalent(actions, contexte.AvailableActions.ToList(), "Les actions possibles doivent être conservées.");
-        Assert.AreEqual(partie.StartingBet, contexte.MinimumBet, "La mise minimale doit être dérivée de la partie.");
+        Assert.AreEqual(HandRank.OnePair, context.PlayerScore.Rank);
+        Assert.AreEqual(CardRank.As, context.PlayerScore.CardValue);
+        CollectionAssert.AreEquivalent(availableActions, context.AvailableActions.ToList());
+        Assert.AreEqual(round.StartingBet, context.MinimumBet);
     }
 
     [TestMethod]
-    public void MiseMinimum_DoitTenirCompteDeLaMiseActuelleLaPlusHaute()
+    public void MinimumBet_ShouldUseCurrentBetWhenItIsHigherThanStartingBet()
     {
-        // Arrange
-        var Player = new HumanPlayer("Bob", 100)
+        var player = new HumanPlayer("Bob", 100)
         {
             Hand = new HandCards(
                 new Card(CardRank.Dix, Suit.Hearts),
                 new Card(CardRank.Neuf, Suit.Diamonds))
         };
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand);
-        PlayerTestHelper.DefinirMiseActuelle(partie, 45);
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
+        PlayerTestHelper.SetCurrentBet(round, 45);
 
-        // Act
-        var contexte = new GameContext(partie, Player, new List<PokerTypeAction> { PokerTypeAction.Bet });
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet });
 
-        // Assert
-        Assert.AreEqual(45, contexte.MinimumBet, "La mise minimale doit correspondre à la mise actuelle lorsqu'elle est supérieure à la mise de départ.");
+        Assert.AreEqual(45, context.MinimumBet);
     }
 }

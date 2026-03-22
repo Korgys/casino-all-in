@@ -52,7 +52,7 @@ public class ConsoleGameFactoryTests
         Assert.IsNotNull(field);
 
         var players = (IReadOnlyList<Player>)field.GetValue(game)!;
-        Assert.AreEqual(4, players.Count);
+        Assert.HasCount(4, players);
         Assert.IsTrue(players.All(player => player.Chips == 2200));
         Assert.IsInstanceOfType<HumanPlayer>(players[0]);
         Assert.IsInstanceOfType<RandomStrategy>(((ComputerPlayer)players[1]).Strategy);

@@ -13,13 +13,13 @@ public class SuitTests
     [DataRow(Suit.Diamonds, "♦")]
     [DataRow(Suit.Clubs, "♣")]
     [DataRow(Suit.Spades, "♠")]
-    public void ToSymbol_DoitRetournerLeBonSymbole(Suit couleur, string attendu)
+    public void ToSymbol_DoitRetournerLeBonSymbole(Suit suit, string expected)
     {
         // Act
-        var result = couleur.ToSymbol();
+        var result = suit.ToSymbol();
 
         // Assert
-        Assert.AreEqual(attendu, result);
+        Assert.AreEqual(expected, result);
     }
 
     [TestMethod]

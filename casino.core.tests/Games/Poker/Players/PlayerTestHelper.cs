@@ -9,59 +9,59 @@ namespace casino.core.tests.Games.Poker.Players;
 
 internal static class PlayerTestHelper
 {
-    internal static Round CreerRoundAvecPlayer(Player Player, HandCards? main = null, TableCards? communes = null, int startingBet = 10)
+    internal static Round CreateRoundWithPlayer(Player player, HandCards? hand = null, TableCards? communityCards = null, int startingBet = 10)
     {
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10));
-        var partie = new Round(new List<Player> { Player }, deck);
-        partie.StartingBet = startingBet;
+        var round = new Round(new List<Player> { player }, deck);
+        round.StartingBet = startingBet;
 
-        if (main != null)
+        if (hand != null)
         {
-            Player.Hand = main;
+            player.Hand = hand;
         }
 
-        if (communes != null)
+        if (communityCards != null)
         {
-            partie.SetCommunityCards(communes);
+            round.SetCommunityCards(communityCards);
         }
 
-        return partie;
+        return round;
     }
 
-    internal static void DefinirMiseActuelle(Round partie, int valeur)
+    internal static void SetCurrentBet(Round round, int amount)
     {
-        var propriete = typeof(Round).GetProperty(nameof(Round.CurrentBet), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        propriete?.SetValue(partie, valeur);
+        var property = typeof(Round).GetProperty(nameof(Round.CurrentBet), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        property?.SetValue(round, amount);
     }
 
-    internal static TableCards CreateCommunityCards(params Card[] cartes)
+    internal static TableCards CreateCommunityCards(params Card[] cards)
     {
-        var communes = new TableCards();
-        if (cartes.Length > 0) communes.Flop1 = cartes[0];
-        if (cartes.Length > 1) communes.Flop2 = cartes[1];
-        if (cartes.Length > 2) communes.Flop3 = cartes[2];
-        if (cartes.Length > 3) communes.Turn = cartes[3];
-        if (cartes.Length > 4) communes.River = cartes[4];
-        return communes;
+        var communityCards = new TableCards();
+        if (cards.Length > 0) communityCards.Flop1 = cards[0];
+        if (cards.Length > 1) communityCards.Flop2 = cards[1];
+        if (cards.Length > 2) communityCards.Flop3 = cards[2];
+        if (cards.Length > 3) communityCards.Turn = cards[3];
+        if (cards.Length > 4) communityCards.River = cards[4];
+        return communityCards;
     }
 
     private class FakeDeck : IDeck
     {
-        private readonly Queue<Card> _cartes;
+        private readonly Queue<Card> _cards;
 
-        public FakeDeck(IEnumerable<Card> cartes)
+        public FakeDeck(IEnumerable<Card> cards)
         {
-            _cartes = new Queue<Card>(cartes);
+            _cards = new Queue<Card>(cards);
         }
 
         public Card DrawCard()
         {
-            return _cartes.Count > 0 ? _cartes.Dequeue() : new Card(CardRank.Deux, Suit.Diamonds);
+            return _cards.Count > 0 ? _cards.Dequeue() : new Card(CardRank.Deux, Suit.Diamonds);
         }
 
         public void Shuffle()
         {
-            // Pas de mélange nécessaire pour les tests
+            // No shuffle needed for tests.
         }
     }
 }

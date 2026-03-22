@@ -432,8 +432,8 @@ namespace casino.core.tests.Games.Poker.Scores
                 $"Kickers attendus: [{string.Join(", ", expectedKickers)}] / Obtenus: [{string.Join(", ", score.Kickers)}]");
         }
 
-        private static Card Card(CardRank rang, Suit couleur)
-            => new Card(rang, couleur);
+        private static Card Card(CardRank rank, Suit suit)
+            => new Card(rank, suit);
 
         private static HandCards Hand(Card a, Card b)
             => new HandCards(a, b);

@@ -31,10 +31,10 @@ public class RoundTests
         var round = new Round(new List<Player> { activePlayer, playerWithoutChips }, deck);
 
         // Assert
-        Assert.IsNotNull(round.Players.First(j => j.Name == "Alice").Hand, "Players with chips must receive cards.");
+        Assert.IsNotNull(round.Players.First(j => j.Name == "Alice").Hand, "players with chips must receive cards.");
         Assert.AreEqual(new Card(CardRank.As, Suit.Hearts), activePlayer.Hand.First, "The first card must come from the provided deck.");
         Assert.AreEqual(new Card(CardRank.Roi, Suit.Diamonds), activePlayer.Hand.Second, "The second card must come from the provided deck.");
-        Assert.IsNull(round.Players.First(j => j.Name == "Bob").Hand, "Players without chips must not receive a hand.");
+        Assert.IsNull(round.Players.First(j => j.Name == "Bob").Hand, "players without chips must not receive a hand.");
     }
 
     [TestMethod]
@@ -144,7 +144,7 @@ public class RoundTests
         var round = new Round(new List<Player> { alice, bob }, deck);
 
         // Assert read-only exposure
-        Assert.IsFalse(round.Players is List<Player>, "Players must not be exposed as mutable list.");
+        Assert.IsFalse(round.Players is List<Player>, "players must not be exposed as mutable list.");
 
         // Act through sanctioned methods
         round.SetCurrentBet(20);

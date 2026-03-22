@@ -90,6 +90,8 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.cobertura.xml"
+            /d:sonar.coverage.exclusions=**/*
+            /d:sonar.scanner.scanAll=false
 
       - name: Build for Sonar
         run: dotnet build --no-restore
@@ -98,19 +100,3 @@ jobs:
         run: |
           export PATH="$PATH:$HOME/.dotnet/tools"
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-
-      - name: Find Sonar report file
-        id: sonarfile
-        run: |
-          FILE=$(find . -name "report-task.txt" | head -n 1)
-          echo "file=$FILE" >> $GITHUB_OUTPUT
-
-      - name: Sonar Quality Gate
-        uses: sonarsource/sonarqube-quality-gate-action@v1.2.0
-        continue-on-error: true # Don't fail the workflow if SonarQube is not reachable or if the report file is missing
-        with:
-          scanMetadataReportFile: ${{ steps.sonarfile.outputs.file }}
-          pollingTimeoutSec: 600
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io

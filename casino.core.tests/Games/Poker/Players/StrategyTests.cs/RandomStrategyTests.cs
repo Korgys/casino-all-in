@@ -2,9 +2,6 @@
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace casino.core.tests.Games.Poker.Players.StrategyTests.cs;
 
@@ -12,47 +9,41 @@ namespace casino.core.tests.Games.Poker.Players.StrategyTests.cs;
 public class RandomStrategyTests
 {
     [TestMethod]
-    public void DecideAction_RelancerLorsqueMinimumDepasseJetons_DoitAllerTapis()
+    public void DecideAction_WhenMinimumRaiseExceedsRemainingChips_ShouldUseAllChips()
     {
-        // Arrange
-        var Player = new HumanPlayer("Alice", 8)
+        var player = new HumanPlayer("Alice", 8)
         {
             Hand = new HandCards(
                 new Card(CardRank.As, Suit.Hearts),
                 new Card(CardRank.Roi, Suit.Spades))
         };
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand);
-        PlayerTestHelper.DefinirMiseActuelle(partie, 5);
-        var contexte = new GameContext(partie, Player, new List<PokerTypeAction> { PokerTypeAction.Raise });
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
+        PlayerTestHelper.SetCurrentBet(round, 5);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise });
         var strategy = new RandomStrategy();
 
-        // Act
-        var action = strategy.DecideAction(contexte);
+        var action = strategy.DecideAction(context);
 
-        // Assert
-        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction, "La stratégie aléatoire doit respecter l'action proposée.");
-        Assert.AreEqual(Player.Chips, action.Amount, "Si la relance minimale dépasse la mise disponible, l'action doit utiliser tous les jetons restants.");
+        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+        Assert.AreEqual(player.Chips, action.Amount);
     }
 
     [TestMethod]
-    public void DecideAction_Miser_DoiventUtiliserLaMiseMinimum()
+    public void DecideAction_WhenBetIsChosen_ShouldUseMinimumBet()
     {
-        // Arrange
-        var Player = new HumanPlayer("Bob", 100)
+        var player = new HumanPlayer("Bob", 100)
         {
             Hand = new HandCards(
                 new Card(CardRank.Dame, Suit.Diamonds),
                 new Card(CardRank.Neuf, Suit.Clubs))
         };
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand, startingBet: 25);
-        var contexte = new GameContext(partie, Player, new List<PokerTypeAction> { PokerTypeAction.Bet });
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 25);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet });
         var strategy = new RandomStrategy();
 
-        // Act
-        var action = strategy.DecideAction(contexte);
+        var action = strategy.DecideAction(context);
 
-        // Assert
-        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction, "L'action doit correspondre au choix tiré.");
-        Assert.AreEqual(contexte.MinimumBet, action.Amount, "La mise doit correspondre au minimum requis.");
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
     }
 }

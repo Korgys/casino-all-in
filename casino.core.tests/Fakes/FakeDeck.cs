@@ -1,26 +1,24 @@
 ﻿using casino.core.Games.Poker.Cards;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace casino.core.tests.Fakes;
 
 public class FakeDeck : IDeck
 {
-    private readonly Queue<Card> _cartes;
+    private readonly Queue<Card> _cards;
 
-    public FakeDeck(IEnumerable<Card> cartes)
+    public FakeDeck(IEnumerable<Card> cards)
     {
-        _cartes = new Queue<Card>(cartes);
+        _cards = new Queue<Card>(cards);
     }
 
     public Card DrawCard()
     {
-        return _cartes.Count > 0 ? _cartes.Dequeue() : new Card(CardRank.Deux, Suit.Diamonds);
+        return _cards.Count > 0 ? _cards.Dequeue() : new Card(CardRank.Deux, Suit.Diamonds);
     }
 
     public void Shuffle()
     {
-        // Aucun mélange nécessaire pour les tests.
+        // No shuffle needed for tests.
     }
 }

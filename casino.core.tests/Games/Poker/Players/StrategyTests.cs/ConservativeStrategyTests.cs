@@ -11,73 +11,105 @@ namespace casino.core.tests.Games.Poker.Players.StrategyTests.cs;
 public class ConservativeStrategyTests
 {
     [TestMethod]
-    public void DecideAction_PresenceDeCheck_DoitRetournerCheck()
+    public void DecideAction_WhenCheckIsAvailable_ShouldReturnCheck()
     {
-        // Arrange
-        var Player = new HumanPlayer("Alice", 100)
+        var player = new HumanPlayer("Alice", 100)
         {
             Hand = new HandCards(
                 new Card(CardRank.As, Suit.Hearts),
                 new Card(CardRank.Dix, Suit.Diamonds))
         };
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand);
-        var contexte = new GameContext(partie, Player, new List<PokerTypeAction> { PokerTypeAction.Check, PokerTypeAction.Call });
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Check, PokerTypeAction.Call });
         var strategy = new ConservativeStrategy();
 
-        // Act
-        var action = strategy.DecideAction(contexte);
+        var action = strategy.DecideAction(context);
 
-        // Assert
-        Assert.AreEqual(PokerTypeAction.Check, action.TypeAction, "Le check doit être prioritaire lorsqu'il est disponible.");
+        Assert.AreEqual(PokerTypeAction.Check, action.TypeAction);
     }
 
     [TestMethod]
-    public void DecideAction_SuivreDisponible_DoitSuivreAvecMainCorrecte()
+    public void DecideAction_WhenCallIsAvailableWithStrongEnoughHand_ShouldCall()
     {
-        // Arrange
-        var Player = new HumanPlayer("Bob", 100)
+        var player = new HumanPlayer("Bob", 100)
         {
             Hand = new HandCards(
                 new Card(CardRank.As, Suit.Hearts),
                 new Card(CardRank.As, Suit.Diamonds))
         };
-        var communes = PlayerTestHelper.CreateCommunityCards(
+        var communityCards = PlayerTestHelper.CreateCommunityCards(
             new Card(CardRank.Roi, Suit.Spades),
             new Card(CardRank.Roi, Suit.Clubs),
             new Card(CardRank.Dame, Suit.Hearts));
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand, communes);
-        var contexte = new GameContext(partie, Player, new List<PokerTypeAction> { PokerTypeAction.Call, PokerTypeAction.Bet });
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, communityCards);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Call, PokerTypeAction.Bet });
         var strategy = new ConservativeStrategy();
 
-        // Act
-        var action = strategy.DecideAction(contexte);
+        var action = strategy.DecideAction(context);
 
-        // Assert
-        Assert.AreEqual(PokerTypeAction.Call, action.TypeAction, "La stratégie conservatrice doit suivre avec une main correcte quand aucune check n'est possible.");
+        Assert.AreEqual(PokerTypeAction.Call, action.TypeAction);
     }
 
     [TestMethod]
-    public void DecideAction_SiAucuneAutreActionNeConvient_DoitSeCoucher()
+    public void DecideAction_WhenBetIsAvailableWithPair_ShouldBetMinimum()
     {
-        // Arrange
-        var Player = new HumanPlayer("Claire", 100)
+        var player = new HumanPlayer("Cara", 100)
+        {
+            Hand = new HandCards(
+                new Card(CardRank.As, Suit.Hearts),
+                new Card(CardRank.As, Suit.Spades))
+        };
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 15);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet, PokerTypeAction.Fold });
+        var strategy = new ConservativeStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(15, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_WhenRaiseIsAvailableWithFullHouse_ShouldRaiseMinimum()
+    {
+        var player = new HumanPlayer("Dana", 100)
+        {
+            Hand = new HandCards(
+                new Card(CardRank.As, Suit.Hearts),
+                new Card(CardRank.As, Suit.Spades))
+        };
+        var communityCards = PlayerTestHelper.CreateCommunityCards(
+            new Card(CardRank.Roi, Suit.Hearts),
+            new Card(CardRank.Roi, Suit.Diamonds),
+            new Card(CardRank.Roi, Suit.Clubs));
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, communityCards, startingBet: 20);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise, PokerTypeAction.Call, PokerTypeAction.Fold });
+        var strategy = new ConservativeStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Call, action.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_WhenNoOtherActionFits_ShouldFold()
+    {
+        var player = new HumanPlayer("Claire", 100)
         {
             Hand = new HandCards(
                 new Card(CardRank.Deux, Suit.Diamonds),
                 new Card(CardRank.Sept, Suit.Clubs))
         };
-        var communes = PlayerTestHelper.CreateCommunityCards(
+        var communityCards = PlayerTestHelper.CreateCommunityCards(
             new Card(CardRank.Dix, Suit.Spades),
             new Card(CardRank.Neuf, Suit.Clubs),
             new Card(CardRank.Huit, Suit.Hearts));
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand, communes);
-        var contexte = new GameContext(partie, Player, new List<PokerTypeAction> { PokerTypeAction.Fold });
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, communityCards);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Fold });
         var strategy = new ConservativeStrategy();
 
-        // Act
-        var action = strategy.DecideAction(contexte);
+        var action = strategy.DecideAction(context);
 
-        // Assert
-        Assert.AreEqual(PokerTypeAction.Fold, action.TypeAction, "La stratégie conservatrice doit abandonner en dernier recours.");
+        Assert.AreEqual(PokerTypeAction.Fold, action.TypeAction);
     }
 }

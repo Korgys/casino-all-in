@@ -25,16 +25,16 @@ public class DeckTests
         // Assert
         Assert.AreEqual(52, deck.RemainingCards);
 
-        var cartes = TirerTout(deck);
-        Assert.HasCount(52, cartes);
+        var cards = TirerTout(deck);
+        Assert.HasCount(52, cards);
 
-        // Vérifier unicité (rang + couleur)
-        var uniques = cartes
+        // Vérifier unicité (rank + suit)
+        var uniques = cards
             .Select(c => (c.Rank, c.Suit))
             .Distinct()
             .Count();
 
-        Assert.AreEqual(52, uniques, "Le paquet devrait contenir 52 cartes uniques.");
+        Assert.AreEqual(52, uniques, "Le paquet devrait contenir 52 cards uniques.");
     }
 
     [TestMethod]
@@ -90,12 +90,12 @@ public class DeckTests
 
     private static List<Card> TirerTout(Deck deck)
     {
-        var cartes = new List<Card>();
+        var cards = new List<Card>();
         while (deck.RemainingCards > 0)
         {
-            cartes.Add(deck.DrawCard());
+            cards.Add(deck.DrawCard());
         }
-        return cartes;
+        return cards;
     }
 
     private sealed class FakeRandomToujoursZero : IRandom
@@ -126,7 +126,7 @@ public class DeckTests
 
         public int Next(int maxExclusive)
         {
-            // Retourner une valeur de séquence, bornée, pour éviter les sorties de plage.
+            // Retourner une value de séquence, bornée, pour éviter les sorties de plage.
             if (_values.Length == 0) return 0;
 
             int v = _values[_index % _values.Length];

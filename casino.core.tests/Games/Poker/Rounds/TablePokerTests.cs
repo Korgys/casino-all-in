@@ -14,7 +14,7 @@ namespace casino.core.tests.Games.Poker.Rounds;
 [TestClass]
 public class TablePokerTests
 {
-    private static IEnumerable<Card> CreerCartesParDefaut() => new[]
+    private static IEnumerable<Card> CreateDefaultCards() => new[]
     {
         new Card(CardRank.As, Suit.Spades),
         new Card(CardRank.Roi, Suit.Hearts),
@@ -27,7 +27,7 @@ public class TablePokerTests
         new Card(CardRank.Cinq, Suit.Clubs)
     };
 
-    private static IEnumerable<Card> CreerCartesPourAllIn() => new[]
+    private static IEnumerable<Card> CreateAllInCards() => new[]
     {
         new Card(CardRank.As, Suit.Hearts),
         new Card(CardRank.Roi, Suit.Hearts),
@@ -46,15 +46,15 @@ public class TablePokerTests
     public void DemarrerRound_ReinitialiseEtRotationDuPlayerInitial()
     {
         // Arrange
-        var Players = new List<Player>
+        var players = new List<Player>
         {
             new HumanPlayer("Alice", 100) { LastAction = PokerTypeAction.AllIn },
             new HumanPlayer("Bob", 0) { LastAction = PokerTypeAction.Bet }
         };
         var table = new TablePoker();
 
-        // Act - première partie
-        table.DemarrerRound(Players, new FakeDeck(CreerCartesParDefaut()));
+        // Act - première round
+        table.DemarrerRound(players, new FakeDeck(CreateDefaultCards()));
 
         // Assert
         Assert.AreEqual(0, table.InitialPlayerIndex);
@@ -62,8 +62,8 @@ public class TablePokerTests
         Assert.IsTrue(table.Players.All(j => j.LastAction == (j.Chips > 0 ? PokerTypeAction.None : PokerTypeAction.Fold)));
         Assert.IsTrue(table.Players.All(j => !j.IsFolded() || j.Chips == 0));
 
-        // Act - deuxième partie pour vérifier la rotation
-        table.DemarrerRound(Players, new FakeDeck(CreerCartesParDefaut()));
+        // Act - deuxième round pour vérifier la rotation
+        table.DemarrerRound(players, new FakeDeck(CreateDefaultCards()));
 
         // Assert
         Assert.AreEqual(1, table.InitialPlayerIndex);
@@ -74,14 +74,14 @@ public class TablePokerTests
     public void TousLesPlayersMoinsUnSeCouchent_TermineLaRoundEtDeclareLeGagnant()
     {
         // Arrange
-        var Players = new List<Player>
+        var players = new List<Player>
         {
             new HumanPlayer("Alice", 100),
             new HumanPlayer("Bob", 80),
             new HumanPlayer("Charlie", 120)
         };
         var table = new TablePoker();
-        table.DemarrerRound(Players, new FakeDeck(CreerCartesParDefaut()));
+        table.DemarrerRound(players, new FakeDeck(CreateDefaultCards()));
 
         // Act - Alice puis Bob se couchent
         table.TraiterActionPlayer(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Bet, 10));
@@ -99,13 +99,13 @@ public class TablePokerTests
     public void TraiterActionPlayer_ChecksAvancentLaPhaseEtRemettentAuPlayerInitial()
     {
         // Arrange
-        var Players = new List<Player>
+        var players = new List<Player>
         {
             new HumanPlayer("Alice", 100),
             new HumanPlayer("Bob", 100)
         };
         var table = new TablePoker();
-        table.DemarrerRound(Players, new FakeDeck(CreerCartesParDefaut()));
+        table.DemarrerRound(players, new FakeDeck(CreateDefaultCards()));
 
         // Act
         table.TraiterActionPlayer(table.Players[table.CurrentPlayerIndex], new GameAction(PokerTypeAction.Bet, 10));
@@ -122,13 +122,13 @@ public class TablePokerTests
     public void TraiterActionPlayer_CoucherMetFinALaRoundQuandUnPlayerReste()
     {
         // Arrange
-        var Players = new List<Player>
+        var players = new List<Player>
         {
             new HumanPlayer("Alice", 100),
             new HumanPlayer("Bob", 100)
         };
         var table = new TablePoker();
-        table.DemarrerRound(Players, new FakeDeck(CreerCartesParDefaut()));
+        table.DemarrerRound(players, new FakeDeck(CreateDefaultCards()));
 
         // Act
         table.TraiterActionPlayer(table.Players[table.CurrentPlayerIndex], new GameAction(PokerTypeAction.Bet, 10));
@@ -144,14 +144,14 @@ public class TablePokerTests
     public void TousLesPlayersSontATapis_LeTourDeMiseEstClotureAutomatiquement()
     {
         // Arrange
-        var Players = new List<Player>
+        var players = new List<Player>
         {
             new HumanPlayer("Alice", 100),
             new HumanPlayer("Bob", 100),
             new HumanPlayer("Charlie", 100)
         };
         var table = new TablePoker();
-        table.DemarrerRound(Players, new FakeDeck(CreerCartesPourAllIn()));
+        table.DemarrerRound(players, new FakeDeck(CreateAllInCards()));
 
         // Act : Alice ouvre en relançant son tapis, Bob et Charlie suivent en tapis
         table.TraiterActionPlayer(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Raise, 100));
@@ -170,14 +170,14 @@ public class TablePokerTests
     public void RelanceTardive_ForceUnNouveauTourDepuisLePlayerInitial()
     {
         // Arrange
-        var Players = new List<Player>
+        var players = new List<Player>
         {
             new HumanPlayer("Alice", 100),
             new HumanPlayer("Bob", 100),
             new HumanPlayer("Charlie", 100)
         };
         var table = new TablePoker();
-        table.DemarrerRound(Players, new FakeDeck(CreerCartesParDefaut()));
+        table.DemarrerRound(players, new FakeDeck(CreateDefaultCards()));
 
         // Alice check, Bob check
         table.TraiterActionPlayer(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Bet, 10));
@@ -186,7 +186,7 @@ public class TablePokerTests
         // Charlie mise tardivement
         table.TraiterActionPlayer(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Raise, 20));
 
-        // La phase ne doit pas avancer sans que les premiers Players rejouent
+        // La phase ne doit pas avancer sans que les premiers players rejouent
         Assert.AreEqual(Phase.PreFlop, table.Round.Phase);
         Assert.AreEqual(table.InitialPlayerIndex, table.CurrentPlayerIndex);
         Assert.AreEqual(20, table.Round.CurrentBet);

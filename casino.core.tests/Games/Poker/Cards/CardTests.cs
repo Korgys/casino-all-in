@@ -12,15 +12,15 @@ public class CarteTests
     public void Constructeur_DoitInitialiserRangEtSuit()
     {
         // Arrange
-        var rang = CardRank.As;
-        var couleur = Suit.Hearts;
+        var rank = CardRank.As;
+        var suit = Suit.Hearts;
 
         // Act
-        var carte = new Card(rang, couleur);
+        var carte = new Card(rank, suit);
 
         // Assert
-        Assert.AreEqual(rang, carte.Rank, "Le rang devrait être celui passé au constructeur.");
-        Assert.AreEqual(couleur, carte.Suit, "La couleur devrait être celle passée au constructeur.");
+        Assert.AreEqual(rank, carte.Rank, "Le rank devrait être celui passé au constructeur.");
+        Assert.AreEqual(suit, carte.Suit, "La suit devrait être celle passée au constructeur.");
     }
 
     [TestMethod]
@@ -47,7 +47,7 @@ public class CarteTests
         var second = carte.ToString();
 
         // Assert
-        Assert.AreEqual(first, second, "ToString devrait toujours retourner la même valeur.");
+        Assert.AreEqual(first, second, "ToString devrait toujours retourner la même value.");
     }
 
     [TestMethod]
@@ -61,7 +61,7 @@ public class CarteTests
         var equals = carte1.Equals(carte2);
 
         // Assert
-        Assert.IsTrue(equals, "Deux cartes avec même rang et couleur devraient être égales.");
+        Assert.IsTrue(equals, "Deux cards avec même rank et suit devraient être égales.");
     }
 
     [TestMethod]
@@ -75,7 +75,7 @@ public class CarteTests
         var equals = carte1.Equals(carte2);
 
         // Assert
-        Assert.IsFalse(equals, "Deux cartes avec une couleur différente ne devraient pas être égales.");
+        Assert.IsFalse(equals, "Deux cards avec une suit différente ne devraient pas être égales.");
     }
 
     [TestMethod]
@@ -90,6 +90,6 @@ public class CarteTests
         var hash2 = carte2.GetHashCode();
 
         // Assert
-        Assert.AreEqual(hash1, hash2, "Deux cartes identiques doivent avoir le même hash.");
+        Assert.AreEqual(hash1, hash2, "Deux cards identiques doivent avoir le même hash.");
     }
 }

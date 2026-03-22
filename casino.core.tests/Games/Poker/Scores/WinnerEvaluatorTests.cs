@@ -22,14 +22,14 @@ public class WinnerEvaluatorTests
             C(CardRank.Six, Suit.Hearts)
         );
 
-        var Players = new List<Player>
+        var players = new List<Player>
         {
             CreerHumanPlayer("J1", Hand(C(CardRank.As, Suit.Hearts), C(CardRank.Roi, Suit.Diamonds)), PokerTypeAction.Fold),
             CreerHumanPlayer("J2", Hand(C(CardRank.Dame, Suit.Hearts), C(CardRank.Valet, Suit.Diamonds)), PokerTypeAction.Fold)
         };
 
         // Act + Assert
-        Assert.Throws<ArgumentException>(() => WinnerEvaluator.DetermineWinnersByHand(Players, cartesCommunes));
+        Assert.Throws<ArgumentException>(() => WinnerEvaluator.DetermineWinnersByHand(players, cartesCommunes));
     }
 
     [TestMethod]
@@ -54,14 +54,14 @@ public class WinnerEvaluatorTests
             Hand(C(CardRank.Dame, Suit.Hearts), C(CardRank.Valet, Suit.Diamonds)),
             PokerTypeAction.Bet);
 
-        var Players = new List<Player> { j1, j2 };
+        var players = new List<Player> { j1, j2 };
 
         // Act
-        var gagnants = WinnerEvaluator.DetermineWinnersByHand(Players, cartesCommunes);
+        var winners = WinnerEvaluator.DetermineWinnersByHand(players, cartesCommunes);
 
         // Assert
-        Assert.HasCount(1, gagnants);
-        Assert.AreSame(j2, gagnants[0], "Ignorer les Players couchés même s'ils auraient une meilleure main.");
+        Assert.HasCount(1, winners);
+        Assert.AreSame(j2, winners[0], "Ignorer les players couchés même s'ils auraient une meilleure main.");
     }
 
     [TestMethod]
@@ -86,14 +86,14 @@ public class WinnerEvaluatorTests
             Hand(C(CardRank.Roi, Suit.Spades), C(CardRank.Valet, Suit.Diamonds)),
             PokerTypeAction.Bet);
 
-        var Players = new List<Player> { j1, j2 };
+        var players = new List<Player> { j1, j2 };
 
         // Act
-        var gagnants = WinnerEvaluator.DetermineWinnersByHand(Players, cartesCommunes);
+        var winners = WinnerEvaluator.DetermineWinnersByHand(players, cartesCommunes);
 
         // Assert
-        Assert.HasCount(1, gagnants);
-        Assert.AreSame(j1, gagnants[0], "Choisir le Player avec la main la plus forte (HandRank le plus élevé).");
+        Assert.HasCount(1, winners);
+        Assert.AreSame(j1, winners[0], "Choisir le Player avec la main la plus forte (HandRank le plus élevé).");
     }
 
     [TestMethod]
@@ -118,14 +118,14 @@ public class WinnerEvaluatorTests
             Hand(C(CardRank.Neuf, Suit.Spades), C(CardRank.Quatre, Suit.Hearts)),
             PokerTypeAction.Bet);
 
-        var Players = new List<Player> { j1, j2 };
+        var players = new List<Player> { j1, j2 };
 
         // Act
-        var gagnants = WinnerEvaluator.DetermineWinnersByHand(Players, cartesCommunes);
+        var winners = WinnerEvaluator.DetermineWinnersByHand(players, cartesCommunes);
 
         // Assert
-        Assert.HasCount(1, gagnants);
-        Assert.AreSame(j1, gagnants[0], "À rang égal, choisir la meilleure valeur (paire de Dames > paire de 9).");
+        Assert.HasCount(1, winners);
+        Assert.AreSame(j1, winners[0], "À rank égal, choisir la meilleure value (paire de Dames > paire de 9).");
     }
 
     [TestMethod]
@@ -152,14 +152,14 @@ public class WinnerEvaluatorTests
             Hand(C(CardRank.As, Suit.Diamonds), C(CardRank.Dame, Suit.Hearts)),
             PokerTypeAction.Bet);
 
-        var Players = new List<Player> { j1, j2 };
+        var players = new List<Player> { j1, j2 };
 
         // Act
-        var gagnants = WinnerEvaluator.DetermineWinnersByHand(Players, cartesCommunes);
+        var winners = WinnerEvaluator.DetermineWinnersByHand(players, cartesCommunes);
 
         // Assert
-        Assert.HasCount(1, gagnants);
-        Assert.AreSame(j1, gagnants[0], "À rang et valeur égaux, départager par les kickers ordonnés.");
+        Assert.HasCount(1, winners);
+        Assert.AreSame(j1, winners[0], "À rank et value égaux, départager par les kickers ordonnés.");
     }
 
     [TestMethod]
@@ -178,19 +178,19 @@ public class WinnerEvaluatorTests
         var j1 = CreerHumanPlayer("J1", Hand(C(CardRank.Deux, Suit.Spades), C(CardRank.Trois, Suit.Hearts)), PokerTypeAction.Bet);
         var j2 = CreerHumanPlayer("J2", Hand(C(CardRank.Quatre, Suit.Spades), C(CardRank.Cinq, Suit.Hearts)), PokerTypeAction.Bet);
 
-        var Players = new List<Player> { j1, j2 };
+        var players = new List<Player> { j1, j2 };
 
         // Act
-        var gagnants = WinnerEvaluator.DetermineWinnersByHand(Players, cartesCommunes);
+        var winners = WinnerEvaluator.DetermineWinnersByHand(players, cartesCommunes);
 
         // Assert
-        Assert.HasCount(2, gagnants);
-        CollectionAssert.Contains(gagnants.ToList(), j1);
-        CollectionAssert.Contains(gagnants.ToList(), j2);
+        Assert.HasCount(2, winners);
+        CollectionAssert.Contains(winners.ToList(), j1);
+        CollectionAssert.Contains(winners.ToList(), j2);
     }
 
-    private static Card C(CardRank rang, Suit couleur)
-        => new Card(rang, couleur);
+    private static Card C(CardRank rank, Suit suit)
+        => new Card(rank, suit);
 
     private static HandCards Hand(Card a, Card b)
         => new HandCards(a, b);

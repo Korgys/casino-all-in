@@ -2,9 +2,6 @@
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace casino.core.tests.Games.Poker.Players.StrategyTests.cs;
 
@@ -12,47 +9,59 @@ namespace casino.core.tests.Games.Poker.Players.StrategyTests.cs;
 public class AggressiveStrategyTests
 {
     [TestMethod]
-    public void DecideAction_DoitPrivilegierRelanceQuandPossible()
+    public void DecideAction_ShouldPreferRaiseWhenPossible()
     {
-        // Arrange
-        var Player = new ComputerPlayer("Bot", 50, new AggressiveStrategy())
+        var player = new ComputerPlayer("Bot", 50, new AggressiveStrategy())
         {
             Hand = new HandCards(
                 new Card(CardRank.As, Suit.Hearts),
                 new Card(CardRank.Roi, Suit.Spades))
         };
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand, startingBet: 15);
-        var contexte = new GameContext(partie, Player, new List<PokerTypeAction> { PokerTypeAction.Raise, PokerTypeAction.Bet, PokerTypeAction.Call });
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 15);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise, PokerTypeAction.Bet, PokerTypeAction.Call });
         var strategy = new AggressiveStrategy();
 
-        // Act
-        var action = strategy.DecideAction(contexte);
+        var action = strategy.DecideAction(context);
 
-        // Assert
-        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction, "La stratégie agressive doit relancer si possible.");
-        Assert.AreEqual(contexte.MinimumBet, action.Amount, "La relance doit être au moins égale à la mise minimale.");
+        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
     }
 
     [TestMethod]
-    public void DecideAction_SiRelanceImpossibleMaisMiserPossible_DoitMiser()
+    public void DecideAction_WhenRaiseIsNotPossibleButBetIsAvailable_ShouldBet()
     {
-        // Arrange
-        var Player = new ComputerPlayer("Bot", 10, new AggressiveStrategy())
+        var player = new ComputerPlayer("Bot", 10, new AggressiveStrategy())
         {
             Hand = new HandCards(
                 new Card(CardRank.Valet, Suit.Diamonds),
                 new Card(CardRank.Dix, Suit.Clubs))
         };
-        var partie = PlayerTestHelper.CreerRoundAvecPlayer(Player, Player.Hand);
-        PlayerTestHelper.DefinirMiseActuelle(partie, 20);
-        var contexte = new GameContext(partie, Player, new List<PokerTypeAction> { PokerTypeAction.Bet, PokerTypeAction.Call });
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
+        PlayerTestHelper.SetCurrentBet(round, 20);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet, PokerTypeAction.Call });
         var strategy = new AggressiveStrategy();
 
-        // Act
-        var action = strategy.DecideAction(contexte);
+        var action = strategy.DecideAction(context);
 
-        // Assert
-        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction, "La stratégie agressive doit miser si la relance n'est pas possible.");
-        Assert.AreEqual(contexte.MinimumBet, action.Amount, "La mise doit respecter le minimum requis.");
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_WhenOnlyCheckIsAvailable_ShouldCheck()
+    {
+        var player = new ComputerPlayer("Bot", 10, new AggressiveStrategy())
+        {
+            Hand = new HandCards(
+                new Card(CardRank.Quatre, Suit.Diamonds),
+                new Card(CardRank.Cinq, Suit.Clubs))
+        };
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Check });
+        var strategy = new AggressiveStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Check, action.TypeAction);
     }
 }

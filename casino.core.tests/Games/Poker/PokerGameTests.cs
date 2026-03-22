@@ -54,7 +54,7 @@ public class PokerGameTests
         };
 
         PokerGameState? etatFinal = null;
-        string? gagnant = null;
+        string? winnerName = null;
 
         var pokerGame = new PokerGame(
             new[] { human, autreHumain },
@@ -64,7 +64,7 @@ public class PokerGameTests
             new NoOpWaitStrategy());
 
         pokerGame.StateUpdated += (_, args) => etatFinal = args.State as PokerGameState;
-        pokerGame.GameEnded += (_, args) => gagnant = args.WinnerName;
+        pokerGame.GameEnded += (_, args) => winnerName = args.WinnerName;
 
         // Act
         pokerGame.Run();
@@ -74,7 +74,7 @@ public class PokerGameTests
         Assert.AreEqual("Showdown", etatFinal.Phase);
 
         // Ici WinnerName doit être "Alice" 
-        Assert.AreEqual("Alice", gagnant);
+        Assert.AreEqual("Alice", winnerName);
 
         Assert.IsTrue(etatFinal.Players.Single(j => j.Name == "Alice").IsWinner);
         Assert.IsFalse(etatFinal.Players.Single(j => j.Name == "Bob").IsWinner);
@@ -122,7 +122,7 @@ public class PokerGameTests
         };
 
         PokerGameState? etatFinal = null;
-        string? gagnant = null;
+        string? winnerName = null;
 
         var pokerGame = new PokerGame(
             new[] { human, autreHumain },
@@ -132,7 +132,7 @@ public class PokerGameTests
             new NoOpWaitStrategy());
 
         pokerGame.StateUpdated += (_, args) => etatFinal = args.State as PokerGameState;
-        pokerGame.GameEnded += (_, args) => gagnant = args.WinnerName;
+        pokerGame.GameEnded += (_, args) => winnerName = args.WinnerName;
 
         // Act
         pokerGame.Run();
@@ -140,7 +140,7 @@ public class PokerGameTests
         // Assert
         Assert.IsNotNull(etatFinal);
         Assert.AreEqual("Showdown", etatFinal.Phase);
-        Assert.AreEqual("Alice, Bob", gagnant);
+        Assert.AreEqual("Alice, Bob", winnerName);
         Assert.IsTrue(etatFinal.Players.All(j => j.IsWinner));
     }
 
@@ -222,6 +222,6 @@ public class PokerGameTests
             .ToList();
 
         Assert.IsTrue(indexesGameEnded.All(idx => events.Skip(idx + 1).Any(e => e == "state")),
-            "StateUpdated doit être déclenché après chaque fin de partie.");
+            "StateUpdated doit être déclenché après chaque fin de round.");
     }
 }
