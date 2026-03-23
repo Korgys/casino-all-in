@@ -1,6 +1,7 @@
 using casino.console.Games;
 using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
+using casino.console.Games.Slots;
 using casino.core.Games.Blackjack;
 using System.Text;
 
@@ -34,6 +35,11 @@ public static class Program
             {
                 ConsoleBlackjackRenderer.RenderTable(blackjackState);
             }
+
+            if (e.State is casino.core.Games.Slots.SlotMachineGameState slotMachineState)
+            {
+                ConsoleSlotMachineRenderer.RenderTable(slotMachineState);
+            }
         };
 
         game.Run();
@@ -57,6 +63,7 @@ public static class Program
                 ConsolePokerInput.AskContinueNewGame,
                 ConsolePokerInput.PromptGameSetup()),
             "2" or "blackjack" => factory.CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame),
+            "3" or "slot" or "slots" => factory.CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame),
             _ => null
         };
     }
@@ -68,7 +75,8 @@ public static class Program
         Console.WriteLine("╠══════════════════════════════════════════════╣");
         Console.WriteLine("║  1. Poker                                    ║");
         Console.WriteLine("║  2. BlackJack                                ║");
-        Console.WriteLine("║  3. Quitter                                  ║");
+        Console.WriteLine("║  3. Slot Machine                             ║");
+        Console.WriteLine("║  4. Quitter                                  ║");
         Console.WriteLine("╚══════════════════════════════════════════════╝");
         Console.WriteLine();
     }

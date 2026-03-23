@@ -4,6 +4,7 @@ using casino.console.Games.Poker;
 using casino.core.Games.Blackjack;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
+using casino.core.Games.Slots;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
 
@@ -69,5 +70,16 @@ public class ConsoleGameFactoryTests
 
         Assert.IsNotNull(result);
         Assert.IsInstanceOfType<BlackjackGame>(result);
+    }
+
+    [TestMethod]
+    public void Create_ReturnsSlotMachineGame_ForSlotAliases()
+    {
+        var factory = new ConsoleGameFactory();
+
+        var result = factory.Create("slot machine", _ => new GameAction(PokerTypeAction.Check), () => false);
+
+        Assert.IsNotNull(result);
+        Assert.IsInstanceOfType<SlotMachineGame>(result);
     }
 }

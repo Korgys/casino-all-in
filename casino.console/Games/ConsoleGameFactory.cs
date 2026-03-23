@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
+using casino.console.Games.Slots;
 using casino.core;
 using casino.core.Games.Blackjack;
 using casino.core.Games.Poker;
@@ -8,6 +9,7 @@ using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
+using casino.core.Games.Slots;
 
 namespace casino.console.Games;
 
@@ -22,6 +24,7 @@ public class ConsoleGameFactory : IGameFactory
         {
             "poker" => CreatePoker(humanActionSelector, continuePlaying),
             "blackjack" => CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame),
+            "slot" or "slots" or "slot machine" => CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame),
             _ => null
         };
     }
@@ -52,6 +55,11 @@ public class ConsoleGameFactory : IGameFactory
     public IGame CreateBlackjack(Func<BlackjackGameState, BlackjackAction> humanActionSelector, Func<bool> continuePlaying)
     {
         return new BlackjackGame(humanActionSelector, continuePlaying);
+    }
+
+    public IGame CreateSlotMachine(Func<SlotMachineGameState, int> betSelector, Func<bool> continuePlaying)
+    {
+        return new SlotMachineGame(betSelector, continuePlaying);
     }
 
     private static IPlayerStrategy CreateStrategy(PokerDifficulty difficulty)
