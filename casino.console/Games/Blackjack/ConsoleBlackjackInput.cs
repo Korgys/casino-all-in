@@ -31,8 +31,8 @@ public static class ConsoleBlackjackInput
     {
         Console.WriteLine();
         Console.WriteLine("┌──────────── Actions disponibles ────────────┐");
-        Console.WriteLine("│ 1. Tirer une carte (Hit)                    │");
-        Console.WriteLine("│ 2. Rester (Stand)                           │");
+        Console.WriteLine("│ 1. Tirer une carte                          │");
+        Console.WriteLine("│ 2. Rester                                   │");
         Console.WriteLine("└─────────────────────────────────────────────┘");
     }
 }
