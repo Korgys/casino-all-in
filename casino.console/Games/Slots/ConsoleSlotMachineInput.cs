@@ -9,12 +9,18 @@ public static class ConsoleSlotMachineInput
         while (true)
         {
             RenderBetPrompt(state);
-            Console.Write("Votre mise : ");
-            var rawInput = (Console.ReadLine() ?? string.Empty).Trim();
+            int bet = 1;
+            Console.Write($"Votre mise : {bet}");
 
-            if (int.TryParse(rawInput, out var bet) && bet >= state.MinBet && bet <= state.MaxBet)
-                return bet;
+            return bet;
         }
+    }
+
+    public static bool AskContinueNewGame()
+    {
+        Console.Write("\nAppuyez sur une touche pour relancer la machine : ");
+        Console.ReadKey();
+        return true;
     }
 
     private static void RenderBetPrompt(SlotMachineGameState state)

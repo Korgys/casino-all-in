@@ -34,7 +34,7 @@ public class SlotMachineGame : GameBase
         IRandom? random = null,
         Action<int>? pause = null,
         int startingCredits = 100,
-        int animationFrames = 10)
+        int animationFrames = 12)
         : base("Slot Machine")
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(startingCredits);

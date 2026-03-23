@@ -54,7 +54,7 @@ public static class ConsoleSlotMachineRenderer
                 Console.Write("  ");
         }
 
-        Console.WriteLine("              ║");
+        Console.WriteLine("               ║");
 
         using (ConsoleColorScope.Foreground(ConsoleColor.DarkYellow))
             Console.WriteLine("╚═════════════════════════════════════════════╝");
@@ -92,8 +92,8 @@ public static class ConsoleSlotMachineRenderer
             SlotSymbol.Bell => ("🔔", ConsoleColor.DarkYellow),
             SlotSymbol.Diamond => ("💎", ConsoleColor.Cyan),
             SlotSymbol.Star => ("⭐", ConsoleColor.Magenta),
-            SlotSymbol.Seven => ("7️⃣", ConsoleColor.Green),
-            SlotSymbol.Bar => ("🟦", ConsoleColor.Blue),
+            SlotSymbol.Seven => ("7", ConsoleColor.Green),
+            SlotSymbol.Bar => ("💲", ConsoleColor.Blue),
             _ => ("?", ConsoleColor.White)
         };
 
