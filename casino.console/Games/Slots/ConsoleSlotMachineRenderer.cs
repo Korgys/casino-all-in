@@ -1,8 +1,10 @@
 using casino.console.Games.Commons;
 using casino.core.Games.Slots;
+using System.Diagnostics.CodeAnalysis;
 
 namespace casino.console.Games.Slots;
 
+[ExcludeFromCodeCoverage]
 public static class ConsoleSlotMachineRenderer
 {
     public static Action<int> Pause = Thread.Sleep;

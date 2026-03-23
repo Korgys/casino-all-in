@@ -207,7 +207,7 @@ public class ConsolePokerRenderer
 
     private static int GetVisibleLength(string text)
     {
-        return Regex.Replace(text, @"\x1B\[[0-9;]*m", "").Length;
+        return Regex.Replace(text, @"\x1B\[[0-9;]*m", "", RegexOptions.None, TimeSpan.FromMilliseconds(1000)).Length;
     }
 
     private static string BuildHeaderLine(PokerGameState state)

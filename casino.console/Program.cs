@@ -3,6 +3,7 @@ using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
 using casino.console.Games.Slots;
 using casino.core.Games.Blackjack;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace casino.console;
@@ -10,6 +11,7 @@ namespace casino.console;
 /// <summary>
 /// Provides the entry point for the Casino All-In console application and initializes the poker game experience.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class Program
 {
     private static readonly ConsolePokerRenderer PokerRenderer = new();
