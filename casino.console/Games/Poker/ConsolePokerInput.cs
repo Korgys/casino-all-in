@@ -3,6 +3,7 @@ using casino.core.Games.Poker.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using ActionModel = casino.core.Games.Poker.Actions.GameAction;
 
 namespace casino.console.Games.Poker;
@@ -36,7 +37,7 @@ public class ConsolePokerInput
     {
         Console.Clear();
         Console.WriteLine("╔══════════════════════════════════════════════╗");
-        Console.WriteLine("║              PARAMÈTRES POKER               ║");
+        Console.WriteLine("║              PARAMÈTRES POKER                ║");
         Console.WriteLine("╚══════════════════════════════════════════════╝");
 
         var initialChips = ReadIntInRange(
@@ -51,19 +52,17 @@ public class ConsolePokerInput
             MaximumPlayers,
             defaultValue: 5);
 
+        Console.WriteLine();
+        RenderDifficultyOptions();
+        var difficulty = ReadDifficulty($"Difficultés des ordinateurs (défaut {PokerDifficulty.Medium:D}) : ", PokerDifficulty.Medium);
+
         var opponents = new List<PokerOpponentSetup>();
         for (var index = 1; index < playerCount; index++)
-        {
-            Console.WriteLine();
-            Console.WriteLine($"Niveaux disponibles pour l'adversaire {index} :");
-            RenderDifficultyOptions();
-            var difficulty = ReadDifficulty($"Choisissez la difficulté du joueur IA {index} (défaut {PokerDifficulty.Medium:D}) : ", PokerDifficulty.Medium);
             opponents.Add(new PokerOpponentSetup(difficulty));
-        }
 
-        var setup = new PokerGameSetup(initialChips, playerCount, opponents);
-        RenderSetupSummary(setup);
-        return setup;
+        Console.Clear(); // To avoid UI bugs in the poker table rendering
+        
+        return new PokerGameSetup(initialChips, playerCount, opponents);
     }
 
     public static bool AskContinueNewGame()
@@ -142,33 +141,7 @@ public class ConsolePokerInput
     {
         foreach (var value in Enum.GetValues<PokerDifficulty>())
         {
-            var description = value switch
-            {
-                PokerDifficulty.Easy => "Aléatoire",
-                PokerDifficulty.Medium => "Prudent",
-                PokerDifficulty.Hard => "Opportuniste",
-                PokerDifficulty.Expert => "Agressif",
-                _ => string.Empty
-            };
-
-            Console.WriteLine($"  {(int)value}. {new PokerOpponentSetup(value).Label,-10} - {description}");
+            Console.WriteLine($"  {(int)value}. {new PokerOpponentSetup(value).Label,-10}");
         }
-    }
-
-    private static void RenderSetupSummary(PokerGameSetup setup)
-    {
-        Console.WriteLine();
-        Console.WriteLine("Résumé de la table :");
-        Console.WriteLine($"- Joueurs : {setup.PlayerCount}");
-        Console.WriteLine($"- Jetons initiaux : {setup.InitialChips}");
-
-        for (var index = 0; index < setup.Opponents.Count; index++)
-        {
-            Console.WriteLine($"- IA {index + 1} : {setup.Opponents[index].Label}");
-        }
-
-        Console.WriteLine();
-        Console.WriteLine("Appuyez sur Entrée pour lancer la partie...");
-        Console.ReadLine();
     }
 }

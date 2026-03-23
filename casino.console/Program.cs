@@ -64,11 +64,11 @@ public static class Program
     private static void RenderMainMenu()
     {
         Console.WriteLine("╔══════════════════════════════════════════════╗");
-        Console.WriteLine("║               CASINO ALL-IN                 ║");
+        Console.WriteLine("║               CASINO ALL-IN                  ║");
         Console.WriteLine("╠══════════════════════════════════════════════╣");
-        Console.WriteLine("║  1. Poker                                   ║");
-        Console.WriteLine("║  2. BlackJack                               ║");
-        Console.WriteLine("║  3. Quitter                                 ║");
+        Console.WriteLine("║  1. Poker                                    ║");
+        Console.WriteLine("║  2. BlackJack                                ║");
+        Console.WriteLine("║  3. Quitter                                  ║");
         Console.WriteLine("╚══════════════════════════════════════════════╝");
         Console.WriteLine();
     }

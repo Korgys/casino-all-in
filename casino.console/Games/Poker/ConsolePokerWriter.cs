@@ -64,4 +64,15 @@ internal class ConsolePokerWriter
             WriteCard(cards[i]);
         }
     }
+
+    public static string FormatCard(Card card)
+    {
+        string colorCode = (card.Suit == Suit.Hearts || card.Suit == Suit.Diamonds)
+            ? "\u001b[38;2;255;0;0m"   // rouge pur
+            : "\u001b[38;2;0;255;255m"; // cyan pur
+
+        const string reset = "\u001b[0m";
+
+        return $"{colorCode}{card}{reset}";
+    }
 }

@@ -6,16 +6,22 @@ using casino.core.Games.Poker.Rounds.Phases;
 using casino.core.Games.Poker.Scores;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace casino.console.Games.Poker;
 
 /// <summary>
-/// Renders the poker game state in the console with colors and formatting.
+/// Provides methods for rendering the state of a poker game to the console, including the table, players, and available
+/// actions.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class ConsolePokerRenderer
 {
+    private const int TableWidth = 70;
+
     internal static Func<HandCards, TableCards, int, int, double> EstimateWinProbability =
         static (hand, communityCards, opponents, simulations) =>
             ProbabilityEvaluator.EstimateWinProbability(hand, communityCards, opponents, simulations);
@@ -30,88 +36,56 @@ public class ConsolePokerRenderer
 
     public void RenderTable(PokerGameState state)
     {
+        Console.Clear();
         ResetRoundCacheIfNewRound(state.Phase);
 
-        Console.Clear();
+        Console.SetCursorPosition(0, 0);
 
-        var currentPlayerName = state.CurrentPlayer;
+        DrawTopBorder();
 
-        Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
-        Console.Write("║ Phase: ");
-        Console.Write($"{state.Phase,-10}");
-        Console.Write(" | Mise min: ");
-        ConsolePokerWriter.WriteAmount(state.StartingBet);
-        Console.Write(" | Pot: ");
-        ConsolePokerWriter.WriteAmount(state.Pot);
-        Console.Write(" ║");
-        Console.WriteLine();
-        Console.Write("║ Mise actuelle: ");
-        ConsolePokerWriter.WriteAmount(state.CurrentBet);
-        Console.Write(" | Joueur actif: ");
-        Console.Write($"{currentPlayerName,-18}");
-        Console.WriteLine("║");
-        Console.WriteLine("╠════════════════════════════════════════════════════════════╣");
-        Console.Write("║ Table: ");
-        ConsolePokerWriter.WriteCommunityCards(state.CommunityCards);
-        Console.WriteLine();
-        Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
+        WriteLineInFrame(BuildHeaderLine(state));
+        DrawSeparator();
+        WriteLineInFrame(BuildTableLine(state));
+
+        DrawBottomBorder();
         Console.WriteLine();
 
         foreach (var player in state.Players)
-            RenderPlayerLine(player, currentPlayerName, state);
+            RenderPlayerLine(player, state.CurrentPlayer, state);
     }
 
     public static void RenderAvailableActions(IReadOnlyList<PokerTypeAction> actions, int minimumBet)
     {
         Console.WriteLine();
-        Console.WriteLine("┌──────────────── Actions disponibles ────────────────┐");
+        Console.WriteLine("┌" + new string('─', TableWidth) + "┐");
+
         foreach (var action in actions)
         {
-            Console.Write("│ ");
-            Console.Write($"{(int)action}. {action.ToDisplayString()}");
+            var label = $"{(int)action}. {action.ToDisplayString()}";
 
             if (action == PokerTypeAction.Bet)
-            {
-                Console.Write(" (");
-                ConsolePokerWriter.WriteAmount(minimumBet);
-                Console.Write(")");
-            }
+                label += $" ({minimumBet}c)";
 
-            Console.WriteLine();
-        }
-        Console.WriteLine("└──────────────────────────────────────────────────────┘");
-    }
-
-    private void ResetRoundCacheIfNewRound(string phase)
-    {
-        var preFlopPhase = Phase.PreFlop.ToString();
-        if (phase == preFlopPhase && lastRenderedPhase != preFlopPhase)
-        {
-            ResetRoundCache();
+            WriteRawLine(label);
         }
 
-        lastRenderedPhase = phase;
+        Console.WriteLine("└" + new string('─', TableWidth) + "┘");
     }
 
     private void RenderPlayerLine(PokerPlayerState player, string currentPlayerName, PokerGameState state)
     {
+        var isCurrent = currentPlayerName == player.Name;
+
         if (player.IsFolded)
             ConsoleColorScope.Foreground(ConsoleColor.DarkGray);
 
-        Console.Write(currentPlayerName == player.Name ? "▶ " : "  ");
+        Console.Write(isCurrent ? "▶ " : "  ");
 
         ConsolePokerWriter.WritePlayerName(player);
 
-        if (player.IsFolded)
-        {
-            Console.Write($" ({player.Chips}c):");
-        }
-        else
-        {
-            Console.Write(" (");
-            ConsolePokerWriter.WriteAmount(player.Chips);
-            Console.Write("): ");
-        }
+        Console.Write(" (");
+        ConsolePokerWriter.WriteAmount(player.Chips);
+        Console.Write("): ");
 
         bool canShowHand =
             player.Hand is not null &&
@@ -121,7 +95,7 @@ public class ConsolePokerRenderer
         {
             Console.Write(" ");
             ConsolePokerWriter.WriteHand(player.Hand!);
-            WriteScoreAndProbabilityOfVictory(player, state, currentPlayerName);
+            WriteScoreAndProbability(player, state, currentPlayerName);
         }
 
         if (player.LastAction != PokerTypeAction.None)
@@ -134,32 +108,32 @@ public class ConsolePokerRenderer
         }
 
         Console.WriteLine();
-        ConsoleColorScope.Foreground(ConsoleColor.White);
+        Console.ResetColor();
     }
 
-    private void WriteScoreAndProbabilityOfVictory(PokerPlayerState player, PokerGameState state, string currentPlayerName)
+    private void WriteScoreAndProbability(PokerPlayerState player, PokerGameState state, string currentPlayerName)
     {
         var score = ScoreEvaluator.EvaluateScore(player.Hand!, state.CommunityCards);
         Console.Write($" ({score}");
 
         if (currentPlayerName == player.Name || state.Phase == Phase.Showdown.ToString())
         {
-            var probability = CalculateProbabilityOfVictory(player, state);
+            var probability = CalculateProbability(player, state);
             if (probability is not null)
             {
                 Console.Write($" | {probability.Value:F0}%");
                 winProbabilityByPlayer[player.Name] = (int)Math.Round(probability.Value);
             }
         }
-        else if (winProbabilityByPlayer.TryGetValue(player.Name, out var previousProbability))
+        else if (winProbabilityByPlayer.TryGetValue(player.Name, out var previous))
         {
-            Console.Write($" | {previousProbability:F0}%");
+            Console.Write($" | {previous}%");
         }
 
         Console.Write(")");
     }
 
-    private static double? CalculateProbabilityOfVictory(PokerPlayerState player, PokerGameState state)
+    private static double? CalculateProbability(PokerPlayerState player, PokerGameState state)
     {
         if (player.Hand is null)
             return null;
@@ -170,32 +144,95 @@ public class ConsolePokerRenderer
 
         try
         {
-            return EstimateWinProbability(
-                player.Hand,
-                state.CommunityCards,
-                opponents,
-                2000);
-        }
-        catch (ArgumentException)
-        {
-            return null;
-        }
-        catch (InvalidOperationException)
-        {
-            return null;
+            return EstimateWinProbability(player.Hand, state.CommunityCards, opponents, 2000);
         }
         catch (Exception ex)
         {
-            Trace.TraceError(
-                "Unexpected error when estimating poker win probability for player '{0}' in phase '{1}': {2}",
-                player.Name,
-                state.Phase,
-                ex);
-#if DEBUG
-            throw;
-#else
+            Trace.TraceError($"Error computing probability: {ex}");
             return null;
-#endif
         }
+    }
+
+    private void ResetRoundCacheIfNewRound(string phase)
+    {
+        var preFlop = Phase.PreFlop.ToString();
+
+        if (phase == preFlop && lastRenderedPhase != preFlop)
+            ResetRoundCache();
+
+        lastRenderedPhase = phase;
+    }
+
+    // ================= UI HELPERS =================
+
+    private static void DrawTopBorder()
+    {
+        Console.WriteLine("╔" + new string('═', TableWidth) + "╗");
+    }
+
+    private static void DrawSeparator()
+    {
+        Console.WriteLine("╠" + new string('═', TableWidth) + "╣");
+    }
+
+    private static void DrawBottomBorder()
+    {
+        Console.WriteLine("╚" + new string('═', TableWidth) + "╝");
+    }
+
+    private static void WriteLineInFrame(string content)
+    {
+        int visibleLength = GetVisibleLength(content);
+        int padding = TableWidth - visibleLength;
+
+        if (padding < 0)
+            content = content.Substring(0, TableWidth);
+
+        Console.Write("║");
+        Console.Write(content);
+        Console.Write(new string(' ', Math.Max(0, padding)));
+        Console.WriteLine("║");
+    }
+
+    private static void WriteRawLine(string content)
+    {
+        int visibleLength = GetVisibleLength(content);
+        int padding = TableWidth - visibleLength;
+
+        Console.Write("│");
+        Console.Write(content);
+        Console.Write(new string(' ', Math.Max(0, padding)));
+        Console.WriteLine("│");
+    }
+
+    private static int GetVisibleLength(string text)
+    {
+        return Regex.Replace(text, @"\x1B\[[0-9;]*m", "").Length;
+    }
+
+    private static string BuildHeaderLine(PokerGameState state)
+    {
+        return $" Pot: {state.Pot}c | Mise min: {state.StartingBet}c | Mise actuelle: {state.CurrentBet}c ";
+    }
+
+    private static string BuildTableLine(PokerGameState state)
+    {
+        return $" Table: {FormatCards(state.CommunityCards)} ";
+    }
+
+    private static string FormatCards(TableCards tableCards)
+    {
+        var cards = new List<Card?>
+        {
+            tableCards.Flop1,
+            tableCards.Flop2,
+            tableCards.Flop3,
+            tableCards.Turn,
+            tableCards.River
+        }
+        .Where(c => c is not null)
+        .Cast<Card>();
+
+        return string.Join(" ", cards.Select(ConsolePokerWriter.FormatCard));
     }
 }

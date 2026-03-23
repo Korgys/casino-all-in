@@ -41,7 +41,7 @@ public class ConsoleGameFactory : IGameFactory
         {
             var opponent = configuration.Opponents[index];
             players.Add(new ComputerPlayer(
-                $"Ordi {index + 1} - {opponent.Label}",
+                $"Ordi {index + 1} ({opponent.Label})",
                 configuration.InitialChips,
                 CreateStrategy(opponent.Difficulty)));
         }
