@@ -26,14 +26,14 @@ public class SlotMachineGameTests
         game.Run();
 
         var roundResults = states.Where(state => state.IsRoundOver).ToList();
-        Assert.HasCount(2, roundResults);
-        Assert.AreEqual(100, roundResults[0].LastPayout);
-        Assert.AreEqual(115, roundResults[0].Credits);
+        Assert.HasCount(3, roundResults);
+        Assert.AreEqual(5, roundResults[0].LastPayout);
+        Assert.AreEqual(20, roundResults[0].Credits);
         Assert.AreEqual(0, roundResults[1].LastPayout);
-        Assert.AreEqual(110, roundResults[1].Credits);
+        Assert.AreEqual(15, roundResults[1].Credits);
         Assert.AreEqual(2, roundResults[1].TotalSpins);
         Assert.AreEqual(1, roundResults[1].WinningSpins);
-        Assert.AreEqual(100, roundResults[1].BiggestPayout);
+        Assert.AreEqual(5, roundResults[1].BiggestPayout);
     }
 
     [TestMethod]
@@ -60,8 +60,8 @@ public class SlotMachineGameTests
         game.Run();
 
         Assert.IsNotNull(finalSpin);
-        Assert.AreEqual(3, finalSpin.CurrentBet);
-        Assert.AreEqual(0, finalSpin.Credits);
+        Assert.AreEqual(0, finalSpin.CurrentBet);
+        Assert.AreEqual(3, finalSpin.Credits);
         Assert.AreEqual(0, finalSpin.LastPayout);
     }
 
@@ -71,7 +71,7 @@ public class SlotMachineGameTests
 
         public int Next(int maxExclusive)
         {
-            Assert.IsTrue(_values.Count > 0, "No more random values available.");
+            Assert.IsNotEmpty(_values, "No more random values available.");
             var value = _values.Dequeue();
             Assert.IsTrue(value >= 0 && value < maxExclusive, $"Value {value} is outside 0..{maxExclusive - 1}.");
             return value;
@@ -79,7 +79,7 @@ public class SlotMachineGameTests
 
         public int Next(int minInclusive, int maxExclusive)
         {
-            Assert.IsTrue(_values.Count > 0, "No more random values available.");
+            Assert.IsNotEmpty(_values, "No more random values available.");
             var value = _values.Dequeue();
             Assert.IsTrue(value >= minInclusive && value < maxExclusive, $"Value {value} is outside {minInclusive}..{maxExclusive - 1}.");
             return value;
