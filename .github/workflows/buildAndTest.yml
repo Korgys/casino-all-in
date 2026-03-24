@@ -1,14 +1,26 @@
-name: CI
+name: CI (.NET + Sonar)
 
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
   pull_request:
     branches: ["main"]
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ci:
-    name: Build, Test, Coverage & Sonar
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +41,12 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+
+      - name: Cache Sonar packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
 
       - name: Restore dependencies
         run: dotnet restore
@@ -56,15 +74,23 @@ jobs:
             /d:sonar.scanner.skipJreProvisioning=true
 
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build --no-restore --configuration Release
 
       - name: Test with coverage
         run: |
-          dotnet test --no-build \
-            --results-directory ./TestResults \
-            /p:CollectCoverage=true \
-            /p:CoverletOutput=./TestResults/ \
-            /p:CoverletOutputFormat=opencover
+          dotnet test --no-build --configuration Release \
+            --results-directory "$GITHUB_WORKSPACE/TestResults" \
+            --collect:"XPlat Code Coverage;Format=opencover"
+
+      - name: Verify coverage files
+        run: |
+          echo "Coverage files found:"
+          find "$GITHUB_WORKSPACE/TestResults" -type f -name "coverage.opencover.xml" -print
+
+          if ! find "$GITHUB_WORKSPACE/TestResults" -type f -name "coverage.opencover.xml" | grep -q .; then
+            echo "No coverage.opencover.xml files found under TestResults."
+            exit 1
+          fi
 
       - name: Sonar End
         run: |
