@@ -22,9 +22,22 @@ public class ConsolePokerRenderer
 {
     private const int TableWidth = 70;
 
-    internal static Func<HandCards, TableCards, int, int, double> EstimateWinProbability =
+    private static readonly Func<HandCards, TableCards, int, int, double> DefaultEstimateWinProbability =
         static (hand, communityCards, opponents, simulations) =>
             ProbabilityEvaluator.EstimateWinProbability(hand, communityCards, opponents, simulations);
+
+    private static Func<HandCards, TableCards, int, int, double> _estimateWinProbability = DefaultEstimateWinProbability;
+
+    internal static void SetEstimateWinProbabilityForTests(Func<HandCards, TableCards, int, int, double> estimateWinProbability)
+    {
+        ArgumentNullException.ThrowIfNull(estimateWinProbability);
+        _estimateWinProbability = estimateWinProbability;
+    }
+
+    internal static void ResetEstimateWinProbability()
+    {
+        _estimateWinProbability = DefaultEstimateWinProbability;
+    }
 
     private readonly Dictionary<string, int> winProbabilityByPlayer = new();
     private string? lastRenderedPhase;
@@ -144,7 +157,7 @@ public class ConsolePokerRenderer
 
         try
         {
-            return EstimateWinProbability(player.Hand, state.CommunityCards, opponents, 2000);
+            return _estimateWinProbability(player.Hand, state.CommunityCards, opponents, 2000);
         }
         catch (Exception ex)
         {

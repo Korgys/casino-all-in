@@ -9,8 +9,6 @@ public class ConsoleSlotMachineRendererTests
     [TestMethod]
     public void RenderTable_ShowsMachineAndAnimation_ForJackpotState()
     {
-        ConsoleSlotMachineRenderer.Pause = _ => { };
-
         var state = new SlotMachineGameState
         {
             Reels = [SlotSymbol.Seven, SlotSymbol.Seven, SlotSymbol.Seven],

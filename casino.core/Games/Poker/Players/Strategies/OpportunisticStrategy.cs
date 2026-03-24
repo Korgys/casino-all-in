@@ -20,79 +20,11 @@ public class OpportunisticStrategy : IPlayerStrategy
             else 
                 return GetFirstGameAction(context);
         }
-        
-        int activePlayers = context.Round.Players.Count(j => !j.IsFolded());
-        int nbActives = Math.Max(2, activePlayers);
-        int opponents = Math.Max(0, activePlayers - 1);
-        Phase phase = context.Round.Phase;
 
-        // pBrut est en 0..100
-        double pBrut = ProbabilityEvaluator.EstimateWinProbability(
-            context.CurrentPlayer.Hand,
-            context.Round.CommunityCards,
-            opponents,
-            simulations: 1000);
+        var metrics = ComputeMetrics(context);
+        var thresholds = ComputeThresholds(metrics.ActivePlayers, metrics.Phase);
 
-        // Normalisation 0..1
-        double p = BornerEntre0Et1(pBrut / 100.0);
-
-        // Proba "neutre" ~ 1 / nbActifs
-        double neutre = 1.0 / nbActives;
-
-        // Multiplicateurs par rapport au neutre (à ajuster)
-        // Préflop on est + prudent (moins d'infos)
-        double foldK = phase < Phase.Flop ? 0.75 : 0.70;  // fold si p < foldK * neutre
-        double callK = phase < Phase.Flop ? 1.05 : 1.00;  // call si p < callK * neutre
-        double raiseK = phase < Phase.Flop ? 1.35 : 1.25;  // raise/bet si p >= raiseK * neutre
-        double shoveK = phase < Phase.Flop ? 1.90 : 1.70;  // shove si p >= shoveK * neutre
-
-        double seuilCouche = foldK * neutre;
-        double seuilSuivre = callK * neutre;
-        double seuilRelance = raiseK * neutre;
-        double seuilTapis = shoveK * neutre;
-
-        // --- Décision ---
-
-        // Tapis si énorme avantage relatif
-        if (actions.Contains(PokerTypeAction.AllIn) && p >= seuilTapis)
-            return new GameAction(PokerTypeAction.AllIn);
-
-        // Si faible vs neutre => fold si possible
-        if (p < seuilCouche)
-        {
-            if (actions.Contains(PokerTypeAction.Fold))
-                return new GameAction(PokerTypeAction.Fold);
-
-            if (actions.Contains(PokerTypeAction.Call))
-                return new GameAction(PokerTypeAction.Call);
-
-            return GetFirstGameAction(context);
-        }
-
-        // Proche du neutre => suivre/check
-        if (p < seuilRelance)
-        {
-            if (actions.Contains(PokerTypeAction.Call))
-                return new GameAction(PokerTypeAction.Call);
-
-            // Si pas de suivre (cas rare), petite mise min
-            if (actions.Contains(PokerTypeAction.Bet))
-                return new GameAction(PokerTypeAction.Bet, context.MinimumBet);
-
-            return new GameAction(actions.First());
-        }
-
-        // Should raise if the probability is significantly better than the neutral threshold
-        if (actions.Contains(PokerTypeAction.Raise))
-            return new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context)); // Raise with the minimum raise amount
-
-        if (actions.Contains(PokerTypeAction.Bet))
-            return new GameAction(PokerTypeAction.Bet, context.MinimumBet);
-
-        if (actions.Contains(PokerTypeAction.Call))
-            return new GameAction(PokerTypeAction.Call);
-
-        return GetFirstGameAction(context);
+        return ResolveBestLegalAction(context, metrics.NormalizedProbability, thresholds);
     }
 
     /// <summary>
@@ -120,5 +52,92 @@ public class OpportunisticStrategy : IPlayerStrategy
             return new GameAction(context.AvailableActions[0]);
     }
 
+    private static OpportunisticMetrics ComputeMetrics(GameContext context)
+    {
+        var activePlayers = context.Round.Players.Count(player => !player.IsFolded());
+        var opponents = Math.Max(0, activePlayers - 1);
+        var phase = context.Round.Phase;
+
+        // pBrut est en 0..100
+        var pBrut = ProbabilityEvaluator.EstimateWinProbability(
+            context.CurrentPlayer.Hand,
+            context.Round.CommunityCards,
+            opponents,
+            simulations: 1000);
+
+        // Normalisation 0..1
+        var normalizedProbability = BornerEntre0Et1(pBrut / 100.0);
+
+        return new OpportunisticMetrics(activePlayers, normalizedProbability, phase);
+    }
+
+    private static OpportunisticThresholds ComputeThresholds(int activePlayers, Phase phase)
+    {
+        var nbActives = Math.Max(2, activePlayers);
+        var neutre = 1.0 / nbActives;
+
+        // Multiplicateurs par rapport au neutre (à ajuster)
+        // Préflop on est + prudent (moins d'infos)
+        var foldK = phase < Phase.Flop ? 0.75 : 0.70;  // fold si p < foldK * neutre
+        var callK = phase < Phase.Flop ? 1.05 : 1.00;  // call si p < callK * neutre
+        var raiseK = phase < Phase.Flop ? 1.35 : 1.25;  // raise/bet si p >= raiseK * neutre
+        var shoveK = phase < Phase.Flop ? 1.90 : 1.70;  // shove si p >= shoveK * neutre
+
+        return new OpportunisticThresholds(
+            FoldThreshold: foldK * neutre,
+            CallThreshold: callK * neutre,
+            RaiseThreshold: raiseK * neutre,
+            AllInThreshold: shoveK * neutre);
+    }
+
+    private static GameAction ResolveBestLegalAction(GameContext context, double probability, OpportunisticThresholds thresholds)
+    {
+        var actions = context.AvailableActions;
+        var availableActions = new HashSet<PokerTypeAction>(actions);
+
+        var orderedRules = new (Func<bool> Predicate, Func<GameAction> ActionFactory)[]
+        {
+            (() => probability >= thresholds.AllInThreshold && availableActions.Contains(PokerTypeAction.AllIn),
+                () => new GameAction(PokerTypeAction.AllIn)),
+
+            (() => probability < thresholds.FoldThreshold && availableActions.Contains(PokerTypeAction.Fold),
+                () => new GameAction(PokerTypeAction.Fold)),
+            (() => probability < thresholds.FoldThreshold && availableActions.Contains(PokerTypeAction.Call),
+                () => new GameAction(PokerTypeAction.Call)),
+            (() => probability < thresholds.FoldThreshold,
+                () => GetFirstGameAction(context)),
+
+            (() => probability < thresholds.RaiseThreshold && availableActions.Contains(PokerTypeAction.Call),
+                () => new GameAction(PokerTypeAction.Call)),
+            (() => probability < thresholds.RaiseThreshold && availableActions.Contains(PokerTypeAction.Bet),
+                () => new GameAction(PokerTypeAction.Bet, context.MinimumBet)),
+            (() => probability < thresholds.RaiseThreshold,
+                () => new GameAction(actions.First())),
+
+            (() => availableActions.Contains(PokerTypeAction.Raise),
+                () => new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context))),
+            (() => availableActions.Contains(PokerTypeAction.Bet),
+                () => new GameAction(PokerTypeAction.Bet, context.MinimumBet)),
+            (() => availableActions.Contains(PokerTypeAction.Call),
+                () => new GameAction(PokerTypeAction.Call)),
+            (() => true,
+                () => GetFirstGameAction(context))
+        };
+
+        foreach (var (predicate, actionFactory) in orderedRules)
+        {
+            if (predicate())
+            {
+                return actionFactory();
+            }
+        }
+
+        return GetFirstGameAction(context);
+    }
+
     private static double BornerEntre0Et1(double x) => x < 0 ? 0 : (x > 1 ? 1 : x);
+
+    private readonly record struct OpportunisticMetrics(int ActivePlayers, double NormalizedProbability, Phase Phase);
+
+    private readonly record struct OpportunisticThresholds(double FoldThreshold, double CallThreshold, double RaiseThreshold, double AllInThreshold);
 }

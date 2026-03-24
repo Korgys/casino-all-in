@@ -58,32 +58,23 @@ public static class ProbabilityEvaluator
         if (requiredCards > remainingDeck.Count)
             throw new ArgumentException("Not enough remaining cards to simulate the round.");
 
-        int totalRemaining = remainingDeck.Count;
+        var context = new SimulationContext(
+            mainPlayer,
+            communityCards,
+            numberOfOpponents,
+            remainingDeck,
+            requiredCards,
+            missingCommunityCards);
 
         // If an RNG is provided, stay sequential to preserve test reproducibility.
         if (random is not null || simulations < 1000)
         {
             var randomizer = random ?? new CasinoRandom();
-            return EstimateSequential(
-                mainPlayer,
-                communityCards,
-                numberOfOpponents,
-                simulations,
-                remainingDeck,
-                totalRemaining,
-                requiredCards,
-                randomizer);
+            return EstimateSequential(context, simulations, randomizer);
         }
 
         // Otherwise: parallel execution
-        return EstimateParallel(
-            mainPlayer,
-            communityCards,
-            numberOfOpponents,
-            simulations,
-            remainingDeck,
-            totalRemaining,
-            requiredCards);
+        return EstimateParallel(context, simulations);
     }
 
     // =========================
@@ -91,29 +82,16 @@ public static class ProbabilityEvaluator
     // =========================
 
     private static double EstimateSequential(
-        HandCards mainPlayer,
-        TableCards communityCards,
-        int numberOfOpponents,
+        SimulationContext context,
         int simulations,
-        List<Card> remainingDeck,
-        int totalRemaining,
-        int requiredCards,
         IRandom randomizer)
     {
-        var indices = CreateIndices(totalRemaining);
+        var indices = CreateIndices(context.TotalRemaining);
         double wins = 0d;
 
         for (int sim = 0; sim < simulations; sim++)
         {
-            wins += SimulateSingleRound(
-                mainPlayer,
-                communityCards,
-                numberOfOpponents,
-                remainingDeck,
-                indices,
-                requiredCards,
-                totalRemaining,
-                randomizer);
+            wins += SimulateSingleRound(context, indices, randomizer);
         }
 
         return wins / simulations * 100d;
@@ -124,13 +102,8 @@ public static class ProbabilityEvaluator
     // =========================
 
     private static double EstimateParallel(
-        HandCards mainPlayer,
-        TableCards communityCards,
-        int numberOfOpponents,
-        int simulations,
-        List<Card> remainingDeck,
-        int totalRemaining,
-        int requiredCards)
+        SimulationContext context,
+        int simulations)
     {
         int maxWorkers = Environment.ProcessorCount;
         int workers = Math.Min(maxWorkers, simulations);
@@ -151,20 +124,12 @@ public static class ProbabilityEvaluator
                     return;
 
                 var localRandom = new CasinoRandom();
-                var localIndices = CreateIndices(totalRemaining);
+                var localIndices = CreateIndices(context.TotalRemaining);
                 double localWins = 0d;
 
                 for (int i = 0; i < simsForWorker; i++)
                 {
-                    localWins += SimulateSingleRound(
-                        mainPlayer,
-                        communityCards,
-                        numberOfOpponents,
-                        remainingDeck,
-                        localIndices,
-                        requiredCards,
-                        totalRemaining,
-                        localRandom);
+                    localWins += SimulateSingleRound(context, localIndices, localRandom);
                 }
 
                 lock (sync)
@@ -181,35 +146,26 @@ public static class ProbabilityEvaluator
     // =========================
 
     private static double SimulateSingleRound(
-        HandCards mainPlayer,
-        TableCards communityCards,
-        int numberOfOpponents,
-        List<Card> remainingDeck,
+        SimulationContext context,
         int[] indices,
-        int requiredCards,
-        int totalRemaining,
         IRandom randomizer)
     {
         // Partial shuffle of indices to obtain the required cards
-        ShuffleIndicesPartial(indices, requiredCards, totalRemaining, randomizer);
+        ShuffleIndicesPartial(indices, context.RequiredCards, randomizer);
 
         int drawIndex = 0;
 
-        var opponentHands = new HandCards[numberOfOpponents];
-        for (int i = 0; i < numberOfOpponents; i++)
+        var opponentHands = new HandCards[context.NumberOfOpponents];
+        for (int i = 0; i < context.NumberOfOpponents; i++)
         {
-            var c1 = remainingDeck[indices[drawIndex++]];
-            var c2 = remainingDeck[indices[drawIndex++]];
+            var c1 = DrawFromIndices(context.RemainingDeck, indices, ref drawIndex);
+            var c2 = DrawFromIndices(context.RemainingDeck, indices, ref drawIndex);
             opponentHands[i] = new HandCards(c1, c2);
         }
 
-        var board = BuildCommunityCardsFromIndices(
-            communityCards,
-            remainingDeck,
-            indices,
-            ref drawIndex);
+        var board = BuildCommunityCardsFromIndices(context, indices, ref drawIndex);
 
-        var playerScore = ScoreEvaluator.EvaluateScore(mainPlayer, board);
+        var playerScore = ScoreEvaluator.EvaluateScore(context.MainPlayer, board);
 
         var bestScore = playerScore;
         int winners = 1;
@@ -270,31 +226,30 @@ public static class ProbabilityEvaluator
     }
 
     private static TableCards BuildCommunityCardsFromIndices(
-        TableCards existing,
-        List<Card> remainingDeck,
+        SimulationContext context,
         int[] indices,
         ref int drawIndex)
     {
         var community = new TableCards
         {
-            Flop1 = existing.Flop1,
-            Flop2 = existing.Flop2,
-            Flop3 = existing.Flop3,
-            Turn = existing.Turn,
-            River = existing.River
+            Flop1 = context.CommunityCards.Flop1,
+            Flop2 = context.CommunityCards.Flop2,
+            Flop3 = context.CommunityCards.Flop3,
+            Turn = context.CommunityCards.Turn,
+            River = context.CommunityCards.River
         };
 
-        community.Flop1 ??= DrawFromIndices(remainingDeck, indices, ref drawIndex);
-        community.Flop2 ??= DrawFromIndices(remainingDeck, indices, ref drawIndex);
-        community.Flop3 ??= DrawFromIndices(remainingDeck, indices, ref drawIndex);
-        community.Turn ??= DrawFromIndices(remainingDeck, indices, ref drawIndex);
-        community.River ??= DrawFromIndices(remainingDeck, indices, ref drawIndex);
+        community.Flop1 ??= DrawFromIndices(context.RemainingDeck, indices, ref drawIndex);
+        community.Flop2 ??= DrawFromIndices(context.RemainingDeck, indices, ref drawIndex);
+        community.Flop3 ??= DrawFromIndices(context.RemainingDeck, indices, ref drawIndex);
+        community.Turn ??= DrawFromIndices(context.RemainingDeck, indices, ref drawIndex);
+        community.River ??= DrawFromIndices(context.RemainingDeck, indices, ref drawIndex);
 
         return community;
     }
 
     private static Card DrawFromIndices(
-        List<Card> remainingDeck,
+        IReadOnlyList<Card> remainingDeck,
         int[] indices,
         ref int drawIndex)
     {
@@ -320,13 +275,23 @@ public static class ProbabilityEvaluator
     private static void ShuffleIndicesPartial(
         int[] indices,
         int requiredCards,
-        int totalSize,
         IRandom random)
     {
         for (int i = 0; i < requiredCards; i++)
         {
-            int j = random.Next(i, totalSize);
+            int j = random.Next(i, indices.Length);
             (indices[i], indices[j]) = (indices[j], indices[i]);
         }
+    }
+
+    internal sealed record SimulationContext(
+        HandCards MainPlayer,
+        TableCards CommunityCards,
+        int NumberOfOpponents,
+        IReadOnlyList<Card> RemainingDeck,
+        int RequiredCards,
+        int MissingCommunityCards)
+    {
+        public int TotalRemaining => RemainingDeck.Count;
     }
 }

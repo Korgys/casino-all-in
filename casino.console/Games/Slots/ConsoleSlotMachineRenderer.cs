@@ -7,7 +7,7 @@ namespace casino.console.Games.Slots;
 [ExcludeFromCodeCoverage]
 public static class ConsoleSlotMachineRenderer
 {
-    public static Action<int> Pause = Thread.Sleep;
+    private static Action<int> _pause = Thread.Sleep;
 
     public static void RenderTable(SlotMachineGameState state)
     {
@@ -117,7 +117,7 @@ public static class ConsoleSlotMachineRenderer
             using (ConsoleColorScope.Foreground(color))
                 Console.WriteLine(message);
 
-            Pause(50);
+            _pause(50);
         }
     }
 }

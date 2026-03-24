@@ -8,75 +8,95 @@ namespace casino.core.Games.Poker.Rounds.Phases;
 
 public abstract class PhaseStateBase : IPhaseState
 {
+    // Captures per-turn values used by multiple rule blocks.
+    private readonly record struct ActionDerivationState(int PlayerBet, int Difference, bool CanCoverCall);
+
     public abstract void Avancer(Round context);
 
     public virtual IEnumerable<PokerTypeAction> GetAvailableActions(Player Player, Round context)
     {
-        var actionsPossibles = new List<PokerTypeAction>();
-
-        // Un Player couché ou tapis n'a pas d'actions possibles
-        if (Player.IsFolded() || Player.IsAllIn())
-            return actionsPossibles;
-
-        // Calcul de la diff�rence entre la mise actuelle et la mise du Player
-        var misePlayer = context.GetBetFor(Player);
-        var difference = context.CurrentBet - misePlayer;
-
-        // G�re le dealer (premi�re mise du PreFlop)
-        if (context.Phase == Phase.PreFlop && context.CurrentBet == 0 && misePlayer == 0)
+        // Folded/all-in players cannot perform any action.
+        if (!IsPlayerActionable(Player))
         {
-            if (Player.Chips <= 0)
-            {
-                actionsPossibles.Add(PokerTypeAction.Fold);
-            }
-            else if (Player.Chips <= context.StartingBet)
-            {
-                actionsPossibles.Add(PokerTypeAction.AllIn);
-            }
-            else
-            {
-                actionsPossibles.Add(PokerTypeAction.Bet);
-                actionsPossibles.Add(PokerTypeAction.Raise);
-                actionsPossibles.Add(PokerTypeAction.AllIn);
-            }
-            return actionsPossibles.OrderBy(a => (int)a).ToList();
+            return Enumerable.Empty<PokerTypeAction>();
         }
 
-        actionsPossibles.Add(PokerTypeAction.Fold);
+        var playerBet = context.GetBetFor(Player);
+        var state = new ActionDerivationState(
+            PlayerBet: playerBet,
+            Difference: context.CurrentBet - playerBet,
+            CanCoverCall: context.CurrentBet - playerBet < Player.Chips);
 
-        if (difference > 0)
+        // Pre-flop opening round (no posted bet yet).
+        if (context.Phase == Phase.PreFlop && context.CurrentBet == 0 && state.PlayerBet == 0)
         {
-            if (difference < Player.Chips)
-            {
-                actionsPossibles.Add(PokerTypeAction.Call);
-                actionsPossibles.Add(PokerTypeAction.Raise);
-                actionsPossibles.Add(PokerTypeAction.AllIn);
-            }
-            else if (difference == Player.Chips)
-            {
-                actionsPossibles.Add(PokerTypeAction.AllIn);
-            }
-            else
-            {
-                actionsPossibles.Add(PokerTypeAction.AllIn);
-            }
-        }
-        else // difference <= 0, aucune mise � rattraper
-        {
-            actionsPossibles.Add(PokerTypeAction.Check);
-
-            if (context.CurrentBet == 0)
-            {
-                actionsPossibles.Add(PokerTypeAction.Bet);
-            }
-
-            if (Player.Chips > 0 && (context.CurrentBet == 0 || Player.Chips + misePlayer > context.CurrentBet))
-            {
-                actionsPossibles.Add(PokerTypeAction.Raise);
-            }
+            return BuildPreFlopOpeningActions(Player, context).OrderBy(a => (int)a).ToList();
         }
 
-        return actionsPossibles.OrderBy(a => (int)a).ToList();
+        // Player is facing a bet and must respond.
+        if (state.Difference > 0)
+        {
+            return BuildFacingBetActions(state).OrderBy(a => (int)a).ToList();
+        }
+
+        // No bet to call; player can check and may be able to bet/raise.
+        return BuildNoBetToCallActions(Player, context, state).OrderBy(a => (int)a).ToList();
+    }
+
+    private static bool IsPlayerActionable(Player player)
+    {
+        return !player.IsFolded() && !player.IsAllIn();
+    }
+
+    private static IEnumerable<PokerTypeAction> BuildPreFlopOpeningActions(Player player, Round context)
+    {
+        if (player.Chips <= 0)
+        {
+            return [PokerTypeAction.Fold];
+        }
+
+        if (player.Chips <= context.StartingBet)
+        {
+            return [PokerTypeAction.AllIn];
+        }
+
+        return [PokerTypeAction.Bet, PokerTypeAction.Raise, PokerTypeAction.AllIn];
+    }
+
+    private static IEnumerable<PokerTypeAction> BuildFacingBetActions(ActionDerivationState state)
+    {
+        if (state.CanCoverCall)
+        {
+            return [
+                PokerTypeAction.Fold,
+                PokerTypeAction.Call,
+                PokerTypeAction.Raise,
+                PokerTypeAction.AllIn
+            ];
+        }
+
+        return [PokerTypeAction.Fold, PokerTypeAction.AllIn];
+    }
+
+    private static IEnumerable<PokerTypeAction> BuildNoBetToCallActions(Player player, Round context, ActionDerivationState state)
+    {
+        var actions = new List<PokerTypeAction>
+        {
+            PokerTypeAction.Fold,
+            PokerTypeAction.Check
+        };
+
+        if (context.CurrentBet == 0)
+        {
+            actions.Add(PokerTypeAction.Bet);
+        }
+
+        if (player.Chips > 0 && (context.CurrentBet == 0 || player.Chips + state.PlayerBet > context.CurrentBet))
+        {
+            actions.Add(PokerTypeAction.Raise);
+        }
+
+        return actions;
     }
 
     public virtual void ApplyAction(Player Player, Actions.GameAction action, Round context)

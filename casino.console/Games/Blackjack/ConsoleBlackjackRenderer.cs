@@ -6,7 +6,18 @@ namespace casino.console.Games.Blackjack;
 
 public static class ConsoleBlackjackRenderer
 {
-    public static Action<int> Pause = Thread.Sleep;
+    private static Action<int> _pause = Thread.Sleep;
+
+    internal static void SetPauseForTests(Action<int> pause)
+    {
+        ArgumentNullException.ThrowIfNull(pause);
+        _pause = pause;
+    }
+
+    internal static void ResetPause()
+    {
+        _pause = Thread.Sleep;
+    }
 
     public static void RenderTable(BlackjackGameState state)
     {
@@ -127,7 +138,7 @@ public static class ConsoleBlackjackRenderer
             using (ConsoleColorScope.Foreground(color))
                 Console.WriteLine(message);
 
-            Pause(60);
+            _pause(60);
         }
     }
 }

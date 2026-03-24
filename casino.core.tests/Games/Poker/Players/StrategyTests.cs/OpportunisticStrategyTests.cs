@@ -115,5 +115,24 @@ public class OpportunisticStrategyTests
         Assert.AreEqual(15, action.Amount);
     }
 
+    [TestMethod]
+    public void DecideAction_WithSingleFoldAction_ShouldReturnFold()
+    {
+        var player = new Player("bob", 1000);
+        var players = new List<Player>
+        {
+            player,
+            new Player("alice", 1000)
+        };
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()));
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Fold });
+        var strategy = new OpportunisticStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.IsNotNull(action);
+        Assert.AreEqual(PokerTypeAction.Fold, action.TypeAction);
+    }
+
     private static IEnumerable<Card> CreateSimpleCards() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10);
 }

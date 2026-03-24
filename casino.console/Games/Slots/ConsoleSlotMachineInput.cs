@@ -1,7 +1,9 @@
 using casino.core.Games.Slots;
+using System.Diagnostics.CodeAnalysis;
 
 namespace casino.console.Games.Slots;
 
+[ExcludeFromCodeCoverage]
 public static class ConsoleSlotMachineInput
 {
     public static int GetBet(SlotMachineGameState state)
