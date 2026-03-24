@@ -1,4 +1,4 @@
-name: CI (.NET + Sonar)
+name: CI
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Cache NuGet packages
-        uses: actions/cache@v4
+        uses: actions/cache@v4.2.0
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Cache Sonar packages
-        uses: actions/cache@v4
+        uses: actions/cache@v4.2.0
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
@@ -69,7 +69,7 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml" \
-            /d:sonar.coverage.exclusions="**/Program.cs,**/*Tests.cs,**/*Renderer.cs" \
+            /d:sonar.coverage.exclusions="**/Program.cs,**/*Tests.cs,**/*Renderer.cs,**/Console*Input.cs" \
             /d:sonar.exclusions="**/coveragereport/**" \
             /d:sonar.scanner.skipJreProvisioning=true
 
@@ -112,15 +112,15 @@ jobs:
       - name: Print coverage summary
         run: cat coveragereport/Summary.txt
 
-      - name: Enforce coverage (>= 70%)
+      - name: Enforce coverage (>= 75%)
         run: |
           LINE_COV=$(grep -Po 'Line coverage:\s*\K[0-9.]+(?=%)' coveragereport/Summary.txt || echo 0)
           echo "Detected coverage: ${LINE_COV}%"
-          awk -v cov="$LINE_COV" 'BEGIN { exit (cov>=70)?0:1 }'
+          awk -v cov="$LINE_COV" 'BEGIN { exit (cov>=75)?0:1 }'
 
       - name: Upload coverage report artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: coverage-report
           path: coveragereport

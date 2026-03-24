@@ -16,9 +16,9 @@ Casino All-In is a console-based casino project built with .NET. It is designed 
 
 ## Features
 
-- Playable **Texas Hold'em** game in the terminal with betting phases (Pre-Flop, Flop, Turn, River, Showdown).
-- Playable **Blackjack** game in the terminal (hit/stand loop, dealer draw rules, winner resolution).
-- Playable **Slot Machine** game in the terminal with animated reels, combo payouts, and jackpot spins.
+- **Texas Hold'em** game in the terminal with betting phases (Pre-Flop, Flop, Turn, River, Showdown).
+- **Blackjack** game in the terminal (hit/stand loop, dealer draw rules, winner resolution).
+- **Slot Machine** game in the terminal with animated reels, combo payouts, and jackpot spins.
 - Computer players with multiple strategies (aggressive, conservative, opportunistic, random).
 - Poker action flow support: fold, check, call, raise, bet, all-in.
 - Poker hand evaluation and winner resolution.
