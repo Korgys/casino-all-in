@@ -10,9 +10,17 @@ Casino All-In is a console-based casino project built with .NET. It is designed 
 - Game logic modeling (deck, rounds, actions, scoring)
 - Automated tests for core rules and console behavior
 
-### Gameplay preview
+### Gameplay preview - Poker
 
 ![Gameplay preview](docs/images/poker_gameplay.png)
+
+### Gameplay preview - Blackjack
+
+![Gameplay preview](docs/images/blackjack_gameplay.png)
+
+### Gameplay preview - Machine slot
+
+![Gameplay preview](docs/images/machineslot_gameplay.png)
 
 ## Features
 
