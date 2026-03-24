@@ -33,16 +33,43 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install SonarScanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Sonar Begin
+        run: |
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          dotnet sonarscanner begin \
+            /k:"${{ secrets.SONAR_PROJECT_KEY }}" \
+            /o:"${{ secrets.SONAR_ORG }}" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.cs.cobertura.reportsPaths="TestResults/**/coverage.cobertura.xml" \
+            /d:sonar.coverage.exclusions="**/Program.cs,**/*Tests.cs,**/*Renderer.cs" \
+            /d:sonar.exclusions="**/coveragereport/**" \
+            /d:sonar.scanner.skipJreProvisioning=true
+
       - name: Build
         run: dotnet build --no-restore
 
       - name: Test with coverage
-        run: >
-          dotnet test --no-build
-          --results-directory ./TestResults
-          --collect:"XPlat Code Coverage"
-          --
-          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+        run: |
+          dotnet test --no-build \
+            --results-directory ./TestResults \
+            --collect:"XPlat Code Coverage" \
+            -- \
+            DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+
+      - name: Sonar End
+        run: |
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Install ReportGenerator tool
         run: |
@@ -71,32 +98,3 @@ jobs:
         with:
           name: coverage-report
           path: coveragereport
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Install SonarScanner
-        run: dotnet tool install --global dotnet-sonarscanner
-
-      - name: Sonar Begin
-        run: |
-          export PATH="$PATH:$HOME/.dotnet/tools"
-          dotnet sonarscanner begin \
-            /k:"${{ secrets.SONAR_PROJECT_KEY }}" \
-            /o:"${{ secrets.SONAR_ORG }}" \
-            /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.cobertura.xml" \
-            /d:sonar.coverage.exclusions="**/*" \
-            /d:sonar.scanner.scanAll=false
-
-      - name: Build for Sonar
-        run: dotnet build --no-restore
-
-      - name: Sonar End
-        run: |
-          export PATH="$PATH:$HOME/.dotnet/tools"
-          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
