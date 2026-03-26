@@ -2,6 +2,7 @@
 using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
 using casino.console.Games.Slots;
+using casino.console.Localization;
 using casino.core;
 using casino.core.Games.Blackjack;
 using casino.core.Games.Poker;
@@ -44,7 +45,7 @@ public class ConsoleGameFactory : IGameFactory
         {
             var opponent = configuration.Opponents[index];
             players.Add(new ComputerPlayer(
-                $"Ordi {index + 1} ({opponent.Label})",
+                $"Ordi {index + 1} ({ConsoleText.PokerDifficultyLabel(opponent.Difficulty)})",
                 configuration.InitialChips,
                 CreateStrategy(opponent.Difficulty)));
         }

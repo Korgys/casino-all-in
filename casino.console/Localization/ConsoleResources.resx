@@ -129,4 +129,16 @@
   <data name="WinnerTag" xml:space="preserve">
     <value>Gagnant</value>
   </data>
+  <data name="PokerDifficultyEasy" xml:space="preserve">
+    <value>Facile</value>
+  </data>
+  <data name="PokerDifficultyMedium" xml:space="preserve">
+    <value>Moyen</value>
+  </data>
+  <data name="PokerDifficultyHard" xml:space="preserve">
+    <value>Difficile</value>
+  </data>
+  <data name="PokerDifficultyExpert" xml:space="preserve">
+    <value>Expert</value>
+  </data>
 </root>

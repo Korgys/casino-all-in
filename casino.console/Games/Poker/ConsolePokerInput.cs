@@ -54,7 +54,7 @@ public static class ConsolePokerInput
 
         Console.WriteLine();
         RenderDifficultyOptions();
-        var difficulty = ReadDifficulty(ConsoleText.DifficultyPrompt(PokerDifficulty.Medium.ToString("D")), PokerDifficulty.Medium);
+        var difficulty = ReadDifficulty(ConsoleText.DifficultyPrompt(ConsoleText.PokerDifficultyLabel(PokerDifficulty.Medium)), PokerDifficulty.Medium);
 
         var opponents = new List<PokerOpponentSetup>();
         for (var index = 1; index < playerCount; index++)
@@ -141,7 +141,7 @@ public static class ConsolePokerInput
     {
         foreach (var value in Enum.GetValues<PokerDifficulty>())
         {
-            Console.WriteLine($"  {(int)value}. {new PokerOpponentSetup(value).Label,-10}");
+            Console.WriteLine($"  {(int)value}. {ConsoleText.PokerDifficultyLabel(value),-10}");
         }
     }
 }

@@ -23,7 +23,7 @@ public static class Program
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
 
-        SetLanguage();
+        SetCultureFromSystem();
 
         var factory = new ConsoleGameFactory();
         var game = BuildGame(factory);
@@ -75,18 +75,12 @@ public static class Program
     }
 
 
-    private static void SetLanguage()
+    private static void SetCultureFromSystem()
     {
-        var defaultCulture = new CultureInfo("fr-FR");
-        CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
-        CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
-
-        Console.WriteLine(ConsoleText.LanguagePrompt);
-        var input = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
-
-        var selected = input is "2" or "en" or "english"
-            ? new CultureInfo("en")
-            : defaultCulture;
+        var systemCulture = CultureInfo.InstalledUICulture;
+        var selected = systemCulture.TwoLetterISOLanguageName.Equals("fr", StringComparison.OrdinalIgnoreCase)
+            ? new CultureInfo("fr-FR")
+            : new CultureInfo("en");
 
         CultureInfo.CurrentCulture = selected;
         CultureInfo.CurrentUICulture = selected;

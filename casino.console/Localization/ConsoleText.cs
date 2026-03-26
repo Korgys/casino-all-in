@@ -1,3 +1,4 @@
+using casino.core.Games.Poker;
 using System.Globalization;
 using System.Resources;
 
@@ -10,7 +11,6 @@ internal static class ConsoleText
     private static string Get(string key)
         => ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 
-    public static string LanguagePrompt => Get(nameof(LanguagePrompt));
     public static string MainMenuChoice => Get(nameof(MainMenuChoice));
     public static string PressAnyKeyToQuit => Get(nameof(PressAnyKeyToQuit));
     public static string MenuQuit => Get(nameof(MenuQuit));
@@ -44,10 +44,23 @@ internal static class ConsoleText
     public static string SlotJackpotAnimation => Get(nameof(SlotJackpotAnimation));
     public static string SlotWinAnimation => Get(nameof(SlotWinAnimation));
     public static string WinnerTag => Get(nameof(WinnerTag));
+    public static string PokerDifficultyEasy => Get(nameof(PokerDifficultyEasy));
+    public static string PokerDifficultyMedium => Get(nameof(PokerDifficultyMedium));
+    public static string PokerDifficultyHard => Get(nameof(PokerDifficultyHard));
+    public static string PokerDifficultyExpert => Get(nameof(PokerDifficultyExpert));
 
     public static string InitialChipsPrompt(int min, int max) => string.Format(Get(nameof(InitialChipsPrompt)), min, max);
     public static string PlayerCountPrompt(int min, int max) => string.Format(Get(nameof(PlayerCountPrompt)), min, max);
     public static string DifficultyPrompt(string defaultValue) => string.Format(Get(nameof(DifficultyPrompt)), defaultValue);
     public static string RangeError(int min, int max) => string.Format(Get(nameof(RangeError)), min, max);
     public static string SlotBetPrompt(int bet) => string.Format(Get(nameof(SlotBetPrompt)), bet);
+
+    public static string PokerDifficultyLabel(PokerDifficulty difficulty) => difficulty switch
+    {
+        PokerDifficulty.Easy => PokerDifficultyEasy,
+        PokerDifficulty.Medium => PokerDifficultyMedium,
+        PokerDifficulty.Hard => PokerDifficultyHard,
+        PokerDifficulty.Expert => PokerDifficultyExpert,
+        _ => difficulty.ToString()
+    };
 }
