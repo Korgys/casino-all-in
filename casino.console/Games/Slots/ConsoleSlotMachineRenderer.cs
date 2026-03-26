@@ -6,10 +6,11 @@ using casino.console.Localization;
 
 namespace casino.console.Games.Slots;
 
-[ExcludeFromCodeCoverage]
+
 /// <summary>
 /// Renders slot machine game state in the console.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class ConsoleSlotMachineRenderer
 {
     private const int PreferredWidth = 46;

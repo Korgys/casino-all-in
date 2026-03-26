@@ -5,10 +5,11 @@ using casino.console.Games.Commons;
 
 namespace casino.console.Games.Slots;
 
-[ExcludeFromCodeCoverage]
+
 /// <summary>
 /// Provides console input helpers for the slot machine game.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class ConsoleSlotMachineInput
 {
     /// <summary>

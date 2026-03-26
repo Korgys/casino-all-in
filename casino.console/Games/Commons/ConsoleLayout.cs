@@ -116,7 +116,7 @@ public static class ConsoleLayout
     /// <returns>The visible display width.</returns>
     public static int GetVisibleLength(string text)
     {
-        var plain = Regex.Replace(text, @"\x1B\[[0-9;]*m", string.Empty);
+        var plain = Regex.Replace(text, @"\x1B\[[0-9;]*m", string.Empty, RegexOptions.None, TimeSpan.FromMilliseconds(100));
         var width = 0;
 
         foreach (var rune in plain.EnumerateRunes())

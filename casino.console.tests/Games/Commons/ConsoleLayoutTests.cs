@@ -39,7 +39,7 @@ public class ConsoleLayoutTests
         var fitted = ConsoleLayout.FitToWidth(text, 5);
 
         Assert.IsTrue(fitted.Contains("\u001b[36m", StringComparison.Ordinal));
-        Assert.IsTrue(fitted.EndsWith("…", StringComparison.Ordinal));
+        Assert.EndsWith("…", fitted);
         Assert.AreEqual(5, ConsoleLayout.GetVisibleLength(fitted));
     }
 }
