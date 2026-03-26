@@ -1,4 +1,5 @@
 using casino.core.Games.Poker.Cards;
+using casino.core.Properties.Langages;
 
 namespace casino.core.Games.Blackjack;
 
@@ -52,22 +53,22 @@ public class BlackjackGame : GameBase
         _dealerCards.Clear();
 
         DealInitialCards();
-        PublishState("Votre tour.", isRoundOver: false, hideDealerHoleCard: true, BlackjackRoundOutcome.InProgress);
+        PublishState(T("BlackjackPlayerTurn"), isRoundOver: false, hideDealerHoleCard: true, BlackjackRoundOutcome.InProgress);
 
         while (BlackjackScoreCalculator.Calculate(_playerCards) < 21)
         {
-            var action = _playerActionSelector(BuildState("Choisissez votre action.", false, true, BlackjackRoundOutcome.InProgress));
+            var action = _playerActionSelector(BuildState(T("BlackjackChooseAction"), false, true, BlackjackRoundOutcome.InProgress));
             if (action == BlackjackAction.Stand)
                 break;
 
             _playerCards.Add(_deck.DrawCard());
-            PublishState("Carte tirée.", isRoundOver: false, hideDealerHoleCard: true, BlackjackRoundOutcome.InProgress);
+            PublishState(T("BlackjackCardDrawn"), isRoundOver: false, hideDealerHoleCard: true, BlackjackRoundOutcome.InProgress);
         }
 
         var playerScore = BlackjackScoreCalculator.Calculate(_playerCards);
         if (playerScore > 21)
         {
-            EndRound("Le croupier", BlackjackRoundOutcome.DealerWin);
+            EndRound(T("BlackjackDealer"), BlackjackRoundOutcome.DealerWin);
             return;
         }
 
@@ -84,12 +85,12 @@ public class BlackjackGame : GameBase
         var dealerScore = BlackjackScoreCalculator.Calculate(_dealerCards);
 
         if (dealerScore > 21 || playerScore > dealerScore)
-            return ("Player", BlackjackRoundOutcome.PlayerWin);
+            return (T("BlackjackPlayer"), BlackjackRoundOutcome.PlayerWin);
 
         if (dealerScore > playerScore)
-            return ("Le croupier", BlackjackRoundOutcome.DealerWin);
+            return (T("BlackjackDealer"), BlackjackRoundOutcome.DealerWin);
 
-        return ("Égalité", BlackjackRoundOutcome.Push);
+        return (T("BlackjackPushWinner"), BlackjackRoundOutcome.Push);
     }
 
     private void EndRound(string winnerName, BlackjackRoundOutcome roundOutcome)
@@ -109,9 +110,9 @@ public class BlackjackGame : GameBase
 
         var status = roundOutcome switch
         {
-            BlackjackRoundOutcome.PlayerWin => "Bravo ! Vous remportez cette manche.",
-            BlackjackRoundOutcome.DealerWin => "Le croupier remporte cette manche.",
-            BlackjackRoundOutcome.Push => "Push : égalité.",
+            BlackjackRoundOutcome.PlayerWin => T("BlackjackRoundWonByPlayer"),
+            BlackjackRoundOutcome.DealerWin => T("BlackjackRoundWonByDealer"),
+            BlackjackRoundOutcome.Push => T("BlackjackRoundPush"),
             _ => string.Empty
         };
 
@@ -145,4 +146,7 @@ public class BlackjackGame : GameBase
 
     private void PublishState(string status, bool isRoundOver, bool hideDealerHoleCard, BlackjackRoundOutcome roundOutcome)
         => OnStateUpdated(BuildState(status, isRoundOver, hideDealerHoleCard, roundOutcome));
+
+    private static string T(string key)
+        => Resources.ResourceManager.GetString(key, Resources.Culture) ?? key;
 }

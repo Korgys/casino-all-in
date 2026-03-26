@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
+using casino.console.Localization;
 
 namespace casino.console.Games.Poker;
 
@@ -117,7 +118,7 @@ public class ConsolePokerRenderer
         if (player.IsWinner)
         {
             using (ConsoleColorScope.Foreground(ConsoleColor.Green))
-                Console.Write(" {GAGNANT}");
+                Console.Write($" {{{ConsoleText.WinnerTag.ToUpperInvariant()}}}");
         }
 
         Console.WriteLine();
@@ -225,12 +226,12 @@ public class ConsolePokerRenderer
 
     private static string BuildHeaderLine(PokerGameState state)
     {
-        return $" Pot: {state.Pot}c | Mise min: {state.StartingBet}c | Mise actuelle: {state.CurrentBet}c ";
+        return $" Pot: {state.Pot}c | {ConsoleText.BetLabel}: {state.StartingBet}c | {ConsoleText.CurrentBetLabel}: {state.CurrentBet}c ";
     }
 
     private static string BuildTableLine(PokerGameState state)
     {
-        return $" Table: {FormatCards(state.CommunityCards)} ";
+        return $" {ConsoleText.TableLabel}: {FormatCards(state.CommunityCards)} ";
     }
 
     private static string FormatCards(TableCards tableCards)

@@ -1,4 +1,5 @@
 using casino.core.Games.Blackjack;
+using casino.console.Localization;
 
 namespace casino.console.Games.Blackjack;
 
@@ -17,7 +18,7 @@ public static class ConsoleBlackjackInput
         while (true)
         {
             RenderAvailableActions();
-            Console.Write("Quel est votre choix ? ");
+            Console.Write(ConsoleText.ActionChoicePrompt);
             var choice = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
 
             if (choice is "1" or "h" or "hit")
@@ -34,7 +35,7 @@ public static class ConsoleBlackjackInput
     /// <returns><see langword="true"/> when the player wants to continue; otherwise <see langword="false"/>.</returns>
     public static bool AskContinueNewGame()
     {
-        Console.Write("\nRejouer une manche de blackjack ? (o/n) : ");
+        Console.Write($"\n{ConsoleText.BlackjackContinuePrompt}");
         var answer = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
         return answer is "o" or "oui" or "y" or "yes";
     }
@@ -45,9 +46,9 @@ public static class ConsoleBlackjackInput
     private static void RenderAvailableActions()
     {
         Console.WriteLine();
-        Console.WriteLine("┌──────────── Actions disponibles ────────────┐");
-        Console.WriteLine("│ 1. Tirer une carte                          │");
-        Console.WriteLine("│ 2. Rester                                   │");
+        Console.WriteLine($"┌──────────── {ConsoleText.BlackjackActionsTitle,-23}┐");
+        Console.WriteLine($"│ 1. {ConsoleText.BlackjackHit,-40}│");
+        Console.WriteLine($"│ 2. {ConsoleText.BlackjackStand,-40}│");
         Console.WriteLine("└─────────────────────────────────────────────┘");
     }
 }

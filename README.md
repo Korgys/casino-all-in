@@ -103,8 +103,7 @@ This project implements a simplified Texas Hold'em loop:
 
 - [ ] Add additional casino games (Roulette, Craps, etc.).
 - [ ] Improve UI/UX with richer console animations/colors.
-- [ ] Add configurable game setup (number of bots, starting stacks, blinds).
-- [ ] Add localization options (FR/EN prompts and messages).
+- [ ] Add better poker AI.
 
 ## License
 

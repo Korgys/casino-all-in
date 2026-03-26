@@ -1,4 +1,5 @@
 using casino.core.Common.Utils;
+using casino.core.Properties.Langages;
 
 namespace casino.core.Games.Slots;
 
@@ -56,14 +57,14 @@ public class SlotMachineGame : GameBase
         _biggestPayout = 0;
         _reels = [SlotSymbol.Cherry, SlotSymbol.Seven, SlotSymbol.Bar];
 
-        PublishState(BuildState(0, 0, false, false, "Bienvenue à la machine à sous néon ! Choisissez votre mise."));
+        PublishState(BuildState(0, 0, false, false, T("SlotWelcome")));
     }
 
     protected override void ExecuteGameLoop()
     {
         while (_credits > 0)
         {
-            var state = BuildState(0, 0, false, false, "Choisissez votre mise puis lancez les rouleaux.");
+            var state = BuildState(0, 0, false, false, T("SlotChooseBet"));
             var bet = NormalizeBet(_betSelector(state));
 
             PlaySpin(bet);
@@ -76,11 +77,11 @@ public class SlotMachineGame : GameBase
         }
 
         var finalMessage = _credits > 0
-            ? "Merci d'avoir joué à la machine à sous !"
-            : "Vous n'avez plus de crédits. Fin de partie.";
+            ? T("SlotThanks")
+            : T("SlotNoCredits");
 
         PublishState(BuildState(0, 0, false, true, finalMessage));
-        OnGameEnded("Machine à sous", _credits);
+        OnGameEnded(T("SlotGameName"), _credits);
     }
 
     private void PlaySpin(int bet)
@@ -90,7 +91,7 @@ public class SlotMachineGame : GameBase
         for (var frame = 0; frame < _animationFrames; frame++)
         {
             _reels = GenerateSpin();
-            PublishState(BuildState(bet, 0, true, false, $"🎰 Les rouleaux tournent... ({frame + 1}/{_animationFrames})"));
+            PublishState(BuildState(bet, 0, true, false, string.Format(T("SlotReelsSpinning"), frame + 1, _animationFrames)));
             _pause(80);
         }
 
@@ -148,14 +149,17 @@ public class SlotMachineGame : GameBase
     private static string BuildResultMessage(int payout, int bet, bool jackpot)
     {
         if (jackpot)
-            return $"💥 JACKPOT ! Triple 7 ! Vous gagnez {payout} crédits.";
+            return string.Format(T("SlotJackpotWin"), payout);
 
         if (payout >= bet * 6)
-            return $"✨ Super combinaison ! Vous gagnez {payout} crédits.";
+            return string.Format(T("SlotSuperComboWin"), payout);
 
         if (payout > 0)
-            return $"🎉 Gain de {payout} crédits ! Relancez pour tenter mieux.";
+            return string.Format(T("SlotRegularWin"), payout);
 
-        return "Pas de gain cette fois. La prochaine sera peut-être la bonne !";
+        return T("SlotNoWin");
     }
+
+    private static string T(string key)
+        => Resources.ResourceManager.GetString(key, Resources.Culture) ?? key;
 }

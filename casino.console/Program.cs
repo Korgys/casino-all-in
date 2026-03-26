@@ -3,7 +3,9 @@ using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
 using casino.console.Games.Slots;
 using casino.core.Games.Blackjack;
+using casino.console.Localization;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 namespace casino.console;
@@ -20,6 +22,8 @@ public static class Program
     {
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
+
+        SetLanguage();
 
         var factory = new ConsoleGameFactory();
         var game = BuildGame(factory);
@@ -46,7 +50,7 @@ public static class Program
 
         game.Run();
 
-        Console.WriteLine("\nAppuyez sur une touche pour quitter...");
+        Console.WriteLine($"\n{ConsoleText.PressAnyKeyToQuit}");
         Console.ReadKey(intercept: true);
     }
 
@@ -54,7 +58,7 @@ public static class Program
     {
         Console.Clear();
         RenderMainMenu();
-        Console.Write("Votre choix: ");
+        Console.Write(ConsoleText.MainMenuChoice);
 
         var choice = (Console.ReadLine() ?? string.Empty).Trim();
 
@@ -70,6 +74,26 @@ public static class Program
         };
     }
 
+
+    private static void SetLanguage()
+    {
+        var defaultCulture = new CultureInfo("fr-FR");
+        CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+
+        Console.WriteLine(ConsoleText.LanguagePrompt);
+        var input = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
+
+        var selected = input is "2" or "en" or "english"
+            ? new CultureInfo("en")
+            : defaultCulture;
+
+        CultureInfo.CurrentCulture = selected;
+        CultureInfo.CurrentUICulture = selected;
+        CultureInfo.DefaultThreadCurrentCulture = selected;
+        CultureInfo.DefaultThreadCurrentUICulture = selected;
+    }
+
     private static void RenderMainMenu()
     {
         Console.WriteLine("╔══════════════════════════════════════════════╗");
@@ -78,7 +102,7 @@ public static class Program
         Console.WriteLine("║  1. Poker                                    ║");
         Console.WriteLine("║  2. BlackJack                                ║");
         Console.WriteLine("║  3. Slot Machine                             ║");
-        Console.WriteLine("║  4. Quitter                                  ║");
+        Console.WriteLine($"║  4. {ConsoleText.MenuQuit,-40}║");
         Console.WriteLine("╚══════════════════════════════════════════════╝");
         Console.WriteLine();
     }

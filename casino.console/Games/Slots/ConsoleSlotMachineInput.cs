@@ -1,5 +1,6 @@
 using casino.core.Games.Slots;
 using System.Diagnostics.CodeAnalysis;
+using casino.console.Localization;
 
 namespace casino.console.Games.Slots;
 
@@ -20,7 +21,7 @@ public static class ConsoleSlotMachineInput
         {
             RenderBetPrompt(state);
             int bet = 1;
-            Console.Write($"Votre mise : {bet}");
+            Console.Write(ConsoleText.SlotBetPrompt(bet));
 
             return bet;
         }
@@ -32,7 +33,7 @@ public static class ConsoleSlotMachineInput
     /// <returns>Always <see langword="true"/>.</returns>
     public static bool AskContinueNewGame()
     {
-        Console.Write("\nAppuyez sur une touche pour relancer la machine : ");
+        Console.Write($"\n{ConsoleText.SlotContinuePrompt}");
         Console.ReadKey();
         return true;
     }
@@ -44,9 +45,9 @@ public static class ConsoleSlotMachineInput
     private static void RenderBetPrompt(SlotMachineGameState state)
     {
         Console.WriteLine();
-        Console.WriteLine("┌──────────── Machine à sous ─────────────┐");
-        Console.WriteLine($"│ Crédits : {state.Credits,-29}│");
-        Console.WriteLine($"│ Mise min/max : {state.MinBet} - {state.MaxBet,-21}│");
+        Console.WriteLine($"┌──────────── {ConsoleText.SlotPanelTitle,-13} ─────────────┐");
+        Console.WriteLine($"│ {ConsoleText.SlotCredits,-8}: {state.Credits,-29}│");
+        Console.WriteLine($"│ {ConsoleText.SlotMinMaxBet,-12}: {state.MinBet} - {state.MaxBet,-21}│");
         Console.WriteLine("└─────────────────────────────────────────┘");
     }
 }

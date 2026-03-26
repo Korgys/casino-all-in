@@ -1,6 +1,7 @@
 using casino.console.Games.Commons;
 using casino.core.Games.Blackjack;
 using casino.core.Games.Poker.Cards;
+using casino.console.Localization;
 
 namespace casino.console.Games.Blackjack;
 
@@ -48,8 +49,8 @@ public static class ConsoleBlackjackRenderer
         RenderHeader();
         Console.WriteLine();
 
-        RenderHand("Croupier", state.DealerCards, state.IsDealerHoleCardHidden);
-        RenderHand("Vous", state.PlayerCards, hideHoleCard: false);
+        RenderHand(ConsoleText.BlackjackDealer, state.DealerCards, state.IsDealerHoleCardHidden);
+        RenderHand(ConsoleText.BlackjackYou, state.PlayerCards, hideHoleCard: false);
 
         Console.WriteLine();
         RenderStatus(state);
@@ -83,7 +84,7 @@ public static class ConsoleBlackjackRenderer
     /// <param name="hideHoleCard">Indicates whether to hide the hole card in the total.</param>
     private static void RenderHand(string label, IReadOnlyList<Card> cards, bool hideHoleCard)
     {
-        using (ConsoleColorScope.Foreground(label == "Vous" ? ConsoleColor.Cyan : ConsoleColor.Magenta))
+        using (ConsoleColorScope.Foreground(label == ConsoleText.BlackjackYou ? ConsoleColor.Cyan : ConsoleColor.Magenta))
             Console.Write($"{label,-9}: ");
 
         for (var index = 0; index < cards.Count; index++)
@@ -129,22 +130,22 @@ public static class ConsoleBlackjackRenderer
     private static void RenderStats(BlackjackGameState state)
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
-            Console.Write("Stats");
+            Console.Write(ConsoleText.BlackjackStats);
 
         Console.Write("  |  ");
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Green))
-            Console.Write($"Victoires: {state.PlayerWins}");
+            Console.Write($"{ConsoleText.BlackjackWins}: {state.PlayerWins}");
 
         Console.Write("  |  ");
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Red))
-            Console.Write($"Défaites: {state.DealerWins}");
+            Console.Write($"{ConsoleText.BlackjackLosses}: {state.DealerWins}");
 
         Console.Write("  |  ");
 
         using (ConsoleColorScope.Foreground(ConsoleColor.DarkYellow))
-            Console.Write($"Égalités: {state.Pushes}");
+            Console.Write($"{ConsoleText.BlackjackPushes}: {state.Pushes}");
 
         Console.WriteLine();
     }
@@ -169,7 +170,7 @@ public static class ConsoleBlackjackRenderer
     private static void RenderWinAnimation()
     {
         var colors = new[] { ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Cyan };
-        const string message = "✨ BLACKJACK ! Vous gagnez ! ✨";
+        var message = ConsoleText.BlackjackWinAnimation;
 
         foreach (var color in colors)
         {

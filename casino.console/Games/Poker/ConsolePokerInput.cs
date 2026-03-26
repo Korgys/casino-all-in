@@ -3,8 +3,8 @@ using casino.core.Games.Poker.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using ActionModel = casino.core.Games.Poker.Actions.GameAction;
+using casino.console.Localization;
 
 namespace casino.console.Games.Poker;
 
@@ -37,24 +37,24 @@ public static class ConsolePokerInput
     {
         Console.Clear();
         Console.WriteLine("╔══════════════════════════════════════════════╗");
-        Console.WriteLine("║              PARAMÈTRES POKER                ║");
+        Console.WriteLine($"║           {ConsoleText.PokerSettingsTitle,-31}║");
         Console.WriteLine("╚══════════════════════════════════════════════╝");
 
         var initialChips = ReadIntInRange(
-            $"Jetons de départ par joueur [{MinimumInitialChips}-{MaximumInitialChips}] (défaut 1000) : ",
+            ConsoleText.InitialChipsPrompt(MinimumInitialChips, MaximumInitialChips),
             MinimumInitialChips,
             MaximumInitialChips,
             defaultValue: 1000);
 
         var playerCount = ReadIntInRange(
-            $"Nombre total de joueurs [{MinimumPlayers}-{MaximumPlayers}] (défaut 5) : ",
+            ConsoleText.PlayerCountPrompt(MinimumPlayers, MaximumPlayers),
             MinimumPlayers,
             MaximumPlayers,
             defaultValue: 5);
 
         Console.WriteLine();
         RenderDifficultyOptions();
-        var difficulty = ReadDifficulty($"Difficultés des ordinateurs (défaut {PokerDifficulty.Medium:D}) : ", PokerDifficulty.Medium);
+        var difficulty = ReadDifficulty(ConsoleText.DifficultyPrompt(PokerDifficulty.Medium.ToString("D")), PokerDifficulty.Medium);
 
         var opponents = new List<PokerOpponentSetup>();
         for (var index = 1; index < playerCount; index++)
@@ -67,7 +67,7 @@ public static class ConsolePokerInput
 
     public static bool AskContinueNewGame()
     {
-        Console.Write("\nVoulez-vous continuer une nouvelle partie ? (o/n) : ");
+        Console.Write($"\n{ConsoleText.ContinuePokerPrompt}");
         var answer = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
         return answer is "o" or "oui" or "y" or "yes";
     }
@@ -78,7 +78,7 @@ public static class ConsolePokerInput
         {
             ConsolePokerRenderer.RenderAvailableActions(availableActions, minimumBet);
 
-            Console.Write("Quel est votre choix ? ");
+            Console.Write(ConsoleText.ActionChoicePrompt);
             if (!int.TryParse(Console.ReadLine(), out var raw))
                 continue;
 
@@ -91,7 +91,7 @@ public static class ConsolePokerInput
     {
         while (true)
         {
-            Console.Write("Saisissez la mise totale cible (pas l'incrément) : ");
+            Console.Write(ConsoleText.RaiseTargetPrompt);
             if (!int.TryParse(Console.ReadLine(), out var amount))
                 continue;
 
@@ -113,7 +113,7 @@ public static class ConsolePokerInput
             if (int.TryParse(input, out var value) && value >= minValue && value <= maxValue)
                 return value;
 
-            Console.WriteLine($"Veuillez saisir une valeur entre {minValue} et {maxValue}.");
+            Console.WriteLine(ConsoleText.RangeError(minValue, maxValue));
         }
     }
 
@@ -133,7 +133,7 @@ public static class ConsolePokerInput
                 return (PokerDifficulty)raw;
             }
 
-            Console.WriteLine("Choix invalide. Sélectionnez 1, 2, 3 ou 4.");
+            Console.WriteLine(ConsoleText.InvalidDifficulty);
         }
     }
 

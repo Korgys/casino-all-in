@@ -1,6 +1,7 @@
 using casino.console.Games.Commons;
 using casino.core.Games.Slots;
 using System.Diagnostics.CodeAnalysis;
+using casino.console.Localization;
 
 namespace casino.console.Games.Slots;
 
@@ -76,7 +77,7 @@ public static class ConsoleSlotMachineRenderer
             Console.WriteLine("╚═════════════════════════════════════════════╝");
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
-            Console.WriteLine($"Crédits: {state.Credits}   Mise: {state.CurrentBet}   Dernier gain: {state.LastPayout}");
+            Console.WriteLine($"{ConsoleText.SlotCredits}: {state.Credits}   {ConsoleText.BetLabel}: {state.CurrentBet}   {ConsoleText.SlotLastWin}: {state.LastPayout}");
     }
 
     /// <summary>
@@ -106,7 +107,7 @@ public static class ConsoleSlotMachineRenderer
     private static void RenderStats(SlotMachineGameState state)
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.Gray))
-            Console.WriteLine($"Tours: {state.TotalSpins}  |  Tours gagnants: {state.WinningSpins}  |  Meilleur gain: {state.BiggestPayout}");
+            Console.WriteLine($"{ConsoleText.SlotSpins}: {state.TotalSpins}  |  {ConsoleText.SlotWinningSpins}: {state.WinningSpins}  |  {ConsoleText.SlotBestWin}: {state.BiggestPayout}");
     }
 
     /// <summary>
@@ -143,12 +144,12 @@ public static class ConsoleSlotMachineRenderer
         if (jackpot)
         {
             frames = [ConsoleColor.Yellow, ConsoleColor.Red, ConsoleColor.Magenta, ConsoleColor.Cyan];
-            message = "💥 JACKPOT NEON 💥";
+            message = ConsoleText.SlotJackpotAnimation;
         }
         else
         {
             frames = [ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Cyan];
-            message = "✨ GAIN ! ✨";
+            message = ConsoleText.SlotWinAnimation;
         }
 
         foreach (var color in frames)
