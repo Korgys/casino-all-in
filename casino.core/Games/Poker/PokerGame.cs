@@ -6,6 +6,9 @@ using casino.core.Games.Poker.Rounds;
 
 namespace casino.core.Games.Poker;
 
+/// <summary>
+/// Represents a poker game workflow.
+/// </summary>
 public class PokerGame : GameBase
 {
     private readonly Func<bool> _continuePlaying;
@@ -16,6 +19,14 @@ public class PokerGame : GameBase
     private readonly List<HumanPlayer> _playersHumain;
     private readonly List<Player> _players;
 
+    /// <summary>
+    /// Initializes a new poker game instance.
+    /// </summary>
+    /// <param name="Players">The players participating in the game.</param>
+    /// <param name="deckFactory">Creates a deck for each round.</param>
+    /// <param name="humanActionSelector">Selects a human player action.</param>
+    /// <param name="continuePlaying">Determines whether the session continues.</param>
+    /// <param name="waitStrategy">Provides wait behavior for computer turns.</param>
     public PokerGame(
         IEnumerable<Player> Players,
         Func<IDeck> deckFactory,
@@ -33,11 +44,17 @@ public class PokerGame : GameBase
         _table = new TablePoker { Name = "Table Poker" };
     }
 
+    /// <summary>
+    /// Initializes game state before play starts.
+    /// </summary>
     protected override void InitializeGame()
     {
         OnStateUpdated(BuildPokerGameState());
     }
 
+    /// <summary>
+    /// Runs poker rounds until the session ends.
+    /// </summary>
     protected override void ExecuteGameLoop()
     {
         while (_playersHumain.Any(j => j.Chips > 0))
@@ -70,6 +87,9 @@ public class PokerGame : GameBase
         }
     }
 
+    /// <summary>
+    /// Plays the current round until it ends.
+    /// </summary>
     private void PlayRound()
     {
         while (_table.Round.IsInProgress())
@@ -108,6 +128,10 @@ public class PokerGame : GameBase
         }
     }
 
+    /// <summary>
+    /// Builds the current poker game state snapshot.
+    /// </summary>
+    /// <returns>The current poker game state.</returns>
     private PokerGameState BuildPokerGameState()
     {
         var partie = _table.Round;

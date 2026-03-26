@@ -5,10 +5,17 @@ using System.Diagnostics.CodeAnalysis;
 namespace casino.console.Games.Slots;
 
 [ExcludeFromCodeCoverage]
+/// <summary>
+/// Renders slot machine game state in the console.
+/// </summary>
 public static class ConsoleSlotMachineRenderer
 {
     private static Action<int> _pause = Thread.Sleep;
 
+    /// <summary>
+    /// Renders the full slot machine table.
+    /// </summary>
+    /// <param name="state">The slot machine game state.</param>
     public static void RenderTable(SlotMachineGameState state)
     {
         try
@@ -31,6 +38,9 @@ public static class ConsoleSlotMachineRenderer
             RenderWinAnimation(state.IsJackpot);
     }
 
+    /// <summary>
+    /// Renders the slot machine header.
+    /// </summary>
     private static void RenderHeader()
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.Magenta))
@@ -43,6 +53,10 @@ public static class ConsoleSlotMachineRenderer
             Console.WriteLine("╚══════════════════════════════════════════════╝");
     }
 
+    /// <summary>
+    /// Renders reels and current values.
+    /// </summary>
+    /// <param name="state">The slot machine game state.</param>
     private static void RenderMachine(SlotMachineGameState state)
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.DarkYellow))
@@ -65,6 +79,10 @@ public static class ConsoleSlotMachineRenderer
             Console.WriteLine($"Crédits: {state.Credits}   Mise: {state.CurrentBet}   Dernier gain: {state.LastPayout}");
     }
 
+    /// <summary>
+    /// Renders the round status message.
+    /// </summary>
+    /// <param name="state">The slot machine game state.</param>
     private static void RenderStatus(SlotMachineGameState state)
     {
         ConsoleColor color;
@@ -81,12 +99,21 @@ public static class ConsoleSlotMachineRenderer
             Console.WriteLine(state.StatusMessage);
     }
 
+    /// <summary>
+    /// Renders cumulative slot statistics.
+    /// </summary>
+    /// <param name="state">The slot machine game state.</param>
     private static void RenderStats(SlotMachineGameState state)
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.Gray))
             Console.WriteLine($"Tours: {state.TotalSpins}  |  Tours gagnants: {state.WinningSpins}  |  Meilleur gain: {state.BiggestPayout}");
     }
 
+    /// <summary>
+    /// Writes one symbol with style based on state.
+    /// </summary>
+    /// <param name="symbol">The symbol to write.</param>
+    /// <param name="isSpinning">Indicates whether the reels are spinning.</param>
     private static void WriteSymbol(SlotSymbol symbol, bool isSpinning)
     {
         var (glyph, color) = symbol switch
@@ -105,6 +132,10 @@ public static class ConsoleSlotMachineRenderer
             Console.Write($"[{glyph}]");
     }
 
+    /// <summary>
+    /// Renders a short win animation.
+    /// </summary>
+    /// <param name="jackpot">Indicates whether the win is a jackpot.</param>
     private static void RenderWinAnimation(bool jackpot)
     {
         ConsoleColor[] frames;

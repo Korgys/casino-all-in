@@ -4,21 +4,35 @@ using casino.core.Games.Poker.Cards;
 
 namespace casino.console.Games.Blackjack;
 
+/// <summary>
+/// Renders blackjack game state in the console.
+/// </summary>
 public static class ConsoleBlackjackRenderer
 {
     private static Action<int> _pause = Thread.Sleep;
 
+    /// <summary>
+    /// Sets the pause action used for animations in tests.
+    /// </summary>
+    /// <param name="pause">The pause action.</param>
     internal static void SetPauseForTests(Action<int> pause)
     {
         ArgumentNullException.ThrowIfNull(pause);
         _pause = pause;
     }
 
+    /// <summary>
+    /// Resets animation pause behavior to default.
+    /// </summary>
     internal static void ResetPause()
     {
         _pause = Thread.Sleep;
     }
 
+    /// <summary>
+    /// Renders the full blackjack table.
+    /// </summary>
+    /// <param name="state">The blackjack game state.</param>
     public static void RenderTable(BlackjackGameState state)
     {
         try
@@ -46,6 +60,9 @@ public static class ConsoleBlackjackRenderer
             RenderWinAnimation();
     }
 
+    /// <summary>
+    /// Renders the blackjack header.
+    /// </summary>
     private static void RenderHeader()
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
@@ -58,6 +75,12 @@ public static class ConsoleBlackjackRenderer
             Console.WriteLine("╚══════════════════════════════════════════════╝");
     }
 
+    /// <summary>
+    /// Renders a hand and its total.
+    /// </summary>
+    /// <param name="label">The hand label.</param>
+    /// <param name="cards">The cards to render.</param>
+    /// <param name="hideHoleCard">Indicates whether to hide the hole card in the total.</param>
     private static void RenderHand(string label, IReadOnlyList<Card> cards, bool hideHoleCard)
     {
         using (ConsoleColorScope.Foreground(label == "Vous" ? ConsoleColor.Cyan : ConsoleColor.Magenta))
@@ -81,6 +104,10 @@ public static class ConsoleBlackjackRenderer
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// Renders the round status message.
+    /// </summary>
+    /// <param name="state">The blackjack game state.</param>
     private static void RenderStatus(BlackjackGameState state)
     {
         var color = state.RoundOutcome switch
@@ -95,6 +122,10 @@ public static class ConsoleBlackjackRenderer
             Console.WriteLine(state.StatusMessage);
     }
 
+    /// <summary>
+    /// Renders cumulative round statistics.
+    /// </summary>
+    /// <param name="state">The blackjack game state.</param>
     private static void RenderStats(BlackjackGameState state)
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
@@ -118,6 +149,10 @@ public static class ConsoleBlackjackRenderer
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// Writes one card with a suit-based color.
+    /// </summary>
+    /// <param name="card">The card to write.</param>
     private static void WriteCard(Card card)
     {
         var color = card.Suit is Suit.Hearts or Suit.Diamonds
@@ -128,6 +163,9 @@ public static class ConsoleBlackjackRenderer
             Console.Write(card);
     }
 
+    /// <summary>
+    /// Renders a short win animation.
+    /// </summary>
     private static void RenderWinAnimation()
     {
         var colors = new[] { ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Cyan };

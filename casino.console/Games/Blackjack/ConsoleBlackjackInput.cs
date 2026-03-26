@@ -2,8 +2,16 @@ using casino.core.Games.Blackjack;
 
 namespace casino.console.Games.Blackjack;
 
+/// <summary>
+/// Provides console input helpers for blackjack.
+/// </summary>
 public static class ConsoleBlackjackInput
 {
+    /// <summary>
+    /// Gets the next player action from console input.
+    /// </summary>
+    /// <param name="_">The current game state.</param>
+    /// <returns>The selected blackjack action.</returns>
     public static BlackjackAction GetPlayerAction(BlackjackGameState _)
     {
         while (true)
@@ -20,6 +28,10 @@ public static class ConsoleBlackjackInput
         }
     }
 
+    /// <summary>
+    /// Asks the player whether to start a new round.
+    /// </summary>
+    /// <returns><see langword="true"/> when the player wants to continue; otherwise <see langword="false"/>.</returns>
     public static bool AskContinueNewGame()
     {
         Console.Write("\nRejouer une manche de blackjack ? (o/n) : ");
@@ -27,6 +39,9 @@ public static class ConsoleBlackjackInput
         return answer is "o" or "oui" or "y" or "yes";
     }
 
+    /// <summary>
+    /// Renders the list of available blackjack actions.
+    /// </summary>
     private static void RenderAvailableActions()
     {
         Console.WriteLine();

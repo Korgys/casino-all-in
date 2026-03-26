@@ -4,8 +4,16 @@ using System.Diagnostics.CodeAnalysis;
 namespace casino.console.Games.Slots;
 
 [ExcludeFromCodeCoverage]
+/// <summary>
+/// Provides console input helpers for the slot machine game.
+/// </summary>
 public static class ConsoleSlotMachineInput
 {
+    /// <summary>
+    /// Gets the current bet from user input.
+    /// </summary>
+    /// <param name="state">The current slot machine state.</param>
+    /// <returns>The selected bet amount.</returns>
     public static int GetBet(SlotMachineGameState state)
     {
         while (true)
@@ -18,6 +26,10 @@ public static class ConsoleSlotMachineInput
         }
     }
 
+    /// <summary>
+    /// Asks the player to continue with a new spin.
+    /// </summary>
+    /// <returns>Always <see langword="true"/>.</returns>
     public static bool AskContinueNewGame()
     {
         Console.Write("\nAppuyez sur une touche pour relancer la machine : ");
@@ -25,6 +37,10 @@ public static class ConsoleSlotMachineInput
         return true;
     }
 
+    /// <summary>
+    /// Renders the bet prompt panel.
+    /// </summary>
+    /// <param name="state">The current slot machine state.</param>
     private static void RenderBetPrompt(SlotMachineGameState state)
     {
         Console.WriteLine();
