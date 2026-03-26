@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text.RegularExpressions;
 using casino.console.Localization;
 
 namespace casino.console.Games.Poker;
@@ -21,7 +20,7 @@ namespace casino.console.Games.Poker;
 [ExcludeFromCodeCoverage]
 public class ConsolePokerRenderer
 {
-    private const int TableWidth = 70;
+    private const int PreferredTableWidth = 70;
 
     private static readonly Func<HandCards, TableCards, int, int, double> DefaultEstimateWinProbability =
         static (hand, communityCards, opponents, simulations) =>
@@ -48,6 +47,10 @@ public class ConsolePokerRenderer
         winProbabilityByPlayer.Clear();
     }
 
+    /// <summary>
+    /// Renders the poker table and all players using adaptive frame width rules.
+    /// </summary>
+    /// <param name="state">The current poker game state.</param>
     public void RenderTable(PokerGameState state)
     {
         Console.Clear();
@@ -55,23 +58,32 @@ public class ConsolePokerRenderer
 
         Console.SetCursorPosition(0, 0);
 
-        DrawTopBorder();
+        var tableWidth = ConsoleLayout.ResolveContentWidth(PreferredTableWidth);
 
-        WriteLineInFrame(BuildHeaderLine(state));
-        DrawSeparator();
-        WriteLineInFrame(BuildTableLine(state));
+        ConsoleLayout.WriteTopBorder(tableWidth);
 
-        DrawBottomBorder();
+        ConsoleLayout.WriteFramedLine(BuildHeaderLine(state), tableWidth);
+        ConsoleLayout.WriteSeparator(tableWidth);
+        ConsoleLayout.WriteFramedLine(BuildTableLine(state), tableWidth);
+
+        ConsoleLayout.WriteBottomBorder(tableWidth);
         Console.WriteLine();
 
         foreach (var player in state.Players)
             RenderPlayerLine(player, state.CurrentPlayer, state);
     }
 
+    /// <summary>
+    /// Renders the list of available actions in a framed block adapted to the current console width.
+    /// </summary>
+    /// <param name="actions">The actions available to the current player.</param>
+    /// <param name="minimumBet">The minimum bet amount to display for the bet action.</param>
     public static void RenderAvailableActions(IReadOnlyList<PokerTypeAction> actions, int minimumBet)
     {
         Console.WriteLine();
-        Console.WriteLine("┌" + new string('─', TableWidth) + "┐");
+        var tableWidth = ConsoleLayout.ResolveContentWidth(PreferredTableWidth);
+
+        Console.WriteLine("┌" + new string('─', tableWidth) + "┐");
 
         foreach (var action in actions)
         {
@@ -80,10 +92,10 @@ public class ConsolePokerRenderer
             if (action == PokerTypeAction.Bet)
                 label += $" ({minimumBet}c)";
 
-            WriteRawLine(label);
+            ConsoleLayout.WriteFramedLine(label, tableWidth, '│', '│');
         }
 
-        Console.WriteLine("└" + new string('─', TableWidth) + "┘");
+        Console.WriteLine("└" + new string('─', tableWidth) + "┘");
     }
 
     private void RenderPlayerLine(PokerPlayerState player, string currentPlayerName, PokerGameState state)
@@ -177,63 +189,31 @@ public class ConsolePokerRenderer
         lastRenderedPhase = phase;
     }
 
-    // ================= UI HELPERS =================
-
-    private static void DrawTopBorder()
-    {
-        Console.WriteLine("╔" + new string('═', TableWidth) + "╗");
-    }
-
-    private static void DrawSeparator()
-    {
-        Console.WriteLine("╠" + new string('═', TableWidth) + "╣");
-    }
-
-    private static void DrawBottomBorder()
-    {
-        Console.WriteLine("╚" + new string('═', TableWidth) + "╝");
-    }
-
-    private static void WriteLineInFrame(string content)
-    {
-        int visibleLength = GetVisibleLength(content);
-        int padding = TableWidth - visibleLength;
-
-        if (padding < 0)
-            content = content.Substring(0, TableWidth);
-
-        Console.Write("║");
-        Console.Write(content);
-        Console.Write(new string(' ', Math.Max(0, padding)));
-        Console.WriteLine("║");
-    }
-
-    private static void WriteRawLine(string content)
-    {
-        int visibleLength = GetVisibleLength(content);
-        int padding = TableWidth - visibleLength;
-
-        Console.Write("│");
-        Console.Write(content);
-        Console.Write(new string(' ', Math.Max(0, padding)));
-        Console.WriteLine("│");
-    }
-
-    private static int GetVisibleLength(string text)
-    {
-        return Regex.Replace(text, @"\x1B\[[0-9;]*m", "", RegexOptions.None, TimeSpan.FromMilliseconds(1000)).Length;
-    }
-
+    /// <summary>
+    /// Builds the header content line for the poker table frame.
+    /// </summary>
+    /// <param name="state">The current poker game state.</param>
+    /// <returns>The formatted header line.</returns>
     private static string BuildHeaderLine(PokerGameState state)
     {
         return $" Pot: {state.Pot}c | {ConsoleText.BetLabel}: {state.StartingBet}c | {ConsoleText.CurrentBetLabel}: {state.CurrentBet}c ";
     }
 
+    /// <summary>
+    /// Builds the community cards content line for the poker table frame.
+    /// </summary>
+    /// <param name="state">The current poker game state.</param>
+    /// <returns>The formatted table line.</returns>
     private static string BuildTableLine(PokerGameState state)
     {
         return $" {ConsoleText.TableLabel}: {FormatCards(state.CommunityCards)} ";
     }
 
+    /// <summary>
+    /// Formats visible community cards for inline frame rendering.
+    /// </summary>
+    /// <param name="tableCards">The community cards container.</param>
+    /// <returns>A space-separated card string.</returns>
     private static string FormatCards(TableCards tableCards)
     {
         var cards = new List<Card?>

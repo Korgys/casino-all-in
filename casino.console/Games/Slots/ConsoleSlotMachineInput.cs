@@ -1,6 +1,7 @@
 using casino.core.Games.Slots;
 using System.Diagnostics.CodeAnalysis;
 using casino.console.Localization;
+using casino.console.Games.Commons;
 
 namespace casino.console.Games.Slots;
 
@@ -45,9 +46,11 @@ public static class ConsoleSlotMachineInput
     private static void RenderBetPrompt(SlotMachineGameState state)
     {
         Console.WriteLine();
-        Console.WriteLine($"┌──────────── {ConsoleText.SlotPanelTitle,-13} ─────────────┐");
-        Console.WriteLine($"│ {ConsoleText.SlotCredits,-8}: {state.Credits,-29}│");
-        Console.WriteLine($"│ {ConsoleText.SlotMinMaxBet,-12}: {state.MinBet} - {state.MaxBet,-21}│");
-        Console.WriteLine("└─────────────────────────────────────────┘");
+        var frameWidth = ConsoleLayout.ResolveContentWidth(46);
+        Console.WriteLine("┌" + new string('─', frameWidth) + "┐");
+        ConsoleLayout.WriteFramedLine($" {ConsoleText.SlotPanelTitle} ", frameWidth, '│', '│');
+        ConsoleLayout.WriteFramedLine($" {ConsoleText.SlotCredits}: {state.Credits} ", frameWidth, '│', '│');
+        ConsoleLayout.WriteFramedLine($" {ConsoleText.SlotMinMaxBet}: {state.MinBet} - {state.MaxBet} ", frameWidth, '│', '│');
+        Console.WriteLine("└" + new string('─', frameWidth) + "┘");
     }
 }

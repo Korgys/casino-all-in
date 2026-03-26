@@ -88,16 +88,22 @@ public static class Program
         CultureInfo.DefaultThreadCurrentUICulture = selected;
     }
 
+    /// <summary>
+    /// Renders the main menu in an adaptive framed layout.
+    /// </summary>
     private static void RenderMainMenu()
     {
-        Console.WriteLine("╔══════════════════════════════════════════════╗");
-        Console.WriteLine("║               CASINO ALL-IN                  ║");
-        Console.WriteLine("╠══════════════════════════════════════════════╣");
-        Console.WriteLine("║  1. Poker                                    ║");
-        Console.WriteLine("║  2. BlackJack                                ║");
-        Console.WriteLine("║  3. Slot Machine                             ║");
-        Console.WriteLine($"║  4. {ConsoleText.MenuQuit,-40}║");
-        Console.WriteLine("╚══════════════════════════════════════════════╝");
+        const int preferredWidth = 46;
+        var width = Games.Commons.ConsoleLayout.ResolveContentWidth(preferredWidth);
+
+        Games.Commons.ConsoleLayout.WriteTopBorder(width);
+        Games.Commons.ConsoleLayout.WriteFramedLine(" CASINO ALL-IN ", width);
+        Games.Commons.ConsoleLayout.WriteSeparator(width);
+        Games.Commons.ConsoleLayout.WriteFramedLine(" 1. Poker ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine(" 2. BlackJack ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine(" 3. Slot Machine ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.MenuQuit} ", width);
+        Games.Commons.ConsoleLayout.WriteBottomBorder(width);
         Console.WriteLine();
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ActionModel = casino.core.Games.Poker.Actions.GameAction;
 using casino.console.Localization;
+using casino.console.Games.Commons;
 
 namespace casino.console.Games.Poker;
 
@@ -33,12 +34,17 @@ public static class ConsolePokerInput
         };
     }
 
+    /// <summary>
+    /// Prompts and builds the poker game setup using adaptive console panels.
+    /// </summary>
+    /// <returns>The configured poker game setup.</returns>
     public static PokerGameSetup PromptGameSetup()
     {
         Console.Clear();
-        Console.WriteLine("╔══════════════════════════════════════════════╗");
-        Console.WriteLine($"║           {ConsoleText.PokerSettingsTitle,-31}║");
-        Console.WriteLine("╚══════════════════════════════════════════════╝");
+        var frameWidth = ConsoleLayout.ResolveContentWidth(46);
+        ConsoleLayout.WriteTopBorder(frameWidth);
+        ConsoleLayout.WriteFramedLine($" {ConsoleText.PokerSettingsTitle} ", frameWidth);
+        ConsoleLayout.WriteBottomBorder(frameWidth);
 
         var initialChips = ReadIntInRange(
             ConsoleText.InitialChipsPrompt(MinimumInitialChips, MaximumInitialChips),
@@ -137,11 +143,14 @@ public static class ConsolePokerInput
         }
     }
 
+    /// <summary>
+    /// Renders available poker difficulty options without fixed-width padding.
+    /// </summary>
     private static void RenderDifficultyOptions()
     {
         foreach (var value in Enum.GetValues<PokerDifficulty>())
         {
-            Console.WriteLine($"  {(int)value}. {ConsoleText.PokerDifficultyLabel(value),-10}");
+            Console.WriteLine($"  {(int)value}. {ConsoleText.PokerDifficultyLabel(value)}");
         }
     }
 }

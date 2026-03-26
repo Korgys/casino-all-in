@@ -10,6 +10,7 @@ namespace casino.console.Games.Blackjack;
 /// </summary>
 public static class ConsoleBlackjackRenderer
 {
+    private const int PreferredWidth = 46;
     private static Action<int> _pause = Thread.Sleep;
 
     /// <summary>
@@ -46,7 +47,8 @@ public static class ConsoleBlackjackRenderer
         }
 
 
-        RenderHeader();
+        var frameWidth = ConsoleLayout.ResolveContentWidth(PreferredWidth);
+        RenderHeader(frameWidth);
         Console.WriteLine();
 
         RenderHand(ConsoleText.BlackjackDealer, state.DealerCards, state.IsDealerHoleCardHidden);
@@ -64,16 +66,17 @@ public static class ConsoleBlackjackRenderer
     /// <summary>
     /// Renders the blackjack header.
     /// </summary>
-    private static void RenderHeader()
+    /// <param name="frameWidth">The header frame content width.</param>
+    private static void RenderHeader(int frameWidth)
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
-            Console.WriteLine("╔══════════════════════════════════════════════╗");
+            ConsoleLayout.WriteTopBorder(frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Green))
-            Console.WriteLine("║                BLACKJACK ♠♥                  ║");
+            ConsoleLayout.WriteFramedLine(" BLACKJACK ♠♥ ", frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
-            Console.WriteLine("╚══════════════════════════════════════════════╝");
+            ConsoleLayout.WriteBottomBorder(frameWidth);
     }
 
     /// <summary>
@@ -85,7 +88,7 @@ public static class ConsoleBlackjackRenderer
     private static void RenderHand(string label, IReadOnlyList<Card> cards, bool hideHoleCard)
     {
         using (ConsoleColorScope.Foreground(label == ConsoleText.BlackjackYou ? ConsoleColor.Cyan : ConsoleColor.Magenta))
-            Console.Write($"{label,-9}: ");
+            Console.Write($"{label}: ");
 
         for (var index = 0; index < cards.Count; index++)
         {

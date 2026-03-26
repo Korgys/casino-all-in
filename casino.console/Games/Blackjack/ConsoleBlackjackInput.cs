@@ -1,5 +1,6 @@
 using casino.core.Games.Blackjack;
 using casino.console.Localization;
+using casino.console.Games.Commons;
 
 namespace casino.console.Games.Blackjack;
 
@@ -46,9 +47,11 @@ public static class ConsoleBlackjackInput
     private static void RenderAvailableActions()
     {
         Console.WriteLine();
-        Console.WriteLine($"┌──────────── {ConsoleText.BlackjackActionsTitle,-23}┐");
-        Console.WriteLine($"│ 1. {ConsoleText.BlackjackHit,-40}│");
-        Console.WriteLine($"│ 2. {ConsoleText.BlackjackStand,-40}│");
-        Console.WriteLine("└─────────────────────────────────────────────┘");
+        var frameWidth = ConsoleLayout.ResolveContentWidth(46);
+        Console.WriteLine("┌" + new string('─', frameWidth) + "┐");
+        ConsoleLayout.WriteFramedLine($" {ConsoleText.BlackjackActionsTitle} ", frameWidth, '│', '│');
+        ConsoleLayout.WriteFramedLine($" 1. {ConsoleText.BlackjackHit} ", frameWidth, '│', '│');
+        ConsoleLayout.WriteFramedLine($" 2. {ConsoleText.BlackjackStand} ", frameWidth, '│', '│');
+        Console.WriteLine("└" + new string('─', frameWidth) + "┘");
     }
 }

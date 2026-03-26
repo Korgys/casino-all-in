@@ -1,6 +1,7 @@
 using casino.console.Games.Commons;
 using casino.core.Games.Slots;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using casino.console.Localization;
 
 namespace casino.console.Games.Slots;
@@ -11,6 +12,7 @@ namespace casino.console.Games.Slots;
 /// </summary>
 public static class ConsoleSlotMachineRenderer
 {
+    private const int PreferredWidth = 46;
     private static Action<int> _pause = Thread.Sleep;
 
     /// <summary>
@@ -27,9 +29,10 @@ public static class ConsoleSlotMachineRenderer
         {
             // Ignore console clearing issues in redirected test environments.
         }
-        RenderHeader();
+        var frameWidth = ConsoleLayout.ResolveContentWidth(PreferredWidth);
+        RenderHeader(frameWidth);
         Console.WriteLine();
-        RenderMachine(state);
+        RenderMachine(state, frameWidth);
         Console.WriteLine();
         RenderStatus(state);
         Console.WriteLine();
@@ -42,39 +45,34 @@ public static class ConsoleSlotMachineRenderer
     /// <summary>
     /// Renders the slot machine header.
     /// </summary>
-    private static void RenderHeader()
+    /// <param name="frameWidth">The header frame content width.</param>
+    private static void RenderHeader(int frameWidth)
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.Magenta))
-            Console.WriteLine("╔══════════════════════════════════════════════╗");
+            ConsoleLayout.WriteTopBorder(frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Cyan))
-            Console.WriteLine("║          SLOT MACHINE ✨ NEON JACKPOT        ║");
+            ConsoleLayout.WriteFramedLine(" SLOT MACHINE ✨ NEON JACKPOT ", frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Magenta))
-            Console.WriteLine("╚══════════════════════════════════════════════╝");
+            ConsoleLayout.WriteBottomBorder(frameWidth);
     }
 
     /// <summary>
     /// Renders reels and current values.
     /// </summary>
     /// <param name="state">The slot machine game state.</param>
-    private static void RenderMachine(SlotMachineGameState state)
+    /// <param name="frameWidth">The machine frame content width.</param>
+    private static void RenderMachine(SlotMachineGameState state, int frameWidth)
     {
         using (ConsoleColorScope.Foreground(ConsoleColor.DarkYellow))
-            Console.WriteLine("╔═══════════════[ PAYLINE ]═══════════════════╗");
+            ConsoleLayout.WriteTopBorder(frameWidth, '═');
 
-        Console.Write("║              ");
-        for (var index = 0; index < state.Reels.Count; index++)
-        {
-            WriteSymbol(state.Reels[index], state.IsSpinning);
-            if (index < state.Reels.Count - 1)
-                Console.Write("  ");
-        }
-
-        Console.WriteLine("               ║");
+        var reels = string.Join("  ", state.Reels.Select(symbol => FormatSymbol(symbol)));
+        ConsoleLayout.WriteFramedLine($" {reels} ", frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.DarkYellow))
-            Console.WriteLine("╚═════════════════════════════════════════════╝");
+            ConsoleLayout.WriteBottomBorder(frameWidth, '═');
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
             Console.WriteLine($"{ConsoleText.SlotCredits}: {state.Credits}   {ConsoleText.BetLabel}: {state.CurrentBet}   {ConsoleText.SlotLastWin}: {state.LastPayout}");
@@ -111,26 +109,23 @@ public static class ConsoleSlotMachineRenderer
     }
 
     /// <summary>
-    /// Writes one symbol with style based on state.
+    /// Formats one slot symbol for inline machine rendering.
     /// </summary>
-    /// <param name="symbol">The symbol to write.</param>
-    /// <param name="isSpinning">Indicates whether the reels are spinning.</param>
-    private static void WriteSymbol(SlotSymbol symbol, bool isSpinning)
+    /// <param name="symbol">The symbol to format.</param>
+    /// <returns>The formatted symbol string wrapped in brackets.</returns>
+    private static string FormatSymbol(SlotSymbol symbol)
     {
-        var (glyph, color) = symbol switch
+        return symbol switch
         {
-            SlotSymbol.Cherry => ("🍒", ConsoleColor.Red),
-            SlotSymbol.Lemon => ("🍋", ConsoleColor.Yellow),
-            SlotSymbol.Bell => ("🔔", ConsoleColor.DarkYellow),
-            SlotSymbol.Diamond => ("💎", ConsoleColor.Cyan),
-            SlotSymbol.Star => ("⭐", ConsoleColor.Magenta),
-            SlotSymbol.Seven => ("7", ConsoleColor.Green),
-            SlotSymbol.Bar => ("💲", ConsoleColor.Blue),
-            _ => ("?", ConsoleColor.White)
+            SlotSymbol.Cherry => "[🍒]",
+            SlotSymbol.Lemon => "[🍋]",
+            SlotSymbol.Bell => "[🔔]",
+            SlotSymbol.Diamond => "[💎]",
+            SlotSymbol.Star => "[⭐]",
+            SlotSymbol.Seven => "[7]",
+            SlotSymbol.Bar => "[💲]",
+            _ => "[?]"
         };
-
-        using (ConsoleColorScope.Foreground(isSpinning ? ConsoleColor.White : color))
-            Console.Write($"[{glyph}]");
     }
 
     /// <summary>
