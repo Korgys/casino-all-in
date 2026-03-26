@@ -71,6 +71,12 @@ docker run --rm -it casino-all-in
 dotnet test
 ```
 
+## Documentation standards
+
+- Release builds generate XML documentation files for `casino.core` and `casino.console`.
+- CI enforces XML documentation quality for CS157x warnings (invalid or inconsistent XML doc comments) and publishes generated XML docs as workflow artifacts.
+- Contributors should document any new public or protected types/members with XML comments (`<summary>`, and parameter/return tags where applicable), and keep comments synchronized with code changes.
+
 ## Project Structure
 
 ```text

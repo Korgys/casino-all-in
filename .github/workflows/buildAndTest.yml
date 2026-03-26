@@ -76,6 +76,11 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
+      - name: Collect XML documentation files
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/artifacts/docs"
+          find "$GITHUB_WORKSPACE" -type f -path "*/bin/Release/*/*.xml" -print -exec cp --parents {} "$GITHUB_WORKSPACE/artifacts/docs" \;
+
       - name: Test with coverage
         run: |
           dotnet test --no-build --configuration Release \
@@ -124,3 +129,10 @@ jobs:
         with:
           name: coverage-report
           path: coveragereport
+
+      - name: Upload XML documentation artifact
+        if: always()
+        uses: actions/upload-artifact@v4.4.0
+        with:
+          name: xml-docs
+          path: artifacts/docs
