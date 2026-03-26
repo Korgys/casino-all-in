@@ -6,13 +6,13 @@ namespace casino.core.Games.Poker.Players.Strategies;
 
 public class AggressiveStrategy : IPlayerStrategy
 {
-    public Actions.GameAction DecideAction(GameContext contexte)
+    public Actions.GameAction DecideAction(GameContext context)
     {
-        var actions = contexte.AvailableActions;
-        var Player = contexte.CurrentPlayer;
-        var relanceMinimum = Math.Max(contexte.Round.CurrentBet + contexte.Round.StartingBet, contexte.MinimumBet);
+        var actions = context.AvailableActions;
+        var Player = context.CurrentPlayer;
+        var relanceMinimum = Math.Max(context.Round.CurrentBet + context.Round.StartingBet, context.MinimumBet);
 
-        if (actions.Contains(PokerTypeAction.Raise) && Player.Chips > contexte.Round.CurrentBet)
+        if (actions.Contains(PokerTypeAction.Raise) && Player.Chips > context.Round.CurrentBet)
         {
             int mise = Math.Min(Player.Chips, relanceMinimum);
             return new Actions.GameAction(PokerTypeAction.Raise, mise);
@@ -20,7 +20,7 @@ public class AggressiveStrategy : IPlayerStrategy
 
         if (actions.Contains(PokerTypeAction.Bet))
         {
-            return new Actions.GameAction(PokerTypeAction.Bet, contexte.MinimumBet);
+            return new Actions.GameAction(PokerTypeAction.Bet, context.MinimumBet);
         }
 
         if (actions.Contains(PokerTypeAction.Call))

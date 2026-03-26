@@ -12,14 +12,17 @@ namespace casino.console.Games.Poker;
 /// Provides static methods for displaying poker-related information, such as player names, amounts, cards, and hands,
 /// to the console with enhanced readability through color coding.
 /// </summary>
-internal class ConsolePokerWriter
+internal static class ConsolePokerWriter
 {
     public static void WritePlayerName(PokerPlayerState playerState)
     {
-        var color =
-            (playerState.IsFolded || (playerState.Chips == 0 && playerState.LastAction != PokerTypeAction.AllIn)) ? ConsoleColor.DarkGray :
-            playerState.IsHuman ? ConsoleColor.Cyan :
-            ConsoleColor.DarkRed;
+        ConsoleColor color;
+        if (playerState.IsFolded || (playerState.Chips == 0 && playerState.LastAction != PokerTypeAction.AllIn))
+            color = ConsoleColor.DarkGray;
+        else if (playerState.IsHuman)
+            color = ConsoleColor.Cyan;
+        else
+            color = ConsoleColor.DarkRed;
 
         using (ConsoleColorScope.Foreground(color))
             Console.Write(playerState.Name);
@@ -67,9 +70,11 @@ internal class ConsolePokerWriter
 
     public static string FormatCard(Card card)
     {
-        string colorCode = (card.Suit == Suit.Hearts || card.Suit == Suit.Diamonds)
-            ? "\u001b[38;2;255;0;0m"   // rouge pur
-            : "\u001b[38;2;0;255;255m"; // cyan pur
+        string colorCode;
+        if (card.Suit == Suit.Hearts || card.Suit == Suit.Diamonds)
+            colorCode = "\u001b[38;2;255;0;0m";   // rouge pur
+        else
+            colorCode = "\u001b[38;2;0;255;255m"; // cyan pur
 
         const string reset = "\u001b[0m";
 

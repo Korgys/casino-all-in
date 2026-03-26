@@ -15,7 +15,7 @@ public class OpportunisticStrategy : IPlayerStrategy
         var actions = context.AvailableActions;
         if (actions.Count == 1)
         {
-            if (actions.First() == PokerTypeAction.Raise)
+            if (actions[0] == PokerTypeAction.Raise)
                 return new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context));
             else 
                 return GetFirstGameAction(context);
@@ -112,7 +112,7 @@ public class OpportunisticStrategy : IPlayerStrategy
             (() => probability < thresholds.RaiseThreshold && availableActions.Contains(PokerTypeAction.Bet),
                 () => new GameAction(PokerTypeAction.Bet, context.MinimumBet)),
             (() => probability < thresholds.RaiseThreshold,
-                () => new GameAction(actions.First())),
+                () => new GameAction(actions[0])),
 
             (() => availableActions.Contains(PokerTypeAction.Raise),
                 () => new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context))),
@@ -135,7 +135,16 @@ public class OpportunisticStrategy : IPlayerStrategy
         return GetFirstGameAction(context);
     }
 
-    private static double BornerEntre0Et1(double x) => x < 0 ? 0 : (x > 1 ? 1 : x);
+    private static double BornerEntre0Et1(double x)
+    {
+        if (x < 0)
+            return 0;
+
+        if (x > 1)
+            return 1;
+
+        return x;
+    }
 
     private readonly record struct OpportunisticMetrics(int ActivePlayers, double NormalizedProbability, Phase Phase);
 

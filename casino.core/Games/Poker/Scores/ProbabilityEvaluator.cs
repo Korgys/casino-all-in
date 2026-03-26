@@ -1,5 +1,6 @@
 using casino.core.Common.Utils;
 using casino.core.Games.Poker.Cards;
+using System.Linq;
 
 namespace casino.core.Games.Poker.Scores;
 
@@ -36,22 +37,23 @@ public static class ProbabilityEvaluator
             mainPlayer.Second
         };
 
-        if (communityCards.Flop1 is not null) knownCards.Add(communityCards.Flop1);
-        if (communityCards.Flop2 is not null) knownCards.Add(communityCards.Flop2);
-        if (communityCards.Flop3 is not null) knownCards.Add(communityCards.Flop3);
-        if (communityCards.Turn is not null) knownCards.Add(communityCards.Turn);
-        if (communityCards.River is not null) knownCards.Add(communityCards.River);
+        var knownCommunityCards = new Card?[]
+        {
+            communityCards.Flop1,
+            communityCards.Flop2,
+            communityCards.Flop3,
+            communityCards.Turn,
+            communityCards.River
+        }
+        .Where(card => card is not null)
+        .Cast<Card>()
+        .ToList();
+
+        knownCards.AddRange(knownCommunityCards);
 
         ValidateKnownCards(knownCards);
 
-        int knownCommunityCards = 0;
-        if (communityCards.Flop1 is not null) knownCommunityCards++;
-        if (communityCards.Flop2 is not null) knownCommunityCards++;
-        if (communityCards.Flop3 is not null) knownCommunityCards++;
-        if (communityCards.Turn is not null) knownCommunityCards++;
-        if (communityCards.River is not null) knownCommunityCards++;
-
-        int missingCommunityCards = TOTAL_TABLE_CARDS - knownCommunityCards;
+        int missingCommunityCards = TOTAL_TABLE_CARDS - knownCommunityCards.Count;
         int requiredCards = missingCommunityCards + numberOfOpponents * 2;
 
         var remainingDeck = BuildRemainingDeck(knownCards);

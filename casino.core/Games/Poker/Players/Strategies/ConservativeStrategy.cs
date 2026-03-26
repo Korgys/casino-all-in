@@ -6,29 +6,29 @@ namespace casino.core.Games.Poker.Players.Strategies;
 
 public class ConservativeStrategy : IPlayerStrategy
 {
-    public Actions.GameAction DecideAction(GameContext contexte)
+    public Actions.GameAction DecideAction(GameContext context)
     {
-        var actions = contexte.AvailableActions;
-        var score = contexte.PlayerScore;
+        var actions = context.AvailableActions;
+        var score = context.PlayerScore;
 
         if (actions.Contains(PokerTypeAction.Check))
         {
             return new Actions.GameAction(PokerTypeAction.Check);
         }
 
-        if (actions.Contains(PokerTypeAction.Call) && (score.Rank >= HandRank.TwoPair || contexte.Round.CurrentBet <= contexte.MinimumBet))
+        if (actions.Contains(PokerTypeAction.Call) && (score.Rank >= HandRank.TwoPair || context.Round.CurrentBet <= context.MinimumBet))
         {
             return new Actions.GameAction(PokerTypeAction.Call);
         }
 
         if (actions.Contains(PokerTypeAction.Bet) && score.Rank >= HandRank.OnePair)
         {
-            return new Actions.GameAction(PokerTypeAction.Bet, contexte.MinimumBet);
+            return new Actions.GameAction(PokerTypeAction.Bet, context.MinimumBet);
         }
 
         if (actions.Contains(PokerTypeAction.Raise) && score.Rank >= HandRank.FullHouse)
         {
-            return new Actions.GameAction(PokerTypeAction.Raise, contexte.MinimumBet);
+            return new Actions.GameAction(PokerTypeAction.Raise, context.MinimumBet);
         }
 
         if (actions.Contains(PokerTypeAction.Fold))
@@ -36,11 +36,11 @@ public class ConservativeStrategy : IPlayerStrategy
             return new Actions.GameAction(PokerTypeAction.Fold);
         }
 
-        if (actions.First() == PokerTypeAction.Bet)
+        if (actions[0] == PokerTypeAction.Bet)
         {
-            return new Actions.GameAction(PokerTypeAction.Bet, contexte.MinimumBet);
+            return new Actions.GameAction(PokerTypeAction.Bet, context.MinimumBet);
         }
 
-        return new Actions.GameAction(actions.First());
+        return new Actions.GameAction(actions[0]);
     }
 }

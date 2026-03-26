@@ -11,7 +11,7 @@ namespace casino.console.Games.Poker;
 /// <summary>
 /// Class responsible for managing user input for the poker game in the console.
 /// </summary>
-public class ConsolePokerInput
+public static class ConsolePokerInput
 {
     private const int MinimumPlayers = 2;
     private const int MaximumPlayers = 6;

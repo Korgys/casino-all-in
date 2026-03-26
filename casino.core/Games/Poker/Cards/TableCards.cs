@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace casino.core.Games.Poker.Cards;
 
@@ -27,6 +27,6 @@ public class TableCards
 
     public override string ToString()
     {
-        return AsEnumerable().Count() > 0 ? string.Join(", ", AsEnumerable()) : "";
+        return AsEnumerable().Any() ? string.Join(", ", AsEnumerable()) : "";
     }
 }

@@ -54,7 +54,7 @@ public class PokerGame : GameBase
             var winners = _table.Round.Winners;
 
             var gagnantsLabel = (winners is null || winners.Count == 0)
-                ? _players.First().Name
+                ? _players[0].Name
                 : string.Join(", ", winners.Select(g => g.Name));
 
             OnGameEnded(gagnantsLabel, _table.Round.Pot);

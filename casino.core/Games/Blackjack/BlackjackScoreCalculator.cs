@@ -1,4 +1,5 @@
 using casino.core.Games.Poker.Cards;
+using System.Linq;
 
 namespace casino.core.Games.Blackjack;
 
@@ -9,9 +10,9 @@ public static class BlackjackScoreCalculator
         var total = 0;
         var aces = 0;
 
-        foreach (var card in cards)
+        foreach (var rank in cards.Select(card => card.Rank))
         {
-            switch (card.Rank)
+            switch (rank)
             {
                 case CardRank.Valet:
                 case CardRank.Dame:
@@ -23,7 +24,7 @@ public static class BlackjackScoreCalculator
                     aces++;
                     break;
                 default:
-                    total += (int)card.Rank;
+                    total += (int)rank;
                     break;
             }
         }

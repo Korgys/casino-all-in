@@ -67,13 +67,15 @@ public static class ConsoleSlotMachineRenderer
 
     private static void RenderStatus(SlotMachineGameState state)
     {
-        var color = state.IsJackpot
-            ? ConsoleColor.Yellow
-            : state.LastPayout > 0
-                ? ConsoleColor.Green
-                : state.IsSpinning
-                    ? ConsoleColor.Cyan
-                    : ConsoleColor.White;
+        ConsoleColor color;
+        if (state.IsJackpot)
+            color = ConsoleColor.Yellow;
+        else if (state.LastPayout > 0)
+            color = ConsoleColor.Green;
+        else if (state.IsSpinning)
+            color = ConsoleColor.Cyan;
+        else
+            color = ConsoleColor.White;
 
         using (ConsoleColorScope.Foreground(color))
             Console.WriteLine(state.StatusMessage);
@@ -105,12 +107,18 @@ public static class ConsoleSlotMachineRenderer
 
     private static void RenderWinAnimation(bool jackpot)
     {
-        var frames = jackpot
-            ? new[] { ConsoleColor.Yellow, ConsoleColor.Red, ConsoleColor.Magenta, ConsoleColor.Cyan }
-            : new[] { ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Cyan };
-        var message = jackpot
-            ? "💥 JACKPOT NEON 💥"
-            : "✨ GAIN ! ✨";
+        ConsoleColor[] frames;
+        string message;
+        if (jackpot)
+        {
+            frames = [ConsoleColor.Yellow, ConsoleColor.Red, ConsoleColor.Magenta, ConsoleColor.Cyan];
+            message = "💥 JACKPOT NEON 💥";
+        }
+        else
+        {
+            frames = [ConsoleColor.Green, ConsoleColor.Yellow, ConsoleColor.Cyan];
+            message = "✨ GAIN ! ✨";
+        }
 
         foreach (var color in frames)
         {
