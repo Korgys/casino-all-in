@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using casino.core.Games.Poker.Actions;
+﻿using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
-using casino.core.Games.Poker.Scores;
 
 namespace casino.core.tests.Games.Poker.Players.StrategyTests.cs;
 

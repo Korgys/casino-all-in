@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using casino.core.Common.Utils;
 using casino.core.Games.Poker.Cards;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using casino.core.Common.Utils;
 
 namespace casino.core.tests.Games.Poker.Cards;
 

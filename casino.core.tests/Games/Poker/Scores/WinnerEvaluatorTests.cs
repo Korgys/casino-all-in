@@ -1,9 +1,7 @@
 ﻿using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
-using casino.core.Games.Poker.Rounds;
 using casino.core.Games.Poker.Scores;
-using casino.core.tests.Fakes;
 
 namespace casino.core.tests.Games.Poker.Scores;
 

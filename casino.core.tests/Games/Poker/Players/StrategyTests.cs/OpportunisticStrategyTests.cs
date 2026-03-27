@@ -4,8 +4,6 @@ using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
 using casino.core.Games.Poker.Rounds;
 using casino.core.tests.Fakes;
-using casino.core.tests.Games.Poker.Players;
-using System.Linq;
 
 namespace casino.core.tests.Games.Poker.Players.Strategies;
 

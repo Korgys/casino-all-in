@@ -1,6 +1,5 @@
-using casino.core.Games.Poker;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading;
+using casino.core.Games.Poker;
 
 namespace casino.console.Games.Poker;
 

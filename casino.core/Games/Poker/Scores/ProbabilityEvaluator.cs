@@ -1,6 +1,5 @@
 using casino.core.Common.Utils;
 using casino.core.Games.Poker.Cards;
-using System.Linq;
 
 namespace casino.core.Games.Poker.Scores;
 

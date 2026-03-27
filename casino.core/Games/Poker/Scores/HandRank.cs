@@ -1,7 +1,4 @@
 ﻿using casino.core.Properties.Langages;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace casino.core.Games.Poker.Scores;
 

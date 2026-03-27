@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using casino.console.Games.Blackjack;
+﻿using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
 using casino.console.Games.Slots;
 using casino.console.Localization;
@@ -58,7 +57,7 @@ public class ConsoleGameFactory : IGameFactory
         return new BlackjackGame(humanActionSelector, continuePlaying);
     }
 
-    public IGame CreateSlotMachine(Func<SlotMachineGameState, int> betSelector, Func<bool> continuePlaying)
+    public static IGame CreateSlotMachine(Func<SlotMachineGameState, int> betSelector, Func<bool> continuePlaying)
     {
         return new SlotMachineGame(betSelector, continuePlaying);
     }

@@ -1,8 +1,7 @@
-using casino.console.Games.Commons;
-using casino.core.Games.Slots;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using casino.console.Games.Commons;
 using casino.console.Localization;
+using casino.core.Games.Slots;
 
 namespace casino.console.Games.Slots;
 

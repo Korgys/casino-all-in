@@ -1,6 +1,6 @@
-using casino.core.Games.Blackjack;
-using casino.console.Localization;
 using casino.console.Games.Commons;
+using casino.console.Localization;
+using casino.core.Games.Blackjack;
 
 namespace casino.console.Games.Blackjack;
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace casino.console.Games.Commons;
+﻿namespace casino.console.Games.Commons;
 
 /// <summary>
 /// A scope that changes the console foreground color and restores it when disposed.

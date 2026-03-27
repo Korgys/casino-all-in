@@ -1,11 +1,8 @@
 ﻿using casino.core.Games.Poker.Cards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace casino.core.Games.Poker.Scores;
 
-public sealed class Score : IComparable<Score>
+public sealed class Score : IComparable<Score>, IEquatable<Score>
 {
     public HandRank Rank { get; }
     public CardRank CardValue { get; }
@@ -46,6 +43,52 @@ public sealed class Score : IComparable<Score>
         }
 
         return 0;
+    }
+
+    public bool Equals(Score? other)
+    {
+        if (other is null) return false;
+        return CompareTo(other) == 0;
+    }
+
+    public override bool Equals(object? obj) => obj is Score other && Equals(other);
+
+    public override int GetHashCode() => HashCode.Combine(Rank, CardValue, Kickers.Aggregate(0, (hash, rank) => HashCode.Combine(hash, rank)));
+
+    public static bool operator ==(Score? left, Score? right)
+    {
+        if (left is null) return right is null;
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Score? left, Score? right) => !(left == right);
+
+    public static bool operator <(Score? left, Score? right)
+    {
+        if (left is null) return right is not null;
+        if (right is null) return false;
+        return left.CompareTo(right) < 0;
+    }
+
+    public static bool operator <=(Score? left, Score? right)
+    {
+        if (left is null) return true;
+        if (right is null) return false;
+        return left.CompareTo(right) <= 0;
+    }
+
+    public static bool operator >(Score? left, Score? right)
+    {
+        if (left is null) return false;
+        if (right is null) return true;
+        return left.CompareTo(right) > 0;
+    }
+
+    public static bool operator >=(Score? left, Score? right)
+    {
+        if (left is null) return right is null;
+        if (right is null) return true;
+        return left.CompareTo(right) >= 0;
     }
 
     public override string ToString()

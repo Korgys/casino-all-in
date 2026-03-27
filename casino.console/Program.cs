@@ -1,12 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Text;
 using casino.console.Games;
 using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
 using casino.console.Games.Slots;
-using casino.core.Games.Blackjack;
 using casino.console.Localization;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Text;
+using casino.core.Games.Blackjack;
 
 namespace casino.console;
 
@@ -69,7 +69,7 @@ public static class Program
                 ConsolePokerInput.AskContinueNewGame,
                 ConsolePokerInput.PromptGameSetup()),
             "2" or "blackjack" => factory.CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame),
-            "3" or "slot" or "slots" => factory.CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame),
+            "3" or "slot" or "slots" => ConsoleGameFactory.CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame),
             _ => null
         };
     }

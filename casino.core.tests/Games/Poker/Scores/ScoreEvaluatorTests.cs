@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using casino.core.Games.Poker.Cards;
+﻿using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Scores;
 
 namespace casino.core.tests.Games.Poker.Scores

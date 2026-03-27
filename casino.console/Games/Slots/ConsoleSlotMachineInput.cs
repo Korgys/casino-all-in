@@ -1,10 +1,9 @@
-using casino.core.Games.Slots;
 using System.Diagnostics.CodeAnalysis;
-using casino.console.Localization;
 using casino.console.Games.Commons;
+using casino.console.Localization;
+using casino.core.Games.Slots;
 
 namespace casino.console.Games.Slots;
-
 
 /// <summary>
 /// Provides console input helpers for the slot machine game.
@@ -19,14 +18,11 @@ public static class ConsoleSlotMachineInput
     /// <returns>The selected bet amount.</returns>
     public static int GetBet(SlotMachineGameState state)
     {
-        while (true)
-        {
-            RenderBetPrompt(state);
-            int bet = 1;
-            Console.Write(ConsoleText.SlotBetPrompt(bet));
+        RenderBetPrompt(state);
+        int bet = 1;
+        Console.Write(ConsoleText.SlotBetPrompt(bet));
 
-            return bet;
-        }
+        return bet;
     }
 
     /// <summary>

@@ -1,6 +1,4 @@
-﻿using casino.core.Games.Poker.Rounds;
-
-namespace casino.core.Games.Poker.Actions;
+﻿namespace casino.core.Games.Poker.Actions;
 
 public class ActionRequest
 {

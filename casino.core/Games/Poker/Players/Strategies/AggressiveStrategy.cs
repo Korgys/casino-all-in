@@ -1,6 +1,4 @@
 using casino.core.Games.Poker.Actions;
-using System;
-using System.Linq;
 
 namespace casino.core.Games.Poker.Players.Strategies;
 

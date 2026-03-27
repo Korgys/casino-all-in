@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace casino.core.Games.Poker.Cards;
+﻿namespace casino.core.Games.Poker.Cards;
 
 public class TableCards
 {

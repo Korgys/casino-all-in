@@ -1,5 +1,4 @@
 ﻿using casino.core.Games.Poker.Cards;
-using System.Collections.Generic;
 
 namespace casino.core.tests.Fakes;
 

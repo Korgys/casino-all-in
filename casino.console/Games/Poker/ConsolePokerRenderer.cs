@@ -1,15 +1,12 @@
-﻿using casino.console.Games.Commons;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using casino.console.Games.Commons;
+using casino.console.Localization;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Rounds.Phases;
 using casino.core.Games.Poker.Scores;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using casino.console.Localization;
 
 namespace casino.console.Games.Poker;
 

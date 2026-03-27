@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using casino.core.Games.Poker.Cards;
+﻿using casino.core.Games.Poker.Cards;
 
 namespace casino.core.Games.Poker.Scores;
 

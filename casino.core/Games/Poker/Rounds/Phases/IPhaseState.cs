@@ -1,8 +1,8 @@
 namespace casino.core.Games.Poker.Rounds.Phases;
 
+using System.Collections.Generic;
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
-using System.Collections.Generic;
 
 public interface IPhaseState
 {

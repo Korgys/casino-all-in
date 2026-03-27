@@ -1,10 +1,6 @@
-﻿using casino.core.Common.Utils;
-using casino.core.Games.Poker.Actions;
+﻿using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Rounds.Phases;
 using casino.core.Games.Poker.Scores;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace casino.core.Games.Poker.Players.Strategies;
 
@@ -17,7 +13,7 @@ public class OpportunisticStrategy : IPlayerStrategy
         {
             if (actions[0] == PokerTypeAction.Raise)
                 return new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context));
-            else 
+            else
                 return GetFirstGameAction(context);
         }
 

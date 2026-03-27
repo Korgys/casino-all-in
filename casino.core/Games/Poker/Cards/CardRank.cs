@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace casino.core.Games.Poker.Cards;
+﻿namespace casino.core.Games.Poker.Cards;
 
 public enum CardRank
 {

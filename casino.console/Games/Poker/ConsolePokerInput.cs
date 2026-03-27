@@ -1,11 +1,8 @@
-﻿using casino.core.Games.Poker;
-using casino.core.Games.Poker.Actions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ActionModel = casino.core.Games.Poker.Actions.GameAction;
+﻿using casino.console.Games.Commons;
 using casino.console.Localization;
-using casino.console.Games.Commons;
+using casino.core.Games.Poker;
+using casino.core.Games.Poker.Actions;
+using ActionModel = casino.core.Games.Poker.Actions.GameAction;
 
 namespace casino.console.Games.Poker;
 
@@ -67,7 +64,7 @@ public static class ConsolePokerInput
             opponents.Add(new PokerOpponentSetup(difficulty));
 
         Console.Clear(); // To avoid UI bugs in the poker table rendering
-        
+
         return new PokerGameSetup(initialChips, playerCount, opponents);
     }
 

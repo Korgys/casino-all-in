@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace casino.core.Games.Poker.Actions;
+﻿namespace casino.core.Games.Poker.Actions;
 
 public class GameAction
 {

@@ -1,12 +1,9 @@
+using System.Collections.ObjectModel;
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Rounds.Phases;
 using casino.core.Games.Poker.Scores;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace casino.core.Games.Poker.Rounds;
 
@@ -14,10 +11,8 @@ public class Round
 {
     internal IDeck Deck { get; }
     internal IActionService ActionService { get; }
-    private readonly List<Player> _players;
-    private readonly ReadOnlyCollection<Player> _readOnlyPlayers;
 
-    public IReadOnlyList<Player> Players => _readOnlyPlayers;
+    public IReadOnlyList<Player> Players;
     public TableCards CommunityCards { get; private set; } = new TableCards();
     public IReadOnlyList<Player> Winners { get; private set; } = new List<Player>();
     public Phase Phase { get; private set; } = Phase.PreFlop;
@@ -29,10 +24,9 @@ public class Round
 
     private readonly Dictionary<Player, int> _betsByPlayer = new();
 
-    public Round(IReadOnlyList<Player> Players, IDeck deck, IActionService? actionService = null)
+    public Round(IReadOnlyList<Player> players, IDeck deck, IActionService? actionService = null)
     {
-        _players = Players?.ToList() ?? throw new ArgumentNullException(nameof(Players));
-        _readOnlyPlayers = _players.AsReadOnly();
+        Players = players?.ToList().AsReadOnly() ?? throw new ArgumentNullException(nameof(players));
         Deck = deck ?? throw new ArgumentNullException(nameof(deck));
         ActionService = actionService ?? new ActionService();
         Deck.Shuffle();

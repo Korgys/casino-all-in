@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace casino.core.Common.Utils;
+﻿namespace casino.core.Common.Utils;
 
 /// <summary>
 /// Provides a thread-safe random number generator suitable for use in gaming and casino applications.

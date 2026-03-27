@@ -1,12 +1,11 @@
 using System.Reflection;
 using casino.console.Games;
-using casino.console.Games.Poker;
 using casino.core.Games.Blackjack;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
-using casino.core.Games.Slots;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
+using casino.core.Games.Slots;
 
 namespace casino.console.tests.Games;
 

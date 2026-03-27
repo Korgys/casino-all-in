@@ -1,6 +1,6 @@
-using casino.core.Games.Poker;
 using System.Globalization;
 using System.Resources;
+using casino.core.Games.Poker;
 
 namespace casino.console.Localization;
 

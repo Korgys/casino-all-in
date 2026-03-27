@@ -1,8 +1,6 @@
-﻿using casino.core.Games.Poker.Actions;
+﻿using System.Globalization;
+using casino.core.Games.Poker.Actions;
 using casino.core.Properties.Langages;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Globalization;
-using System.Threading;
 
 namespace casino.core.tests.Games.Poker.Actions;
 
