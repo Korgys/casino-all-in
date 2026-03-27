@@ -12,7 +12,7 @@ public class Round
     internal IDeck Deck { get; }
     internal IActionService ActionService { get; }
 
-    public IReadOnlyList<Player> Players;
+    public IReadOnlyList<Player> Players { get; internal set; }
     public TableCards CommunityCards { get; private set; } = new TableCards();
     public IReadOnlyList<Player> Winners { get; private set; } = new List<Player>();
     public Phase Phase { get; private set; } = Phase.PreFlop;

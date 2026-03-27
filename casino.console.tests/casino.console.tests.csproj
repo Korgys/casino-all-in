@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <UseVSTest>true</UseVSTest>
     <Parallelize>true</Parallelize>
-    <NoWarn>CS1591;MSTEST0001</NoWarn>
+    <NoWarn>CS1591;MSTEST0001;S2699</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

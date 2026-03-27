@@ -79,6 +79,40 @@ public class CommandsTests
     }
 
     [TestMethod]
+    public void BetCommand_WhenCurrentBetIsHigherThanAmount_ShouldThrowInvalidOperationException()
+    {
+        var player = new HumanPlayer("Bob", 100);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+
+        PlayerTestHelper.SetCurrentBet(round, 50);
+
+        var command = new BetCommand(player, 40);
+        Assert.Throws<InvalidOperationException>(() => command.Execute(round));
+    }
+
+    [TestMethod]
+    public void BetCommand_WhenPlayerContributionIsAlreadyEqualOrHigher_ShouldThrowInvalidOperationException()
+    {
+        var player = new HumanPlayer("Bob", 100);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+
+        round.SetBetFor(player, 30);
+
+        var command = new BetCommand(player, 30);
+        Assert.Throws<InvalidOperationException>(() => command.Execute(round));
+    }
+
+    [TestMethod]
+    public void BetCommand_WhenDifferenceIsHigherThanPlayerChips_ShouldThrowInvalidOperationException()
+    {
+        var player = new HumanPlayer("Bob", 10);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+
+        var command = new BetCommand(player, 25);
+        Assert.Throws<InvalidOperationException>(() => command.Execute(round));
+    }
+
+    [TestMethod]
     public void RaiseCommand_WhenValid_ShouldUpdateBetPotAndChips()
     {
         var player = new HumanPlayer("Carol", 200);
@@ -153,6 +187,37 @@ public class CommandsTests
 
         var command = new CallCommand(player);
         Assert.Throws<InvalidOperationException>(() => command.Execute(round));
+    }
+
+    [TestMethod]
+    public void CallCommand_WhenDifferenceIsHigherThanPlayerChips_ShouldThrowInvalidOperationException()
+    {
+        var player = new HumanPlayer("Gina", 10);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+
+        PlayerTestHelper.SetCurrentBet(round, 40);
+        round.SetBetFor(player, 15);
+
+        var command = new CallCommand(player);
+        Assert.Throws<InvalidOperationException>(() => command.Execute(round));
+    }
+
+    [TestMethod]
+    public void CallCommand_WhenDifferenceEqualsPlayerChips_ShouldGoAllIn()
+    {
+        var player = new HumanPlayer("Gina", 30);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+
+        PlayerTestHelper.SetCurrentBet(round, 40);
+        round.SetBetFor(player, 10);
+
+        var command = new CallCommand(player);
+        command.Execute(round);
+
+        Assert.AreEqual(PokerTypeAction.AllIn, player.LastAction);
+        Assert.AreEqual(0, player.Chips);
+        Assert.AreEqual(40, round.GetBetFor(player));
+        Assert.AreEqual(30, round.Pot);
     }
 
     [TestMethod]
