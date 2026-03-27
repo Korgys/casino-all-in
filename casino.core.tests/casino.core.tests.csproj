@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseVSTest>true</UseVSTest>
+    <NoWarn>CS1591;MSTEST0001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
