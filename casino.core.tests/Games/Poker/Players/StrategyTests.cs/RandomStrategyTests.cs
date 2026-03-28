@@ -46,4 +46,50 @@ public class RandomStrategyTests
         Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
         Assert.AreEqual(context.MinimumBet, action.Amount);
     }
+
+    [TestMethod]
+    public void DecideAction_WhenRaiseIsChosen_ShouldStayWithinRaiseBounds()
+    {
+        var player = new HumanPlayer("Cara", 120)
+        {
+            Hand = new HandCards(
+                new Card(CardRank.Dix, Suit.Hearts),
+                new Card(CardRank.Huit, Suit.Spades))
+        };
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 10);
+        PlayerTestHelper.SetCurrentBet(round, 15);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise });
+        var strategy = new RandomStrategy();
+
+        var minimum = Math.Max(context.Round.CurrentBet + 1, context.MinimumBet);
+        var maximum = Math.Max(minimum, Math.Min(context.CurrentPlayer.Chips, context.Round.CurrentBet + context.Round.StartingBet * 3));
+
+        for (var i = 0; i < 50; i++)
+        {
+            var action = strategy.DecideAction(context);
+            Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+            Assert.IsTrue(action.Amount >= minimum);
+            Assert.IsTrue(action.Amount <= maximum);
+        }
+    }
+
+    [TestMethod]
+    public void DecideAction_WhenMinimumRaiseEqualsChips_ShouldRaiseAllChips()
+    {
+        var player = new HumanPlayer("Dana", 6)
+        {
+            Hand = new HandCards(
+                new Card(CardRank.As, Suit.Hearts),
+                new Card(CardRank.Roi, Suit.Spades))
+        };
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 1);
+        PlayerTestHelper.SetCurrentBet(round, 5);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise });
+        var strategy = new RandomStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+        Assert.AreEqual(player.Chips, action.Amount);
+    }
 }

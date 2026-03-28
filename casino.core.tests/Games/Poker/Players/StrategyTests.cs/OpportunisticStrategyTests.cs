@@ -132,5 +132,91 @@ public class OpportunisticStrategyTests
         Assert.AreEqual(PokerTypeAction.Fold, action.TypeAction);
     }
 
+    [TestMethod]
+    public void DecideAction_WithSingleRaiseAction_ShouldUseComputedRaiseAmount()
+    {
+        var player = new Player("bob", 1000);
+        var players = new List<Player>
+        {
+            player,
+            new Player("alice", 1000)
+        };
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()))
+        {
+            StartingBet = 20
+        };
+        PlayerTestHelper.SetCurrentBet(round, 25);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise });
+        var strategy = new OpportunisticStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+        Assert.AreEqual(26, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_WithSingleBetAction_ShouldUseMinimumBet()
+    {
+        var player = new Player("bob", 1000);
+        var players = new List<Player>
+        {
+            player,
+            new Player("alice", 1000)
+        };
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()))
+        {
+            StartingBet = 35
+        };
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet });
+        var strategy = new OpportunisticStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_WithLowProbabilityAndNoFoldButCallAvailable_ShouldCall()
+    {
+        var player = new Player("bob", 1000)
+        {
+            Hand = new HandCards(
+                new Card(CardRank.Deux, Suit.Clubs),
+                new Card(CardRank.Sept, Suit.Diamonds))
+        };
+        var players = new List<Player>
+        {
+            player,
+            new Player("alice", 1000),
+            new Player("charlie", 1000),
+            new Player("diana", 1000),
+            new Player("eric", 1000)
+        };
+
+        var cards = new List<Card>
+        {
+            new(CardRank.As, Suit.Spades),
+            new(CardRank.Roi, Suit.Hearts),
+            new(CardRank.Dame, Suit.Clubs),
+            new(CardRank.Valet, Suit.Diamonds),
+            new(CardRank.Dix, Suit.Spades),
+            new(CardRank.Neuf, Suit.Hearts),
+            new(CardRank.Huit, Suit.Clubs),
+            new(CardRank.Cinq, Suit.Diamonds),
+            new(CardRank.Quatre, Suit.Spades),
+            new(CardRank.Trois, Suit.Hearts)
+        };
+
+        var round = new Round(players, new FakeDeck(cards));
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Call, PokerTypeAction.Check });
+        var strategy = new OpportunisticStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Call, action.TypeAction);
+    }
+
     private static IEnumerable<Card> CreateSimpleCards() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10);
 }

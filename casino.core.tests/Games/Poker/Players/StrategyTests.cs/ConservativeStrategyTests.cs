@@ -110,4 +110,42 @@ public class ConservativeStrategyTests
 
         Assert.AreEqual(PokerTypeAction.Fold, action.TypeAction);
     }
+
+    [TestMethod]
+    public void DecideAction_WhenBetIsFirstActionAndNoPriorityRuleMatches_ShouldUseBetFallback()
+    {
+        var player = new HumanPlayer("Eve", 100)
+        {
+            Hand = new HandCards(
+                new Card(CardRank.Deux, Suit.Diamonds),
+                new Card(CardRank.Sept, Suit.Clubs))
+        };
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 30);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet, PokerTypeAction.AllIn });
+        var strategy = new ConservativeStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_WhenNoPriorityRuleMatchesAndFirstActionIsNotBet_ShouldUseFinalFallback()
+    {
+        var player = new HumanPlayer("Finn", 100)
+        {
+            Hand = new HandCards(
+                new Card(CardRank.Deux, Suit.Hearts),
+                new Card(CardRank.Neuf, Suit.Spades))
+        };
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.AllIn, PokerTypeAction.Raise });
+        var strategy = new ConservativeStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.AllIn, action.TypeAction);
+        Assert.AreEqual(0, action.Amount);
+    }
 }

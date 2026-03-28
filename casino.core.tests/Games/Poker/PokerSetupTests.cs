@@ -21,7 +21,7 @@ public class PokerSetupTests
         Assert.AreSame(opponents, setup.Opponents);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(PokerDifficulty.Easy, "Facile")]
     [DataRow(PokerDifficulty.Medium, "Moyen")]
     [DataRow(PokerDifficulty.Hard, "Difficile")]

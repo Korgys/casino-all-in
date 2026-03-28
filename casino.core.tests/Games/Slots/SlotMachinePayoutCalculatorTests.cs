@@ -24,4 +24,57 @@ public class SlotMachinePayoutCalculatorTests
         Assert.AreEqual(8, doubleCherry);
         Assert.AreEqual(24, tripleCherry);
     }
+
+    [TestMethod]
+    public void Calculate_ReturnsBarMultiplier_ForTripleBar()
+    {
+        var payout = SlotMachinePayoutCalculator.Calculate([SlotSymbol.Bar, SlotSymbol.Bar, SlotSymbol.Bar], 5);
+
+        Assert.AreEqual(60, payout);
+    }
+
+    [TestMethod]
+    public void Calculate_ReturnsBellMultiplier_ForTripleBell()
+    {
+        var payout = SlotMachinePayoutCalculator.Calculate([SlotSymbol.Bell, SlotSymbol.Bell, SlotSymbol.Bell], 5);
+
+        Assert.AreEqual(50, payout);
+    }
+
+    [TestMethod]
+    public void Calculate_ReturnsStarMultiplier_ForTripleStar()
+    {
+        var payout = SlotMachinePayoutCalculator.Calculate([SlotSymbol.Star, SlotSymbol.Star, SlotSymbol.Star], 5);
+
+        Assert.AreEqual(40, payout);
+    }
+
+    [TestMethod]
+    public void Calculate_ReturnsZero_WhenNoCherryAndNoTripleMatch()
+    {
+        var payout = SlotMachinePayoutCalculator.Calculate([SlotSymbol.Bar, SlotSymbol.Bell, SlotSymbol.Star], 5);
+
+        Assert.AreEqual(0, payout);
+    }
+
+    [TestMethod]
+    public void Calculate_ThrowsArgumentNullException_WhenReelsIsNull()
+    {
+        Assert.Throws<ArgumentNullException>(() => SlotMachinePayoutCalculator.Calculate(null!, 5));
+    }
+
+    [TestMethod]
+    public void Calculate_ThrowsArgumentException_WhenReelsCountIsNotThree()
+    {
+        Assert.Throws<ArgumentException>(() => SlotMachinePayoutCalculator.Calculate([SlotSymbol.Seven, SlotSymbol.Seven], 5));
+    }
+
+    [TestMethod]
+    public void Calculate_ThrowsArgumentOutOfRangeException_WhenBetIsZeroOrNegative()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            SlotMachinePayoutCalculator.Calculate([SlotSymbol.Seven, SlotSymbol.Seven, SlotSymbol.Seven], 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            SlotMachinePayoutCalculator.Calculate([SlotSymbol.Seven, SlotSymbol.Seven, SlotSymbol.Seven], -1));
+    }
 }

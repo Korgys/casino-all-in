@@ -71,6 +71,12 @@ docker run --rm -it casino-all-in
 dotnet test
 ```
 
+### Coverage configuration (CI)
+
+- CI uses `coverlet.runsettings` with `dotnet test --collect:"XPlat Code Coverage"` to generate OpenCover reports.
+- `casino.core/Properties/Langages/Resources.Designer.cs` is intentionally excluded from coverage because it is auto-generated resource designer code and does not represent manually maintained business logic.
+- CI also excludes generated members via `CompilerGeneratedAttribute` and `GeneratedCodeAttribute` to avoid coverage noise from compiler/tooling-generated code.
+
 ## Documentation standards
 
 - Release builds generate XML documentation files for `casino.core` and `casino.console`.

@@ -64,4 +64,42 @@ public class AggressiveStrategyTests
 
         Assert.AreEqual(PokerTypeAction.Check, action.TypeAction);
     }
+
+    [TestMethod]
+    public void DecideAction_WhenNoPriorityActionsAreAvailable_ShouldFold()
+    {
+        var player = new ComputerPlayer("Bot", 10, new AggressiveStrategy())
+        {
+            Hand = new HandCards(
+                new Card(CardRank.Deux, Suit.Hearts),
+                new Card(CardRank.Trois, Suit.Spades))
+        };
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Fold });
+        var strategy = new AggressiveStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Fold, action.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_WhenRaiseIsAvailableButChipsDoNotCoverCurrentBet_ShouldUseNextRule()
+    {
+        var player = new ComputerPlayer("Bot", 20, new AggressiveStrategy())
+        {
+            Hand = new HandCards(
+                new Card(CardRank.Dix, Suit.Hearts),
+                new Card(CardRank.Neuf, Suit.Spades))
+        };
+        var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
+        PlayerTestHelper.SetCurrentBet(round, 20);
+        var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise, PokerTypeAction.Bet });
+        var strategy = new AggressiveStrategy();
+
+        var action = strategy.DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
+    }
 }
