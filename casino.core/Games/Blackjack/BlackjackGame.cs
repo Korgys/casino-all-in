@@ -1,5 +1,5 @@
 using casino.core.Games.Poker.Cards;
-using casino.core.Properties.Langages;
+using casino.core.Properties.Languages;
 
 namespace casino.core.Games.Blackjack;
 

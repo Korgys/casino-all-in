@@ -1,5 +1,5 @@
 using casino.core.Common.Utils;
-using casino.core.Properties.Langages;
+using casino.core.Properties.Languages;
 
 namespace casino.core.Games.Slots;
 

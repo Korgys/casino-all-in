@@ -47,6 +47,25 @@ public class ConsoleBlackjackInputTests
         }
     }
 
+    [TestMethod]
+    public void AskContinueNewGame_ReturnsTrue_ForGermanYesAlias()
+    {
+        var originalIn = Console.In;
+
+        try
+        {
+            Console.SetIn(new StringReader("ja\n"));
+
+            var result = ConsoleBlackjackInput.AskContinueNewGame();
+
+            Assert.IsTrue(result);
+        }
+        finally
+        {
+            Console.SetIn(originalIn);
+        }
+    }
+
     private static BlackjackGameState CreateState() => new()
     {
         PlayerCards = [new Card(CardRank.As, Suit.Spades), new Card(CardRank.Huit, Suit.Hearts)],

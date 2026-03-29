@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using casino.core.Games.Poker.Actions;
-using casino.core.Properties.Langages;
+using casino.core.Properties.Languages;
 
 namespace casino.core.tests.Games.Poker.Actions;
 

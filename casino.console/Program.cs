@@ -56,36 +56,114 @@ public static class Program
 
     private static casino.core.IGame? BuildGame(ConsoleGameFactory factory)
     {
-        Console.Clear();
-        RenderMainMenu();
-        Console.Write(ConsoleText.MainMenuChoice);
-
-        var choice = (Console.ReadLine() ?? string.Empty).Trim();
-
-        return choice.ToLowerInvariant() switch
+        while (true)
         {
-            "1" or "poker" => factory.CreatePoker(
-                ConsolePokerInput.GetPlayerAction,
-                ConsolePokerInput.AskContinueNewGame,
-                ConsolePokerInput.PromptGameSetup()),
-            "2" or "blackjack" => factory.CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame),
-            "3" or "slot" or "slots" => ConsoleGameFactory.CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame),
-            _ => null
-        };
+            Console.Clear();
+            RenderMainMenu();
+            Console.Write(ConsoleText.MainMenuChoice);
+
+            var choice = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
+
+            switch (choice)
+            {
+                case "1":
+                case "poker":
+                    return factory.CreatePoker(
+                        ConsolePokerInput.GetPlayerAction,
+                        ConsolePokerInput.AskContinueNewGame,
+                        ConsolePokerInput.PromptGameSetup());
+
+                case "2":
+                case "blackjack":
+                    return factory.CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame);
+
+                case "3":
+                case "slot":
+                case "slots":
+                    return ConsoleGameFactory.CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame);
+
+                case "4":
+                case "language":
+                case "languages":
+                case "lange":
+                case "langage":
+                case "sprache":
+                case "sprachen":
+                    ShowLanguageMenu();
+                    break;
+
+                case "5":
+                case "quit":
+                case "quitter":
+                case "beenden":
+                    return null;
+            }
+        }
     }
 
 
     private static void SetCultureFromSystem()
     {
         var systemCulture = CultureInfo.InstalledUICulture;
-        var selected = systemCulture.TwoLetterISOLanguageName.Equals("fr", StringComparison.OrdinalIgnoreCase)
-            ? new CultureInfo("fr-FR")
-            : new CultureInfo("en");
+        var selected = systemCulture.TwoLetterISOLanguageName.ToLowerInvariant() switch
+        {
+            "fr" => new CultureInfo("fr-FR"),
+            "de" => new CultureInfo("de-DE"),
+            _ => new CultureInfo("en")
+        };
 
+        SetCulture(selected);
+    }
+
+    private static void SetCulture(CultureInfo selected)
+    {
         CultureInfo.CurrentCulture = selected;
         CultureInfo.CurrentUICulture = selected;
         CultureInfo.DefaultThreadCurrentCulture = selected;
         CultureInfo.DefaultThreadCurrentUICulture = selected;
+    }
+
+    private static void ShowLanguageMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            RenderLanguageMenu();
+            Console.Write(ConsoleText.LanguageMenuChoice);
+
+            var choice = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
+
+            switch (choice)
+            {
+                case "1":
+                case "fr":
+                case "francais":
+                case "français":
+                    SetCulture(new CultureInfo("fr-FR"));
+                    return;
+
+                case "2":
+                case "en":
+                case "english":
+                    SetCulture(new CultureInfo("en"));
+                    return;
+
+                case "3":
+                case "de":
+                case "deutsch":
+                case "german":
+                case "allemand":
+                    SetCulture(new CultureInfo("de-DE"));
+                    return;
+
+                case "4":
+                case "back":
+                case "retour":
+                case "zuruck":
+                case "zurück":
+                    return;
+            }
+        }
     }
 
     /// <summary>
@@ -99,11 +177,40 @@ public static class Program
         Games.Commons.ConsoleLayout.WriteTopBorder(width);
         Games.Commons.ConsoleLayout.WriteFramedLine(" CASINO ALL-IN ", width);
         Games.Commons.ConsoleLayout.WriteSeparator(width);
-        Games.Commons.ConsoleLayout.WriteFramedLine(" 1. Poker ", width);
-        Games.Commons.ConsoleLayout.WriteFramedLine(" 2. BlackJack ", width);
-        Games.Commons.ConsoleLayout.WriteFramedLine(" 3. Slot Machine ", width);
-        Games.Commons.ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.MenuQuit} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 1. {ConsoleText.MenuPoker} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 2. {ConsoleText.MenuBlackjack} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 3. {ConsoleText.MenuSlotMachine} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.MenuLanguages} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 5. {ConsoleText.MenuQuit} ", width);
         Games.Commons.ConsoleLayout.WriteBottomBorder(width);
         Console.WriteLine();
+    }
+
+    private static void RenderLanguageMenu()
+    {
+        const int preferredWidth = 46;
+        var width = Games.Commons.ConsoleLayout.ResolveContentWidth(preferredWidth);
+
+        Games.Commons.ConsoleLayout.WriteTopBorder(width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" {ConsoleText.LanguageMenuTitle} ", width);
+        Games.Commons.ConsoleLayout.WriteSeparator(width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" {ConsoleText.CurrentLanguageLabel}: {GetCurrentLanguageName()} ", width);
+        Games.Commons.ConsoleLayout.WriteSeparator(width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 1. {ConsoleText.LanguageFrench} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 2. {ConsoleText.LanguageEnglish} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 3. {ConsoleText.LanguageGerman} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.MenuBack} ", width);
+        Games.Commons.ConsoleLayout.WriteBottomBorder(width);
+        Console.WriteLine();
+    }
+
+    private static string GetCurrentLanguageName()
+    {
+        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant() switch
+        {
+            "fr" => ConsoleText.LanguageFrench,
+            "de" => ConsoleText.LanguageGerman,
+            _ => ConsoleText.LanguageEnglish
+        };
     }
 }

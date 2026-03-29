@@ -141,4 +141,49 @@
   <data name="PokerDifficultyExpert" xml:space="preserve">
     <value>Expert</value>
   </data>
+  <data name="MenuPoker" xml:space="preserve">
+    <value>Poker</value>
+  </data>
+  <data name="MenuBlackjack" xml:space="preserve">
+    <value>Blackjack</value>
+  </data>
+  <data name="MenuSlotMachine" xml:space="preserve">
+    <value>Machine à sous</value>
+  </data>
+  <data name="MenuLanguages" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="MenuBack" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="LanguageMenuTitle" xml:space="preserve">
+    <value>CHOIX DE LA LANGUE</value>
+  </data>
+  <data name="LanguageMenuChoice" xml:space="preserve">
+    <value>Votre choix: </value>
+  </data>
+  <data name="CurrentLanguageLabel" xml:space="preserve">
+    <value>Langue actuelle</value>
+  </data>
+  <data name="LanguageFrench" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="LanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="LanguageGerman" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="PotLabel" xml:space="preserve">
+    <value>Pot</value>
+  </data>
+  <data name="TotalLabel" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="BlackjackTitle" xml:space="preserve">
+    <value>BLACKJACK ♠♥</value>
+  </data>
+  <data name="SlotMachineHeader" xml:space="preserve">
+    <value>MACHINE À SOUS ✨ JACKPOT NÉON</value>
+  </data>
 </root>

@@ -1,3 +1,4 @@
+using System.Globalization;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Scores;
 
@@ -448,13 +449,40 @@ public class ScoreTests
     [TestMethod]
     public void ToString_ReturnsExpectedFormat()
     {
-        // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var previousCulture = Thread.CurrentThread.CurrentUICulture;
 
-        // Act
-        var result = score.ToString();
+        try
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr");
+            var score = new Score(HandRank.OnePair, CardRank.As);
 
-        // Assert
-        Assert.AreEqual("Paire de As", result);
+            var result = score.ToString();
+
+            Assert.AreEqual("Paire de As", result);
+        }
+        finally
+        {
+            Thread.CurrentThread.CurrentUICulture = previousCulture;
+        }
+    }
+
+    [TestMethod]
+    public void ToString_ReturnsExpectedGermanFormat()
+    {
+        var previousCulture = Thread.CurrentThread.CurrentUICulture;
+
+        try
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
+            var score = new Score(HandRank.OnePair, CardRank.As);
+
+            var result = score.ToString();
+
+            Assert.AreEqual("Ein Paar aus Ass", result);
+        }
+        finally
+        {
+            Thread.CurrentThread.CurrentUICulture = previousCulture;
+        }
     }
 }

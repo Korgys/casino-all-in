@@ -59,138 +59,180 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorTheBetAmountShouldBeGreaterThanZero" xml:space="preserve">
-    <value>Le montant de mise doit être supérieur à zéro.</value>
+    <value>The bet amount should be greater than zero.</value>
   </data>
   <data name="HighCard" xml:space="preserve">
-    <value>Carte Haute</value>
+    <value>High Card</value>
   </data>
   <data name="ErrorTheBetAmountCannotBeLowerThanTheInitialBetAmount" xml:space="preserve">
-    <value>La mise ne peut pas être inférieure à la mise de départ/actuelle.</value>
+    <value>The bet amount cannot be lower than the initial bet amount.</value>
   </data>
   <data name="ErrorTheBetShouldIncreaseThePlayerContribution" xml:space="preserve">
-    <value>La mise doit augmenter la contribution du joueur.</value>
+    <value>The bet should increase the player contribution</value>
   </data>
   <data name="ErrorPlayerHasNotEnoughChips" xml:space="preserve">
-    <value>Le joueur n'a pas assez de jetons pour miser autant.</value>
+    <value>The player has not enough chips.</value>
   </data>
   <data name="ErrorNoAdditionalBetToCall" xml:space="preserve">
-    <value>Aucune mise supplémentaire à suivre.</value>
+    <value>No additional bet to call.</value>
   </data>
   <data name="ErrorThePlayerDoesNotHaveEnoughChipsToCallTheCurrentBet" xml:space="preserve">
-    <value>Le joueur n'a pas assez de jetons pour suivre la mise actuelle.</value>
+    <value>The player does not have enough chips to call the current bet.</value>
   </data>
   <data name="ErrorThePlayerCannotCheckBecauseThereIsABetOnTheTable" xml:space="preserve">
-    <value>Le joueur ne peut pas checker car il y a une mise sur la table.</value>
+    <value>The player cannot check because there is a bet on the table.</value>
   </data>
   <data name="ErrorTheRaiseMustBeGreaterOrEqualThanTheCurrentBet" xml:space="preserve">
-    <value>La relance doit être supérieure ou égale à la mise actuelle.</value>
+    <value>The raise must be greater than or equal to the current bet.</value>
   </data>
   <data name="ErrorThePlayerDoesNotHaveEnoughChipsToRaiseThatAmount" xml:space="preserve">
-    <value>Le joueur n'a pas assez de jetons pour relancer autant.</value>
+    <value>The player does not have enough chips to raise that amount.</value>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Aucune</value>
+    <value>None</value>
   </data>
   <data name="Fold" xml:space="preserve">
-    <value>Se Coucher</value>
+    <value>Fold</value>
   </data>
   <data name="Bet" xml:space="preserve">
-    <value>Miser</value>
+    <value>Bet</value>
   </data>
   <data name="Call" xml:space="preserve">
-    <value>Suivre</value>
+    <value>Call</value>
   </data>
   <data name="Raise" xml:space="preserve">
-    <value>Relancer</value>
+    <value>Raise</value>
   </data>
   <data name="Check" xml:space="preserve">
     <value>Check</value>
   </data>
   <data name="AllIn" xml:space="preserve">
-    <value>Tapis</value>
+    <value>AllIn</value>
   </data>
   <data name="OnePair" xml:space="preserve">
-    <value>Paire</value>
+    <value>One Pair</value>
   </data>
   <data name="TwoPair" xml:space="preserve">
-    <value>Deux Paires</value>
+    <value>Two Pair</value>
   </data>
   <data name="ThreeOfAKind" xml:space="preserve">
-    <value>Brelan</value>
+    <value>Three Of A Kind</value>
   </data>
   <data name="Straight" xml:space="preserve">
-    <value>Suite</value>
+    <value>Straight</value>
   </data>
   <data name="Flush" xml:space="preserve">
-    <value>Couleur</value>
+    <value>Flush</value>
   </data>
   <data name="FullHouse" xml:space="preserve">
-    <value>Full</value>
+    <value>Full House</value>
   </data>
   <data name="FourOfAKind" xml:space="preserve">
-    <value>Carré</value>
+    <value>Four Of A Kind</value>
   </data>
   <data name="StraightFlush" xml:space="preserve">
-    <value>Quinte Flush</value>
+    <value>Straight Flush</value>
   </data>
   <data name="RoyalFlush" xml:space="preserve">
-    <value>Quinte Flush Royale</value>
+    <value>Royal Flush</value>
   </data>
   <data name="BlackjackPlayerTurn" xml:space="preserve">
-    <value>Votre tour.</value>
+    <value>Your turn.</value>
   </data>
   <data name="BlackjackChooseAction" xml:space="preserve">
-    <value>Choisissez votre action.</value>
+    <value>Choose your action.</value>
   </data>
   <data name="BlackjackCardDrawn" xml:space="preserve">
-    <value>Carte tirée.</value>
+    <value>Card drawn.</value>
   </data>
   <data name="BlackjackDealer" xml:space="preserve">
-    <value>Le croupier</value>
+    <value>Dealer</value>
   </data>
   <data name="BlackjackPlayer" xml:space="preserve">
-    <value>Joueur</value>
+    <value>Player</value>
   </data>
   <data name="BlackjackPushWinner" xml:space="preserve">
-    <value>Égalité</value>
+    <value>Push</value>
   </data>
   <data name="BlackjackRoundWonByPlayer" xml:space="preserve">
-    <value>Bravo ! Vous remportez cette manche.</value>
+    <value>Great! You win this round.</value>
   </data>
   <data name="BlackjackRoundWonByDealer" xml:space="preserve">
-    <value>Le croupier remporte cette manche.</value>
+    <value>Dealer wins this round.</value>
   </data>
   <data name="BlackjackRoundPush" xml:space="preserve">
-    <value>Push : égalité.</value>
+    <value>Push: tie.</value>
   </data>
   <data name="SlotWelcome" xml:space="preserve">
-    <value>Bienvenue à la machine à sous néon ! Choisissez votre mise.</value>
+    <value>Welcome to the neon slot machine! Choose your bet.</value>
   </data>
   <data name="SlotChooseBet" xml:space="preserve">
-    <value>Choisissez votre mise puis lancez les rouleaux.</value>
+    <value>Choose your bet then spin the reels.</value>
   </data>
   <data name="SlotThanks" xml:space="preserve">
-    <value>Merci d'avoir joué à la machine à sous !</value>
+    <value>Thanks for playing the slot machine!</value>
   </data>
   <data name="SlotNoCredits" xml:space="preserve">
-    <value>Vous n'avez plus de crédits. Fin de partie.</value>
+    <value>You have no credits left. Game over.</value>
   </data>
   <data name="SlotGameName" xml:space="preserve">
-    <value>Machine à sous</value>
+    <value>Slot Machine</value>
   </data>
   <data name="SlotReelsSpinning" xml:space="preserve">
-    <value>🎰 Les rouleaux tournent... ({0}/{1})</value>
+    <value>🎰 Reels spinning... ({0}/{1})</value>
   </data>
   <data name="SlotJackpotWin" xml:space="preserve">
-    <value>💥 JACKPOT ! Triple 7 ! Vous gagnez {0} crédits.</value>
+    <value>💥 JACKPOT! Triple 7! You win {0} credits.</value>
   </data>
   <data name="SlotSuperComboWin" xml:space="preserve">
-    <value>✨ Super combinaison ! Vous gagnez {0} crédits.</value>
+    <value>✨ Super combo! You win {0} credits.</value>
   </data>
   <data name="SlotRegularWin" xml:space="preserve">
-    <value>🎉 Gain de {0} crédits ! Relancez pour tenter mieux.</value>
+    <value>🎉 You win {0} credits! Spin again to try for better.</value>
   </data>
   <data name="SlotNoWin" xml:space="preserve">
-    <value>Pas de gain cette fois. La prochaine sera peut-être la bonne !</value>
+    <value>No win this time. Maybe next spin!</value>
+  </data>
+  <data name="ScoreOfFormat" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
+  <data name="Deux" xml:space="preserve">
+    <value>Two</value>
+  </data>
+  <data name="Trois" xml:space="preserve">
+    <value>Three</value>
+  </data>
+  <data name="Quatre" xml:space="preserve">
+    <value>Four</value>
+  </data>
+  <data name="Cinq" xml:space="preserve">
+    <value>Five</value>
+  </data>
+  <data name="Six" xml:space="preserve">
+    <value>Six</value>
+  </data>
+  <data name="Sept" xml:space="preserve">
+    <value>Seven</value>
+  </data>
+  <data name="Huit" xml:space="preserve">
+    <value>Eight</value>
+  </data>
+  <data name="Neuf" xml:space="preserve">
+    <value>Nine</value>
+  </data>
+  <data name="Dix" xml:space="preserve">
+    <value>Ten</value>
+  </data>
+  <data name="Valet" xml:space="preserve">
+    <value>Jack</value>
+  </data>
+  <data name="Dame" xml:space="preserve">
+    <value>Queen</value>
+  </data>
+  <data name="Roi" xml:space="preserve">
+    <value>King</value>
+  </data>
+  <data name="As" xml:space="preserve">
+    <value>Ace</value>
   </data>
 </root>

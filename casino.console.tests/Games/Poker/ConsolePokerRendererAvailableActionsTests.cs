@@ -1,6 +1,6 @@
 using casino.console.Games.Poker;
 using casino.core.Games.Poker.Actions;
-using casino.core.Properties.Langages;
+using casino.core.Properties.Languages;
 
 namespace casino.console.tests.Games.Poker;
 

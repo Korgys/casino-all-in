@@ -193,7 +193,7 @@ public class ConsolePokerRenderer
     /// <returns>The formatted header line.</returns>
     private static string BuildHeaderLine(PokerGameState state)
     {
-        return $" Pot: {state.Pot}c | {ConsoleText.BetLabel}: {state.StartingBet}c | {ConsoleText.CurrentBetLabel}: {state.CurrentBet}c ";
+        return $" {ConsoleText.PotLabel}: {state.Pot}c | {ConsoleText.BetLabel}: {state.StartingBet}c | {ConsoleText.CurrentBetLabel}: {state.CurrentBet}c ";
     }
 
     /// <summary>

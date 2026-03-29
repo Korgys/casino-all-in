@@ -1,5 +1,7 @@
 ﻿using casino.core.Games.Poker.Cards;
 
+using casino.core.Properties.Languages;
+
 namespace casino.core.Games.Poker.Scores;
 
 public sealed class Score : IComparable<Score>, IEquatable<Score>
@@ -93,6 +95,8 @@ public sealed class Score : IComparable<Score>, IEquatable<Score>
 
     public override string ToString()
     {
-        return $"{Rank.ToDisplayString()} de {CardValue}";
+        var format = Resources.ResourceManager.GetString("ScoreOfFormat", Resources.Culture) ?? "{0} of {1}";
+        var cardValue = Resources.ResourceManager.GetString(CardValue.ToString(), Resources.Culture) ?? CardValue.ToString();
+        return string.Format(format, Rank.ToDisplayString(), cardValue);
     }
 }

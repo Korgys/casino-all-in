@@ -13,15 +13,29 @@ internal static class ConsoleText
 
     public static string MainMenuChoice => Get(nameof(MainMenuChoice));
     public static string PressAnyKeyToQuit => Get(nameof(PressAnyKeyToQuit));
+    public static string MenuPoker => Get(nameof(MenuPoker));
+    public static string MenuBlackjack => Get(nameof(MenuBlackjack));
+    public static string MenuSlotMachine => Get(nameof(MenuSlotMachine));
+    public static string MenuLanguages => Get(nameof(MenuLanguages));
     public static string MenuQuit => Get(nameof(MenuQuit));
+    public static string MenuBack => Get(nameof(MenuBack));
+    public static string LanguageMenuTitle => Get(nameof(LanguageMenuTitle));
+    public static string LanguageMenuChoice => Get(nameof(LanguageMenuChoice));
+    public static string CurrentLanguageLabel => Get(nameof(CurrentLanguageLabel));
+    public static string LanguageFrench => Get(nameof(LanguageFrench));
+    public static string LanguageEnglish => Get(nameof(LanguageEnglish));
+    public static string LanguageGerman => Get(nameof(LanguageGerman));
     public static string PokerSettingsTitle => Get(nameof(PokerSettingsTitle));
     public static string ContinuePokerPrompt => Get(nameof(ContinuePokerPrompt));
     public static string ActionChoicePrompt => Get(nameof(ActionChoicePrompt));
     public static string RaiseTargetPrompt => Get(nameof(RaiseTargetPrompt));
     public static string InvalidDifficulty => Get(nameof(InvalidDifficulty));
     public static string BetLabel => Get(nameof(BetLabel));
+    public static string PotLabel => Get(nameof(PotLabel));
     public static string CurrentBetLabel => Get(nameof(CurrentBetLabel));
     public static string TableLabel => Get(nameof(TableLabel));
+    public static string TotalLabel => Get(nameof(TotalLabel));
+    public static string BlackjackTitle => Get(nameof(BlackjackTitle));
     public static string BlackjackDealer => Get(nameof(BlackjackDealer));
     public static string BlackjackYou => Get(nameof(BlackjackYou));
     public static string BlackjackStats => Get(nameof(BlackjackStats));
@@ -34,6 +48,7 @@ internal static class ConsoleText
     public static string BlackjackHit => Get(nameof(BlackjackHit));
     public static string BlackjackStand => Get(nameof(BlackjackStand));
     public static string SlotContinuePrompt => Get(nameof(SlotContinuePrompt));
+    public static string SlotMachineHeader => Get(nameof(SlotMachineHeader));
     public static string SlotPanelTitle => Get(nameof(SlotPanelTitle));
     public static string SlotCredits => Get(nameof(SlotCredits));
     public static string SlotMinMaxBet => Get(nameof(SlotMinMaxBet));

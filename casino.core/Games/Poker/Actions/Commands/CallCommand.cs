@@ -1,6 +1,6 @@
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Rounds;
-using casino.core.Properties.Langages;
+using casino.core.Properties.Languages;
 
 namespace casino.core.Games.Poker.Actions.Commands;
 

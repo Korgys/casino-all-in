@@ -73,7 +73,7 @@ public static class ConsoleBlackjackRenderer
             ConsoleLayout.WriteTopBorder(frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Green))
-            ConsoleLayout.WriteFramedLine(" BLACKJACK ♠♥ ", frameWidth);
+            ConsoleLayout.WriteFramedLine($" {ConsoleText.BlackjackTitle} ", frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
             ConsoleLayout.WriteBottomBorder(frameWidth);
@@ -103,7 +103,7 @@ public static class ConsoleBlackjackRenderer
             : BlackjackScoreCalculator.Calculate(cards);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.White))
-            Console.Write($"  (Total: {total})");
+            Console.Write($"  ({ConsoleText.TotalLabel}: {total})");
 
         Console.WriteLine();
     }

@@ -52,7 +52,7 @@ public static class ConsoleSlotMachineRenderer
             ConsoleLayout.WriteTopBorder(frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Cyan))
-            ConsoleLayout.WriteFramedLine(" SLOT MACHINE ✨ NEON JACKPOT ", frameWidth);
+            ConsoleLayout.WriteFramedLine($" {ConsoleText.SlotMachineHeader} ", frameWidth);
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Magenta))
             ConsoleLayout.WriteBottomBorder(frameWidth);
