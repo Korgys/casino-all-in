@@ -38,4 +38,27 @@ public class PokerTypeActionTests
         Assert.AreEqual(Resources.Check, PokerTypeAction.Check.ToDisplayString());
         Assert.AreEqual(Resources.AllIn, PokerTypeAction.AllIn.ToDisplayString());
     }
+
+    [TestMethod]
+    public void ToDisplayString_ShouldReturnCorrectJapaneseTranslation()
+    {
+        var previousCulture = Thread.CurrentThread.CurrentUICulture;
+
+        try
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ja-JP");
+
+            Assert.AreEqual("なし", PokerTypeAction.None.ToDisplayString());
+            Assert.AreEqual("フォールド", PokerTypeAction.Fold.ToDisplayString());
+            Assert.AreEqual("ベット", PokerTypeAction.Bet.ToDisplayString());
+            Assert.AreEqual("コール", PokerTypeAction.Call.ToDisplayString());
+            Assert.AreEqual("レイズ", PokerTypeAction.Raise.ToDisplayString());
+            Assert.AreEqual("チェック", PokerTypeAction.Check.ToDisplayString());
+            Assert.AreEqual("オールイン", PokerTypeAction.AllIn.ToDisplayString());
+        }
+        finally
+        {
+            Thread.CurrentThread.CurrentUICulture = previousCulture;
+        }
+    }
 }

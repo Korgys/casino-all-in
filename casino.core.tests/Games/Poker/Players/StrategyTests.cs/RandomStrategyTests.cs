@@ -68,8 +68,8 @@ public class RandomStrategyTests
         {
             var action = strategy.DecideAction(context);
             Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
-            Assert.IsTrue(action.Amount >= minimum);
-            Assert.IsTrue(action.Amount <= maximum);
+            Assert.IsGreaterThanOrEqualTo(minimum, action.Amount);
+            Assert.IsLessThanOrEqualTo(maximum, action.Amount);
         }
     }
 
