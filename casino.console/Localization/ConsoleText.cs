@@ -25,6 +25,7 @@ internal static class ConsoleText
     public static string LanguageFrench => Get(nameof(LanguageFrench));
     public static string LanguageEnglish => Get(nameof(LanguageEnglish));
     public static string LanguageGerman => Get(nameof(LanguageGerman));
+    public static string LanguageSpanish => Get(nameof(LanguageSpanish));
     public static string PokerSettingsTitle => Get(nameof(PokerSettingsTitle));
     public static string ContinuePokerPrompt => Get(nameof(ContinuePokerPrompt));
     public static string ActionChoicePrompt => Get(nameof(ActionChoicePrompt));

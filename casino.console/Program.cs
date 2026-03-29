@@ -109,6 +109,7 @@ public static class Program
         {
             "fr" => new CultureInfo("fr-FR"),
             "de" => new CultureInfo("de-DE"),
+            "es" => new CultureInfo("es-ES"),
             _ => new CultureInfo("en")
         };
 
@@ -157,6 +158,14 @@ public static class Program
                     return;
 
                 case "4":
+                case "es":
+                case "spanish":
+                case "espanol":
+                case "español":
+                    SetCulture(new CultureInfo("es-ES"));
+                    return;
+
+                case "5":
                 case "back":
                 case "retour":
                 case "zuruck":
@@ -199,7 +208,8 @@ public static class Program
         Games.Commons.ConsoleLayout.WriteFramedLine($" 1. {ConsoleText.LanguageFrench} ", width);
         Games.Commons.ConsoleLayout.WriteFramedLine($" 2. {ConsoleText.LanguageEnglish} ", width);
         Games.Commons.ConsoleLayout.WriteFramedLine($" 3. {ConsoleText.LanguageGerman} ", width);
-        Games.Commons.ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.MenuBack} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.LanguageSpanish} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 5. {ConsoleText.MenuBack} ", width);
         Games.Commons.ConsoleLayout.WriteBottomBorder(width);
         Console.WriteLine();
     }
@@ -210,6 +220,7 @@ public static class Program
         {
             "fr" => ConsoleText.LanguageFrench,
             "de" => ConsoleText.LanguageGerman,
+            "es" => ConsoleText.LanguageSpanish,
             _ => ConsoleText.LanguageEnglish
         };
     }

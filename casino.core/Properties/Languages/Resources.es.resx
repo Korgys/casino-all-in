@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTheBetAmountShouldBeGreaterThanZero" xml:space="preserve">
+    <value>El monto de la apuesta debe ser mayor que cero.</value>
+  </data>
+  <data name="HighCard" xml:space="preserve">
+    <value>Carta alta</value>
+  </data>
+  <data name="ErrorTheBetAmountCannotBeLowerThanTheInitialBetAmount" xml:space="preserve">
+    <value>La apuesta no puede ser menor que la apuesta inicial.</value>
+  </data>
+  <data name="ErrorTheBetShouldIncreaseThePlayerContribution" xml:space="preserve">
+    <value>La apuesta debe aumentar la contribución del jugador.</value>
+  </data>
+  <data name="ErrorPlayerHasNotEnoughChips" xml:space="preserve">
+    <value>El jugador no tiene suficientes fichas.</value>
+  </data>
+  <data name="ErrorNoAdditionalBetToCall" xml:space="preserve">
+    <value>No hay apuesta adicional que igualar.</value>
+  </data>
+  <data name="ErrorThePlayerDoesNotHaveEnoughChipsToCallTheCurrentBet" xml:space="preserve">
+    <value>El jugador no tiene suficientes fichas para igualar la apuesta actual.</value>
+  </data>
+  <data name="ErrorThePlayerCannotCheckBecauseThereIsABetOnTheTable" xml:space="preserve">
+    <value>El jugador no puede pasar porque hay una apuesta sobre la mesa.</value>
+  </data>
+  <data name="ErrorTheRaiseMustBeGreaterOrEqualThanTheCurrentBet" xml:space="preserve">
+    <value>La subida debe ser mayor o igual que la apuesta actual.</value>
+  </data>
+  <data name="ErrorThePlayerDoesNotHaveEnoughChipsToRaiseThatAmount" xml:space="preserve">
+    <value>El jugador no tiene suficientes fichas para subir esa cantidad.</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Ninguna</value>
+  </data>
+  <data name="Fold" xml:space="preserve">
+    <value>Retirarse</value>
+  </data>
+  <data name="Bet" xml:space="preserve">
+    <value>Apostar</value>
+  </data>
+  <data name="Call" xml:space="preserve">
+    <value>Igualar</value>
+  </data>
+  <data name="Raise" xml:space="preserve">
+    <value>Subir</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Pasar</value>
+  </data>
+  <data name="AllIn" xml:space="preserve">
+    <value>Todo o nada</value>
+  </data>
+  <data name="OnePair" xml:space="preserve">
+    <value>Una pareja</value>
+  </data>
+  <data name="TwoPair" xml:space="preserve">
+    <value>Doble pareja</value>
+  </data>
+  <data name="ThreeOfAKind" xml:space="preserve">
+    <value>Trío</value>
+  </data>
+  <data name="Straight" xml:space="preserve">
+    <value>Escalera</value>
+  </data>
+  <data name="Flush" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="FullHouse" xml:space="preserve">
+    <value>Full house</value>
+  </data>
+  <data name="FourOfAKind" xml:space="preserve">
+    <value>Póker</value>
+  </data>
+  <data name="StraightFlush" xml:space="preserve">
+    <value>Escalera de color</value>
+  </data>
+  <data name="RoyalFlush" xml:space="preserve">
+    <value>Escalera real</value>
+  </data>
+  <data name="BlackjackPlayerTurn" xml:space="preserve">
+    <value>Tu turno.</value>
+  </data>
+  <data name="BlackjackChooseAction" xml:space="preserve">
+    <value>Elige tu acción.</value>
+  </data>
+  <data name="BlackjackCardDrawn" xml:space="preserve">
+    <value>Carta robada.</value>
+  </data>
+  <data name="BlackjackDealer" xml:space="preserve">
+    <value>Crupier</value>
+  </data>
+  <data name="BlackjackPlayer" xml:space="preserve">
+    <value>Jugador</value>
+  </data>
+  <data name="BlackjackPushWinner" xml:space="preserve">
+    <value>Empate</value>
+  </data>
+  <data name="BlackjackRoundWonByPlayer" xml:space="preserve">
+    <value>¡Genial! Ganas esta ronda.</value>
+  </data>
+  <data name="BlackjackRoundWonByDealer" xml:space="preserve">
+    <value>El crupier gana esta ronda.</value>
+  </data>
+  <data name="BlackjackRoundPush" xml:space="preserve">
+    <value>Push: empate.</value>
+  </data>
+  <data name="SlotWelcome" xml:space="preserve">
+    <value>¡Bienvenido a la tragamonedas neón! Elige tu apuesta.</value>
+  </data>
+  <data name="SlotChooseBet" xml:space="preserve">
+    <value>Elige tu apuesta y luego gira los rodillos.</value>
+  </data>
+  <data name="SlotThanks" xml:space="preserve">
+    <value>¡Gracias por jugar en la tragamonedas!</value>
+  </data>
+  <data name="SlotNoCredits" xml:space="preserve">
+    <value>No te quedan créditos. Fin de la partida.</value>
+  </data>
+  <data name="SlotGameName" xml:space="preserve">
+    <value>Tragamonedas</value>
+  </data>
+  <data name="SlotReelsSpinning" xml:space="preserve">
+    <value>🎰 Girando rodillos... ({0}/{1})</value>
+  </data>
+  <data name="SlotJackpotWin" xml:space="preserve">
+    <value>💥 ¡JACKPOT! ¡Triple 7! Ganas {0} créditos.</value>
+  </data>
+  <data name="SlotSuperComboWin" xml:space="preserve">
+    <value>✨ ¡Súper combo! Ganas {0} créditos.</value>
+  </data>
+  <data name="SlotRegularWin" xml:space="preserve">
+    <value>🎉 Ganas {0} créditos. ¡Gira de nuevo para intentar mejorar!</value>
+  </data>
+  <data name="SlotNoWin" xml:space="preserve">
+    <value>Sin premio esta vez. ¡Quizá en la próxima tirada!</value>
+  </data>
+  <data name="ScoreOfFormat" xml:space="preserve">
+    <value>{0} de {1}</value>
+  </data>
+  <data name="Deux" xml:space="preserve">
+    <value>Dos</value>
+  </data>
+  <data name="Trois" xml:space="preserve">
+    <value>Tres</value>
+  </data>
+  <data name="Quatre" xml:space="preserve">
+    <value>Cuatro</value>
+  </data>
+  <data name="Cinq" xml:space="preserve">
+    <value>Cinco</value>
+  </data>
+  <data name="Six" xml:space="preserve">
+    <value>Seis</value>
+  </data>
+  <data name="Sept" xml:space="preserve">
+    <value>Siete</value>
+  </data>
+  <data name="Huit" xml:space="preserve">
+    <value>Ocho</value>
+  </data>
+  <data name="Neuf" xml:space="preserve">
+    <value>Nueve</value>
+  </data>
+  <data name="Dix" xml:space="preserve">
+    <value>Diez</value>
+  </data>
+  <data name="Valet" xml:space="preserve">
+    <value>Jota</value>
+  </data>
+  <data name="Dame" xml:space="preserve">
+    <value>Reina</value>
+  </data>
+  <data name="Roi" xml:space="preserve">
+    <value>Rey</value>
+  </data>
+  <data name="As" xml:space="preserve">
+    <value>As</value>
+  </data>
+</root>

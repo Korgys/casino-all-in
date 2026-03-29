@@ -13,180 +13,180 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LanguagePrompt" xml:space="preserve">
-    <value>Sprache wählen: 1. Français  2. English  3. Deutsch</value>
+    <value>Elige idioma: 1. Français  2. English  3. Deutsch  4. Español</value>
   </data>
   <data name="MainMenuChoice" xml:space="preserve">
-    <value>Ihre Wahl: </value>
+    <value>Tu elección: </value>
   </data>
   <data name="PressAnyKeyToQuit" xml:space="preserve">
-    <value>Drücken Sie eine beliebige Taste zum Beenden...</value>
+    <value>Pulsa cualquier tecla para salir...</value>
+  </data>
+  <data name="MenuQuit" xml:space="preserve">
+    <value>Salir</value>
+  </data>
+  <data name="PokerSettingsTitle" xml:space="preserve">
+    <value>CONFIGURACIÓN DE PÓKER</value>
+  </data>
+  <data name="InitialChipsPrompt" xml:space="preserve">
+    <value>Fichas iniciales por jugador [{0}-{1}] (predeterminado 1000): </value>
+  </data>
+  <data name="PlayerCountPrompt" xml:space="preserve">
+    <value>Número total de jugadores [{0}-{1}] (predeterminado 5): </value>
+  </data>
+  <data name="DifficultyPrompt" xml:space="preserve">
+    <value>Dificultad de los jugadores CPU (predeterminado {0}): </value>
+  </data>
+  <data name="ContinuePokerPrompt" xml:space="preserve">
+    <value>¿Quieres continuar con una nueva partida? (s/n): </value>
+  </data>
+  <data name="ActionChoicePrompt" xml:space="preserve">
+    <value>¿Cuál es tu elección? </value>
+  </data>
+  <data name="RaiseTargetPrompt" xml:space="preserve">
+    <value>Introduce la apuesta objetivo total (no el incremento): </value>
+  </data>
+  <data name="RangeError" xml:space="preserve">
+    <value>Introduce un valor entre {0} y {1}.</value>
+  </data>
+  <data name="InvalidDifficulty" xml:space="preserve">
+    <value>Opción no válida. Selecciona 1, 2, 3 o 4.</value>
+  </data>
+  <data name="BetLabel" xml:space="preserve">
+    <value>Apuesta mín.</value>
+  </data>
+  <data name="CurrentBetLabel" xml:space="preserve">
+    <value>Apuesta actual</value>
+  </data>
+  <data name="TableLabel" xml:space="preserve">
+    <value>Mesa</value>
+  </data>
+  <data name="BlackjackDealer" xml:space="preserve">
+    <value>Crupier</value>
+  </data>
+  <data name="BlackjackYou" xml:space="preserve">
+    <value>Tú</value>
+  </data>
+  <data name="BlackjackStats" xml:space="preserve">
+    <value>Estadísticas</value>
+  </data>
+  <data name="BlackjackWins" xml:space="preserve">
+    <value>Victorias</value>
+  </data>
+  <data name="BlackjackLosses" xml:space="preserve">
+    <value>Derrotas</value>
+  </data>
+  <data name="BlackjackPushes" xml:space="preserve">
+    <value>Empates</value>
+  </data>
+  <data name="BlackjackWinAnimation" xml:space="preserve">
+    <value>✨ ¡BLACKJACK! ¡Ganaste! ✨</value>
+  </data>
+  <data name="BlackjackContinuePrompt" xml:space="preserve">
+    <value>¿Jugar otra ronda de blackjack? (s/n): </value>
+  </data>
+  <data name="BlackjackActionsTitle" xml:space="preserve">
+    <value>Acciones disponibles</value>
+  </data>
+  <data name="BlackjackHit" xml:space="preserve">
+    <value>Pedir</value>
+  </data>
+  <data name="BlackjackStand" xml:space="preserve">
+    <value>Plantarse</value>
+  </data>
+  <data name="SlotBetPrompt" xml:space="preserve">
+    <value>Tu apuesta: {0}</value>
+  </data>
+  <data name="SlotContinuePrompt" xml:space="preserve">
+    <value>Pulsa cualquier tecla para girar de nuevo: </value>
+  </data>
+  <data name="SlotPanelTitle" xml:space="preserve">
+    <value>Tragamonedas</value>
+  </data>
+  <data name="SlotCredits" xml:space="preserve">
+    <value>Créditos</value>
+  </data>
+  <data name="SlotMinMaxBet" xml:space="preserve">
+    <value>Apuesta mín/máx</value>
+  </data>
+  <data name="SlotLastWin" xml:space="preserve">
+    <value>Última ganancia</value>
+  </data>
+  <data name="SlotSpins" xml:space="preserve">
+    <value>Tiradas</value>
+  </data>
+  <data name="SlotWinningSpins" xml:space="preserve">
+    <value>Tiradas ganadoras</value>
+  </data>
+  <data name="SlotBestWin" xml:space="preserve">
+    <value>Mejor ganancia</value>
+  </data>
+  <data name="SlotJackpotAnimation" xml:space="preserve">
+    <value>💥 JACKPOT NEÓN 💥</value>
+  </data>
+  <data name="SlotWinAnimation" xml:space="preserve">
+    <value>✨ ¡GANAS! ✨</value>
+  </data>
+  <data name="WinnerTag" xml:space="preserve">
+    <value>Ganador</value>
+  </data>
+  <data name="PokerDifficultyEasy" xml:space="preserve">
+    <value>Fácil</value>
+  </data>
+  <data name="PokerDifficultyMedium" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="PokerDifficultyHard" xml:space="preserve">
+    <value>Difícil</value>
+  </data>
+  <data name="PokerDifficultyExpert" xml:space="preserve">
+    <value>Experto</value>
   </data>
   <data name="MenuPoker" xml:space="preserve">
-    <value>Poker</value>
+    <value>Póker</value>
   </data>
   <data name="MenuBlackjack" xml:space="preserve">
     <value>Blackjack</value>
   </data>
   <data name="MenuSlotMachine" xml:space="preserve">
-    <value>Spielautomat</value>
+    <value>Tragamonedas</value>
   </data>
   <data name="MenuLanguages" xml:space="preserve">
-    <value>Sprachen</value>
-  </data>
-  <data name="MenuQuit" xml:space="preserve">
-    <value>Beenden</value>
+    <value>Idiomas</value>
   </data>
   <data name="MenuBack" xml:space="preserve">
-    <value>Zurück</value>
+    <value>Volver</value>
   </data>
   <data name="LanguageMenuTitle" xml:space="preserve">
-    <value>SPRACHAUSWAHL</value>
+    <value>SELECCIÓN DE IDIOMA</value>
   </data>
   <data name="LanguageMenuChoice" xml:space="preserve">
-    <value>Ihre Wahl: </value>
+    <value>Tu elección: </value>
   </data>
   <data name="CurrentLanguageLabel" xml:space="preserve">
-    <value>Aktuelle Sprache</value>
+    <value>Idioma actual</value>
   </data>
   <data name="LanguageFrench" xml:space="preserve">
-    <value>Französisch</value>
+    <value>Francés</value>
   </data>
   <data name="LanguageEnglish" xml:space="preserve">
-    <value>Englisch</value>
+    <value>Inglés</value>
   </data>
   <data name="LanguageGerman" xml:space="preserve">
-    <value>Deutsch</value>
+    <value>Alemán</value>
   </data>
   <data name="LanguageSpanish" xml:space="preserve">
-    <value>Spanisch</value>
-  </data>
-  <data name="PokerSettingsTitle" xml:space="preserve">
-    <value>POKER-EINSTELLUNGEN</value>
-  </data>
-  <data name="InitialChipsPrompt" xml:space="preserve">
-    <value>Startchips pro Spieler [{0}-{1}] (Standard 1000): </value>
-  </data>
-  <data name="PlayerCountPrompt" xml:space="preserve">
-    <value>Gesamtzahl der Spieler [{0}-{1}] (Standard 5): </value>
-  </data>
-  <data name="DifficultyPrompt" xml:space="preserve">
-    <value>Schwierigkeitsgrad der Computergegner (Standard {0}): </value>
-  </data>
-  <data name="ContinuePokerPrompt" xml:space="preserve">
-    <value>Möchten Sie eine neue Partie spielen? (j/n): </value>
-  </data>
-  <data name="ActionChoicePrompt" xml:space="preserve">
-    <value>Was ist Ihre Wahl? </value>
-  </data>
-  <data name="RaiseTargetPrompt" xml:space="preserve">
-    <value>Geben Sie den gesamten Ziel-Einsatz ein (nicht nur die Erhöhung): </value>
-  </data>
-  <data name="RangeError" xml:space="preserve">
-    <value>Bitte geben Sie einen Wert zwischen {0} und {1} ein.</value>
-  </data>
-  <data name="InvalidDifficulty" xml:space="preserve">
-    <value>Ungültige Auswahl. Bitte wählen Sie 1, 2, 3 oder 4.</value>
-  </data>
-  <data name="BetLabel" xml:space="preserve">
-    <value>Einsatz</value>
+    <value>Español</value>
   </data>
   <data name="PotLabel" xml:space="preserve">
-    <value>Pot</value>
-  </data>
-  <data name="CurrentBetLabel" xml:space="preserve">
-    <value>Aktueller Einsatz</value>
-  </data>
-  <data name="TableLabel" xml:space="preserve">
-    <value>Tisch</value>
+    <value>Bote</value>
   </data>
   <data name="TotalLabel" xml:space="preserve">
-    <value>Gesamt</value>
+    <value>Total</value>
   </data>
   <data name="BlackjackTitle" xml:space="preserve">
     <value>BLACKJACK ♠♥</value>
   </data>
-  <data name="BlackjackDealer" xml:space="preserve">
-    <value>Dealer</value>
-  </data>
-  <data name="BlackjackYou" xml:space="preserve">
-    <value>Sie</value>
-  </data>
-  <data name="BlackjackStats" xml:space="preserve">
-    <value>Statistik</value>
-  </data>
-  <data name="BlackjackWins" xml:space="preserve">
-    <value>Siege</value>
-  </data>
-  <data name="BlackjackLosses" xml:space="preserve">
-    <value>Niederlagen</value>
-  </data>
-  <data name="BlackjackPushes" xml:space="preserve">
-    <value>Unentschieden</value>
-  </data>
-  <data name="BlackjackWinAnimation" xml:space="preserve">
-    <value>✨ BLACKJACK! Sie gewinnen! ✨</value>
-  </data>
-  <data name="BlackjackContinuePrompt" xml:space="preserve">
-    <value>Noch eine Blackjack-Runde spielen? (j/n): </value>
-  </data>
-  <data name="BlackjackActionsTitle" xml:space="preserve">
-    <value>Verfügbare Aktionen</value>
-  </data>
-  <data name="BlackjackHit" xml:space="preserve">
-    <value>Karte ziehen</value>
-  </data>
-  <data name="BlackjackStand" xml:space="preserve">
-    <value>Stehen</value>
-  </data>
-  <data name="SlotBetPrompt" xml:space="preserve">
-    <value>Ihr Einsatz: {0}</value>
-  </data>
-  <data name="SlotContinuePrompt" xml:space="preserve">
-    <value>Drücken Sie eine Taste, um erneut zu drehen: </value>
-  </data>
   <data name="SlotMachineHeader" xml:space="preserve">
-    <value>SPIELAUTOMAT ✨ NEON-JACKPOT</value>
-  </data>
-  <data name="SlotPanelTitle" xml:space="preserve">
-    <value>Spielautomat</value>
-  </data>
-  <data name="SlotCredits" xml:space="preserve">
-    <value>Guthaben</value>
-  </data>
-  <data name="SlotMinMaxBet" xml:space="preserve">
-    <value>Min./Max.-Einsatz</value>
-  </data>
-  <data name="SlotLastWin" xml:space="preserve">
-    <value>Letzter Gewinn</value>
-  </data>
-  <data name="SlotSpins" xml:space="preserve">
-    <value>Drehungen</value>
-  </data>
-  <data name="SlotWinningSpins" xml:space="preserve">
-    <value>Gewinn-Drehungen</value>
-  </data>
-  <data name="SlotBestWin" xml:space="preserve">
-    <value>Bester Gewinn</value>
-  </data>
-  <data name="SlotJackpotAnimation" xml:space="preserve">
-    <value>💥 NEON-JACKPOT 💥</value>
-  </data>
-  <data name="SlotWinAnimation" xml:space="preserve">
-    <value>✨ GEWINN! ✨</value>
-  </data>
-  <data name="WinnerTag" xml:space="preserve">
-    <value>Gewinner</value>
-  </data>
-  <data name="PokerDifficultyEasy" xml:space="preserve">
-    <value>Leicht</value>
-  </data>
-  <data name="PokerDifficultyMedium" xml:space="preserve">
-    <value>Mittel</value>
-  </data>
-  <data name="PokerDifficultyHard" xml:space="preserve">
-    <value>Schwer</value>
-  </data>
-  <data name="PokerDifficultyExpert" xml:space="preserve">
-    <value>Experte</value>
+    <value>TRAGAMONEDAS ✨ JACKPOT NEÓN</value>
   </data>
 </root>

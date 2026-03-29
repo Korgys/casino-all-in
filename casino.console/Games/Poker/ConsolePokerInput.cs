@@ -72,7 +72,7 @@ public static class ConsolePokerInput
     {
         Console.Write($"\n{ConsoleText.ContinuePokerPrompt}");
         var answer = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
-        return answer is "o" or "oui" or "y" or "yes" or "j" or "ja";
+        return answer is "o" or "oui" or "y" or "yes" or "j" or "ja" or "s" or "si" or "sí";
     }
 
     private static PokerTypeAction ReadActionChoice(IReadOnlyList<PokerTypeAction> availableActions, int minimumBet)
