@@ -111,6 +111,7 @@ public static class Program
             "de" => new CultureInfo("de-DE"),
             "es" => new CultureInfo("es-ES"),
             "ja" => new CultureInfo("ja-JP"),
+            "zh" => new CultureInfo("zh-Hans"),
             _ => new CultureInfo("en")
         };
 
@@ -176,6 +177,16 @@ public static class Program
                     return;
 
                 case "6":
+                case "zh":
+                case "zh-cn":
+                case "zh-hans":
+                case "chinese":
+                case "中文":
+                case "简体中文":
+                    SetCulture(new CultureInfo("zh-Hans"));
+                    return;
+
+                case "7":
                 case "back":
                 case "retour":
                 case "zuruck":
@@ -220,7 +231,8 @@ public static class Program
         Games.Commons.ConsoleLayout.WriteFramedLine($" 3. {ConsoleText.LanguageGerman} ", width);
         Games.Commons.ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.LanguageSpanish} ", width);
         Games.Commons.ConsoleLayout.WriteFramedLine($" 5. {ConsoleText.LanguageJapanese} ", width);
-        Games.Commons.ConsoleLayout.WriteFramedLine($" 6. {ConsoleText.MenuBack} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 6. {ConsoleText.LanguageSimplifiedChinese} ", width);
+        Games.Commons.ConsoleLayout.WriteFramedLine($" 7. {ConsoleText.MenuBack} ", width);
         Games.Commons.ConsoleLayout.WriteBottomBorder(width);
         Console.WriteLine();
     }
@@ -233,6 +245,7 @@ public static class Program
             "de" => ConsoleText.LanguageGerman,
             "es" => ConsoleText.LanguageSpanish,
             "ja" => ConsoleText.LanguageJapanese,
+            "zh" => ConsoleText.LanguageSimplifiedChinese,
             _ => ConsoleText.LanguageEnglish
         };
     }

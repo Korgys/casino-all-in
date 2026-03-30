@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorTheBetAmountShouldBeGreaterThanZero" xml:space="preserve">
+    <value>下注金额必须大于零。</value>
+  </data>
+  <data name="HighCard" xml:space="preserve">
+    <value>高牌</value>
+  </data>
+  <data name="ErrorTheBetAmountCannotBeLowerThanTheInitialBetAmount" xml:space="preserve">
+    <value>下注金额不能低于起始/当前下注额。</value>
+  </data>
+  <data name="ErrorTheBetShouldIncreaseThePlayerContribution" xml:space="preserve">
+    <value>下注金额必须增加玩家总投入。</value>
+  </data>
+  <data name="ErrorPlayerHasNotEnoughChips" xml:space="preserve">
+    <value>玩家筹码不足，无法下注该金额。</value>
+  </data>
+  <data name="ErrorNoAdditionalBetToCall" xml:space="preserve">
+    <value>没有需要跟注的额外下注。</value>
+  </data>
+  <data name="ErrorThePlayerDoesNotHaveEnoughChipsToCallTheCurrentBet" xml:space="preserve">
+    <value>玩家筹码不足，无法跟注当前下注。</value>
+  </data>
+  <data name="ErrorThePlayerCannotCheckBecauseThereIsABetOnTheTable" xml:space="preserve">
+    <value>牌桌上已有下注，玩家不能过牌。</value>
+  </data>
+  <data name="ErrorTheRaiseMustBeGreaterOrEqualThanTheCurrentBet" xml:space="preserve">
+    <value>加注金额必须大于或等于当前下注。</value>
+  </data>
+  <data name="ErrorThePlayerDoesNotHaveEnoughChipsToRaiseThatAmount" xml:space="preserve">
+    <value>玩家筹码不足，无法加注该金额。</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="Fold" xml:space="preserve">
+    <value>弃牌</value>
+  </data>
+  <data name="Bet" xml:space="preserve">
+    <value>下注</value>
+  </data>
+  <data name="Call" xml:space="preserve">
+    <value>跟注</value>
+  </data>
+  <data name="Raise" xml:space="preserve">
+    <value>加注</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>过牌</value>
+  </data>
+  <data name="AllIn" xml:space="preserve">
+    <value>全下</value>
+  </data>
+  <data name="OnePair" xml:space="preserve">
+    <value>一对</value>
+  </data>
+  <data name="TwoPair" xml:space="preserve">
+    <value>两对</value>
+  </data>
+  <data name="ThreeOfAKind" xml:space="preserve">
+    <value>三条</value>
+  </data>
+  <data name="Straight" xml:space="preserve">
+    <value>顺子</value>
+  </data>
+  <data name="Flush" xml:space="preserve">
+    <value>同花</value>
+  </data>
+  <data name="FullHouse" xml:space="preserve">
+    <value>葫芦</value>
+  </data>
+  <data name="FourOfAKind" xml:space="preserve">
+    <value>四条</value>
+  </data>
+  <data name="StraightFlush" xml:space="preserve">
+    <value>同花顺</value>
+  </data>
+  <data name="RoyalFlush" xml:space="preserve">
+    <value>皇家同花顺</value>
+  </data>
+  <data name="BlackjackPlayerTurn" xml:space="preserve">
+    <value>轮到你了。</value>
+  </data>
+  <data name="BlackjackChooseAction" xml:space="preserve">
+    <value>请选择操作。</value>
+  </data>
+  <data name="BlackjackCardDrawn" xml:space="preserve">
+    <value>抽到一张牌。</value>
+  </data>
+  <data name="BlackjackDealer" xml:space="preserve">
+    <value>庄家</value>
+  </data>
+  <data name="BlackjackPlayer" xml:space="preserve">
+    <value>玩家</value>
+  </data>
+  <data name="BlackjackPushWinner" xml:space="preserve">
+    <value>平局</value>
+  </data>
+  <data name="BlackjackRoundWonByPlayer" xml:space="preserve">
+    <value>恭喜！你赢下了这一局。</value>
+  </data>
+  <data name="BlackjackRoundWonByDealer" xml:space="preserve">
+    <value>庄家赢下了这一局。</value>
+  </data>
+  <data name="BlackjackRoundPush" xml:space="preserve">
+    <value>平局：本局不分胜负。</value>
+  </data>
+  <data name="SlotWelcome" xml:space="preserve">
+    <value>欢迎来到老虎机！</value>
+  </data>
+  <data name="SlotChooseBet" xml:space="preserve">
+    <value>请选择下注金额。</value>
+  </data>
+  <data name="SlotThanks" xml:space="preserve">
+    <value>感谢游玩！</value>
+  </data>
+  <data name="SlotNoCredits" xml:space="preserve">
+    <value>积分不足，无法继续。</value>
+  </data>
+  <data name="SlotGameName" xml:space="preserve">
+    <value>老虎机</value>
+  </data>
+  <data name="SlotReelsSpinning" xml:space="preserve">
+    <value>转轴旋转中...</value>
+  </data>
+  <data name="SlotJackpotWin" xml:space="preserve">
+    <value>🎉 头奖！你赢得了巨额奖励！</value>
+  </data>
+  <data name="SlotSuperComboWin" xml:space="preserve">
+    <value>🔥 超级组合！大奖到手！</value>
+  </data>
+  <data name="SlotRegularWin" xml:space="preserve">
+    <value>✅ 恭喜，你赢了！</value>
+  </data>
+  <data name="SlotNoWin" xml:space="preserve">
+    <value>😢 这次没中奖，再试一次吧。</value>
+  </data>
+  <data name="ScoreOfFormat" xml:space="preserve">
+    <value>{0} 的点数：{1}</value>
+  </data>
+  <data name="Deux" xml:space="preserve">
+    <value>二</value>
+  </data>
+  <data name="Trois" xml:space="preserve">
+    <value>三</value>
+  </data>
+  <data name="Quatre" xml:space="preserve">
+    <value>四</value>
+  </data>
+  <data name="Cinq" xml:space="preserve">
+    <value>五</value>
+  </data>
+  <data name="Six" xml:space="preserve">
+    <value>六</value>
+  </data>
+  <data name="Sept" xml:space="preserve">
+    <value>七</value>
+  </data>
+  <data name="Huit" xml:space="preserve">
+    <value>八</value>
+  </data>
+  <data name="Neuf" xml:space="preserve">
+    <value>九</value>
+  </data>
+  <data name="Dix" xml:space="preserve">
+    <value>十</value>
+  </data>
+  <data name="Valet" xml:space="preserve">
+    <value>J</value>
+  </data>
+  <data name="Dame" xml:space="preserve">
+    <value>Q</value>
+  </data>
+  <data name="Roi" xml:space="preserve">
+    <value>K</value>
+  </data>
+  <data name="As" xml:space="preserve">
+    <value>A</value>
+  </data>
+</root>

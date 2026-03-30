@@ -189,4 +189,4 @@
   <data name="SlotMachineHeader" xml:space="preserve">
     <value>スロットマシン ✨ ネオンジャックポット</value>
   </data>
-<data name="LanguageJapanese" xml:space="preserve"><value>日本語</value></data></root>
+<data name="LanguageJapanese" xml:space="preserve"><value>日本語</value></data><data name="LanguageSimplifiedChinese" xml:space="preserve"><value>簡体字中国語</value></data></root>
