@@ -32,6 +32,7 @@ Casino All-In is a console-based casino project built with .NET. It is designed 
 - Poker hand evaluation and winner resolution.
 - Console renderer for table state, actions, and game progression
 - Unit tests for game engine and console layer.
+- Localized UI support with language selection menu (Français, English, Deutsch, Español, 日本語, 简体中文, Русский).
 
 ## Installation
 
@@ -64,6 +65,18 @@ docker run --rm -it casino-all-in
 2. Choose a game (Poker, Blackjack, or Slot Machine).
 3. Follow prompts in the terminal to choose actions (`check`, `call`, `raise`, `fold`, `all-in`, `hit`, `stand`, etc.).
 4. Play rounds until the game ends, then choose whether to start a new game.
+
+### Localization
+
+Supported languages:
+
+- **English**
+- **Español**
+- **Deutsch**
+- **Français**
+- **日本語**
+- **简体中文**
+- **Русский**
 
 ### Run tests
 

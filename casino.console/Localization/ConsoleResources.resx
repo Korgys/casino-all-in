@@ -189,4 +189,13 @@
   <data name="SlotMachineHeader" xml:space="preserve">
     <value>MACHINE À SOUS ✨ JACKPOT NÉON</value>
   </data>
-<data name="LanguageJapanese" xml:space="preserve"><value>Japanese</value></data><data name="LanguageSimplifiedChinese" xml:space="preserve"><value>Simplified Chinese</value></data></root>
+  <data name="LanguageJapanese" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="LanguageSimplifiedChinese" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="LanguageRussian" xml:space="preserve">
+    <value>Русский</value>
+  </data>
+</root>
