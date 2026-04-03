@@ -18,6 +18,8 @@ namespace casino.console.Games.Poker;
 public class ConsolePokerRenderer
 {
     private const int PreferredTableWidth = 70;
+    private const int LiveRenderSimulationCount = 500;
+    private const int DetailedOddsSimulationCount = 2000;
 
     private static readonly Func<HandCards, TableCards, int, int, double> DefaultEstimateWinProbability =
         static (hand, communityCards, opponents, simulations) =>
@@ -25,23 +27,28 @@ public class ConsolePokerRenderer
 
     private static Func<HandCards, TableCards, int, int, double> _estimateWinProbability = DefaultEstimateWinProbability;
 
-    internal static void SetEstimateWinProbabilityForTests(Func<HandCards, TableCards, int, int, double> estimateWinProbability)
+    public static void SetEstimateWinProbabilityForTests(Func<HandCards, TableCards, int, int, double> estimateWinProbability)
     {
         ArgumentNullException.ThrowIfNull(estimateWinProbability);
         _estimateWinProbability = estimateWinProbability;
     }
 
-    internal static void ResetEstimateWinProbability()
+    public static void ResetEstimateWinProbability()
     {
         _estimateWinProbability = DefaultEstimateWinProbability;
     }
 
-    private readonly Dictionary<string, int> winProbabilityByPlayer = new();
+    private readonly Dictionary<string, ProbabilityCacheEntry> winProbabilityByPlayer = new();
+    private readonly Dictionary<string, PendingProbabilityEntry> pendingProbabilityByPlayer = new();
     private string? lastRenderedPhase;
+
+    public bool DetailedOddsEnabled { get; set; }
+    public bool UseAsyncProbabilityComputation { get; set; }
 
     public void ResetRoundCache()
     {
         winProbabilityByPlayer.Clear();
+        pendingProbabilityByPlayer.Clear();
     }
 
     /// <summary>
@@ -141,33 +148,85 @@ public class ConsolePokerRenderer
 
         if (currentPlayerName == player.Name || state.Phase == Phase.Showdown.ToString())
         {
-            var probability = CalculateProbability(player, state);
-            if (probability is not null)
-            {
-                Console.Write($" | {probability.Value:F0}%");
-                winProbabilityByPlayer[player.Name] = (int)Math.Round(probability.Value);
-            }
+            WriteCurrentProbability(player, state);
         }
         else if (winProbabilityByPlayer.TryGetValue(player.Name, out var previous))
         {
-            Console.Write($" | {previous}%");
+            Console.Write($" | {previous.Probability}%");
         }
 
         Console.Write(")");
     }
 
-    private static double? CalculateProbability(PokerPlayerState player, PokerGameState state)
+    private void WriteCurrentProbability(PokerPlayerState player, PokerGameState state)
+    {
+        var probabilityKey = BuildProbabilityKey(player, state);
+        if (probabilityKey is null)
+            return;
+
+        if (winProbabilityByPlayer.TryGetValue(player.Name, out var cached) && cached.Key == probabilityKey)
+        {
+            Console.Write($" | {cached.Probability}%");
+            return;
+        }
+
+        if (UseAsyncProbabilityComputation)
+        {
+            if (!pendingProbabilityByPlayer.TryGetValue(player.Name, out var pending) || pending.Key != probabilityKey)
+            {
+                pending = new PendingProbabilityEntry(
+                    probabilityKey,
+                    Task.Run(() => CalculateProbability(player, state, probabilityKey.Opponents)));
+                pendingProbabilityByPlayer[player.Name] = pending;
+            }
+
+            if (!pending.Task.IsCompleted)
+            {
+                Console.Write(" | ...");
+                return;
+            }
+
+            var probability = pending.Task.Result;
+            pendingProbabilityByPlayer.Remove(player.Name);
+            if (probability is null)
+                return;
+
+            var roundedProbability = (int)Math.Round(probability.Value);
+            winProbabilityByPlayer[player.Name] = new ProbabilityCacheEntry(probabilityKey, roundedProbability);
+            Console.Write($" | {roundedProbability}%");
+            return;
+        }
+
+        var computed = CalculateProbability(player, state, probabilityKey.Opponents);
+        if (computed is null)
+            return;
+
+        var rounded = (int)Math.Round(computed.Value);
+        winProbabilityByPlayer[player.Name] = new ProbabilityCacheEntry(probabilityKey, rounded);
+        Console.Write($" | {rounded}%");
+    }
+
+    private static ProbabilityCacheKey? BuildProbabilityKey(PokerPlayerState player, PokerGameState state)
     {
         if (player.Hand is null)
             return null;
 
         var opponents = state.Players.Count(p => !p.IsFolded && p.Name != player.Name);
+        return new ProbabilityCacheKey(player.Hand.ToString(), state.CommunityCards.ToString(), opponents, state.Phase);
+    }
+
+    private double? CalculateProbability(PokerPlayerState player, PokerGameState state, int opponents)
+    {
+        if (player.Hand is null)
+            return null;
+
         if (opponents <= 0)
             return 100d;
 
         try
         {
-            return _estimateWinProbability(player.Hand, state.CommunityCards, opponents, 2000);
+            var simulationCount = DetailedOddsEnabled ? DetailedOddsSimulationCount : LiveRenderSimulationCount;
+            return _estimateWinProbability(player.Hand, state.CommunityCards, opponents, simulationCount);
         }
         catch (Exception ex)
         {
@@ -185,6 +244,10 @@ public class ConsolePokerRenderer
 
         lastRenderedPhase = phase;
     }
+
+    private sealed record ProbabilityCacheEntry(ProbabilityCacheKey Key, int Probability);
+    private sealed record ProbabilityCacheKey(string Hand, string CommunityCards, int Opponents, string Phase);
+    private sealed record PendingProbabilityEntry(ProbabilityCacheKey Key, Task<double?> Task);
 
     /// <summary>
     /// Builds the header content line for the poker table frame.
