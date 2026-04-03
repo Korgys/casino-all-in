@@ -10,24 +10,24 @@ public abstract class PhaseStateBase : IPhaseState
 
     public abstract void Avancer(Round context);
 
-    public virtual IEnumerable<PokerTypeAction> GetAvailableActions(Player Player, Round context)
+    public virtual IEnumerable<PokerTypeAction> GetAvailableActions(Player player, Round context)
     {
         // Folded/all-in players cannot perform any action.
-        if (!IsPlayerActionable(Player))
+        if (!IsPlayerActionable(player))
         {
             return Enumerable.Empty<PokerTypeAction>();
         }
 
-        var playerBet = context.GetBetFor(Player);
+        var playerBet = context.GetBetFor(player);
         var state = new ActionDerivationState(
             PlayerBet: playerBet,
             Difference: context.CurrentBet - playerBet,
-            CanCoverCall: context.CurrentBet - playerBet < Player.Chips);
+            CanCoverCall: context.CurrentBet - playerBet < player.Chips);
 
         // Pre-flop opening round (no posted bet yet).
         if (context.Phase == Phase.PreFlop && context.CurrentBet == 0 && state.PlayerBet == 0)
         {
-            return BuildPreFlopOpeningActions(Player, context).OrderBy(a => (int)a).ToList();
+            return BuildPreFlopOpeningActions(player, context).OrderBy(a => (int)a).ToList();
         }
 
         // Player is facing a bet and must respond.
@@ -37,7 +37,7 @@ public abstract class PhaseStateBase : IPhaseState
         }
 
         // No bet to call; player can check and may be able to bet/raise.
-        return BuildNoBetToCallActions(Player, context, state).OrderBy(a => (int)a).ToList();
+        return BuildNoBetToCallActions(player, context, state).OrderBy(a => (int)a).ToList();
     }
 
     private static bool IsPlayerActionable(Player player)
@@ -96,8 +96,8 @@ public abstract class PhaseStateBase : IPhaseState
         return actions;
     }
 
-    public virtual void ApplyAction(Player Player, Actions.GameAction action, Round context)
+    public virtual void ApplyAction(Player player, Actions.GameAction action, Round context)
     {
-        context.ActionService.ExecuterAction(context, Player, action);
+        context.ActionService.ExecuteAction(context, player, action);
     }
 }

@@ -18,14 +18,14 @@ public class GameContext
     /// <summary>
     /// Initializes a new game context.
     /// </summary>
-    /// <param name="partie">The current round.</param>
+    /// <param name="round">The current round.</param>
     /// <param name="currentPlayer">The player making a decision.</param>
-    /// <param name="actionsPossibles">The list of available actions.</param>
-    public GameContext(Round partie, Player currentPlayer, IReadOnlyList<PokerTypeAction> actionsPossibles)
+    /// <param name="availableActions">The list of available actions.</param>
+    public GameContext(Round round, Player currentPlayer, IReadOnlyList<PokerTypeAction> availableActions)
     {
-        Round = partie;
+        Round = round;
         CurrentPlayer = currentPlayer;
-        AvailableActions = actionsPossibles;
-        PlayerScore = ScoreEvaluator.EvaluateScore(currentPlayer.Hand, partie.CommunityCards);
+        AvailableActions = availableActions;
+        PlayerScore = ScoreEvaluator.EvaluateScore(currentPlayer.Hand, round.CommunityCards);
     }
 }

@@ -45,14 +45,14 @@ public class Round
 
     public bool IsInProgress() => Phase != Phase.Showdown;
 
-    public IEnumerable<PokerTypeAction> GetAvailableActions(Player Player)
+    public IEnumerable<PokerTypeAction> GetAvailableActions(Player player)
     {
-        return PhaseState.GetAvailableActions(Player, this);
+        return PhaseState.GetAvailableActions(player, this);
     }
 
-    public void ApplyAction(Player Player, Actions.GameAction action)
+    public void ApplyAction(Player player, Actions.GameAction action)
     {
-        PhaseState.ApplyAction(Player, action, this);
+        PhaseState.ApplyAction(player, action, this);
     }
 
     internal void MoveToNextPhase(Phase phase, IPhaseState nextPhaseState)
@@ -103,20 +103,20 @@ public class Round
 
     private void DealCards()
     {
-        foreach (var Player in Players.Where(j => j.Chips > 0 && j.LastAction != PokerTypeAction.Fold))
+        foreach (var player in Players.Where(j => j.Chips > 0 && j.LastAction != PokerTypeAction.Fold))
         {
-            Player.Hand = new HandCards(Deck.DrawCard(), Deck.DrawCard());
+            player.Hand = new HandCards(Deck.DrawCard(), Deck.DrawCard());
         }
     }
 
-    internal int GetBetFor(Player Player)
+    internal int GetBetFor(Player player)
     {
-        return _betsByPlayer.TryGetValue(Player, out var bet) ? bet : 0;
+        return _betsByPlayer.TryGetValue(player, out var bet) ? bet : 0;
     }
 
-    internal void SetBetFor(Player Player, int bet)
+    internal void SetBetFor(Player player, int bet)
     {
-        _betsByPlayer[Player] = bet;
+        _betsByPlayer[player] = bet;
     }
 
     internal bool IsBettingRoundClosed()
@@ -144,22 +144,22 @@ public class Round
     {
         CurrentBet = 0;
 
-        foreach (var Player in Players)
+        foreach (var player in Players)
         {
-            _betsByPlayer[Player] = 0;
+            _betsByPlayer[player] = 0;
 
-            if (!Player.IsFolded() && !Player.IsAllIn())
+            if (!player.IsFolded() && !player.IsAllIn())
             {
-                Player.LastAction = PokerTypeAction.None;
+                player.LastAction = PokerTypeAction.None;
             }
         }
     }
 
     private void InitializePlayerBets()
     {
-        foreach (var Player in Players)
+        foreach (var player in Players)
         {
-            _betsByPlayer[Player] = 0;
+            _betsByPlayer[player] = 0;
         }
     }
 

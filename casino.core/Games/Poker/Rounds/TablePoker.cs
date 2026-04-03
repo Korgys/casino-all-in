@@ -14,22 +14,22 @@ public class TablePoker
     public int CurrentPlayerIndex => TurnManager?.CurrentPlayerIndex ?? _playerInitialIndex;
     private int _playerInitialIndex = -1;
 
-    public void DemarrerRound(List<Player> Players, IDeck deck)
+    public void StartRound(List<Player> players, IDeck deck)
     {
-        Players.ForEach(j => j.Reset());
+        players.ForEach(j => j.Reset());
 
-        this.Players = Players.ToList();
+        Players = players.ToList();
         Round = new Round(this.Players, deck);
         _playerInitialIndex = (_playerInitialIndex + 1) % this.Players.Count;
         TurnManager = new TurnManager(Round, _playerInitialIndex);
     }
 
-    public List<PokerTypeAction> GetAvailableActions(Player Player)
-        => Round.GetAvailableActions(Player).OrderBy(a => (int)a).ToList();
+    public List<PokerTypeAction> GetAvailableActions(Player player)
+        => Round.GetAvailableActions(player).OrderBy(a => (int)a).ToList();
 
-    public void TraiterActionPlayer(Player Player, Actions.GameAction choix)
+    public void ProcessPlayerAction(Player player, Actions.GameAction action)
     {
-        TurnManager.ExecutePlayerAction(Player, choix);
+        TurnManager.ExecutePlayerAction(player, action);
     }
 
     public Player GetPlayerToAct()

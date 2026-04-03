@@ -7,6 +7,6 @@ using casino.core.Games.Poker.Players;
 public interface IPhaseState
 {
     void Avancer(Round context);
-    IEnumerable<PokerTypeAction> GetAvailableActions(Player Player, Round context);
-    void ApplyAction(Player Player, GameAction action, Round context);
+    IEnumerable<PokerTypeAction> GetAvailableActions(Player player, Round context);
+    void ApplyAction(Player player, GameAction action, Round context);
 }

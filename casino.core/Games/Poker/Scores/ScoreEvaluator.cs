@@ -9,108 +9,108 @@ public static class ScoreEvaluator
         ArgumentNullException.ThrowIfNull(main);
         ArgumentNullException.ThrowIfNull(communityCards);
 
-        // Hold'em : 2 privatives + 0..5 communes => 2..7 cartes
+        // Hold'em: 2 private cards + 0..5 community cards => 2..7 cards
         var cards = main.AsEnumerable().Concat(communityCards.AsEnumerable()).ToArray();
 
-        // Centralisation des rangs triés (utile pour carte haute / kickers)
-        // GroupBy faits une seule fois
-        var rangsDistinctDesc = cards
+        // Compute sorted distinct ranks once (useful for high card / kickers)
+        // GroupBy computed only once
+        var distinctRanksDesc = cards
             .Select(c => c.Rank)
             .Distinct()
             .OrderByDescending(r => r)
             .ToArray();
-        var groupesParRang = cards
+        var groupsByRank = cards
             .GroupBy(c => c.Rank)
             .ToArray();
-        var groupesParSuit = cards
+        var groupsBySuit = cards
             .GroupBy(c => c.Suit)
             .ToArray();
 
-        // Ordre poker standard (du plus fort au plus faible)
+        // Standard poker ranking order (strongest to weakest)
 
-        // Quinte flush royale
-        if (ComporteQuinteFlushRoyale(groupesParSuit))
+        // Royal straight flush
+        if (ContainsRoyalStraightFlush(groupsBySuit))
             return new Score(HandRank.RoyalFlush, CardRank.As, kickers: Array.Empty<CardRank>());
 
-        // Quinte flush
-        if (ValeurQuinteFlush(groupesParSuit) is CardRank vQuinteFlush)
-            return new Score(HandRank.StraightFlush, vQuinteFlush, kickers: Array.Empty<CardRank>());
+        // Straight flush
+        if (GetStraightFlushValue(groupsBySuit) is CardRank straightFlushValue)
+            return new Score(HandRank.StraightFlush, straightFlushValue, kickers: Array.Empty<CardRank>());
 
-        // Carré
-        if (ValeurCarre(groupesParRang) is CardRank vCarre)
+        // Four of a kind
+        if (GetFourOfAKindValue(groupsByRank) is CardRank fourOfAKindValue)
         {
-            var kicker = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vCarre }, combien: 1);
-            return new Score(HandRank.FourOfAKind, vCarre, kicker);
+            var kicker = DetermineBestKickers(distinctRanksDesc, excludedRanks: new[] { fourOfAKindValue }, count: 1);
+            return new Score(HandRank.FourOfAKind, fourOfAKindValue, kicker);
         }
 
-        // Full
-        if (ValeurFull(groupesParRang, out var tripsFull, out var paireFull))
-            return new Score(HandRank.FullHouse, tripsFull, new[] { paireFull });
+        // Full house
+        if (GetFullHouseValues(groupsByRank, out var fullHouseThreeOfAKind, out var fullHousePair))
+            return new Score(HandRank.FullHouse, fullHouseThreeOfAKind, new[] { fullHousePair });
 
-        // Suit
-        if (TryGetFlushTop5(groupesParSuit, out var flushTop5))
+        // Flush
+        if (TryGetFlushTop5(groupsBySuit, out var flushTop5))
             return new Score(HandRank.Flush, flushTop5[0], flushTop5.Skip(1).ToArray());
 
-        // Suite
-        if (ValeurSuite(rangsDistinctDesc) is CardRank vSuite)
-            return new Score(HandRank.Straight, vSuite, kickers: Array.Empty<CardRank>());
+        // Straight
+        if (GetStraightValue(distinctRanksDesc) is CardRank straightValue)
+            return new Score(HandRank.Straight, straightValue, kickers: Array.Empty<CardRank>());
 
-        // Brelan
-        if (ValeurBrelan(groupesParRang) is CardRank vBrelan)
+        // Three of a kind
+        if (GetThreeOfAKindValue(groupsByRank) is CardRank threeOfAKindValue)
         {
-            var kickers = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vBrelan }, combien: 2);
-            return new Score(HandRank.ThreeOfAKind, vBrelan, kickers);
+            var kickers = DetermineBestKickers(distinctRanksDesc, excludedRanks: new[] { threeOfAKindValue }, count: 2);
+            return new Score(HandRank.ThreeOfAKind, threeOfAKindValue, kickers);
         }
 
-        // Double paire
-        if (ValeurDoublePaire(groupesParRang, out var paireHaute, out var paireBasse))
+        // Double pair
+        if (GetTwoPairValues(groupsByRank, out var higherPair, out var lowerPair))
         {
-            var kicker = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { paireHaute, paireBasse }, combien: 1);
-            return new Score(HandRank.TwoPair, paireHaute, new[] { paireBasse }.Concat(kicker).ToArray());
+            var kicker = DetermineBestKickers(distinctRanksDesc, excludedRanks: new[] { higherPair, lowerPair }, count: 1);
+            return new Score(HandRank.TwoPair, higherPair, new[] { lowerPair }.Concat(kicker).ToArray());
         }
 
-        // Paire
-        if (ValeurPaire(groupesParRang) is CardRank vPaire)
+        // One pair
+        if (GetPairValue(groupsByRank) is CardRank pairValue)
         {
-            var kickers = DeterminerMeilleursKickers(rangsDistinctDesc, exclus: new[] { vPaire }, combien: 3);
-            return new Score(HandRank.OnePair, vPaire, kickers);
+            var kickers = DetermineBestKickers(distinctRanksDesc, excludedRanks: new[] { pairValue }, count: 3);
+            return new Score(HandRank.OnePair, pairValue, kickers);
         }
 
-        // Carte haute
-        if (rangsDistinctDesc.Length == 0)
+        // High card
+        if (distinctRanksDesc.Length == 0)
             return new Score(HandRank.HighCard, CardRank.Deux, Array.Empty<CardRank>());
 
-        var topCarteHaute = rangsDistinctDesc[0];
-        var kickersCarteHaute = rangsDistinctDesc.Skip(1).Take(4).ToArray();
-        return new Score(HandRank.HighCard, topCarteHaute, kickersCarteHaute);
+        var highestHighCard = distinctRanksDesc[0];
+        var highCardKickers = distinctRanksDesc.Skip(1).Take(4).ToArray();
+        return new Score(HandRank.HighCard, highestHighCard, highCardKickers);
     }
 
     /// <summary>
-    /// Prend les meilleurs rangs hors exclus, déjà triés décroissant (rangsDistinctDesc).
-    /// Retourne un tableau figé (pas de lazy enumerable).
+    /// Takes the best ranks excluding provided values, already sorted descending (distinctRanksDesc).
+    /// Returns a concrete array (no lazy enumerable).
     /// </summary>
-    private static CardRank[] DeterminerMeilleursKickers(
-        CardRank[] rangsDistinctDesc,
-        CardRank[] exclus,
-        int combien)
+    private static CardRank[] DetermineBestKickers(
+        CardRank[] distinctRanksDesc,
+        CardRank[] excludedRanks,
+        int count)
     {
-        if (combien <= 0) return Array.Empty<CardRank>();
-        if (exclus.Length == 0) return rangsDistinctDesc.Take(combien).ToArray();
+        if (count <= 0) return Array.Empty<CardRank>();
+        if (excludedRanks.Length == 0) return distinctRanksDesc.Take(count).ToArray();
 
-        var res = new List<CardRank>(capacity: combien);
-        for (int i = 0; i < rangsDistinctDesc.Length && res.Count < combien; i++)
+        var result = new List<CardRank>(capacity: count);
+        for (int i = 0; i < distinctRanksDesc.Length && result.Count < count; i++)
         {
-            var r = rangsDistinctDesc[i];
-            if (!exclus.Contains(r)) // Note : exclus est petit, donc Contains() est OK, mais on pourrait optimiser avec un HashSet si besoin
-                res.Add(r);
+            var r = distinctRanksDesc[i];
+            if (!excludedRanks.Contains(r))
+                result.Add(r);
         }
 
-        return res.ToArray();
+        return result.ToArray();
     }
 
-    private static bool TryGetFlushTop5(IEnumerable<IGrouping<Suit, Card>> groupesParSuit, out CardRank[] top5)
+    private static bool TryGetFlushTop5(IEnumerable<IGrouping<Suit, Card>> groupsBySuit, out CardRank[] top5)
     {
-        foreach (var grp in groupesParSuit)
+        foreach (var grp in groupsBySuit)
         {
             if (grp.Count() < 5) continue;
 
@@ -131,41 +131,41 @@ public static class ScoreEvaluator
         return false;
     }
 
-    private static bool ComporteQuinteFlushRoyale(IEnumerable<IGrouping<Suit, Card>> groupesParSuit)
+    private static bool ContainsRoyalStraightFlush(IEnumerable<IGrouping<Suit, Card>> groupsBySuit)
     {
-        // Une quinte flush dont la carte haute est As (10-J-Q-K-A)
-        foreach (var grp in groupesParSuit)
+        // A straight flush whose high card is Ace (10-J-Q-K-A).
+        foreach (var grp in groupsBySuit)
         {
             if (grp.Count() < 5) continue;
 
-            var rangsDistinctDesc = grp.Select(c => c.Rank)
+            var distinctRanksDesc = grp.Select(c => c.Rank)
                                        .Distinct()
                                        .OrderByDescending(r => r)
                                        .ToArray();
 
-            // Pour être "royale", il faut la suite avec high = As et un 10 présent.
-            var high = ValeurSuite(rangsDistinctDesc);
-            if (high == CardRank.As && rangsDistinctDesc.Contains(CardRank.Dix))
+            // For "royal", the straight high card must be Ace and Ten must be present.
+            var high = GetStraightValue(distinctRanksDesc);
+            if (high == CardRank.As && distinctRanksDesc.Contains(CardRank.Dix))
                 return true;
         }
 
         return false;
     }
 
-    private static CardRank? ValeurQuinteFlush(IEnumerable<IGrouping<Suit, Card>> groupesParSuit)
+    private static CardRank? GetStraightFlushValue(IEnumerable<IGrouping<Suit, Card>> groupsBySuit)
     {
         CardRank? best = null;
 
-        foreach (var grp in groupesParSuit)
+        foreach (var grp in groupsBySuit)
         {
             if (grp.Count() < 5) continue;
 
-            var rangsDistinctDesc = grp.Select(c => c.Rank)
+            var distinctRanksDesc = grp.Select(c => c.Rank)
                                        .Distinct()
                                        .OrderByDescending(r => r)
                                        .ToArray();
 
-            var high = ValeurSuite(rangsDistinctDesc);
+            var high = GetStraightValue(distinctRanksDesc);
             if (high.HasValue && (!best.HasValue || high.Value > best.Value))
                 best = high;
         }
@@ -173,9 +173,9 @@ public static class ScoreEvaluator
         return best;
     }
 
-    private static CardRank? ValeurCarre(IEnumerable<IGrouping<CardRank, Card>> groupesParRang)
+    private static CardRank? GetFourOfAKindValue(IEnumerable<IGrouping<CardRank, Card>> groupsByRank)
     {
-        return groupesParRang
+        return groupsByRank
             .Where(g => g.Count() == 4)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
@@ -184,54 +184,54 @@ public static class ScoreEvaluator
     }
 
     /// <summary>
-    /// Full house :
-    /// - trips = meilleur brelan
-    /// - paire = meilleure paire hors trips, ou second brelan utilisé comme paire
+    /// Full house:
+    /// - threeOfAKind = highest three of a kind
+    /// - pair = highest pair excluding the selected three of a kind, or second three of a kind used as pair
     /// </summary>
-    private static bool ValeurFull(
-        IEnumerable<IGrouping<CardRank, Card>> groupesParRang,
-        out CardRank trips,
-        out CardRank paire)
+    private static bool GetFullHouseValues(
+        IEnumerable<IGrouping<CardRank, Card>> groupsByRank,
+        out CardRank threeOfAKind,
+        out CardRank pair)
     {
-        trips = default;
-        paire = default;
+        threeOfAKind = default;
+        pair = default;
 
-        var brelans = groupesParRang
+        var threeOfAKinds = groupsByRank
             .Where(g => g.Count() >= 3)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
             .ToArray();
 
-        if (brelans.Length == 0)
+        if (threeOfAKinds.Length == 0)
             return false;
 
-        trips = brelans[0];
+        threeOfAKind = threeOfAKinds[0];
 
-        var paires = groupesParRang
-            .Where(g => g.Key != brelans[0] && g.Count() >= 2)
+        var pairs = groupsByRank
+            .Where(g => g.Key != threeOfAKinds[0] && g.Count() >= 2)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
             .ToArray();
 
-        if (paires.Length > 0)
+        if (pairs.Length > 0)
         {
-            paire = paires[0];
+            pair = pairs[0];
             return true;
         }
 
-        // Cas spécial : 2 brelans => le second brelan sert de paire
-        if (brelans.Length >= 2)
+        // Special case: two three-of-a-kind groups => second one becomes the pair.
+        if (threeOfAKinds.Length >= 2)
         {
-            paire = brelans[1];
+            pair = threeOfAKinds[1];
             return true;
         }
 
         return false;
     }
 
-    private static CardRank? ValeurBrelan(IEnumerable<IGrouping<CardRank, Card>> groupesParRang)
+    private static CardRank? GetThreeOfAKindValue(IEnumerable<IGrouping<CardRank, Card>> groupsByRank)
     {
-        return groupesParRang
+        return groupsByRank
             .Where(g => g.Count() >= 3)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
@@ -239,31 +239,31 @@ public static class ScoreEvaluator
             .FirstOrDefault();
     }
 
-    private static bool ValeurDoublePaire(
-        IEnumerable<IGrouping<CardRank, Card>> groupesParRang,
-        out CardRank paireHaute,
-        out CardRank paireBasse)
+    private static bool GetTwoPairValues(
+        IEnumerable<IGrouping<CardRank, Card>> groupsByRank,
+        out CardRank higherPair,
+        out CardRank lowerPair)
     {
-        paireHaute = default;
-        paireBasse = default;
+        higherPair = default;
+        lowerPair = default;
 
-        var paires = groupesParRang
+        var pairs = groupsByRank
             .Where(g => g.Count() >= 2)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
             .ToArray();
 
-        if (paires.Length < 2)
+        if (pairs.Length < 2)
             return false;
 
-        paireHaute = paires[0];
-        paireBasse = paires[1];
+        higherPair = pairs[0];
+        lowerPair = pairs[1];
         return true;
     }
 
-    private static CardRank? ValeurPaire(IEnumerable<IGrouping<CardRank, Card>> groupesParRang)
+    private static CardRank? GetPairValue(IEnumerable<IGrouping<CardRank, Card>> groupsByRank)
     {
-        return groupesParRang
+        return groupsByRank
             .Where(g => g.Count() >= 2)
             .Select(g => g.Key)
             .OrderByDescending(r => r)
@@ -272,14 +272,14 @@ public static class ScoreEvaluator
     }
 
     /// <summary>
-    /// Retourne la carte haute d'une suite à partir d'un tableau de rangs distincts triés décroissant.
-    /// Gère A-2-3-4-5 => high = 5.
-    /// Retourne null si pas de suite.
+    /// Returns the high card of a straight from distinct ranks sorted descending.
+    /// Handles A-2-3-4-5 => high = 5.
+    /// Returns null if no straight exists.
     /// </summary>
-    private static CardRank? ValeurSuite(IReadOnlyList<CardRank> rangsDistinctDesc)
+    private static CardRank? GetStraightValue(IReadOnlyList<CardRank> distinctRanksDesc)
     {
-        // On repasse en croissant d'int pour la détection de suite.
-        var values = rangsDistinctDesc
+        // Convert to ascending ints for straight detection.
+        var values = distinctRanksDesc
             .Select(r => (int)r)
             .OrderBy(v => v)
             .ToList();
@@ -287,7 +287,7 @@ public static class ScoreEvaluator
         if (values.Count < 5)
             return null;
 
-        // As bas : si on a un As (14), on ajoute 1 pour représenter A comme 1
+        // Wheel straight: if Ace (14) exists, insert 1 to represent low Ace
         if (values.Contains((int)CardRank.As))
             values.Insert(0, 1);
 

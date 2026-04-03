@@ -6,30 +6,30 @@ namespace casino.core.Games.Poker.Rounds;
 
 public interface IActionService
 {
-    void ExecuterAction(Round partie, Player Player, Actions.GameAction action);
+    void ExecuteAction(Round round, Player player, Actions.GameAction action);
 }
 
 public class ActionService : IActionService
 {
-    public void ExecuterAction(Round partie, Player Player, Actions.GameAction action)
+    public void ExecuteAction(Round round, Player player, Actions.GameAction action)
     {
-        if (!partie.PhaseState.GetAvailableActions(Player, partie).Contains(action.TypeAction))
+        if (!round.PhaseState.GetAvailableActions(player, round).Contains(action.TypeAction))
         {
-            throw new InvalidOperationException("Action de Player non autorisée");
+            throw new InvalidOperationException("Player action is not allowed.");
         }
 
-        var commande = CreerCommande(Player, action);
-        commande.Execute(partie);
+        var command = CreateCommand(player, action);
+        command.Execute(round);
     }
 
-    private static IPlayerCommand CreerCommande(Player Player, Actions.GameAction action) => action.TypeAction switch
+    private static IPlayerCommand CreateCommand(Player player, Actions.GameAction action) => action.TypeAction switch
     {
-        PokerTypeAction.Fold => new FoldCommand(Player),
-        PokerTypeAction.Bet => new BetCommand(Player, action.Amount),
-        PokerTypeAction.Call => new CallCommand(Player),
-        PokerTypeAction.Raise => new RaiseCommand(Player, action.Amount),
-        PokerTypeAction.AllIn => new AllInCommand(Player),
-        PokerTypeAction.Check => new CheckCommand(Player),
-        _ => throw new ArgumentException("Action de Player invalide")
+        PokerTypeAction.Fold => new FoldCommand(player),
+        PokerTypeAction.Bet => new BetCommand(player, action.Amount),
+        PokerTypeAction.Call => new CallCommand(player),
+        PokerTypeAction.Raise => new RaiseCommand(player, action.Amount),
+        PokerTypeAction.AllIn => new AllInCommand(player),
+        PokerTypeAction.Check => new CheckCommand(player),
+        _ => throw new ArgumentException("Invalid player action.")
     };
 }

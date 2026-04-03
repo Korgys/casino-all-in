@@ -10,12 +10,12 @@ public class ShowdownState : IPhaseState
         // Round terminée, aucune phase supplémentaire.
     }
 
-    public IEnumerable<PokerTypeAction> GetAvailableActions(Player Player, Round context)
+    public IEnumerable<PokerTypeAction> GetAvailableActions(Player player, Round context)
     {
         return Array.Empty<PokerTypeAction>();
     }
 
-    public void ApplyAction(Player Player, Actions.GameAction action, Round context)
+    public void ApplyAction(Player player, Actions.GameAction action, Round context)
     {
         throw new InvalidOperationException("Aucune action n'est autorisée pendant le showdown.");
     }
