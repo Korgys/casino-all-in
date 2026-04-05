@@ -40,6 +40,6 @@ public class RaiseCommand : IPlayerCommand
         _player.Chips -= difference;
         round.SetCurrentBet(_amount);
         round.SetBetFor(_player, _amount);
-        round.AddToPot(difference);
+        round.AddToPot(_player, difference);
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
@@ -23,6 +22,7 @@ public class Round
     public int NumberOfRoundsPlayed { get; internal set; } = 0;
 
     private readonly Dictionary<Player, int> _betsByPlayer = new();
+    private readonly Dictionary<Player, int> _totalContributionByPlayer = new();
 
     public Round(IReadOnlyList<Player> players, IDeck deck, IActionService? actionService = null)
     {
@@ -84,6 +84,23 @@ public class Round
             throw new ArgumentOutOfRangeException(nameof(amount));
 
         Pot += amount;
+    }
+
+    internal void AddToPot(Player player, int amount)
+    {
+        if (player is null)
+            throw new ArgumentNullException(nameof(player));
+
+        if (amount < 0)
+            throw new ArgumentOutOfRangeException(nameof(amount));
+
+        AddToPot(amount);
+        _totalContributionByPlayer[player] = GetTotalContributionFor(player) + amount;
+    }
+
+    internal int GetTotalContributionFor(Player player)
+    {
+        return _totalContributionByPlayer.TryGetValue(player, out var contribution) ? contribution : 0;
     }
 
     internal void SetCurrentBet(int amount)
@@ -160,6 +177,7 @@ public class Round
         foreach (var player in Players)
         {
             _betsByPlayer[player] = 0;
+            _totalContributionByPlayer[player] = 0;
         }
     }
 
@@ -180,7 +198,7 @@ public class Round
         {
             var winners = WinnerEvaluator.DetermineWinnersByHand(Players, CommunityCards);
             Winners = winners;
-            DistributePot(winners);
+            DistributePot();
         }
 
         // Increase the starting bet every N rounds
@@ -189,19 +207,70 @@ public class Round
             StartingBet *= 2;
     }
 
-    private void DistributePot(IReadOnlyList<Player> winners)
+    private void DistributePot()
     {
-        if (winners.Count == 0)
+        var playersWithContribution = Players
+            .Where(player => GetTotalContributionFor(player) > 0)
+            .ToList();
+
+        if (playersWithContribution.Count == 0 || playersWithContribution.Sum(GetTotalContributionFor) != Pot)
+        {
+            DistributeAmountAcrossWinners(Pot, Winners);
+            return;
+        }
+
+        var contributionLevels = playersWithContribution
+            .Select(GetTotalContributionFor)
+            .Distinct()
+            .OrderBy(level => level)
+            .ToList();
+
+        var lowerBound = 0;
+        foreach (var upperBound in contributionLevels)
+        {
+            var potContributors = playersWithContribution
+                .Where(player => GetTotalContributionFor(player) >= upperBound)
+                .ToList();
+
+            var potAmount = (upperBound - lowerBound) * potContributors.Count;
+            lowerBound = upperBound;
+
+            if (potAmount <= 0)
+            {
+                continue;
+            }
+
+            var eligiblePlayers = potContributors
+                .Where(player => !player.IsFolded())
+                .ToList();
+
+            if (eligiblePlayers.Count == 0)
+            {
+                continue;
+            }
+
+            var potWinners = WinnerEvaluator.DetermineWinnersByHand(eligiblePlayers, CommunityCards);
+            DistributeAmountAcrossWinners(potAmount, potWinners);
+        }
+    }
+
+    private void DistributeAmountAcrossWinners(int amount, IReadOnlyList<Player> winners)
+    {
+        if (amount <= 0 || winners.Count == 0)
             return;
 
-        int share = Pot / winners.Count;
-        int remainder = Pot % winners.Count;
+        int share = amount / winners.Count;
+        int remainder = amount % winners.Count;
 
         foreach (var winner in winners)
             winner.Chips += share;
 
-        // Distribute the remainder deterministically (simple)
+        // Deterministic remainder rule: extra chips are awarded by table order.
+        var orderedWinners = winners
+            .OrderBy(winner => Players.ToList().IndexOf(winner))
+            .ToList();
+
         for (int i = 0; i < remainder; i++)
-            winners[i].Chips += 1;
+            orderedWinners[i].Chips += 1;
     }
 }

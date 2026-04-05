@@ -21,7 +21,7 @@ public class AllInCommand : IPlayerCommand
         var miseAvant = round.GetBetFor(_player);
         var contribution = miseAvant + _player.Chips;
         _player.LastAction = PokerTypeAction.AllIn;
-        round.AddToPot(_player.Chips);
+        round.AddToPot(_player, _player.Chips);
         round.SetBetFor(_player, contribution);
         round.RaiseCurrentBetToAtLeast(contribution);
         _player.Chips = 0;
