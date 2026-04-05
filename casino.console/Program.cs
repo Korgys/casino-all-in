@@ -65,10 +65,20 @@ public static class Program
 
         if (game is null) return;
 
+        var refreshPokerTableAfterRoundEnd = false;
+
+        game.GameEnded += (_, _) => refreshPokerTableAfterRoundEnd = true;
+
         game.StateUpdated += (_, e) =>
         {
             if (e.State is PokerGameState state)
             {
+                if (refreshPokerTableAfterRoundEnd)
+                {
+                    ConsolePokerRenderer.RequestFullRefresh();
+                    refreshPokerTableAfterRoundEnd = false;
+                }
+
                 PokerRenderer.RenderTable(state);
             }
             if (e.State is BlackjackGameState blackjackState)

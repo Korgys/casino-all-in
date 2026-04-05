@@ -11,6 +11,8 @@ namespace casino.console.Games.Poker;
 /// </summary>
 internal static class ConsolePokerWriter
 {
+    private const string ResetCode = "\u001b[0m";
+
     public static void WritePlayerName(PokerPlayerState playerState)
     {
         ConsoleColor color;
@@ -67,14 +69,59 @@ internal static class ConsolePokerWriter
 
     public static string FormatCard(Card card)
     {
-        string colorCode;
-        if (card.Suit == Suit.Hearts || card.Suit == Suit.Diamonds)
-            colorCode = "\u001b[38;2;255;0;0m";   // rouge pur
+        return WrapWithAnsi(GetCardAnsiColor(card), card.ToString());
+    }
+
+    public static string FormatPlayerName(PokerPlayerState playerState)
+    {
+        ConsoleColor color;
+        if (playerState.IsFolded || (playerState.Chips == 0 && playerState.LastAction != PokerTypeAction.AllIn))
+            color = ConsoleColor.DarkGray;
+        else if (playerState.IsHuman)
+            color = ConsoleColor.Cyan;
         else
-            colorCode = "\u001b[38;2;0;255;255m"; // cyan pur
+            color = ConsoleColor.DarkRed;
 
-        const string reset = "\u001b[0m";
+        return WrapWithAnsi(GetAnsiColor(color), playerState.Name);
+    }
 
-        return $"{colorCode}{card}{reset}";
+    public static string FormatAmount(int amount)
+    {
+        return WrapWithAnsi(GetAnsiColor(ConsoleColor.Yellow), $"{amount}c");
+    }
+
+    public static string FormatHand(HandCards hand)
+    {
+        return string.Join(" ", hand.AsEnumerable().Select(FormatCard));
+    }
+
+    public static string FormatWinnerTag(string tag)
+    {
+        return WrapWithAnsi(GetAnsiColor(ConsoleColor.Green), tag);
+    }
+
+    private static string GetCardAnsiColor(Card card)
+    {
+        return card.Suit == Suit.Hearts || card.Suit == Suit.Diamonds
+            ? "\u001b[38;2;255;0;0m"
+            : "\u001b[38;2;0;255;255m";
+    }
+
+    private static string GetAnsiColor(ConsoleColor color)
+    {
+        return color switch
+        {
+            ConsoleColor.DarkGray => "\u001b[90m",
+            ConsoleColor.DarkRed => "\u001b[31m",
+            ConsoleColor.Cyan => "\u001b[36m",
+            ConsoleColor.Yellow => "\u001b[33m",
+            ConsoleColor.Green => "\u001b[32m",
+            _ => "\u001b[37m"
+        };
+    }
+
+    private static string WrapWithAnsi(string colorCode, string value)
+    {
+        return $"{colorCode}{value}{ResetCode}";
     }
 }

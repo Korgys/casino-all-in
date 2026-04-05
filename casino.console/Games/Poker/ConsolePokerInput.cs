@@ -21,7 +21,7 @@ public static class ConsolePokerInput
         var state = (PokerGameState)request.TableState;
         var player = state.Players.First(j => j.Name == request.PlayerName);
 
-        var choice = ReadActionChoice(request.AvailableActions, request.MinimumBet);
+        var choice = ReadActionChoice(state, request.AvailableActions, request.MinimumBet);
 
         return choice switch
         {
@@ -72,21 +72,55 @@ public static class ConsolePokerInput
     {
         Console.Write($"\n{ConsoleText.ContinuePokerPrompt}");
         var answer = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
-        return answer is "o" or "oui" or "y" or "yes" or "j" or "ja" or "s" or "si" or "sí";
+        var wantsToContinue = answer is "o" or "oui" or "y" or "yes" or "j" or "ja" or "s" or "si" or "sí";
+
+        if (wantsToContinue)
+            RequestFullConsoleRefresh();
+
+        return wantsToContinue;
     }
 
-    private static PokerTypeAction ReadActionChoice(IReadOnlyList<PokerTypeAction> availableActions, int minimumBet)
+    private static PokerTypeAction ReadActionChoice(PokerGameState state, IReadOnlyList<PokerTypeAction> availableActions, int minimumBet)
     {
+        ConsolePokerRenderer.RenderAvailableActions(availableActions, minimumBet);
+
         while (true)
         {
-            ConsolePokerRenderer.RenderAvailableActions(availableActions, minimumBet);
-
             Console.Write(ConsoleText.ActionChoicePrompt);
             if (!int.TryParse(Console.ReadLine(), out var raw))
+            {
+                RefreshPlayerActionScreen(state, availableActions, minimumBet);
                 continue;
+            }
 
             if (availableActions.Any(a => (int)a == raw))
                 return (PokerTypeAction)raw;
+
+            RefreshPlayerActionScreen(state, availableActions, minimumBet);
+        }
+    }
+
+    private static void RefreshPlayerActionScreen(
+        PokerGameState state,
+        IReadOnlyList<PokerTypeAction> availableActions,
+        int minimumBet)
+    {
+        RequestFullConsoleRefresh();
+        new ConsolePokerRenderer().RenderTable(state);
+        ConsolePokerRenderer.RenderAvailableActions(availableActions, minimumBet);
+    }
+
+    private static void RequestFullConsoleRefresh()
+    {
+        ConsolePokerRenderer.RequestFullRefresh();
+
+        try
+        {
+            Console.Clear();
+        }
+        catch
+        {
+            // Ignore clear failures in redirected output environments.
         }
     }
 

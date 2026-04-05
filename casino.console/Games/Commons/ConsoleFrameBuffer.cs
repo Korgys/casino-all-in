@@ -48,6 +48,14 @@ public sealed class ConsoleFrameBuffer
         }
     }
 
+    public void Reset()
+    {
+        hasRendered = false;
+        previousLines = [];
+        lastWindowWidth = null;
+        lastWindowHeight = null;
+    }
+
     private bool ShouldFallbackToFullRedraw()
     {
         if (!target.SupportsCursorPositioning)

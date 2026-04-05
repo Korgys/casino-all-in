@@ -26,6 +26,7 @@ public class ConsolePokerRenderer
             ProbabilityEvaluator.EstimateWinProbability(hand, communityCards, opponents, simulations);
 
     private static Func<HandCards, TableCards, int, int, double> _estimateWinProbability = DefaultEstimateWinProbability;
+    private static bool _fullRefreshRequested;
 
     public static void SetEstimateWinProbabilityForTests(Func<HandCards, TableCards, int, int, double> estimateWinProbability)
     {
@@ -36,6 +37,11 @@ public class ConsolePokerRenderer
     public static void ResetEstimateWinProbability()
     {
         _estimateWinProbability = DefaultEstimateWinProbability;
+    }
+
+    public static void RequestFullRefresh()
+    {
+        _fullRefreshRequested = true;
     }
 
     private readonly ConsoleFrameBuffer frameBuffer;
@@ -68,6 +74,12 @@ public class ConsolePokerRenderer
     /// <param name="state">The current poker game state.</param>
     public void RenderTable(PokerGameState state)
     {
+        if (_fullRefreshRequested)
+        {
+            frameBuffer.Reset();
+            _fullRefreshRequested = false;
+        }
+
         ResetRoundCacheIfNewRound(state.Phase);
         var lines = BuildFrameLines(state);
         frameBuffer.Render(lines);
@@ -149,15 +161,10 @@ public class ConsolePokerRenderer
     {
         var isCurrent = currentPlayerName == player.Name;
 
-        if (player.IsFolded)
-            ConsoleColorScope.Foreground(ConsoleColor.DarkGray);
-
         Console.Write(isCurrent ? "▶ " : "  ");
-
-        ConsolePokerWriter.WritePlayerName(player);
-
+        Console.Write(ConsolePokerWriter.FormatPlayerName(player));
         Console.Write(" (");
-        ConsolePokerWriter.WriteAmount(player.Chips);
+        Console.Write(ConsolePokerWriter.FormatAmount(player.Chips));
         Console.Write("): ");
 
         bool canShowHand =
@@ -167,7 +174,7 @@ public class ConsolePokerRenderer
         if (canShowHand)
         {
             Console.Write(" ");
-            ConsolePokerWriter.WriteHand(player.Hand!);
+            Console.Write(ConsolePokerWriter.FormatHand(player.Hand!));
             WriteScoreAndProbability(player, state, currentPlayerName);
         }
 
@@ -175,13 +182,9 @@ public class ConsolePokerRenderer
             Console.Write($" [{player.LastAction.ToDisplayString()}]");
 
         if (player.IsWinner)
-        {
-            using (ConsoleColorScope.Foreground(ConsoleColor.Green))
-                Console.Write($" {{{ConsoleText.WinnerTag.ToUpperInvariant()}}}");
-        }
+            Console.Write($" {{{ConsolePokerWriter.FormatWinnerTag(ConsoleText.WinnerTag.ToUpperInvariant())}}}");
 
         Console.WriteLine();
-        Console.ResetColor();
     }
 
     private void WriteScoreAndProbability(PokerPlayerState player, PokerGameState state, string currentPlayerName)
@@ -283,7 +286,10 @@ public class ConsolePokerRenderer
         var preFlop = Phase.PreFlop.ToString();
 
         if (phase == preFlop && lastRenderedPhase != preFlop)
+        {
             ResetRoundCache();
+            frameBuffer.Reset();
+        }
 
         lastRenderedPhase = phase;
     }

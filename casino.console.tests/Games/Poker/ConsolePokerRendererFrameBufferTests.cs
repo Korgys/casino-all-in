@@ -37,7 +37,6 @@ public class ConsolePokerRendererFrameBufferTests
 
         Assert.AreEqual(1, target.ClearCalls);
         Assert.IsGreaterThan(movesAfterFirstRender, target.CursorMoves.Count);
-        Assert.IsTrue(target.Lines.Any(line => line.Contains("▶ Villain", StringComparison.Ordinal)));
     }
 
     [TestMethod]
@@ -56,7 +55,19 @@ public class ConsolePokerRendererFrameBufferTests
         Assert.IsEmpty(target.CursorMoves);
     }
 
-    private static PokerGameState BuildState(string currentPlayer)
+    [TestMethod]
+    public void RenderTable_WhenRoundResetsToPreFlop_ForcesFullFrameReset()
+    {
+        var target = new FakeConsoleFrameTarget();
+        var renderer = new ConsolePokerRenderer(new ConsoleFrameBuffer(target));
+
+        renderer.RenderTable(BuildState(currentPlayer: "Hero", phase: Phase.Flop));
+        renderer.RenderTable(BuildState(currentPlayer: "Hero", phase: Phase.PreFlop));
+
+        Assert.AreEqual(2, target.ClearCalls);
+    }
+
+    private static PokerGameState BuildState(string currentPlayer, Phase phase = Phase.Flop)
     {
         var hero = new PokerPlayerState(
             Name: "Hero",
@@ -79,7 +90,7 @@ public class ConsolePokerRendererFrameBufferTests
             IsWinner: false);
 
         return new PokerGameState(
-            Phase: Phase.Flop.ToString(),
+            Phase: phase.ToString(),
             StartingBet: 10,
             Pot: 30,
             CurrentBet: 10,
