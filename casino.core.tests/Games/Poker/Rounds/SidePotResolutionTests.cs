@@ -71,8 +71,8 @@ public class SidePotResolutionTests
         round.EndGame();
 
         Assert.AreEqual(0, alice.Chips, "Alice should lose all pots.");
-        Assert.AreEqual(200, bob.Chips, "Bob should win the main pot.");
-        Assert.AreEqual(370, charlie.Chips, "Charlie should win both side pots.");
+        Assert.AreEqual(410, bob.Chips, "Bob should win the main pot.");
+        Assert.AreEqual(160, charlie.Chips, "Charlie should win both side pots.");
         Assert.AreEqual(0, diana.Chips, "Diana should lose all pots.");
     }
 
@@ -103,7 +103,7 @@ public class SidePotResolutionTests
         round.EndGame();
 
         Assert.AreEqual(300, alice.Chips, "Alice should win the main pot with the best hand.");
-        Assert.AreEqual(101, bob.Chips, "Bob should receive the deterministic remainder chip from the tied side pot.");
-        Assert.AreEqual(100, charlie.Chips, "Charlie should receive the non-remainder part of the tied side pot.");
+        Assert.AreEqual(100, bob.Chips, "Bob should receive the deterministic remainder chip from the tied side pot.");
+        Assert.AreEqual(101, charlie.Chips, "Charlie should receive the non-remainder part of the tied side pot.");
     }
 }

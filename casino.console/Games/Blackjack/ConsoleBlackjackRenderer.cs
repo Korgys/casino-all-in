@@ -44,7 +44,7 @@ public static class ConsoleBlackjackRenderer
 
     private static IReadOnlyList<string> BuildFrameLines(BlackjackGameState state)
     {
-        return CaptureConsoleLines(() =>
+        return ConsoleOutputCapture.CaptureLines(() =>
         {
             var frameWidth = ConsoleLayout.ResolveContentWidth(PreferredWidth);
             RenderHeader(frameWidth);
@@ -61,33 +61,6 @@ public static class ConsoleBlackjackRenderer
             if (state.IsRoundOver && state.RoundOutcome == BlackjackRoundOutcome.PlayerWin)
                 RenderWinAnimation();
         });
-    }
-
-    private static List<string> CaptureConsoleLines(Action render)
-    {
-        var originalOut = Console.Out;
-        var writer = new StringWriter();
-
-        try
-        {
-            Console.SetOut(writer);
-            render();
-        }
-        finally
-        {
-            Console.SetOut(originalOut);
-        }
-
-        return SplitLines(writer.ToString());
-    }
-
-    private static List<string> SplitLines(string text)
-    {
-        var lines = text.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n').ToList();
-        if (lines.Count > 0 && lines[^1].Length == 0)
-            lines.RemoveAt(lines.Count - 1);
-
-        return lines;
     }
 
     /// <summary>

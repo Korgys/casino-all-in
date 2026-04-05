@@ -87,7 +87,7 @@ public class ConsolePokerRenderer
 
     private IReadOnlyList<string> BuildFrameLines(PokerGameState state)
     {
-        return CaptureConsoleLines(() =>
+        return ConsoleOutputCapture.CaptureLines(() =>
         {
             var tableWidth = ConsoleLayout.ResolveContentWidth(PreferredTableWidth);
 
@@ -103,33 +103,6 @@ public class ConsolePokerRenderer
             foreach (var player in state.Players)
                 RenderPlayerLine(player, state.CurrentPlayer, state);
         });
-    }
-
-    private static List<string> CaptureConsoleLines(Action render)
-    {
-        var originalOut = Console.Out;
-        var writer = new StringWriter();
-
-        try
-        {
-            Console.SetOut(writer);
-            render();
-        }
-        finally
-        {
-            Console.SetOut(originalOut);
-        }
-
-        return SplitLines(writer.ToString());
-    }
-
-    private static List<string> SplitLines(string text)
-    {
-        var lines = text.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n').ToList();
-        if (lines.Count > 0 && lines[^1].Length == 0)
-            lines.RemoveAt(lines.Count - 1);
-
-        return lines;
     }
 
     /// <summary>
