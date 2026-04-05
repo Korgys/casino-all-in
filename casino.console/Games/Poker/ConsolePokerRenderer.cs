@@ -38,9 +38,20 @@ public class ConsolePokerRenderer
         _estimateWinProbability = DefaultEstimateWinProbability;
     }
 
+    private readonly ConsoleFrameBuffer frameBuffer;
     private readonly Dictionary<string, ProbabilityCacheEntry> winProbabilityByPlayer = new();
     private readonly Dictionary<string, PendingProbabilityEntry> pendingProbabilityByPlayer = new();
     private string? lastRenderedPhase;
+
+    public ConsolePokerRenderer()
+        : this(new ConsoleFrameBuffer(new SystemConsoleFrameTarget()))
+    {
+    }
+
+    public ConsolePokerRenderer(ConsoleFrameBuffer frameBuffer)
+    {
+        this.frameBuffer = frameBuffer ?? throw new ArgumentNullException(nameof(frameBuffer));
+    }
 
     public bool DetailedOddsEnabled { get; set; }
     public bool UseAsyncProbabilityComputation { get; set; }
@@ -57,24 +68,56 @@ public class ConsolePokerRenderer
     /// <param name="state">The current poker game state.</param>
     public void RenderTable(PokerGameState state)
     {
-        Console.Clear();
         ResetRoundCacheIfNewRound(state.Phase);
+        var lines = BuildFrameLines(state);
+        frameBuffer.Render(lines);
+    }
 
-        Console.SetCursorPosition(0, 0);
+    private IReadOnlyList<string> BuildFrameLines(PokerGameState state)
+    {
+        return CaptureConsoleLines(() =>
+        {
+            var tableWidth = ConsoleLayout.ResolveContentWidth(PreferredTableWidth);
 
-        var tableWidth = ConsoleLayout.ResolveContentWidth(PreferredTableWidth);
+            ConsoleLayout.WriteTopBorder(tableWidth);
 
-        ConsoleLayout.WriteTopBorder(tableWidth);
+            ConsoleLayout.WriteFramedLine(BuildHeaderLine(state), tableWidth);
+            ConsoleLayout.WriteSeparator(tableWidth);
+            ConsoleLayout.WriteFramedLine(BuildTableLine(state), tableWidth);
 
-        ConsoleLayout.WriteFramedLine(BuildHeaderLine(state), tableWidth);
-        ConsoleLayout.WriteSeparator(tableWidth);
-        ConsoleLayout.WriteFramedLine(BuildTableLine(state), tableWidth);
+            ConsoleLayout.WriteBottomBorder(tableWidth);
+            Console.WriteLine();
 
-        ConsoleLayout.WriteBottomBorder(tableWidth);
-        Console.WriteLine();
+            foreach (var player in state.Players)
+                RenderPlayerLine(player, state.CurrentPlayer, state);
+        });
+    }
 
-        foreach (var player in state.Players)
-            RenderPlayerLine(player, state.CurrentPlayer, state);
+    private static List<string> CaptureConsoleLines(Action render)
+    {
+        var originalOut = Console.Out;
+        var writer = new StringWriter();
+
+        try
+        {
+            Console.SetOut(writer);
+            render();
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+
+        return SplitLines(writer.ToString());
+    }
+
+    private static List<string> SplitLines(string text)
+    {
+        var lines = text.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n').ToList();
+        if (lines.Count > 0 && lines[^1].Length == 0)
+            lines.RemoveAt(lines.Count - 1);
+
+        return lines;
     }
 
     /// <summary>

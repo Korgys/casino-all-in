@@ -11,6 +11,7 @@ namespace casino.console.Games.Blackjack;
 public static class ConsoleBlackjackRenderer
 {
     private const int PreferredWidth = 46;
+    private static ConsoleFrameBuffer FrameBuffer = new(new SystemConsoleFrameTarget());
     private static Action<int> _pause = Thread.Sleep;
 
     /// <summary>
@@ -37,30 +38,56 @@ public static class ConsoleBlackjackRenderer
     /// <param name="state">The blackjack game state.</param>
     public static void RenderTable(BlackjackGameState state)
     {
+        var lines = BuildFrameLines(state);
+        FrameBuffer.Render(lines);
+    }
+
+    private static IReadOnlyList<string> BuildFrameLines(BlackjackGameState state)
+    {
+        return CaptureConsoleLines(() =>
+        {
+            var frameWidth = ConsoleLayout.ResolveContentWidth(PreferredWidth);
+            RenderHeader(frameWidth);
+            Console.WriteLine();
+
+            RenderHand(ConsoleText.BlackjackDealer, state.DealerCards, state.IsDealerHoleCardHidden);
+            RenderHand(ConsoleText.BlackjackYou, state.PlayerCards, hideHoleCard: false);
+
+            Console.WriteLine();
+            RenderStatus(state);
+            Console.WriteLine();
+            RenderStats(state);
+
+            if (state.IsRoundOver && state.RoundOutcome == BlackjackRoundOutcome.PlayerWin)
+                RenderWinAnimation();
+        });
+    }
+
+    private static List<string> CaptureConsoleLines(Action render)
+    {
+        var originalOut = Console.Out;
+        var writer = new StringWriter();
+
         try
         {
-            Console.Clear();
+            Console.SetOut(writer);
+            render();
         }
-        catch
+        finally
         {
-            // Ignore any exceptions from Console.Clear (e.g., if the console is not available)
+            Console.SetOut(originalOut);
         }
 
+        return SplitLines(writer.ToString());
+    }
 
-        var frameWidth = ConsoleLayout.ResolveContentWidth(PreferredWidth);
-        RenderHeader(frameWidth);
-        Console.WriteLine();
+    private static List<string> SplitLines(string text)
+    {
+        var lines = text.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n').ToList();
+        if (lines.Count > 0 && lines[^1].Length == 0)
+            lines.RemoveAt(lines.Count - 1);
 
-        RenderHand(ConsoleText.BlackjackDealer, state.DealerCards, state.IsDealerHoleCardHidden);
-        RenderHand(ConsoleText.BlackjackYou, state.PlayerCards, hideHoleCard: false);
-
-        Console.WriteLine();
-        RenderStatus(state);
-        Console.WriteLine();
-        RenderStats(state);
-
-        if (state.IsRoundOver && state.RoundOutcome == BlackjackRoundOutcome.PlayerWin)
-            RenderWinAnimation();
+        return lines;
     }
 
     /// <summary>

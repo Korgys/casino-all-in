@@ -13,7 +13,19 @@ namespace casino.console.Games.Slots;
 public static class ConsoleSlotMachineRenderer
 {
     private const int PreferredWidth = 46;
+    private static ConsoleFrameBuffer FrameBuffer = new(new SystemConsoleFrameTarget());
     private static Action<int> _pause = Thread.Sleep;
+
+    internal static void SetPauseForTests(Action<int> pause)
+    {
+        ArgumentNullException.ThrowIfNull(pause);
+        _pause = pause;
+    }
+
+    internal static void ResetPause()
+    {
+        _pause = Thread.Sleep;
+    }
 
     /// <summary>
     /// Renders the full slot machine table.
@@ -21,25 +33,53 @@ public static class ConsoleSlotMachineRenderer
     /// <param name="state">The slot machine game state.</param>
     public static void RenderTable(SlotMachineGameState state)
     {
+        var lines = BuildFrameLines(state);
+        FrameBuffer.Render(lines);
+    }
+
+    private static IReadOnlyList<string> BuildFrameLines(SlotMachineGameState state)
+    {
+        return CaptureConsoleLines(() =>
+        {
+            var frameWidth = ConsoleLayout.ResolveContentWidth(PreferredWidth);
+            RenderHeader(frameWidth);
+            Console.WriteLine();
+            RenderMachine(state, frameWidth);
+            Console.WriteLine();
+            RenderStatus(state);
+            Console.WriteLine();
+            RenderStats(state);
+
+            if (state.IsRoundOver && state.LastPayout > 0)
+                RenderWinAnimation(state.IsJackpot);
+        });
+    }
+
+    private static List<string> CaptureConsoleLines(Action render)
+    {
+        var originalOut = Console.Out;
+        var writer = new StringWriter();
+
         try
         {
-            Console.Clear();
+            Console.SetOut(writer);
+            render();
         }
-        catch
+        finally
         {
-            // Ignore console clearing issues in redirected test environments.
+            Console.SetOut(originalOut);
         }
-        var frameWidth = ConsoleLayout.ResolveContentWidth(PreferredWidth);
-        RenderHeader(frameWidth);
-        Console.WriteLine();
-        RenderMachine(state, frameWidth);
-        Console.WriteLine();
-        RenderStatus(state);
-        Console.WriteLine();
-        RenderStats(state);
 
-        if (state.IsRoundOver && state.LastPayout > 0)
-            RenderWinAnimation(state.IsJackpot);
+        return SplitLines(writer.ToString());
+    }
+
+    private static List<string> SplitLines(string text)
+    {
+        var lines = text.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n').ToList();
+        if (lines.Count > 0 && lines[^1].Length == 0)
+            lines.RemoveAt(lines.Count - 1);
+
+        return lines;
     }
 
     /// <summary>
