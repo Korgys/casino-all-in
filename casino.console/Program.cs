@@ -23,13 +23,13 @@ public static class Program
     private static readonly ConsolePokerRenderer PokerRenderer = new();
     private static readonly LanguageOption[] LanguageOptions =
     [
-        new(1, new CultureInfo("fr-FR"), () => ConsoleText.LanguageFrench, ["1", "fr", "francais", "français"]),
-        new(2, new CultureInfo("en"), () => ConsoleText.LanguageEnglish, ["2", "en", "english"]),
-        new(3, new CultureInfo("de-DE"), () => ConsoleText.LanguageGerman, ["3", "de", "deutsch", "german", "allemand"]),
-        new(4, new CultureInfo("es-ES"), () => ConsoleText.LanguageSpanish, ["4", "es", "spanish", "espanol", "español"]),
-        new(5, new CultureInfo("ja-JP"), () => ConsoleText.LanguageJapanese, ["5", "ja", "jp", "japanese", "nihongo", "日本語"]),
-        new(6, new CultureInfo("zh-Hans"), () => ConsoleText.LanguageSimplifiedChinese, ["6", "zh", "zh-cn", "zh-hans", "chinese", "中文", "简体中文"]),
-        new(7, new CultureInfo("ru-RU"), () => ConsoleText.LanguageRussian, ["7", "ru", "russian", "russkiy", "russkij", "русский"])
+        new(1, new CultureInfo("fr-FR"), () => "🇫🇷 " + ConsoleText.LanguageFrench, ["1", "fr", "francais", "français"]),
+        new(2, new CultureInfo("en"), () => "🇬🇧 " + ConsoleText.LanguageEnglish, ["2", "en", "english"]),
+        new(3, new CultureInfo("de-DE"), () => "🇩🇪 " + ConsoleText.LanguageGerman, ["3", "de", "deutsch", "german", "allemand"]),
+        new(4, new CultureInfo("es-ES"), () => "🇪🇸 " + ConsoleText.LanguageSpanish, ["4", "es", "spanish", "espanol", "español"]),
+        new(5, new CultureInfo("ja-JP"), () => "🇯🇵 " + ConsoleText.LanguageJapanese, ["5", "ja", "jp", "japanese", "nihongo", "日本語"]),
+        new(6, new CultureInfo("zh-Hans"), () => "🇨🇳 " + ConsoleText.LanguageSimplifiedChinese, ["6", "zh", "zh-cn", "zh-hans", "chinese", "中文", "简体中文"]),
+        new(7, new CultureInfo("ru-RU"), () => "🇷🇺 " + ConsoleText.LanguageRussian, ["7", "ru", "russian", "russkiy", "russkij", "русский"])
     ];
 
     private static readonly Dictionary<string, LanguageOption> LanguageOptionsByAlias =
