@@ -83,11 +83,20 @@ public sealed class ConsoleFrameBuffer
                 continue;
 
             target.SetCursorPosition(0, index);
-            target.Write(next.PadRight(Math.Max(previous.Length, next.Length)));
+            target.Write(PadRightVisible(next, Math.Max(ConsoleLayout.GetVisibleLength(previous), ConsoleLayout.GetVisibleLength(next))));
         }
 
         target.SetCursorPosition(0, nextLines.Count);
         SaveSnapshot(nextLines);
+    }
+
+    private static string PadRightVisible(string value, int totalVisibleWidth)
+    {
+        var visibleLength = ConsoleLayout.GetVisibleLength(value);
+        if (visibleLength >= totalVisibleWidth)
+            return value;
+
+        return value + new string(' ', totalVisibleWidth - visibleLength);
     }
 
     private void DrawFullFrame(IReadOnlyList<string> lines, bool clearBeforeDraw)

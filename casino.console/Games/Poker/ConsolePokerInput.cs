@@ -38,7 +38,7 @@ public static class ConsolePokerInput
     /// <returns>The configured poker game setup.</returns>
     public static PokerGameSetup PromptGameSetup()
     {
-        Console.Clear();
+        RequestFullConsoleRefresh();
         var frameWidth = ConsoleLayout.ResolveContentWidth(46);
         ConsoleLayout.WriteTopBorder(frameWidth);
         ConsoleLayout.WriteFramedLine($" {ConsoleText.PokerSettingsTitle} ", frameWidth);
@@ -64,7 +64,7 @@ public static class ConsolePokerInput
         for (var index = 1; index < playerCount; index++)
             opponents.Add(new PokerOpponentSetup(difficulty));
 
-        Console.Clear(); // To avoid UI bugs in the poker table rendering
+        RequestFullConsoleRefresh(); // To avoid UI bugs in the poker table rendering
 
         return new PokerGameSetup(initialChips, playerCount, opponents);
     }
@@ -94,7 +94,6 @@ public static class ConsolePokerInput
                 invalidAttempts++;
                 Console.WriteLine(ConsoleText.InvalidNumberInput);
                 WriteNumberMenuHintIfNeeded(invalidAttempts);
-                RefreshPlayerActionScreen(state, availableActions, minimumBet);
                 continue;
             }
 
@@ -104,18 +103,7 @@ public static class ConsolePokerInput
             invalidAttempts++;
             Console.WriteLine(ConsoleText.ActionUnavailable(raw));
             WriteNumberMenuHintIfNeeded(invalidAttempts);
-            RefreshPlayerActionScreen(state, availableActions, minimumBet);
         }
-    }
-
-    private static void RefreshPlayerActionScreen(
-        PokerGameState state,
-        IReadOnlyList<PokerTypeAction> availableActions,
-        int minimumBet)
-    {
-        RequestFullConsoleRefresh();
-        new ConsolePokerRenderer().RenderTable(state);
-        ConsolePokerRenderer.RenderAvailableActions(availableActions, minimumBet);
     }
 
     private static void RequestFullConsoleRefresh()

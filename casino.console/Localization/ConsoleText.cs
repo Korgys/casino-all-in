@@ -65,10 +65,12 @@ internal static class ConsoleText
     public static string SlotJackpotAnimation => Get(nameof(SlotJackpotAnimation));
     public static string SlotWinAnimation => Get(nameof(SlotWinAnimation));
     public static string WinnerTag => Get(nameof(WinnerTag));
+    public static string PokerDifficultyBeginner => Get(nameof(PokerDifficultyBeginner));
+    public static string PokerDifficultyVeryEasy => Get(nameof(PokerDifficultyVeryEasy));
     public static string PokerDifficultyEasy => Get(nameof(PokerDifficultyEasy));
     public static string PokerDifficultyMedium => Get(nameof(PokerDifficultyMedium));
     public static string PokerDifficultyHard => Get(nameof(PokerDifficultyHard));
-    public static string PokerDifficultyExpert => Get(nameof(PokerDifficultyExpert));
+    public static string PokerDifficultyVeryHard => Get(nameof(PokerDifficultyVeryHard));
 
     public static string InitialChipsPrompt(int min, int max) => string.Format(Get(nameof(InitialChipsPrompt)), min, max);
     public static string PlayerCountPrompt(int min, int max) => string.Format(Get(nameof(PlayerCountPrompt)), min, max);
@@ -84,10 +86,12 @@ internal static class ConsoleText
 
     public static string PokerDifficultyLabel(PokerDifficulty difficulty) => difficulty switch
     {
+        PokerDifficulty.Beginner => PokerDifficultyBeginner,
+        PokerDifficulty.VeryEasy => PokerDifficultyVeryEasy,
         PokerDifficulty.Easy => PokerDifficultyEasy,
         PokerDifficulty.Medium => PokerDifficultyMedium,
         PokerDifficulty.Hard => PokerDifficultyHard,
-        PokerDifficulty.Expert => PokerDifficultyExpert,
+        PokerDifficulty.VeryHard => PokerDifficultyVeryHard,
         _ => difficulty.ToString()
     };
 }

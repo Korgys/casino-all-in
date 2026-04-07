@@ -46,7 +46,7 @@ public class ConsoleGameFactory : IGameFactory
             players.Add(new ComputerPlayer(
                 $"Ordi {index + 1} ({ConsoleText.PokerDifficultyLabel(opponent.Difficulty)})",
                 configuration.InitialChips,
-                CreateStrategy(opponent.Difficulty)));
+                DifficultyStrategyFactory.Create(opponent.Difficulty)));
         }
 
         return new PokerGame(players, () => new Deck(), humanActionSelector, continuePlaying, new ConsoleWaitStrategy());
@@ -60,17 +60,5 @@ public class ConsoleGameFactory : IGameFactory
     public static IGame CreateSlotMachine(Func<SlotMachineGameState, int> betSelector, Func<bool> continuePlaying)
     {
         return new SlotMachineGame(betSelector, continuePlaying);
-    }
-
-    private static IPlayerStrategy CreateStrategy(PokerDifficulty difficulty)
-    {
-        return difficulty switch
-        {
-            PokerDifficulty.Easy => new RandomStrategy(),
-            PokerDifficulty.Medium => new ConservativeStrategy(),
-            PokerDifficulty.Hard => new OpportunisticStrategy(),
-            PokerDifficulty.Expert => new AggressiveStrategy(),
-            _ => new RandomStrategy()
-        };
     }
 }

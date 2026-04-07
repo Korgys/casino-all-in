@@ -1,4 +1,5 @@
 using casino.console.Games.Poker;
+using casino.console.Localization;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
@@ -80,7 +81,7 @@ public class ConsolePokerInputTests
     }
 
     [TestMethod]
-    public void GetPlayerAction_InvalidChoice_RefreshesActionMenu()
+    public void GetPlayerAction_InvalidChoice_DisplaysErrorAndKeepsMenuVisible()
     {
         var request = CreateRequest(
             playerName: "Alice",
@@ -102,7 +103,10 @@ public class ConsolePokerInputTests
             var action = ConsolePokerInput.GetPlayerAction(request);
 
             Assert.AreEqual(PokerTypeAction.Check, action.TypeAction);
-            Assert.AreEqual(2, CountOccurrences(writer.ToString(), "┌"));
+            Assert.IsTrue(writer.ToString().Contains(ConsoleText.ActionChoicePrompt));
+            Assert.IsTrue(
+                writer.ToString().Contains(ConsoleText.InvalidNumberInput) ||
+                writer.ToString().Contains(ConsoleText.ActionUnavailable(999)));
         }
         finally
         {
@@ -135,6 +139,32 @@ public class ConsolePokerInputTests
         finally
         {
             Console.SetIn(originalIn);
+        }
+    }
+
+
+    [TestMethod]
+    public void PromptGameSetup_WithVeryHardDifficulty_ShouldApplyToAllOpponents()
+    {
+        var originalIn = Console.In;
+        var originalOut = Console.Out;
+
+        try
+        {
+            Console.SetIn(new StringReader("1000\n4\n6\n"));
+            Console.SetOut(new StringWriter());
+
+            var setup = ConsolePokerInput.PromptGameSetup();
+
+            Assert.AreEqual(1000, setup.InitialChips);
+            Assert.AreEqual(4, setup.PlayerCount);
+            Assert.HasCount(3, setup.Opponents);
+            Assert.IsTrue(setup.Opponents.All(o => o.Difficulty == PokerDifficulty.VeryHard));
+        }
+        finally
+        {
+            Console.SetIn(originalIn);
+            Console.SetOut(originalOut);
         }
     }
 

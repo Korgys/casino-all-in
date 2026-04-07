@@ -10,7 +10,7 @@ public class PokerSetupTests
     {
         var opponents = new List<PokerOpponentSetup>
         {
-            new(PokerDifficulty.Easy),
+            new(PokerDifficulty.Beginner),
             new(PokerDifficulty.Hard)
         };
 
@@ -22,10 +22,12 @@ public class PokerSetupTests
     }
 
     [TestMethod]
+    [DataRow(PokerDifficulty.Beginner, "Débutant")]
+    [DataRow(PokerDifficulty.VeryEasy, "Très facile")]
     [DataRow(PokerDifficulty.Easy, "Facile")]
     [DataRow(PokerDifficulty.Medium, "Moyen")]
     [DataRow(PokerDifficulty.Hard, "Difficile")]
-    [DataRow(PokerDifficulty.Expert, "Expert")]
+    [DataRow(PokerDifficulty.VeryHard, "Très difficile")]
     public void PokerOpponentSetup_Label_ShouldMapEachKnownDifficulty(PokerDifficulty difficulty, string expectedLabel)
     {
         var opponentSetup = new PokerOpponentSetup(difficulty);

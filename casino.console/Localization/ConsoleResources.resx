@@ -129,6 +129,12 @@
   <data name="WinnerTag" xml:space="preserve">
     <value>Gagnant</value>
   </data>
+  <data name="PokerDifficultyBeginner" xml:space="preserve">
+    <value>Débutant</value>
+  </data>
+  <data name="PokerDifficultyVeryEasy" xml:space="preserve">
+    <value>Très facile</value>
+  </data>
   <data name="PokerDifficultyEasy" xml:space="preserve">
     <value>Facile</value>
   </data>
@@ -137,6 +143,9 @@
   </data>
   <data name="PokerDifficultyHard" xml:space="preserve">
     <value>Difficile</value>
+  </data>
+  <data name="PokerDifficultyVeryHard" xml:space="preserve">
+    <value>Très difficile</value>
   </data>
   <data name="PokerDifficultyExpert" xml:space="preserve">
     <value>Expert</value>

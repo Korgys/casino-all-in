@@ -37,11 +37,14 @@ public class ConsoleGameFactoryTests
     public void CreatePoker_UsesCustomSetupForChipsAndStrategies()
     {
         var factory = new ConsoleGameFactory();
-        var setup = new PokerGameSetup(2200, 4,
+        var setup = new PokerGameSetup(2200, 7,
         [
+            new PokerOpponentSetup(PokerDifficulty.Beginner),
+            new PokerOpponentSetup(PokerDifficulty.VeryEasy),
             new PokerOpponentSetup(PokerDifficulty.Easy),
             new PokerOpponentSetup(PokerDifficulty.Medium),
-            new PokerOpponentSetup(PokerDifficulty.Expert)
+            new PokerOpponentSetup(PokerDifficulty.Hard),
+            new PokerOpponentSetup(PokerDifficulty.VeryHard)
         ]);
 
         var game = factory.CreatePoker(_ => new GameAction(PokerTypeAction.Check), () => false, setup);
@@ -52,12 +55,12 @@ public class ConsoleGameFactoryTests
         Assert.IsNotNull(field);
 
         var players = (IReadOnlyList<Player>)field.GetValue(game)!;
-        Assert.HasCount(4, players);
+        Assert.HasCount(7, players);
         Assert.IsTrue(players.All(player => player.Chips == 2200));
         Assert.IsInstanceOfType<HumanPlayer>(players[0]);
-        Assert.IsInstanceOfType<RandomStrategy>(((ComputerPlayer)players[1]).Strategy);
-        Assert.IsInstanceOfType<ConservativeStrategy>(((ComputerPlayer)players[2]).Strategy);
-        Assert.IsInstanceOfType<AggressiveStrategy>(((ComputerPlayer)players[3]).Strategy);
+
+        for (var i = 1; i < players.Count; i++)
+            Assert.IsInstanceOfType<AdaptiveStrategy>(((ComputerPlayer)players[i]).Strategy);
     }
 
     [TestMethod]

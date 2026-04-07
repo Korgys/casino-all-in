@@ -2,13 +2,19 @@
 
 public sealed record PokerGameSetup(int InitialChips, int PlayerCount, IReadOnlyList<PokerOpponentSetup> Opponents)
 {
+    /// <summary>
+    /// Default setup table for a poker game with 
+    /// 1000 initial chips, 6 players, and opponents of varying difficulties.
+    /// </summary>
+    /// <returns></returns>
     public static PokerGameSetup CreateDefault() =>
-        new(1000, 5,
+        new(1000, 6,
         [
-            new PokerOpponentSetup(PokerDifficulty.Hard),
-            new PokerOpponentSetup(PokerDifficulty.Expert),
+            new PokerOpponentSetup(PokerDifficulty.Beginner),
+            new PokerOpponentSetup(PokerDifficulty.VeryEasy),
+            new PokerOpponentSetup(PokerDifficulty.Easy),
             new PokerOpponentSetup(PokerDifficulty.Medium),
-            new PokerOpponentSetup(PokerDifficulty.Easy)
+            new PokerOpponentSetup(PokerDifficulty.Hard)
         ]);
 }
 
@@ -16,18 +22,22 @@ public sealed record PokerOpponentSetup(PokerDifficulty Difficulty)
 {
     public string Label => Difficulty switch
     {
+        PokerDifficulty.Beginner => "Débutant",
+        PokerDifficulty.VeryEasy => "Très facile",
         PokerDifficulty.Easy => "Facile",
         PokerDifficulty.Medium => "Moyen",
         PokerDifficulty.Hard => "Difficile",
-        PokerDifficulty.Expert => "Expert",
+        PokerDifficulty.VeryHard => "Très difficile",
         _ => Difficulty.ToString()
     };
 }
 
 public enum PokerDifficulty
 {
-    Easy = 1,
-    Medium = 2,
-    Hard = 3,
-    Expert = 4,
+    Beginner = 1,
+    VeryEasy = 2,
+    Easy = 3,
+    Medium = 4,
+    Hard = 5,
+    VeryHard = 6,
 }
