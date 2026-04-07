@@ -198,4 +198,4 @@
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
-</root>
+<data name="InvalidNumberInput" xml:space="preserve"><value>Некорректный ввод. Введите число.</value></data><data name="TypeNumberMenuHelp" xml:space="preserve"><value>Подсказка: введите номер из меню.</value></data><data name="ActionUnavailable" xml:space="preserve"><value>Вариант {0} сейчас недоступен.</value></data><data name="RaiseTargetPromptWithConstraints" xml:space="preserve"><value>Введите размер повышения (текущая ставка {0}c, ваш вклад {1}c, максимум {2}c): </value></data><data name="RaiseAmountUnavailable" xml:space="preserve"><value>Некорректный рейз. Значение должно быть больше текущей ставки ({0}c) и не более {1}c.</value></data><data name="InputCanceledUsingDefault" xml:space="preserve"><value>Выбран возврат, используется значение по умолчанию: {0}.</value></data></root>

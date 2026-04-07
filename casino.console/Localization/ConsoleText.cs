@@ -33,6 +33,8 @@ internal static class ConsoleText
     public static string ContinuePokerPrompt => Get(nameof(ContinuePokerPrompt));
     public static string ActionChoicePrompt => Get(nameof(ActionChoicePrompt));
     public static string RaiseTargetPrompt => Get(nameof(RaiseTargetPrompt));
+    public static string InvalidNumberInput => Get(nameof(InvalidNumberInput));
+    public static string TypeNumberMenuHelp => Get(nameof(TypeNumberMenuHelp));
     public static string InvalidDifficulty => Get(nameof(InvalidDifficulty));
     public static string BetLabel => Get(nameof(BetLabel));
     public static string PotLabel => Get(nameof(PotLabel));
@@ -73,6 +75,12 @@ internal static class ConsoleText
     public static string DifficultyPrompt(string defaultValue) => string.Format(Get(nameof(DifficultyPrompt)), defaultValue);
     public static string RangeError(int min, int max) => string.Format(Get(nameof(RangeError)), min, max);
     public static string SlotBetPrompt(int bet) => string.Format(Get(nameof(SlotBetPrompt)), bet);
+    public static string RaiseTargetPromptWithConstraints(int currentBet, int contribution, int maxAllowed) =>
+        string.Format(Get(nameof(RaiseTargetPromptWithConstraints)), currentBet, contribution, maxAllowed);
+    public static string RaiseAmountUnavailable(int currentBet, int maxAllowed) =>
+        string.Format(Get(nameof(RaiseAmountUnavailable)), currentBet, maxAllowed);
+    public static string ActionUnavailable(int choice) => string.Format(Get(nameof(ActionUnavailable)), choice);
+    public static string InputCanceledUsingDefault(string defaultValue) => string.Format(Get(nameof(InputCanceledUsingDefault)), defaultValue);
 
     public static string PokerDifficultyLabel(PokerDifficulty difficulty) => difficulty switch
     {

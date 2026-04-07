@@ -198,4 +198,4 @@
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
-</root>
+<data name="InvalidNumberInput" xml:space="preserve"><value>Ungültige Eingabe. Bitte eine Zahl eingeben.</value></data><data name="TypeNumberMenuHelp" xml:space="preserve"><value>Hinweis: Geben Sie eine Nummer aus dem Menü ein.</value></data><data name="ActionUnavailable" xml:space="preserve"><value>Auswahl {0} ist derzeit nicht verfügbar.</value></data><data name="RaiseTargetPromptWithConstraints" xml:space="preserve"><value>Geben Sie Ihr Raise-Ziel ein (aktueller Einsatz {0}c, Ihr Beitrag {1}c, maximal {2}c): </value></data><data name="RaiseAmountUnavailable" xml:space="preserve"><value>Ungültiges Raise. Ziel muss größer als der aktuelle Einsatz ({0}c) und höchstens {1}c sein.</value></data><data name="InputCanceledUsingDefault" xml:space="preserve"><value>Zurück gewählt, Standardwert wird verwendet: {0}.</value></data></root>

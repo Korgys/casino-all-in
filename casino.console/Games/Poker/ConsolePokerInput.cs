@@ -15,6 +15,7 @@ public static class ConsolePokerInput
     private const int MaximumPlayers = 6;
     private const int MinimumInitialChips = 100;
     private const int MaximumInitialChips = 5000;
+    private const int InvalidInputHintThreshold = 2;
 
     public static ActionModel GetPlayerAction(ActionRequest request)
     {
@@ -83,12 +84,16 @@ public static class ConsolePokerInput
     private static PokerTypeAction ReadActionChoice(PokerGameState state, IReadOnlyList<PokerTypeAction> availableActions, int minimumBet)
     {
         ConsolePokerRenderer.RenderAvailableActions(availableActions, minimumBet);
+        var invalidAttempts = 0;
 
         while (true)
         {
             Console.Write(ConsoleText.ActionChoicePrompt);
             if (!int.TryParse(Console.ReadLine(), out var raw))
             {
+                invalidAttempts++;
+                Console.WriteLine(ConsoleText.InvalidNumberInput);
+                WriteNumberMenuHintIfNeeded(invalidAttempts);
                 RefreshPlayerActionScreen(state, availableActions, minimumBet);
                 continue;
             }
@@ -96,6 +101,9 @@ public static class ConsolePokerInput
             if (availableActions.Any(a => (int)a == raw))
                 return (PokerTypeAction)raw;
 
+            invalidAttempts++;
+            Console.WriteLine(ConsoleText.ActionUnavailable(raw));
+            WriteNumberMenuHintIfNeeded(invalidAttempts);
             RefreshPlayerActionScreen(state, availableActions, minimumBet);
         }
     }
@@ -126,43 +134,69 @@ public static class ConsolePokerInput
 
     private static int ReadRaiseAmount(int maxChips, int actualBet, int currentContribution)
     {
+        var maxAllowedTarget = currentContribution + maxChips;
+        var invalidAttempts = 0;
+
         while (true)
         {
-            Console.Write(ConsoleText.RaiseTargetPrompt);
+            Console.Write(ConsoleText.RaiseTargetPromptWithConstraints(actualBet, currentContribution, maxAllowedTarget));
             if (!int.TryParse(Console.ReadLine(), out var amount))
+            {
+                invalidAttempts++;
+                Console.WriteLine(ConsoleText.InvalidNumberInput);
+                WriteNumberMenuHintIfNeeded(invalidAttempts);
                 continue;
+            }
 
             if (amount > actualBet && amount - currentContribution <= maxChips)
                 return amount;
+
+            invalidAttempts++;
+            Console.WriteLine(ConsoleText.RaiseAmountUnavailable(actualBet, maxAllowedTarget));
+            WriteNumberMenuHintIfNeeded(invalidAttempts);
         }
     }
 
     private static int ReadIntInRange(string prompt, int minValue, int maxValue, int defaultValue)
     {
+        var invalidAttempts = 0;
+
         while (true)
         {
             Console.Write(prompt);
             var input = (Console.ReadLine() ?? string.Empty).Trim();
 
-            if (string.IsNullOrEmpty(input))
+            if (string.IsNullOrEmpty(input) || IsCancelInput(input))
+            {
+                if (IsCancelInput(input))
+                    Console.WriteLine(ConsoleText.InputCanceledUsingDefault(defaultValue.ToString()));
                 return defaultValue;
+            }
 
             if (int.TryParse(input, out var value) && value >= minValue && value <= maxValue)
                 return value;
 
+            invalidAttempts++;
             Console.WriteLine(ConsoleText.RangeError(minValue, maxValue));
+            WriteNumberMenuHintIfNeeded(invalidAttempts);
         }
     }
 
     private static PokerDifficulty ReadDifficulty(string prompt, PokerDifficulty defaultDifficulty)
     {
+        var invalidAttempts = 0;
+
         while (true)
         {
             Console.Write(prompt);
             var input = (Console.ReadLine() ?? string.Empty).Trim();
 
-            if (string.IsNullOrEmpty(input))
+            if (string.IsNullOrEmpty(input) || IsCancelInput(input))
+            {
+                if (IsCancelInput(input))
+                    Console.WriteLine(ConsoleText.InputCanceledUsingDefault(ConsoleText.PokerDifficultyLabel(defaultDifficulty)));
                 return defaultDifficulty;
+            }
 
             if (int.TryParse(input, out var raw)
                 && Enum.IsDefined(typeof(PokerDifficulty), raw))
@@ -170,8 +204,24 @@ public static class ConsolePokerInput
                 return (PokerDifficulty)raw;
             }
 
+            invalidAttempts++;
             Console.WriteLine(ConsoleText.InvalidDifficulty);
+            WriteNumberMenuHintIfNeeded(invalidAttempts);
         }
+    }
+
+    private static bool IsCancelInput(string input)
+    {
+        var normalized = input.Trim().ToLowerInvariant();
+        return normalized is "b" or "back" or "cancel";
+    }
+
+    private static void WriteNumberMenuHintIfNeeded(int invalidAttempts)
+    {
+        if (invalidAttempts < InvalidInputHintThreshold)
+            return;
+
+        Console.WriteLine(ConsoleText.TypeNumberMenuHelp);
     }
 
     /// <summary>

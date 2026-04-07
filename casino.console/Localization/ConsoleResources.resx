@@ -198,4 +198,4 @@
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
-</root>
+<data name="InvalidNumberInput" xml:space="preserve"><value>Entrée invalide. Veuillez saisir un nombre.</value></data><data name="TypeNumberMenuHelp" xml:space="preserve"><value>Aide : tapez un numéro du menu.</value></data><data name="ActionUnavailable" xml:space="preserve"><value>Le choix {0} n'est pas disponible actuellement.</value></data><data name="RaiseTargetPromptWithConstraints" xml:space="preserve"><value>Entrez votre relance cible (mise actuelle {0}c, votre contribution {1}c, maximum autorisé {2}c) : </value></data><data name="RaiseAmountUnavailable" xml:space="preserve"><value>Relance invalide. La cible doit être supérieure à la mise actuelle ({0}c) et au plus {1}c.</value></data><data name="InputCanceledUsingDefault" xml:space="preserve"><value>Retour demandé, valeur par défaut utilisée : {0}.</value></data></root>

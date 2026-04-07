@@ -111,6 +111,33 @@ public class ConsolePokerInputTests
         }
     }
 
+    [TestMethod]
+    public void GetPlayerAction_RaiseAmount_AcceptsBoundaryAtMaximumAllowedTarget()
+    {
+        var request = CreateRequest(
+            playerName: "Alice",
+            availableActions: [PokerTypeAction.Raise],
+            minimumBet: 10,
+            currentBet: 20,
+            contribution: 5,
+            chips: 30);
+
+        var originalIn = Console.In;
+        try
+        {
+            Console.SetIn(new StringReader($"{(int)PokerTypeAction.Raise}\n20\n36\n35\n"));
+
+            var action = ConsolePokerInput.GetPlayerAction(request);
+
+            Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+            Assert.AreEqual(35, action.Amount);
+        }
+        finally
+        {
+            Console.SetIn(originalIn);
+        }
+    }
+
     private static ActionRequest CreateRequest(
         string playerName,
         IReadOnlyList<PokerTypeAction> availableActions,

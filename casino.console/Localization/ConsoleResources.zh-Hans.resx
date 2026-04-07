@@ -198,4 +198,4 @@
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
-</root>
+<data name="InvalidNumberInput" xml:space="preserve"><value>输入无效。请输入数字。</value></data><data name="TypeNumberMenuHelp" xml:space="preserve"><value>提示：请输入菜单中的数字。</value></data><data name="ActionUnavailable" xml:space="preserve"><value>选项 {0} 当前不可用。</value></data><data name="RaiseTargetPromptWithConstraints" xml:space="preserve"><value>请输入加注目标（当前下注 {0}c，你已投入 {1}c，最大允许 {2}c）：</value></data><data name="RaiseAmountUnavailable" xml:space="preserve"><value>加注无效。目标必须大于当前下注（{0}c）且不超过 {1}c。</value></data><data name="InputCanceledUsingDefault" xml:space="preserve"><value>已选择返回，使用默认值：{0}。</value></data></root>

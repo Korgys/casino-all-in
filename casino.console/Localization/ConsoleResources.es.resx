@@ -198,4 +198,4 @@
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
-</root>
+<data name="InvalidNumberInput" xml:space="preserve"><value>Entrada no válida. Introduce un número.</value></data><data name="TypeNumberMenuHelp" xml:space="preserve"><value>Ayuda: escribe un número del menú.</value></data><data name="ActionUnavailable" xml:space="preserve"><value>La opción {0} no está disponible ahora mismo.</value></data><data name="RaiseTargetPromptWithConstraints" xml:space="preserve"><value>Introduce tu subida objetivo (apuesta actual {0}c, tu contribución {1}c, máximo permitido {2}c): </value></data><data name="RaiseAmountUnavailable" xml:space="preserve"><value>Subida no válida. El objetivo debe ser mayor que la apuesta actual ({0}c) y como máximo {1}c.</value></data><data name="InputCanceledUsingDefault" xml:space="preserve"><value>Se pidió volver, se usa el valor predeterminado: {0}.</value></data></root>

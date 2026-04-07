@@ -198,4 +198,4 @@
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
-</root>
+<data name="InvalidNumberInput" xml:space="preserve"><value>Invalid input. Please enter a number.</value></data><data name="TypeNumberMenuHelp" xml:space="preserve"><value>Help: type a number from the menu.</value></data><data name="ActionUnavailable" xml:space="preserve"><value>Choice {0} is not available right now.</value></data><data name="RaiseTargetPromptWithConstraints" xml:space="preserve"><value>Enter your raise target (current bet {0}c, your contribution {1}c, max allowed {2}c): </value></data><data name="RaiseAmountUnavailable" xml:space="preserve"><value>Invalid raise. Target must be greater than current bet ({0}c) and at most {1}c.</value></data><data name="InputCanceledUsingDefault" xml:space="preserve"><value>Back requested, using default value: {0}.</value></data></root>

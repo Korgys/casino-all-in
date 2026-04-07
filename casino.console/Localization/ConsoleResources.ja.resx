@@ -198,4 +198,4 @@
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
-</root>
+<data name="InvalidNumberInput" xml:space="preserve"><value>無効な入力です。数値を入力してください。</value></data><data name="TypeNumberMenuHelp" xml:space="preserve"><value>ヒント: メニュー番号を入力してください。</value></data><data name="ActionUnavailable" xml:space="preserve"><value>選択 {0} は現在利用できません。</value></data><data name="RaiseTargetPromptWithConstraints" xml:space="preserve"><value>レイズ額を入力してください（現在ベット {0}c、あなたの拠出 {1}c、上限 {2}c）：</value></data><data name="RaiseAmountUnavailable" xml:space="preserve"><value>無効なレイズです。現在ベット ({0}c) より大きく、最大 {1}c までにしてください。</value></data><data name="InputCanceledUsingDefault" xml:space="preserve"><value>戻るが選択されました。既定値を使用します: {0}。</value></data></root>
