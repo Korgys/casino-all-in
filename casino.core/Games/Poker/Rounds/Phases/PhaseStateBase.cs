@@ -93,6 +93,12 @@ public abstract class PhaseStateBase : IPhaseState
             actions.Add(PokerTypeAction.Raise);
         }
 
+        // AllIn is always available if player has chips
+        if (player.Chips > 0)
+        {
+            actions.Add(PokerTypeAction.AllIn);
+        }
+
         return actions;
     }
 

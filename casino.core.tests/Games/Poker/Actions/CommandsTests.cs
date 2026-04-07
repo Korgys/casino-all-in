@@ -17,7 +17,7 @@ public class CommandsTests
     public void CheckCommand_WhenThereIsNoBet_ShouldSetLastActionToCheck()
     {
         var player = new HumanPlayer("Alice", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         var command = new CheckCommand(player);
         command.Execute(round);
@@ -29,7 +29,7 @@ public class CommandsTests
     public void CheckCommand_WhenCurrentBetIsMatched_ShouldSetLastActionToCheck()
     {
         var player = new HumanPlayer("Alice", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 10);
         round.SetBetFor(player, 10);
@@ -44,7 +44,7 @@ public class CommandsTests
     public void CheckCommand_WhenCurrentBetIsNotZero_ShouldThrowInvalidOperationException()
     {
         var player = new HumanPlayer("Alice", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 10);
 
@@ -56,7 +56,7 @@ public class CommandsTests
     public void BetCommand_WhenValid_ShouldUpdatePotCurrentBetAndChips()
     {
         var player = new HumanPlayer("Bob", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         var command = new BetCommand(player, 25);
         command.Execute(round);
@@ -72,7 +72,7 @@ public class CommandsTests
     public void BetCommand_WhenAmountIsZero_ShouldThrowArgumentException()
     {
         var player = new HumanPlayer("Bob", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         var command = new BetCommand(player, 0);
         Assert.Throws<ArgumentException>(() => command.Execute(round));
@@ -82,7 +82,7 @@ public class CommandsTests
     public void BetCommand_WhenCurrentBetIsHigherThanAmount_ShouldThrowInvalidOperationException()
     {
         var player = new HumanPlayer("Bob", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 50);
 
@@ -94,7 +94,7 @@ public class CommandsTests
     public void BetCommand_WhenPlayerContributionIsAlreadyEqualOrHigher_ShouldThrowInvalidOperationException()
     {
         var player = new HumanPlayer("Bob", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         round.SetBetFor(player, 30);
 
@@ -106,7 +106,7 @@ public class CommandsTests
     public void BetCommand_WhenDifferenceIsHigherThanPlayerChips_ShouldThrowInvalidOperationException()
     {
         var player = new HumanPlayer("Bob", 10);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         var command = new BetCommand(player, 25);
         Assert.Throws<InvalidOperationException>(() => command.Execute(round));
@@ -116,7 +116,7 @@ public class CommandsTests
     public void RaiseCommand_WhenValid_ShouldUpdateBetPotAndChips()
     {
         var player = new HumanPlayer("Carol", 200);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 10);
 
@@ -134,7 +134,7 @@ public class CommandsTests
     public void RaiseCommand_WhenAmountConsumesAllChips_ShouldBecomeAllIn()
     {
         var player = new HumanPlayer("Dave", 20);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         var command = new RaiseCommand(player, 20);
         command.Execute(round);
@@ -150,7 +150,7 @@ public class CommandsTests
     public void RaiseCommand_WhenAmountIsNotHigherThanCurrentBet_ShouldThrowArgumentException()
     {
         var player = new HumanPlayer("Eve", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 50);
 
@@ -162,7 +162,7 @@ public class CommandsTests
     public void CallCommand_WhenValid_ShouldReduceChipsAndIncreasePot()
     {
         var player = new HumanPlayer("Frank", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 40);
         round.SetBetFor(player, 10);
@@ -180,7 +180,7 @@ public class CommandsTests
     public void CallCommand_WhenThereIsNoDifferenceToCall_ShouldThrowInvalidOperationException()
     {
         var player = new HumanPlayer("Gina", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 0);
         round.SetBetFor(player, 0);
@@ -193,7 +193,7 @@ public class CommandsTests
     public void CallCommand_WhenDifferenceIsHigherThanPlayerChips_ShouldThrowInvalidOperationException()
     {
         var player = new HumanPlayer("Gina", 10);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 40);
         round.SetBetFor(player, 15);
@@ -206,7 +206,7 @@ public class CommandsTests
     public void CallCommand_WhenDifferenceEqualsPlayerChips_ShouldGoAllIn()
     {
         var player = new HumanPlayer("Gina", 30);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         PlayerTestHelper.SetCurrentBet(round, 40);
         round.SetBetFor(player, 10);
@@ -224,7 +224,7 @@ public class CommandsTests
     public void AllInCommand_ShouldSetChipsToZeroAndUpdateContribution()
     {
         var player = new HumanPlayer("Hank", 30);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
 
         round.SetBetFor(player, 5);
 

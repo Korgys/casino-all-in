@@ -17,7 +17,7 @@ public class SidePotResolutionTests
         var alice = new HumanPlayer("Alice", 0) { LastAction = PokerTypeAction.AllIn };
         var bob = new HumanPlayer("Bob", 100) { LastAction = PokerTypeAction.Call };
         var charlie = new HumanPlayer("Charlie", 100) { LastAction = PokerTypeAction.Call };
-        var round = new Round(new List<Player> { alice, bob, charlie }, deck);
+        var round = new Round(new List<Player> { alice, bob, charlie }, deck, 0);
 
         round.SetCommunityCards(PlayerTestHelper.CreateCommunityCards(
             new Card(CardRank.Deux, Suit.Hearts),
@@ -49,7 +49,7 @@ public class SidePotResolutionTests
         var bob = new HumanPlayer("Bob", 0) { LastAction = PokerTypeAction.AllIn };
         var charlie = new HumanPlayer("Charlie", 0) { LastAction = PokerTypeAction.AllIn };
         var diana = new HumanPlayer("Diana", 0) { LastAction = PokerTypeAction.AllIn };
-        var round = new Round(new List<Player> { alice, bob, charlie, diana }, deck);
+        var round = new Round(new List<Player> { alice, bob, charlie, diana }, deck, 0);
 
         round.SetCommunityCards(PlayerTestHelper.CreateCommunityCards(
             new Card(CardRank.Deux, Suit.Hearts),
@@ -83,7 +83,7 @@ public class SidePotResolutionTests
         var alice = new HumanPlayer("Alice", 0) { LastAction = PokerTypeAction.AllIn };
         var bob = new HumanPlayer("Bob", 0) { LastAction = PokerTypeAction.AllIn };
         var charlie = new HumanPlayer("Charlie", 0) { LastAction = PokerTypeAction.AllIn };
-        var round = new Round(new List<Player> { alice, bob, charlie }, deck);
+        var round = new Round(new List<Player> { alice, bob, charlie }, deck, 0);
 
         round.SetCommunityCards(PlayerTestHelper.CreateCommunityCards(
             new Card(CardRank.Roi, Suit.Clubs),

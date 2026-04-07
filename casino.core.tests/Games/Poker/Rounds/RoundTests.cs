@@ -26,7 +26,7 @@ public class RoundTests
         var playerWithoutChips = new HumanPlayer("Bob", 0);
 
         // Act
-        var round = new Round(new List<Player> { activePlayer, playerWithoutChips }, deck);
+        var round = new Round(new List<Player> { activePlayer, playerWithoutChips }, deck, 0);
 
         // Assert
         Assert.IsNotNull(round.Players.First(j => j.Name == "Alice").Hand, "players with chips must receive cards.");
@@ -48,7 +48,7 @@ public class RoundTests
             new Card(CardRank.Dix, Suit.Hearts)
         });
         var player = new HumanPlayer("Alice", 100);
-        var round = new Round(new List<Player> { player }, deck);
+        var round = new Round(new List<Player> { player }, deck, 0);
 
         // Act
         round.AdvancePhase();
@@ -68,10 +68,9 @@ public class RoundTests
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 6));
         var activePlayer = new HumanPlayer("Alice", 100);
         var foldedPlayer = new HumanPlayer("Bob", 50) { LastAction = PokerTypeAction.Fold };
-        var round = new Round(new List<Player> { activePlayer, foldedPlayer }, deck);
+        var round = new Round(new List<Player> { activePlayer, foldedPlayer }, deck, 4);
         round.AddToPot(50);
         round.StartingBet = 10;
-        round.NumberOfRoundsPlayed = 1;
 
         // Act
         round.EndGame();
@@ -81,7 +80,7 @@ public class RoundTests
         Assert.AreEqual(activePlayer, round.Winners.First(), "The only active player must be declared winner.");
         Assert.AreEqual(150, activePlayer.Chips, "The pot must be added to the winner's chips.");
         Assert.AreEqual(Phase.Showdown, round.Phase, "Round must end in showdown phase.");
-        Assert.AreEqual(2, round.NumberOfRoundsPlayed, "Played rounds counter must be incremented after resolution.");
+        Assert.AreEqual(5, round.NumberOfRoundsPlayed, "Played rounds counter must be incremented after resolution.");
         Assert.AreEqual(20, round.StartingBet, "Starting bet must double when the increase threshold is reached.");
     }
 
@@ -92,9 +91,8 @@ public class RoundTests
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Spades), 10));
         var alice = new HumanPlayer("Alice", 100);
         var bob = new HumanPlayer("Bob", 100);
-        var round = new Round(new List<Player> { alice, bob }, deck);
+        var round = new Round(new List<Player> { alice, bob }, deck, 4);
         round.StartingBet = 10;
-        round.NumberOfRoundsPlayed = 1;
         round.SetCommunityCards(PlayerTestHelper.CreateCommunityCards(
             new Card(CardRank.Dame, Suit.Hearts),
             new Card(CardRank.Dix, Suit.Hearts),
@@ -120,7 +118,7 @@ public class RoundTests
         Assert.AreEqual(160, alice.Chips, "The pot must be added to the winner's chips.");
         Assert.AreEqual(100, bob.Chips, "Other players' chips must remain unchanged.");
         Assert.AreEqual(Phase.Showdown, round.Phase, "Round must be marked as finished.");
-        Assert.AreEqual(2, round.NumberOfRoundsPlayed, "Played rounds counter must be incremented after resolution.");
+        Assert.AreEqual(5, round.NumberOfRoundsPlayed, "Played rounds counter must be incremented after resolution.");
         Assert.AreEqual(20, round.StartingBet, "Starting bet must double when the increase threshold is reached.");
     }
     [TestMethod]
@@ -139,7 +137,7 @@ public class RoundTests
         });
         var alice = new HumanPlayer("Alice", 100);
         var bob = new HumanPlayer("Bob", 100);
-        var round = new Round(new List<Player> { alice, bob }, deck);
+        var round = new Round(new List<Player> { alice, bob }, deck, 0);
 
         // Assert read-only exposure
         Assert.IsFalse(round.Players is List<Player>, "players must not be exposed as mutable list.");

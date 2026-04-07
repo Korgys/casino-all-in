@@ -19,7 +19,7 @@ public class OpportunisticStrategyTests
             player,
             new Player("alice", 1000)
         };
-        var round = new Round(players, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()), 0);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.AllIn });
         var strategy = new OpportunisticStrategy();
 
@@ -38,7 +38,7 @@ public class OpportunisticStrategyTests
             player,
             new Player("alice", 1000)
         };
-        var round = new Round(players, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()), 0);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet });
         var strategy = new OpportunisticStrategy();
 
@@ -81,7 +81,7 @@ public class OpportunisticStrategyTests
             new(CardRank.Neuf, Suit.Hearts)
         };
 
-        var round = new Round(players, new FakeDeck(cards));
+        var round = new Round(players, new FakeDeck(cards), 0);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Fold, PokerTypeAction.Call, PokerTypeAction.Raise });
         var strategy = new OpportunisticStrategy();
 
@@ -101,7 +101,7 @@ public class OpportunisticStrategyTests
             player,
             new Player("alice", 1000)
         };
-        var round = new Round(players, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()), 0);
         PlayerTestHelper.SetCurrentBet(round, 14);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise });
         var strategy = new OpportunisticStrategy();
@@ -122,7 +122,7 @@ public class OpportunisticStrategyTests
             player,
             new Player("alice", 1000)
         };
-        var round = new Round(players, new FakeDeck(CreateSimpleCards()));
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()), 0);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Fold });
         var strategy = new OpportunisticStrategy();
 
@@ -141,7 +141,7 @@ public class OpportunisticStrategyTests
             player,
             new Player("alice", 1000)
         };
-        var round = new Round(players, new FakeDeck(CreateSimpleCards()))
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()), 0)
         {
             StartingBet = 20
         };
@@ -164,7 +164,7 @@ public class OpportunisticStrategyTests
             player,
             new Player("alice", 1000)
         };
-        var round = new Round(players, new FakeDeck(CreateSimpleCards()))
+        var round = new Round(players, new FakeDeck(CreateSimpleCards()), 0)
         {
             StartingBet = 35
         };
@@ -209,7 +209,7 @@ public class OpportunisticStrategyTests
             new(CardRank.Trois, Suit.Hearts)
         };
 
-        var round = new Round(players, new FakeDeck(cards));
+        var round = new Round(players, new FakeDeck(cards), 0);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Call, PokerTypeAction.Check });
         var strategy = new OpportunisticStrategy();
 

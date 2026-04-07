@@ -10,7 +10,7 @@ internal static class PlayerTestHelper
     internal static Round CreateRoundWithPlayer(Player player, HandCards? hand = null, TableCards? communityCards = null, int startingBet = 10)
     {
         var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10));
-        var round = new Round(new List<Player> { player }, deck);
+        var round = new Round(new List<Player> { player }, deck, 0);
         round.StartingBet = startingBet;
 
         if (hand != null)

@@ -14,7 +14,7 @@ public class ShowdownStateTests
     public void Advance_ShouldLeaveRoundInShowdownWithoutThrowing()
     {
         var player = new HumanPlayer("Alice", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateCards()), 0);
         round.MoveToNextPhase(Phase.Showdown, new ShowdownState());
 
         round.AdvancePhase();
@@ -27,7 +27,7 @@ public class ShowdownStateTests
     public void GetAvailableActions_ShouldReturnEmptySequence()
     {
         var player = new HumanPlayer("Alice", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateCards()), 0);
         var state = new ShowdownState();
 
         var actions = state.GetAvailableActions(player, round).ToList();
@@ -39,7 +39,7 @@ public class ShowdownStateTests
     public void ApplyAction_ShouldThrowInvalidOperationException()
     {
         var player = new HumanPlayer("Alice", 100);
-        var round = new Round(new List<Player> { player }, new FakeDeck(CreateCards()));
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateCards()), 0);
         var state = new ShowdownState();
 
         Assert.Throws<InvalidOperationException>(() => state.ApplyAction(player, new GameAction(PokerTypeAction.Check), round));

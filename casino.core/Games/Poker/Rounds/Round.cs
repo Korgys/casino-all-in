@@ -24,11 +24,12 @@ public class Round
     private readonly Dictionary<Player, int> _betsByPlayer = new();
     private readonly Dictionary<Player, int> _totalContributionByPlayer = new();
 
-    public Round(IReadOnlyList<Player> players, IDeck deck, IActionService? actionService = null)
+    public Round(IReadOnlyList<Player> players, IDeck deck, int numberOfRoundsPlayed, IActionService? actionService = null)
     {
         Players = players?.ToList().AsReadOnly() ?? throw new ArgumentNullException(nameof(players));
         Deck = deck ?? throw new ArgumentNullException(nameof(deck));
         ActionService = actionService ?? new ActionService();
+        NumberOfRoundsPlayed = numberOfRoundsPlayed;
         Deck.Shuffle();
         DealCards();
         InitializePlayerBets();
@@ -201,9 +202,9 @@ public class Round
             DistributePot();
         }
 
-        // Increase the starting bet every N rounds
+        // Increase the starting bet every 5 rounds
         NumberOfRoundsPlayed++;
-        if (NumberOfRoundsPlayed % Players.Count == 0)
+        if (NumberOfRoundsPlayed % 5 == 0)
             StartingBet *= 2;
     }
 

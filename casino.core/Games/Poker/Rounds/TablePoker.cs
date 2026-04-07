@@ -13,13 +13,19 @@ public class TablePoker
     public int InitialPlayerIndex => TurnManager?.InitialPlayerIndex ?? _playerInitialIndex;
     public int CurrentPlayerIndex => TurnManager?.CurrentPlayerIndex ?? _playerInitialIndex;
     private int _playerInitialIndex = -1;
+    public int NumberOfRoundsPlayed { get; private set; } = 0;
 
     public void StartRound(List<Player> players, IDeck deck)
     {
         players.ForEach(j => j.Reset());
 
         Players = players.ToList();
-        Round = new Round(this.Players, deck);
+        int startingBet = Round?.StartingBet ?? 10;
+        int roundPlayed = Round?.NumberOfRoundsPlayed ?? 0;
+        Round = new Round(Players, deck, roundPlayed)
+        {
+            StartingBet = startingBet
+        };
         _playerInitialIndex = (_playerInitialIndex + 1) % this.Players.Count;
         TurnManager = new TurnManager(Round, _playerInitialIndex);
     }

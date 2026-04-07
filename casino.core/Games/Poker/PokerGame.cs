@@ -56,7 +56,7 @@ public class PokerGame : GameBase
     /// </summary>
     protected override void ExecuteGameLoop()
     {
-        while (_humanPlayers.Any(j => j.Chips > 0))
+        while (_humanPlayers.Any(j => j.Chips > 0) && _players.Any(j => j.Chips > 0))
         {
             var deck = _deckFactory();
             _table.StartRound(_players, deck);
@@ -76,7 +76,7 @@ public class PokerGame : GameBase
             OnGameEnded(winnersLabel, _table.Round.Pot);
             OnStateUpdated(BuildPokerGameState());
 
-            if (!_humanPlayers.Any(j => j.Chips > 0))
+            if (!_humanPlayers.Any(j => j.Chips > 0) || !_players.Any(j => j.Chips > 0))
                 break;
 
             if (!_continuePlaying())
