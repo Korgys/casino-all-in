@@ -94,10 +94,10 @@
     <value>スタンド</value>
   </data>
   <data name="SlotBetPrompt" xml:space="preserve">
-    <value>あなたのベット: {0}</value>
+    <value>ベット額を入力してください [{0}]:</value>
   </data>
   <data name="SlotContinuePrompt" xml:space="preserve">
-    <value>もう一度スピンするには何かキーを押してください:</value>
+    <value>もう一度スピンしますか？ (y/n):</value>
   </data>
   <data name="SlotPanelTitle" xml:space="preserve">
     <value>スロットマシン</value>

@@ -94,10 +94,10 @@
     <value>Stand</value>
   </data>
   <data name="SlotBetPrompt" xml:space="preserve">
-    <value>Your bet: {0}</value>
+    <value>Enter your bet [{0}]: </value>
   </data>
   <data name="SlotContinuePrompt" xml:space="preserve">
-    <value>Press any key to spin again: </value>
+    <value>Spin again? (y/n): </value>
   </data>
   <data name="SlotPanelTitle" xml:space="preserve">
     <value>Slot Machine</value>

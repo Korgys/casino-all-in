@@ -94,7 +94,7 @@
     <value>停牌</value>
   </data>
   <data name="SlotBetPrompt" xml:space="preserve">
-    <value>请下注（积分：{0}）：</value>
+    <value>请输入下注 [{0}]：</value>
   </data>
   <data name="SlotContinuePrompt" xml:space="preserve">
     <value>再转一次吗？(y/n)：</value>

@@ -94,10 +94,10 @@
     <value>Plantarse</value>
   </data>
   <data name="SlotBetPrompt" xml:space="preserve">
-    <value>Tu apuesta: {0}</value>
+    <value>Tu apuesta [{0}]: </value>
   </data>
   <data name="SlotContinuePrompt" xml:space="preserve">
-    <value>Pulsa cualquier tecla para girar de nuevo: </value>
+    <value>¿Girar de nuevo? (s/n): </value>
   </data>
   <data name="SlotPanelTitle" xml:space="preserve">
     <value>Tragamonedas</value>

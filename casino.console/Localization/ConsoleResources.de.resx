@@ -139,10 +139,10 @@
     <value>Stehen</value>
   </data>
   <data name="SlotBetPrompt" xml:space="preserve">
-    <value>Ihr Einsatz: {0}</value>
+    <value>Ihr Einsatz [{0}]: </value>
   </data>
   <data name="SlotContinuePrompt" xml:space="preserve">
-    <value>Drücken Sie eine Taste, um erneut zu drehen: </value>
+    <value>Noch einmal drehen? (j/n): </value>
   </data>
   <data name="SlotMachineHeader" xml:space="preserve">
     <value>SPIELAUTOMAT ✨ NEON-JACKPOT</value>

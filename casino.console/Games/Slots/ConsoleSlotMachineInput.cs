@@ -11,6 +11,8 @@ namespace casino.console.Games.Slots;
 [ExcludeFromCodeCoverage]
 public static class ConsoleSlotMachineInput
 {
+    private const int InvalidInputHintThreshold = 2;
+
     /// <summary>
     /// Gets the current bet from user input.
     /// </summary>
@@ -19,21 +21,48 @@ public static class ConsoleSlotMachineInput
     public static int GetBet(SlotMachineGameState state)
     {
         RenderBetPrompt(state);
-        int bet = 1;
-        Console.Write(ConsoleText.SlotBetPrompt(bet));
+        var invalidAttempts = 0;
 
-        return bet;
+        while (true)
+        {
+            Console.Write(ConsoleText.SlotBetPrompt(state.MinBet));
+            var input = (Console.ReadLine() ?? string.Empty).Trim();
+
+            if (string.IsNullOrEmpty(input))
+                return state.MinBet;
+
+            if (ConsoleInputAliases.IsBack(input))
+            {
+                Console.WriteLine(ConsoleText.InputCanceledUsingDefault(state.MinBet.ToString()));
+                return state.MinBet;
+            }
+
+            if (int.TryParse(input, out var bet) && bet >= state.MinBet && bet <= state.MaxBet)
+                return bet;
+
+            invalidAttempts++;
+            Console.WriteLine(int.TryParse(input, out _) ? ConsoleText.RangeError(state.MinBet, state.MaxBet) : ConsoleText.InvalidNumberInput);
+            WriteNumberMenuHintIfNeeded(invalidAttempts);
+        }
+    }
+
+    private static void WriteNumberMenuHintIfNeeded(int invalidAttempts)
+    {
+        if (invalidAttempts < InvalidInputHintThreshold)
+            return;
+
+        Console.WriteLine(ConsoleText.TypeNumberMenuHelp);
     }
 
     /// <summary>
     /// Asks the player to continue with a new spin.
     /// </summary>
-    /// <returns>Always <see langword="true"/>.</returns>
+    /// <returns><see langword="true"/> when the player wants to continue; otherwise <see langword="false"/>.</returns>
     public static bool AskContinueNewGame()
     {
         Console.Write($"\n{ConsoleText.SlotContinuePrompt}");
-        Console.ReadKey();
-        return true;
+        var answer = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
+        return ConsoleInputAliases.IsYes(answer);
     }
 
     /// <summary>
@@ -44,10 +73,10 @@ public static class ConsoleSlotMachineInput
     {
         Console.WriteLine();
         var frameWidth = ConsoleLayout.ResolveContentWidth(46);
-        Console.WriteLine("┌" + new string('─', frameWidth) + "┐");
+        ConsoleLayout.WriteTopBorder(frameWidth);
         ConsoleLayout.WriteFramedLine($" {ConsoleText.SlotPanelTitle} ", frameWidth, '│', '│');
         ConsoleLayout.WriteFramedLine($" {ConsoleText.SlotCredits}: {state.Credits} ", frameWidth, '│', '│');
         ConsoleLayout.WriteFramedLine($" {ConsoleText.SlotMinMaxBet}: {state.MinBet} - {state.MaxBet} ", frameWidth, '│', '│');
-        Console.WriteLine("└" + new string('─', frameWidth) + "┘");
+        ConsoleLayout.WriteBottomBorder(frameWidth);
     }
 }

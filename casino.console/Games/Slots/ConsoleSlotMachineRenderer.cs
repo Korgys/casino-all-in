@@ -88,7 +88,7 @@ public static class ConsoleSlotMachineRenderer
             ConsoleLayout.WriteBottomBorder(frameWidth, '═');
 
         using (ConsoleColorScope.Foreground(ConsoleColor.Yellow))
-            Console.WriteLine($"{ConsoleText.SlotCredits}: {state.Credits}   {ConsoleText.BetLabel}: {state.CurrentBet}   {ConsoleText.SlotLastWin}: {state.LastPayout}");
+            Console.WriteLine($"{ConsoleText.SlotCredits}: {state.Credits}   {ConsoleText.CurrentBetLabel}: {state.CurrentBet}   {ConsoleText.SlotLastWin}: {state.LastPayout}");
     }
 
     /// <summary>
