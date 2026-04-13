@@ -48,9 +48,12 @@ public static class Program
         "8",
         "back",
         "retour",
+        "volver",
         "zuruck",
         "zurück",
-        "назад"
+        "назад",
+        "戻る",
+        "返回"
     ];
 
     public static void Main(string[] args)
@@ -111,6 +114,10 @@ public static class Program
             {
                 case "1":
                 case "poker":
+                case "póker":
+                case "ポーカー":
+                case "扑克":
+                case "покер":
                     return factory.CreatePoker(
                         ConsolePokerInput.GetPlayerAction,
                         ConsolePokerInput.AskContinueNewGame,
@@ -118,20 +125,38 @@ public static class Program
 
                 case "2":
                 case "blackjack":
+                case "black-jack":
+                case "black jack":
+                case "二十一点":
+                case "блэкджек":
                     return factory.CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame);
 
                 case "3":
                 case "slot":
                 case "slots":
-                    return ConsoleGameFactory.CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame);
+                case "slot machine":
+                case "spielautomat":
+                case "tragamonedas":
+                case "スロット":
+                case "老虎机":
+                case "игровой автомат":
+                    return factory.CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame);
 
                 case "4":
                 case "language":
                 case "languages":
+                case "langages":
                 case "lange":
                 case "langage":
+                case "idioma":
+                case "idiomas":
                 case "sprache":
                 case "sprachen":
+                case "言語":
+                case "语言":
+                case "語言":
+                case "язык":
+                case "языки":
                     ShowLanguageMenu();
                     break;
 
@@ -139,6 +164,11 @@ public static class Program
                 case "quit":
                 case "quitter":
                 case "beenden":
+                case "salir":
+                case "sortir":
+                case "終了":
+                case "退出":
+                case "выход":
                     return null;
             }
         }

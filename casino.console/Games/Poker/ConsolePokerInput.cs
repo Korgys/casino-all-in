@@ -73,7 +73,7 @@ public static class ConsolePokerInput
     {
         Console.Write($"\n{ConsoleText.ContinuePokerPrompt}");
         var answer = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
-        var wantsToContinue = answer is "o" or "oui" or "y" or "yes" or "j" or "ja" or "s" or "si" or "sí";
+        var wantsToContinue = ConsoleInputAliases.IsYes(answer);
 
         if (wantsToContinue)
             RequestFullConsoleRefresh();
@@ -200,8 +200,7 @@ public static class ConsolePokerInput
 
     private static bool IsCancelInput(string input)
     {
-        var normalized = input.Trim().ToLowerInvariant();
-        return normalized is "b" or "back" or "cancel";
+        return ConsoleInputAliases.IsBack(input);
     }
 
     private static void WriteNumberMenuHintIfNeeded(int invalidAttempts)

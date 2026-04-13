@@ -22,10 +22,10 @@ public static class ConsoleBlackjackInput
             Console.Write(ConsoleText.ActionChoicePrompt);
             var choice = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
 
-            if (choice is "1" or "h" or "hit" or "z" or "ziehen")
+            if (ConsoleInputAliases.IsHit(choice) || choice is "z" or "ziehen")
                 return BlackjackAction.Hit;
 
-            if (choice is "2" or "s" or "stand" or "stehen")
+            if (ConsoleInputAliases.IsStand(choice) || choice is "stehen")
                 return BlackjackAction.Stand;
         }
     }
@@ -38,7 +38,7 @@ public static class ConsoleBlackjackInput
     {
         Console.Write($"\n{ConsoleText.BlackjackContinuePrompt}");
         var answer = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
-        return answer is "o" or "oui" or "y" or "yes" or "j" or "ja" or "s" or "si" or "sí";
+        return ConsoleInputAliases.IsYes(answer);
     }
 
     /// <summary>

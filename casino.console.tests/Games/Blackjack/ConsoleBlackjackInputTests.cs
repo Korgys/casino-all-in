@@ -66,6 +66,26 @@ public class ConsoleBlackjackInputTests
         }
     }
 
+    [TestMethod]
+    public void GetPlayerAction_ReturnsHit_ForSpanishAlias()
+    {
+        var state = CreateState();
+        var originalIn = Console.In;
+
+        try
+        {
+            Console.SetIn(new StringReader("pedir\n"));
+
+            var action = ConsoleBlackjackInput.GetPlayerAction(state);
+
+            Assert.AreEqual(BlackjackAction.Hit, action);
+        }
+        finally
+        {
+            Console.SetIn(originalIn);
+        }
+    }
+
     private static BlackjackGameState CreateState() => new()
     {
         PlayerCards = [new Card(CardRank.As, Suit.Spades), new Card(CardRank.Huit, Suit.Hearts)],

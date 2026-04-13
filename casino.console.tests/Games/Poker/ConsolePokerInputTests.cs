@@ -18,6 +18,10 @@ public class ConsolePokerInputTests
         AssertAskContinue("yes\n", expected: true);
         AssertAskContinue("j\n", expected: true);
         AssertAskContinue("ja\n", expected: true);
+        AssertAskContinue("sí\n", expected: true);
+        AssertAskContinue("да\n", expected: true);
+        AssertAskContinue("はい\n", expected: true);
+        AssertAskContinue("是\n", expected: true);
     }
 
     [TestMethod]
