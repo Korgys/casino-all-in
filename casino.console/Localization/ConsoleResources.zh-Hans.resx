@@ -34,7 +34,7 @@
     <value>玩家数量（{0}-{1}）：</value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
-    <value>AI 难度（easy/medium/hard/expert）[默认：{0}]：</value>
+    <value>AI 难度（1-6，默认：{0}）：</value>
   </data>
   <data name="ContinuePokerPrompt" xml:space="preserve">
     <value>再来一局扑克吗？(y/n)：</value>
@@ -49,7 +49,7 @@
     <value>请输入 {0} 到 {1} 之间的值。</value>
   </data>
   <data name="InvalidDifficulty" xml:space="preserve">
-    <value>未知难度。请输入 easy、medium、hard 或 expert。</value>
+    <value>无效选择。请输入 1、2、3、4、5 或 6。</value>
   </data>
   <data name="BetLabel" xml:space="preserve">
     <value>下注</value>

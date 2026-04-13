@@ -34,7 +34,7 @@
     <value>プレイヤー人数 [{0}-{1}] (デフォルト 5):</value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
-    <value>コンピューター難易度 (デフォルト {0}):</value>
+    <value>コンピューター難易度 (1-6、デフォルト {0}):</value>
   </data>
   <data name="ContinuePokerPrompt" xml:space="preserve">
     <value>新しいゲームを続けますか？ (y/n):</value>
@@ -49,7 +49,7 @@
     <value>{0} から {1} の間の値を入力してください。</value>
   </data>
   <data name="InvalidDifficulty" xml:space="preserve">
-    <value>無効な選択です。1、2、3、4 を選んでください。</value>
+    <value>無効な選択です。1、2、3、4、5、6 を選んでください。</value>
   </data>
   <data name="BetLabel" xml:space="preserve">
     <value>最小ベット</value>

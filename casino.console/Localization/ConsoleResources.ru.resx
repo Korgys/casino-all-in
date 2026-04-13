@@ -34,7 +34,7 @@
     <value>Количество игроков ({0}-{1}): </value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
-    <value>Сложность ИИ [easy|medium|hard|expert] (по умолчанию: {0}): </value>
+    <value>Сложность ИИ (1-6, по умолчанию: {0}): </value>
   </data>
   <data name="ContinuePokerPrompt" xml:space="preserve">
     <value>Сыграть ещё одну раздачу? [y/n]: </value>
@@ -49,7 +49,7 @@
     <value>Введите значение от {0} до {1}.</value>
   </data>
   <data name="InvalidDifficulty" xml:space="preserve">
-    <value>Неизвестная сложность. Используется значение по умолчанию.</value>
+    <value>Неверный выбор. Выберите 1, 2, 3, 4, 5 или 6.</value>
   </data>
   <data name="BetLabel" xml:space="preserve">
     <value>Ставка</value>

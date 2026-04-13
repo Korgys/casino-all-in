@@ -70,7 +70,7 @@
     <value>Gesamtzahl der Spieler [{0}-{1}] (Standard 5): </value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
-    <value>Schwierigkeitsgrad der Computergegner (Standard {0}): </value>
+    <value>Schwierigkeitsgrad der Computergegner (1-6, Standard {0}): </value>
   </data>
   <data name="ContinuePokerPrompt" xml:space="preserve">
     <value>Möchten Sie eine neue Partie spielen? (j/n): </value>
@@ -85,7 +85,7 @@
     <value>Bitte geben Sie einen Wert zwischen {0} und {1} ein.</value>
   </data>
   <data name="InvalidDifficulty" xml:space="preserve">
-    <value>Ungültige Auswahl. Bitte wählen Sie 1, 2, 3 oder 4.</value>
+    <value>Ungültige Auswahl. Bitte wählen Sie 1, 2, 3, 4, 5 oder 6.</value>
   </data>
   <data name="BetLabel" xml:space="preserve">
     <value>Einsatz</value>

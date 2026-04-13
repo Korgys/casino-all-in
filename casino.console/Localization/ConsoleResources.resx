@@ -34,7 +34,7 @@
     <value>Nombre total de joueurs [{0}-{1}] (défaut 5) : </value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
-    <value>Difficultés des ordinateurs (défaut {0}) : </value>
+    <value>Difficulté des ordinateurs (1-6, défaut {0}) : </value>
   </data>
   <data name="ContinuePokerPrompt" xml:space="preserve">
     <value>Voulez-vous continuer une nouvelle partie ? (o/n) : </value>
@@ -49,7 +49,7 @@
     <value>Veuillez saisir une valeur entre {0} et {1}.</value>
   </data>
   <data name="InvalidDifficulty" xml:space="preserve">
-    <value>Choix invalide. Sélectionnez 1, 2, 3 ou 4.</value>
+    <value>Choix invalide. Sélectionnez 1, 2, 3, 4, 5 ou 6.</value>
   </data>
   <data name="BetLabel" xml:space="preserve">
     <value>Mise</value>
