@@ -67,21 +67,41 @@ public class ConsoleGameFactoryTests
     public void Create_ReturnsBlackjackGame_ForBlackjackNameCaseInsensitive()
     {
         var factory = new ConsoleGameFactory();
+        Func<bool> continuePlaying = () => false;
 
-        var result = factory.Create("BLACKJACK", _ => new GameAction(PokerTypeAction.Check), () => false);
+        var result = factory.Create("BLACKJACK", _ => new GameAction(PokerTypeAction.Check), continuePlaying);
 
         Assert.IsNotNull(result);
         Assert.IsInstanceOfType<BlackjackGame>(result);
+
+        var field = typeof(BlackjackGame).GetField("_continuePlaying", BindingFlags.NonPublic | BindingFlags.Instance);
+        Assert.IsNotNull(field);
+        Assert.AreSame(continuePlaying, field.GetValue(result));
     }
 
     [TestMethod]
     public void Create_ReturnsSlotMachineGame_ForSlotAliases()
     {
         var factory = new ConsoleGameFactory();
+        Func<bool> continuePlaying = () => false;
 
-        var result = factory.Create("slot machine", _ => new GameAction(PokerTypeAction.Check), () => false);
+        var result = factory.Create("slot machine", _ => new GameAction(PokerTypeAction.Check), continuePlaying);
 
         Assert.IsNotNull(result);
+        Assert.IsInstanceOfType<SlotMachineGame>(result);
+
+        var field = typeof(SlotMachineGame).GetField("_continuePlaying", BindingFlags.NonPublic | BindingFlags.Instance);
+        Assert.IsNotNull(field);
+        Assert.AreSame(continuePlaying, field.GetValue(result));
+    }
+
+    [TestMethod]
+    public void CreateSlotMachine_ReturnsSlotMachineGame()
+    {
+        var factory = new ConsoleGameFactory();
+
+        var result = factory.CreateSlotMachine(_ => 1, () => false);
+
         Assert.IsInstanceOfType<SlotMachineGame>(result);
     }
 }

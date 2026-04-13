@@ -23,8 +23,8 @@ public class ConsoleGameFactory : IGameFactory
         return gameName.ToLower() switch
         {
             "poker" => CreatePoker(humanActionSelector, continuePlaying),
-            "blackjack" => CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, ConsoleBlackjackInput.AskContinueNewGame),
-            "slot" or "slots" or "slot machine" => CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame),
+            "blackjack" => CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, continuePlaying),
+            "slot" or "slots" or "slot machine" => CreateSlotMachine(ConsoleSlotMachineInput.GetBet, continuePlaying),
             _ => null
         };
     }
@@ -57,7 +57,7 @@ public class ConsoleGameFactory : IGameFactory
         return new BlackjackGame(humanActionSelector, continuePlaying);
     }
 
-    public static IGame CreateSlotMachine(Func<SlotMachineGameState, int> betSelector, Func<bool> continuePlaying)
+    public IGame CreateSlotMachine(Func<SlotMachineGameState, int> betSelector, Func<bool> continuePlaying)
     {
         return new SlotMachineGame(betSelector, continuePlaying);
     }
