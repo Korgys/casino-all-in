@@ -31,7 +31,7 @@
     <value>Jetons de départ par joueur [{0}-{1}] (défaut 1000) : </value>
   </data>
   <data name="PlayerCountPrompt" xml:space="preserve">
-    <value>Nombre total de joueurs [{0}-{1}] (dÃ©faut 5) : </value>
+    <value>Nombre total de joueurs [{0}-{1}] (défaut 5) : </value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
     <value>Difficulté des ordinateurs (1-6, défaut {0}) : </value>
@@ -79,7 +79,7 @@
     <value>Égalités</value>
   </data>
   <data name="BlackjackWinAnimation" xml:space="preserve">
-    <value>âœ¨ BLACKJACK ! Vous gagnez ! âœ¨</value>
+    <value>✨ BLACKJACK ! Vous gagnez ! ✨</value>
   </data>
   <data name="BlackjackContinuePrompt" xml:space="preserve">
     <value>Rejouer une manche de blackjack ? (o/n) : </value>
@@ -121,10 +121,10 @@
     <value>Meilleur gain</value>
   </data>
   <data name="SlotJackpotAnimation" xml:space="preserve">
-    <value>ðŸ’¥ JACKPOT NEON ðŸ’¥</value>
+    <value>💥 JACKPOT NEON 💥</value>
   </data>
   <data name="SlotWinAnimation" xml:space="preserve">
-    <value>âœ¨ GAIN ! âœ¨</value>
+    <value>✨ GAIN ! ✨</value>
   </data>
   <data name="WinnerTag" xml:space="preserve">
     <value>Gagnant</value>
@@ -193,7 +193,7 @@
     <value>Total</value>
   </data>
   <data name="BlackjackTitle" xml:space="preserve">
-    <value>BLACKJACK â™ â™¥</value>
+    <value>BLACKJACK ♠♥</value>
   </data>
   <data name="SlotMachineHeader" xml:space="preserve">
     <value>MACHINE À SOUS ✨ JACKPOT NÉON</value>
@@ -205,7 +205,7 @@
     <value>简体中文</value>
   </data>
   <data name="LanguageRussian" xml:space="preserve">
-    <value>Ð ÑƒÑÑÐºÐ¸Ð¹</value>
+    <value>Русский</value>
   </data>
   <data name="InvalidNumberInput" xml:space="preserve">
     <value>Entrée invalide. Veuillez saisir un nombre.</value>

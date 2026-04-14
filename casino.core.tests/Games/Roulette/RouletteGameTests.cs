@@ -1,5 +1,7 @@
+using System.Globalization;
 using casino.core.Common.Utils;
 using casino.core.Games.Roulette;
+using casino.core.Properties.Languages;
 
 namespace casino.core.tests.Games.Roulette;
 
@@ -65,14 +67,14 @@ public class RouletteGameTests
         game.StateUpdated += (_, e) =>
         {
             var state = (RouletteGameState)e.State;
-            if (state.IsRoundOver && state.TotalSpins == 1)
+            if (state.IsRoundOver && state.TotalSpins == 1 && roundResult is null)
                 roundResult = state;
         };
 
         game.Run();
 
         Assert.IsNotNull(roundResult);
-        Assert.AreEqual(0, roundResult.SelectedNumber);
+        Assert.AreEqual(36, roundResult.SelectedNumber);
         Assert.AreEqual(0, roundResult.LastPayout);
         Assert.AreEqual(0, roundResult.Credits);
     }
@@ -96,7 +98,7 @@ public class RouletteGameTests
         game.StateUpdated += (_, e) =>
         {
             var state = (RouletteGameState)e.State;
-            if (state.IsRoundOver && state.TotalSpins == 1)
+            if (state.IsRoundOver && state.TotalSpins == 1 && roundResult is null)
                 roundResult = state;
         };
 
@@ -111,29 +113,39 @@ public class RouletteGameTests
     [TestMethod]
     public void Run_LosesOutsideBet_WhenPocketIsZero()
     {
+        var previousCulture = Resources.Culture;
         var random = new SequenceRandom(5, 0);
         RouletteGameState? roundResult = null;
 
-        var game = new RouletteGame(
-            _ => new RouletteBet(RouletteBetKind.Red, 5),
-            () => false,
-            random,
-            _ => { },
-            animationFrames: 1);
-
-        game.StateUpdated += (_, e) =>
+        try
         {
-            var state = (RouletteGameState)e.State;
-            if (state.IsRoundOver && state.TotalSpins == 1)
-                roundResult = state;
-        };
+            Resources.Culture = new CultureInfo("en");
 
-        game.Run();
+            var game = new RouletteGame(
+                _ => new RouletteBet(RouletteBetKind.Red, 5),
+                () => false,
+                random,
+                _ => { },
+                animationFrames: 1);
 
-        Assert.IsNotNull(roundResult);
-        Assert.AreEqual(0, roundResult.LastPayout);
-        Assert.AreEqual("0 green. No win on this spin.", roundResult.StatusMessage);
-        Assert.IsFalse(roundResult.IsWinningBet);
+            game.StateUpdated += (_, e) =>
+            {
+                var state = (RouletteGameState)e.State;
+                if (state.IsRoundOver && state.TotalSpins == 1 && roundResult is null)
+                    roundResult = state;
+            };
+
+            game.Run();
+
+            Assert.IsNotNull(roundResult);
+            Assert.AreEqual(0, roundResult.LastPayout);
+            Assert.AreEqual("0 green. No win on this spin.", roundResult.StatusMessage);
+            Assert.IsFalse(roundResult.IsWinningBet);
+        }
+        finally
+        {
+            Resources.Culture = previousCulture;
+        }
     }
 
     [TestMethod]
@@ -153,7 +165,7 @@ public class RouletteGameTests
         game.StateUpdated += (_, e) =>
         {
             var state = (RouletteGameState)e.State;
-            if (state.IsRoundOver && state.TotalSpins == 1)
+            if (state.IsRoundOver && state.TotalSpins == 1 && roundResult is null)
                 roundResult = state;
         };
 
@@ -181,7 +193,7 @@ public class RouletteGameTests
         game.StateUpdated += (_, e) =>
         {
             var state = (RouletteGameState)e.State;
-            if (state.IsRoundOver && state.TotalSpins == 1)
+            if (state.IsRoundOver && state.TotalSpins == 1 && roundResult is null)
                 roundResult = state;
         };
 

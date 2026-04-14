@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="obj\**\*.cs;artifacts\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Languages\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

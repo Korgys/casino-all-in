@@ -16,163 +16,163 @@
     <value>è¨€èªžã‚’é¸æŠžã—ã¦ãã ã•ã„: 1. Français  2. English  3. Deutsch  4. Español  5. 日本語</value>
   </data>
   <data name="MainMenuChoice" xml:space="preserve">
-    <value>é¸æŠžã—ã¦ãã ã•ã„:</value>
+    <value>選択してください:</value>
   </data>
   <data name="PressAnyKeyToQuit" xml:space="preserve">
-    <value>çµ‚äº†ã™ã‚‹ã«ã¯ä½•ã‹ã‚­ãƒ¼ã‚’æŠ¼ã—ã¦ãã ã•ã„...</value>
+    <value>終了するには何かキーを押してください...</value>
   </data>
   <data name="MenuQuit" xml:space="preserve">
-    <value>çµ‚äº†</value>
+    <value>終了</value>
   </data>
   <data name="PokerSettingsTitle" xml:space="preserve">
-    <value>ãƒãƒ¼ã‚«ãƒ¼è¨­å®š</value>
+    <value>ポーカー設定</value>
   </data>
   <data name="InitialChipsPrompt" xml:space="preserve">
-    <value>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã”ã¨ã®é–‹å§‹ãƒãƒƒãƒ—æ•° [{0}-{1}] (ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ 1000):</value>
+    <value>プレイヤーごとの開始チップ数 [{0}-{1}] (デフォルト 1000):</value>
   </data>
   <data name="PlayerCountPrompt" xml:space="preserve">
-    <value>ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼äººæ•° [{0}-{1}] (ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ 5):</value>
+    <value>プレイヤー人数 [{0}-{1}] (デフォルト 5):</value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
-    <value>ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ãƒ¼é›£æ˜“åº¦ (1-6ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ {0}):</value>
+    <value>コンピューター難易度 (1-6、デフォルト {0}):</value>
   </data>
   <data name="ContinuePokerPrompt" xml:space="preserve">
-    <value>æ–°ã—ã„ã‚²ãƒ¼ãƒ ã‚’ç¶šã‘ã¾ã™ã‹ï¼Ÿ (y/n):</value>
+    <value>新しいゲームを続けますか？ (y/n):</value>
   </data>
   <data name="ActionChoicePrompt" xml:space="preserve">
-    <value>ã‚ãªãŸã®é¸æŠžã¯ï¼Ÿ</value>
+    <value>あなたの選択は？</value>
   </data>
   <data name="RaiseTargetPrompt" xml:space="preserve">
-    <value>æœ€çµ‚ãƒ™ãƒƒãƒˆé¡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼ˆå¢—åˆ†ã§ã¯ãªãåˆè¨ˆï¼‰:</value>
+    <value>最終ベット額を入力してください（増分ではなく合計）:</value>
   </data>
   <data name="RangeError" xml:space="preserve">
-    <value>{0} ã‹ã‚‰ {1} ã®é–“ã®å€¤ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</value>
+    <value>{0} から {1} の間の値を入力してください。</value>
   </data>
   <data name="InvalidDifficulty" xml:space="preserve">
-    <value>ç„¡åŠ¹ãªé¸æŠžã§ã™ã€‚1ã€2ã€3ã€4ã€5ã€6 ã‚’é¸ã‚“ã§ãã ã•ã„ã€‚</value>
+    <value>無効な選択です。1、2、3、4、5、6 を選んでください。</value>
   </data>
   <data name="BetLabel" xml:space="preserve">
-    <value>æœ€å°ãƒ™ãƒƒãƒˆ</value>
+    <value>最小ベット</value>
   </data>
   <data name="CurrentBetLabel" xml:space="preserve">
-    <value>ç¾åœ¨ã®ãƒ™ãƒƒãƒˆ</value>
+    <value>現在のベット</value>
   </data>
   <data name="TableLabel" xml:space="preserve">
-    <value>ãƒ†ãƒ¼ãƒ–ãƒ«</value>
+    <value>テーブル</value>
   </data>
   <data name="BlackjackDealer" xml:space="preserve">
-    <value>ãƒ‡ã‚£ãƒ¼ãƒ©ãƒ¼</value>
+    <value>ディーラー</value>
   </data>
   <data name="BlackjackYou" xml:space="preserve">
-    <value>ã‚ãªãŸ</value>
+    <value>あなた</value>
   </data>
   <data name="BlackjackStats" xml:space="preserve">
-    <value>æˆç¸¾</value>
+    <value>成績</value>
   </data>
   <data name="BlackjackWins" xml:space="preserve">
-    <value>å‹åˆ©</value>
+    <value>勝利</value>
   </data>
   <data name="BlackjackLosses" xml:space="preserve">
-    <value>æ•—åŒ—</value>
+    <value>敗北</value>
   </data>
   <data name="BlackjackPushes" xml:space="preserve">
-    <value>å¼•ãåˆ†ã‘</value>
+    <value>引き分け</value>
   </data>
   <data name="BlackjackWinAnimation" xml:space="preserve">
-    <value>âœ¨ ãƒ–ãƒ©ãƒƒã‚¯ã‚¸ãƒ£ãƒƒã‚¯ï¼ã‚ãªãŸã®å‹ã¡ï¼ âœ¨</value>
+    <value>✨ ブラックジャック！あなたの勝ち！ ✨</value>
   </data>
   <data name="BlackjackContinuePrompt" xml:space="preserve">
-    <value>ãƒ–ãƒ©ãƒƒã‚¯ã‚¸ãƒ£ãƒƒã‚¯ã‚’ã‚‚ã†1ãƒ©ã‚¦ãƒ³ãƒ‰éŠã³ã¾ã™ã‹ï¼Ÿ (y/n):</value>
+    <value>ブラックジャックをもう1ラウンド遊びますか？ (y/n):</value>
   </data>
   <data name="BlackjackActionsTitle" xml:space="preserve">
-    <value>é¸æŠžå¯èƒ½ãªã‚¢ã‚¯ã‚·ãƒ§ãƒ³</value>
+    <value>選択可能なアクション</value>
   </data>
   <data name="BlackjackHit" xml:space="preserve">
-    <value>ãƒ’ãƒƒãƒˆ</value>
+    <value>ヒット</value>
   </data>
   <data name="BlackjackStand" xml:space="preserve">
-    <value>ã‚¹ã‚¿ãƒ³ãƒ‰</value>
+    <value>スタンド</value>
   </data>
   <data name="SlotBetPrompt" xml:space="preserve">
-    <value>ãƒ™ãƒƒãƒˆé¡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ [{0}]:</value>
+    <value>ベット額を入力してください [{0}]:</value>
   </data>
   <data name="SlotContinuePrompt" xml:space="preserve">
-    <value>ã‚‚ã†ä¸€åº¦ã‚¹ãƒ”ãƒ³ã—ã¾ã™ã‹ï¼Ÿ (y/n):</value>
+    <value>もう一度スピンしますか？ (y/n):</value>
   </data>
   <data name="SlotPanelTitle" xml:space="preserve">
-    <value>ã‚¹ãƒ­ãƒƒãƒˆãƒžã‚·ãƒ³</value>
+    <value>スロットマシン</value>
   </data>
   <data name="SlotCredits" xml:space="preserve">
-    <value>ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆ</value>
+    <value>クレジット</value>
   </data>
   <data name="SlotMinMaxBet" xml:space="preserve">
-    <value>æœ€å°/æœ€å¤§ãƒ™ãƒƒãƒˆ</value>
+    <value>最小/最大ベット</value>
   </data>
   <data name="SlotLastWin" xml:space="preserve">
-    <value>å‰å›žã®å‹ã¡</value>
+    <value>前回の勝ち</value>
   </data>
   <data name="SlotSpins" xml:space="preserve">
-    <value>ã‚¹ãƒ”ãƒ³å›žæ•°</value>
+    <value>スピン回数</value>
   </data>
   <data name="SlotWinningSpins" xml:space="preserve">
-    <value>å½“ãŸã‚Šã‚¹ãƒ”ãƒ³</value>
+    <value>当たりスピン</value>
   </data>
   <data name="SlotBestWin" xml:space="preserve">
-    <value>æœ€é«˜é…å½“</value>
+    <value>最高配当</value>
   </data>
   <data name="SlotJackpotAnimation" xml:space="preserve">
-    <value>ðŸ’¥ ãƒã‚ªãƒ³ã‚¸ãƒ£ãƒƒã‚¯ãƒãƒƒãƒˆ ðŸ’¥</value>
+    <value>💥 ネオンジャックポット 💥</value>
   </data>
   <data name="SlotWinAnimation" xml:space="preserve">
-    <value>âœ¨ å‹åˆ©ï¼ âœ¨</value>
+    <value>✨ 勝利！ ✨</value>
   </data>
   <data name="WinnerTag" xml:space="preserve">
-    <value>å‹è€…</value>
+    <value>勝者</value>
   </data>
   <data name="PokerDifficultyBeginner" xml:space="preserve">
-    <value>åˆå¿ƒè€…</value>
+    <value>初心者</value>
   </data>
   <data name="PokerDifficultyVeryEasy" xml:space="preserve">
-    <value>ã¨ã¦ã‚‚ç°¡å˜</value>
+    <value>とても簡単</value>
   </data>
   <data name="PokerDifficultyEasy" xml:space="preserve">
-    <value>ã‹ã‚“ãŸã‚“</value>
+    <value>かんたん</value>
   </data>
   <data name="PokerDifficultyMedium" xml:space="preserve">
-    <value>ãµã¤ã†</value>
+    <value>ふつう</value>
   </data>
   <data name="PokerDifficultyHard" xml:space="preserve">
-    <value>ã‚€ãšã‹ã—ã„</value>
+    <value>むずかしい</value>
   </data>
   <data name="PokerDifficultyVeryHard" xml:space="preserve">
-    <value>ã¨ã¦ã‚‚é›£ã—ã„</value>
+    <value>とても難しい</value>
   </data>
   <data name="PokerDifficultyExpert" xml:space="preserve">
-    <value>ã‚¨ã‚­ã‚¹ãƒ‘ãƒ¼ãƒˆ</value>
+    <value>エキスパート</value>
   </data>
   <data name="MenuPoker" xml:space="preserve">
-    <value>ãƒãƒ¼ã‚«ãƒ¼</value>
+    <value>ポーカー</value>
   </data>
   <data name="MenuBlackjack" xml:space="preserve">
-    <value>ãƒ–ãƒ©ãƒƒã‚¯ã‚¸ãƒ£ãƒƒã‚¯</value>
+    <value>ブラックジャック</value>
   </data>
   <data name="MenuSlotMachine" xml:space="preserve">
-    <value>ã‚¹ãƒ­ãƒƒãƒˆãƒžã‚·ãƒ³</value>
+    <value>スロットマシン</value>
   </data>
   <data name="MenuLanguages" xml:space="preserve">
-    <value>è¨€èªž</value>
+    <value>言語</value>
   </data>
   <data name="MenuBack" xml:space="preserve">
-    <value>æˆ»ã‚‹</value>
+    <value>戻る</value>
   </data>
   <data name="LanguageMenuTitle" xml:space="preserve">
-    <value>è¨€èªžé¸æŠž</value>
+    <value>言語選択</value>
   </data>
   <data name="LanguageMenuChoice" xml:space="preserve">
-    <value>é¸æŠžã—ã¦ãã ã•ã„:</value>
+    <value>選択してください:</value>
   </data>
   <data name="CurrentLanguageLabel" xml:space="preserve">
-    <value>ç¾åœ¨ã®è¨€èªž</value>
+    <value>現在の言語</value>
   </data>
   <data name="LanguageFrench" xml:space="preserve">
     <value>Français</value>
@@ -187,43 +187,43 @@
     <value>Español</value>
   </data>
   <data name="PotLabel" xml:space="preserve">
-    <value>ãƒãƒƒãƒˆ</value>
+    <value>ポット</value>
   </data>
   <data name="TotalLabel" xml:space="preserve">
-    <value>åˆè¨ˆ</value>
+    <value>合計</value>
   </data>
   <data name="BlackjackTitle" xml:space="preserve">
-    <value>ãƒ–ãƒ©ãƒƒã‚¯ã‚¸ãƒ£ãƒƒã‚¯ â™ â™¥</value>
+    <value>ブラックジャック ♠♥</value>
   </data>
   <data name="SlotMachineHeader" xml:space="preserve">
-    <value>ã‚¹ãƒ­ãƒƒãƒˆãƒžã‚·ãƒ³ âœ¨ ãƒã‚ªãƒ³ã‚¸ãƒ£ãƒƒã‚¯ãƒãƒƒãƒˆ</value>
+    <value>スロットマシン ✨ ネオンジャックポット</value>
   </data>
   <data name="LanguageJapanese" xml:space="preserve">
     <value>日本語</value>
   </data>
   <data name="LanguageSimplifiedChinese" xml:space="preserve">
-    <value>ç®€ä½“ä¸­æ–‡</value>
+    <value>简体中文</value>
   </data>
   <data name="LanguageRussian" xml:space="preserve">
-    <value>Ð ÑƒÑÑÐºÐ¸Ð¹</value>
+    <value>Русский</value>
   </data>
   <data name="InvalidNumberInput" xml:space="preserve">
-    <value>ç„¡åŠ¹ãªå…¥åŠ›ã§ã™ã€‚æ•°å€¤ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</value>
+    <value>無効な入力です。数値を入力してください。</value>
   </data>
   <data name="TypeNumberMenuHelp" xml:space="preserve">
-    <value>ãƒ’ãƒ³ãƒˆ: ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç•ªå·ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</value>
+    <value>ヒント: メニュー番号を入力してください。</value>
   </data>
   <data name="ActionUnavailable" xml:space="preserve">
-    <value>é¸æŠž {0} ã¯ç¾åœ¨åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚</value>
+    <value>選択 {0} は現在利用できません。</value>
   </data>
   <data name="RaiseTargetPromptWithConstraints" xml:space="preserve">
-    <value>ãƒ¬ã‚¤ã‚ºé¡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼ˆç¾åœ¨ãƒ™ãƒƒãƒˆ {0}cã€ã‚ãªãŸã®æ‹ å‡º {1}cã€ä¸Šé™ {2}cï¼‰ï¼š</value>
+    <value>レイズ額を入力してください（現在ベット {0}c、あなたの拠出 {1}c、上限 {2}c）：</value>
   </data>
   <data name="RaiseAmountUnavailable" xml:space="preserve">
-    <value>ç„¡åŠ¹ãªãƒ¬ã‚¤ã‚ºã§ã™ã€‚ç¾åœ¨ãƒ™ãƒƒãƒˆ ({0}c) ã‚ˆã‚Šå¤§ããã€æœ€å¤§ {1}c ã¾ã§ã«ã—ã¦ãã ã•ã„ã€‚</value>
+    <value>無効なレイズです。現在ベット ({0}c) より大きく、最大 {1}c までにしてください。</value>
   </data>
   <data name="InputCanceledUsingDefault" xml:space="preserve">
-    <value>æˆ»ã‚‹ãŒé¸æŠžã•ã‚Œã¾ã—ãŸã€‚æ—¢å®šå€¤ã‚’ä½¿ç”¨ã—ã¾ã™: {0}ã€‚</value>
+    <value>戻るが選択されました。既定値を使用します: {0}。</value>
   </data>
   <data name="RouletteCredits" xml:space="preserve">
     <value>クレジット</value>

@@ -13,163 +13,163 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LanguagePrompt" xml:space="preserve">
-    <value>Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ·Ñ‹Ðº:</value>
+    <value>Выберите язык:</value>
   </data>
   <data name="MainMenuChoice" xml:space="preserve">
-    <value>Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: </value>
+    <value>Ваш выбор: </value>
   </data>
   <data name="PressAnyKeyToQuit" xml:space="preserve">
-    <value>ÐÐ°Ð¶Ð¼Ð¸Ñ‚Ðµ Ð»ÑŽÐ±ÑƒÑŽ ÐºÐ»Ð°Ð²Ð¸ÑˆÑƒ Ð´Ð»Ñ Ð²Ñ‹Ñ…Ð¾Ð´Ð°...</value>
+    <value>Нажмите любую клавишу для выхода...</value>
   </data>
   <data name="MenuQuit" xml:space="preserve">
-    <value>Ð’Ñ‹Ñ…Ð¾Ð´</value>
+    <value>Выход</value>
   </data>
   <data name="PokerSettingsTitle" xml:space="preserve">
-    <value>ÐÐÐ¡Ð¢Ð ÐžÐ™ÐšÐ˜ ÐŸÐžÐšÐ•Ð Ð</value>
+    <value>НАСТРОЙКИ ПОКЕРА</value>
   </data>
   <data name="InitialChipsPrompt" xml:space="preserve">
-    <value>ÐÐ°Ñ‡Ð°Ð»ÑŒÐ½Ñ‹Ðµ Ñ„Ð¸ÑˆÐºÐ¸ ({0}-{1}): </value>
+    <value>Начальные фишки ({0}-{1}): </value>
   </data>
   <data name="PlayerCountPrompt" xml:space="preserve">
-    <value>ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ð³Ñ€Ð¾ÐºÐ¾Ð² ({0}-{1}): </value>
+    <value>Количество игроков ({0}-{1}): </value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
-    <value>Ð¡Ð»Ð¾Ð¶Ð½Ð¾ÑÑ‚ÑŒ Ð˜Ð˜ (1-6, Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ: {0}): </value>
+    <value>Сложность ИИ (1-6, по умолчанию: {0}): </value>
   </data>
   <data name="ContinuePokerPrompt" xml:space="preserve">
-    <value>Ð¡Ñ‹Ð³Ñ€Ð°Ñ‚ÑŒ ÐµÑ‰Ñ‘ Ð¾Ð´Ð½Ñƒ Ñ€Ð°Ð·Ð´Ð°Ñ‡Ñƒ? [y/n]: </value>
+    <value>Сыграть ещё одну раздачу? [y/n]: </value>
   </data>
   <data name="ActionChoicePrompt" xml:space="preserve">
-    <value>Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ [check|call|raise|fold|allin]: </value>
+    <value>Выберите действие [check|call|raise|fold|allin]: </value>
   </data>
   <data name="RaiseTargetPrompt" xml:space="preserve">
-    <value>Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¾Ð±Ñ‰ÑƒÑŽ ÑÑƒÐ¼Ð¼Ñƒ ÑÑ‚Ð°Ð²ÐºÐ¸ Ð¿Ð¾ÑÐ»Ðµ Ð¿Ð¾Ð²Ñ‹ÑˆÐµÐ½Ð¸Ñ (Ð¼Ð¸Ð½Ð¸Ð¼ÑƒÐ¼ {0}): </value>
+    <value>Введите общую сумму ставки после повышения (минимум {0}): </value>
   </data>
   <data name="RangeError" xml:space="preserve">
-    <value>Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¾Ñ‚ {0} Ð´Ð¾ {1}.</value>
+    <value>Введите значение от {0} до {1}.</value>
   </data>
   <data name="InvalidDifficulty" xml:space="preserve">
-    <value>ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ñ‹Ð±Ð¾Ñ€. Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ 1, 2, 3, 4, 5 Ð¸Ð»Ð¸ 6.</value>
+    <value>Неверный выбор. Выберите 1, 2, 3, 4, 5 или 6.</value>
   </data>
   <data name="BetLabel" xml:space="preserve">
-    <value>Ð¡Ñ‚Ð°Ð²ÐºÐ°</value>
+    <value>Ставка</value>
   </data>
   <data name="CurrentBetLabel" xml:space="preserve">
-    <value>Ð¢ÐµÐºÑƒÑ‰Ð°Ñ ÑÑ‚Ð°Ð²ÐºÐ°</value>
+    <value>Текущая ставка</value>
   </data>
   <data name="TableLabel" xml:space="preserve">
-    <value>Ð¡Ñ‚Ð¾Ð»</value>
+    <value>Стол</value>
   </data>
   <data name="BlackjackDealer" xml:space="preserve">
-    <value>Ð”Ð¸Ð»ÐµÑ€</value>
+    <value>Дилер</value>
   </data>
   <data name="BlackjackYou" xml:space="preserve">
-    <value>Ð’Ñ‹</value>
+    <value>Вы</value>
   </data>
   <data name="BlackjackStats" xml:space="preserve">
-    <value>Ð¡Ð¢ÐÐ¢Ð˜Ð¡Ð¢Ð˜ÐšÐ</value>
+    <value>СТАТИСТИКА</value>
   </data>
   <data name="BlackjackWins" xml:space="preserve">
-    <value>ÐŸÐ¾Ð±ÐµÐ´Ñ‹</value>
+    <value>Победы</value>
   </data>
   <data name="BlackjackLosses" xml:space="preserve">
-    <value>ÐŸÐ¾Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ</value>
+    <value>Поражения</value>
   </data>
   <data name="BlackjackPushes" xml:space="preserve">
-    <value>ÐÐ¸Ñ‡ÑŒÐ¸</value>
+    <value>Ничьи</value>
   </data>
   <data name="BlackjackWinAnimation" xml:space="preserve">
-    <value>ðŸŽ‰ ÐŸÐžÐ‘Ð•Ð”Ð! ðŸŽ‰</value>
+    <value>🎉 ПОБЕДА! 🎉</value>
   </data>
   <data name="BlackjackContinuePrompt" xml:space="preserve">
-    <value>Ð¡Ñ‹Ð³Ñ€Ð°Ñ‚ÑŒ ÐµÑ‰Ñ‘ Ñ€Ð°ÑƒÐ½Ð´? [y/n]: </value>
+    <value>Сыграть ещё раунд? [y/n]: </value>
   </data>
   <data name="BlackjackActionsTitle" xml:space="preserve">
-    <value>Ð”ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ</value>
+    <value>Действия</value>
   </data>
   <data name="BlackjackHit" xml:space="preserve">
-    <value>Ð’Ð·ÑÑ‚ÑŒ</value>
+    <value>Взять</value>
   </data>
   <data name="BlackjackStand" xml:space="preserve">
-    <value>Ð¡Ñ‚Ð¾ÑÑ‚ÑŒ</value>
+    <value>Стоять</value>
   </data>
   <data name="SlotBetPrompt" xml:space="preserve">
-    <value>Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÑ‚Ð°Ð²ÐºÑƒ [{0}]: </value>
+    <value>Введите ставку [{0}]: </value>
   </data>
   <data name="SlotContinuePrompt" xml:space="preserve">
-    <value>ÐšÑ€ÑƒÑ‚Ð¸Ñ‚ÑŒ ÐµÑ‰Ñ‘ Ñ€Ð°Ð·? [y/n]: </value>
+    <value>Крутить ещё раз? [y/n]: </value>
   </data>
   <data name="SlotPanelTitle" xml:space="preserve">
-    <value>ÐŸÐÐÐ•Ð›Ð¬ Ð˜Ð“Ð ÐžÐ’ÐžÐ“Ðž ÐÐ’Ð¢ÐžÐœÐÐ¢Ð</value>
+    <value>ПАНЕЛЬ ИГРОВОГО АВТОМАТА</value>
   </data>
   <data name="SlotCredits" xml:space="preserve">
-    <value>ÐšÑ€ÐµÐ´Ð¸Ñ‚Ñ‹</value>
+    <value>Кредиты</value>
   </data>
   <data name="SlotMinMaxBet" xml:space="preserve">
-    <value>ÐœÐ¸Ð½/ÐœÐ°ÐºÑ ÑÑ‚Ð°Ð²ÐºÐ°</value>
+    <value>Мин/Макс ставка</value>
   </data>
   <data name="SlotLastWin" xml:space="preserve">
-    <value>ÐŸÐ¾ÑÐ»ÐµÐ´Ð½Ð¸Ð¹ Ð²Ñ‹Ð¸Ð³Ñ€Ñ‹Ñˆ</value>
+    <value>Последний выигрыш</value>
   </data>
   <data name="SlotSpins" xml:space="preserve">
-    <value>Ð¡Ð¿Ð¸Ð½Ñ‹</value>
+    <value>Спины</value>
   </data>
   <data name="SlotWinningSpins" xml:space="preserve">
-    <value>Ð’Ñ‹Ð¸Ð³Ñ€Ñ‹ÑˆÐ½Ñ‹Ðµ ÑÐ¿Ð¸Ð½Ñ‹</value>
+    <value>Выигрышные спины</value>
   </data>
   <data name="SlotBestWin" xml:space="preserve">
-    <value>Ð›ÑƒÑ‡ÑˆÐ¸Ð¹ Ð²Ñ‹Ð¸Ð³Ñ€Ñ‹Ñˆ</value>
+    <value>Лучший выигрыш</value>
   </data>
   <data name="SlotJackpotAnimation" xml:space="preserve">
-    <value>ðŸ’¥ Ð”Ð–Ð•ÐšÐŸÐžÐ¢! ðŸ’¥</value>
+    <value>💥 ДЖЕКПОТ! 💥</value>
   </data>
   <data name="SlotWinAnimation" xml:space="preserve">
-    <value>âœ¨ Ð’Ð«Ð˜Ð“Ð Ð«Ð¨! âœ¨</value>
+    <value>✨ ВЫИГРЫШ! ✨</value>
   </data>
   <data name="WinnerTag" xml:space="preserve">
-    <value>ÐŸÐ¾Ð±ÐµÐ´Ð¸Ñ‚ÐµÐ»ÑŒ</value>
+    <value>Победитель</value>
   </data>
   <data name="PokerDifficultyBeginner" xml:space="preserve">
-    <value>ÐÐ¾Ð²Ð¸Ñ‡Ð¾Ðº</value>
+    <value>Новичок</value>
   </data>
   <data name="PokerDifficultyVeryEasy" xml:space="preserve">
-    <value>ÐžÑ‡ÐµÐ½ÑŒ Ð»ÐµÐ³ÐºÐ¾</value>
+    <value>Очень легко</value>
   </data>
   <data name="PokerDifficultyEasy" xml:space="preserve">
-    <value>Ð›Ñ‘Ð³ÐºÐ¸Ð¹</value>
+    <value>Лёгкий</value>
   </data>
   <data name="PokerDifficultyMedium" xml:space="preserve">
-    <value>Ð¡Ñ€ÐµÐ´Ð½Ð¸Ð¹</value>
+    <value>Средний</value>
   </data>
   <data name="PokerDifficultyHard" xml:space="preserve">
-    <value>Ð¡Ð»Ð¾Ð¶Ð½Ñ‹Ð¹</value>
+    <value>Сложный</value>
   </data>
   <data name="PokerDifficultyVeryHard" xml:space="preserve">
-    <value>ÐžÑ‡ÐµÐ½ÑŒ ÑÐ»Ð¾Ð¶Ð½Ð¾</value>
+    <value>Очень сложно</value>
   </data>
   <data name="PokerDifficultyExpert" xml:space="preserve">
-    <value>Ð­ÐºÑÐ¿ÐµÑ€Ñ‚</value>
+    <value>Эксперт</value>
   </data>
   <data name="MenuPoker" xml:space="preserve">
-    <value>ÐŸÐ¾ÐºÐµÑ€</value>
+    <value>Покер</value>
   </data>
   <data name="MenuBlackjack" xml:space="preserve">
-    <value>Ð‘Ð»ÑÐºÐ´Ð¶ÐµÐº</value>
+    <value>Блэкджек</value>
   </data>
   <data name="MenuSlotMachine" xml:space="preserve">
-    <value>Ð˜Ð³Ñ€Ð¾Ð²Ð¾Ð¹ Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚</value>
+    <value>Игровой автомат</value>
   </data>
   <data name="MenuLanguages" xml:space="preserve">
     <value>Язык</value>
   </data>
   <data name="MenuBack" xml:space="preserve">
-    <value>ÐÐ°Ð·Ð°Ð´</value>
+    <value>Назад</value>
   </data>
   <data name="LanguageMenuTitle" xml:space="preserve">
     <value>ВЫБОР ЯЗЫКА</value>
   </data>
   <data name="LanguageMenuChoice" xml:space="preserve">
-    <value>Ð’Ð°Ñˆ Ð²Ñ‹Ð±Ð¾Ñ€: </value>
+    <value>Ваш выбор: </value>
   </data>
   <data name="CurrentLanguageLabel" xml:space="preserve">
     <value>Текущий язык</value>
@@ -187,43 +187,43 @@
     <value>Español</value>
   </data>
   <data name="PotLabel" xml:space="preserve">
-    <value>Ð‘Ð°Ð½Ðº</value>
+    <value>Банк</value>
   </data>
   <data name="TotalLabel" xml:space="preserve">
-    <value>Ð˜Ñ‚Ð¾Ð³Ð¾</value>
+    <value>Итого</value>
   </data>
   <data name="BlackjackTitle" xml:space="preserve">
-    <value>Ð‘Ð›Ð­ÐšÐ”Ð–Ð•Ðš â™ â™¥</value>
+    <value>БЛЭКДЖЕК ♠♥</value>
   </data>
   <data name="SlotMachineHeader" xml:space="preserve">
-    <value>Ð˜Ð“Ð ÐžÐ’ÐžÐ™ ÐÐ’Ð¢ÐžÐœÐÐ¢ âœ¨ ÐÐ•ÐžÐÐžÐ’Ð«Ð™ Ð”Ð–Ð•ÐšÐŸÐžÐ¢</value>
+    <value>ИГРОВОЙ АВТОМАТ ✨ НЕОНОВЫЙ ДЖЕКПОТ</value>
   </data>
   <data name="LanguageJapanese" xml:space="preserve">
     <value>日本語</value>
   </data>
   <data name="LanguageSimplifiedChinese" xml:space="preserve">
-    <value>ç®€ä½“ä¸­æ–‡</value>
+    <value>简体中文</value>
   </data>
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
   <data name="InvalidNumberInput" xml:space="preserve">
-    <value>ÐÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´. Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾.</value>
+    <value>Некорректный ввод. Введите число.</value>
   </data>
   <data name="TypeNumberMenuHelp" xml:space="preserve">
-    <value>ÐŸÐ¾Ð´ÑÐºÐ°Ð·ÐºÐ°: Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ Ð¸Ð· Ð¼ÐµÐ½ÑŽ.</value>
+    <value>Подсказка: введите номер из меню.</value>
   </data>
   <data name="ActionUnavailable" xml:space="preserve">
-    <value>Ð’Ð°Ñ€Ð¸Ð°Ð½Ñ‚ {0} ÑÐµÐ¹Ñ‡Ð°Ñ Ð½ÐµÐ´Ð¾ÑÑ‚ÑƒÐ¿ÐµÐ½.</value>
+    <value>Вариант {0} сейчас недоступен.</value>
   </data>
   <data name="RaiseTargetPromptWithConstraints" xml:space="preserve">
-    <value>Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð¿Ð¾Ð²Ñ‹ÑˆÐµÐ½Ð¸Ñ (Ñ‚ÐµÐºÑƒÑ‰Ð°Ñ ÑÑ‚Ð°Ð²ÐºÐ° {0}c, Ð²Ð°Ñˆ Ð²ÐºÐ»Ð°Ð´ {1}c, Ð¼Ð°ÐºÑÐ¸Ð¼ÑƒÐ¼ {2}c): </value>
+    <value>Введите размер повышения (текущая ставка {0}c, ваш вклад {1}c, максимум {2}c): </value>
   </data>
   <data name="RaiseAmountUnavailable" xml:space="preserve">
-    <value>ÐÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ð¹ Ñ€ÐµÐ¹Ð·. Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±Ñ‹Ñ‚ÑŒ Ð±Ð¾Ð»ÑŒÑˆÐµ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ¹ ÑÑ‚Ð°Ð²ÐºÐ¸ ({0}c) Ð¸ Ð½Ðµ Ð±Ð¾Ð»ÐµÐµ {1}c.</value>
+    <value>Некорректный рейз. Значение должно быть больше текущей ставки ({0}c) и не более {1}c.</value>
   </data>
   <data name="InputCanceledUsingDefault" xml:space="preserve">
-    <value>Ð’Ñ‹Ð±Ñ€Ð°Ð½ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚, Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ: {0}.</value>
+    <value>Выбран возврат, используется значение по умолчанию: {0}.</value>
   </data>
   <data name="RouletteCredits" xml:space="preserve">
     <value>Кредиты</value>

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Compile Remove="Events\**" />
+    <Compile Remove="obj\**\*.cs;artifacts\**\*.cs" />
     <EmbeddedResource Remove="Events\**" />
     <None Remove="Events\**" />
   </ItemGroup>

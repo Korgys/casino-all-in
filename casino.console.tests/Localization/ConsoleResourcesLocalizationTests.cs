@@ -16,13 +16,13 @@ public class ConsoleResourcesLocalizationTests
         foreach (var cultureName in cultures)
         {
             var culture = new CultureInfo(cultureName);
-            Assert.AreEqual("Français", ResourceManager.GetString("LanguageFrench", culture));
+            Assert.AreEqual("Fran\u00E7ais", ResourceManager.GetString("LanguageFrench", culture));
             Assert.AreEqual("English", ResourceManager.GetString("LanguageEnglish", culture));
             Assert.AreEqual("Deutsch", ResourceManager.GetString("LanguageGerman", culture));
-            Assert.AreEqual("Español", ResourceManager.GetString("LanguageSpanish", culture));
-            Assert.AreEqual("日本語", ResourceManager.GetString("LanguageJapanese", culture));
-            Assert.AreEqual("简体中文", ResourceManager.GetString("LanguageSimplifiedChinese", culture));
-            Assert.AreEqual("Русский", ResourceManager.GetString("LanguageRussian", culture));
+            Assert.AreEqual("Espa\u00F1ol", ResourceManager.GetString("LanguageSpanish", culture));
+            Assert.AreEqual("\u65E5\u672C\u8A9E", ResourceManager.GetString("LanguageJapanese", culture));
+            Assert.AreEqual("\u7B80\u4F53\u4E2D\u6587", ResourceManager.GetString("LanguageSimplifiedChinese", culture));
+            Assert.AreEqual("\u0420\u0443\u0441\u0441\u043A\u0438\u0439", ResourceManager.GetString("LanguageRussian", culture));
         }
     }
 
@@ -31,9 +31,9 @@ public class ConsoleResourcesLocalizationTests
     {
         var culture = new CultureInfo("ru-RU");
 
-        Assert.AreEqual("Язык", ResourceManager.GetString("MenuLanguages", culture));
-        Assert.AreEqual("ВЫБОР ЯЗЫКА", ResourceManager.GetString("LanguageMenuTitle", culture));
-        Assert.AreEqual("Текущий язык", ResourceManager.GetString("CurrentLanguageLabel", culture));
+        Assert.AreEqual("\u042F\u0437\u044B\u043A", ResourceManager.GetString("MenuLanguages", culture));
+        Assert.AreEqual("\u0412\u042B\u0411\u041E\u0420 \u042F\u0417\u042B\u041A\u0410", ResourceManager.GetString("LanguageMenuTitle", culture));
+        Assert.AreEqual("\u0422\u0435\u043A\u0443\u0449\u0438\u0439 \u044F\u0437\u044B\u043A", ResourceManager.GetString("CurrentLanguageLabel", culture));
     }
 
     [TestMethod]

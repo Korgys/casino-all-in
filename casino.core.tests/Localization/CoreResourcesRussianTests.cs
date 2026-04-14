@@ -15,9 +15,9 @@ public class CoreResourcesRussianTests
         {
             Resources.Culture = new CultureInfo("ru-RU");
 
-            Assert.AreEqual("Дилер", Resources.BlackjackDealer);
-            Assert.AreEqual("Олл-ин", Resources.AllIn);
-            Assert.AreEqual("Старшая карта", Resources.HighCard);
+            Assert.AreEqual("\u0414\u0438\u043B\u0435\u0440", Resources.BlackjackDealer);
+            Assert.AreEqual("\u041E\u043B\u043B-\u0438\u043D", Resources.AllIn);
+            Assert.AreEqual("\u0421\u0442\u0430\u0440\u0448\u0430\u044F \u043A\u0430\u0440\u0442\u0430", Resources.HighCard);
         }
         finally
         {

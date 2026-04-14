@@ -13,166 +13,166 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LanguagePrompt" xml:space="preserve">
-    <value>é€‰æ‹©è¯­è¨€</value>
+    <value>选择语言</value>
   </data>
   <data name="MainMenuChoice" xml:space="preserve">
-    <value>è¯·é€‰æ‹©ä¸€ä¸ªé€‰é¡¹ï¼š</value>
+    <value>请选择一个选项：</value>
   </data>
   <data name="PressAnyKeyToQuit" xml:space="preserve">
-    <value>æŒ‰ä»»æ„é”®é€€å‡ºâ€¦</value>
+    <value>按任意键退出…</value>
   </data>
   <data name="MenuQuit" xml:space="preserve">
-    <value>é€€å‡º</value>
+    <value>退出</value>
   </data>
   <data name="PokerSettingsTitle" xml:space="preserve">
-    <value>æ‰‘å…‹è®¾ç½®</value>
+    <value>扑克设置</value>
   </data>
   <data name="InitialChipsPrompt" xml:space="preserve">
-    <value>åˆå§‹ç­¹ç ï¼ˆ{0}-{1}ï¼‰ï¼š</value>
+    <value>初始筹码（{0}-{1}）：</value>
   </data>
   <data name="PlayerCountPrompt" xml:space="preserve">
-    <value>çŽ©å®¶æ•°é‡ï¼ˆ{0}-{1}ï¼‰ï¼š</value>
+    <value>玩家数量（{0}-{1}）：</value>
   </data>
   <data name="DifficultyPrompt" xml:space="preserve">
-    <value>AI éš¾åº¦ï¼ˆ1-6ï¼Œé»˜è®¤ï¼š{0}ï¼‰ï¼š</value>
+    <value>AI 难度（1-6，默认：{0}）：</value>
   </data>
   <data name="ContinuePokerPrompt" xml:space="preserve">
-    <value>å†æ¥ä¸€å±€æ‰‘å…‹å—ï¼Ÿ(y/n)ï¼š</value>
+    <value>再来一局扑克吗？(y/n)：</value>
   </data>
   <data name="ActionChoicePrompt" xml:space="preserve">
-    <value>è¯·é€‰æ‹©ä½ çš„åŠ¨ä½œï¼š</value>
+    <value>请选择你的动作：</value>
   </data>
   <data name="RaiseTargetPrompt" xml:space="preserve">
-    <value>ç›®æ ‡æ€»ä¸‹æ³¨é‡‘é¢ï¼š</value>
+    <value>目标总下注金额：</value>
   </data>
   <data name="RangeError" xml:space="preserve">
-    <value>è¯·è¾“å…¥ {0} åˆ° {1} ä¹‹é—´çš„å€¼ã€‚</value>
+    <value>请输入 {0} 到 {1} 之间的值。</value>
   </data>
   <data name="InvalidDifficulty" xml:space="preserve">
-    <value>æ— æ•ˆé€‰æ‹©ã€‚è¯·è¾“å…¥ 1ã€2ã€3ã€4ã€5 æˆ– 6ã€‚</value>
+    <value>无效选择。请输入 1、2、3、4、5 或 6。</value>
   </data>
   <data name="BetLabel" xml:space="preserve">
-    <value>ä¸‹æ³¨</value>
+    <value>下注</value>
   </data>
   <data name="CurrentBetLabel" xml:space="preserve">
-    <value>å½“å‰ä¸‹æ³¨</value>
+    <value>当前下注</value>
   </data>
   <data name="TableLabel" xml:space="preserve">
-    <value>ç‰Œæ¡Œ</value>
+    <value>牌桌</value>
   </data>
   <data name="BlackjackDealer" xml:space="preserve">
-    <value>åº„å®¶</value>
+    <value>庄家</value>
   </data>
   <data name="BlackjackYou" xml:space="preserve">
-    <value>ä½ </value>
+    <value>你</value>
   </data>
   <data name="BlackjackStats" xml:space="preserve">
-    <value>ç»Ÿè®¡</value>
+    <value>统计</value>
   </data>
   <data name="BlackjackWins" xml:space="preserve">
-    <value>èƒœå±€</value>
+    <value>胜局</value>
   </data>
   <data name="BlackjackLosses" xml:space="preserve">
-    <value>è´¥å±€</value>
+    <value>败局</value>
   </data>
   <data name="BlackjackPushes" xml:space="preserve">
-    <value>å¹³å±€</value>
+    <value>平局</value>
   </data>
   <data name="BlackjackWinAnimation" xml:space="preserve">
-    <value>ðŸŽ‰ ä½ èµ¢äº†è¿™ä¸€å±€ï¼ðŸŽ‰</value>
+    <value>🎉 你赢了这一局！🎉</value>
   </data>
   <data name="BlackjackContinuePrompt" xml:space="preserve">
-    <value>å†çŽ©ä¸€å±€äºŒåä¸€ç‚¹å—ï¼Ÿ(y/n)ï¼š</value>
+    <value>再玩一局二十一点吗？(y/n)：</value>
   </data>
   <data name="BlackjackActionsTitle" xml:space="preserve">
-    <value>æ“ä½œ</value>
+    <value>操作</value>
   </data>
   <data name="BlackjackHit" xml:space="preserve">
-    <value>è¦ç‰Œ</value>
+    <value>要牌</value>
   </data>
   <data name="BlackjackStand" xml:space="preserve">
-    <value>åœç‰Œ</value>
+    <value>停牌</value>
   </data>
   <data name="SlotBetPrompt" xml:space="preserve">
-    <value>è¯·è¾“å…¥ä¸‹æ³¨ [{0}]ï¼š</value>
+    <value>请输入下注 [{0}]：</value>
   </data>
   <data name="SlotContinuePrompt" xml:space="preserve">
-    <value>å†è½¬ä¸€æ¬¡å—ï¼Ÿ(y/n)ï¼š</value>
+    <value>再转一次吗？(y/n)：</value>
   </data>
   <data name="SlotPanelTitle" xml:space="preserve">
-    <value>è€è™Žæœº</value>
+    <value>老虎机</value>
   </data>
   <data name="SlotCredits" xml:space="preserve">
-    <value>ç§¯åˆ†</value>
+    <value>积分</value>
   </data>
   <data name="SlotMinMaxBet" xml:space="preserve">
-    <value>æœ€å°/æœ€å¤§ä¸‹æ³¨</value>
+    <value>最小/最大下注</value>
   </data>
   <data name="SlotLastWin" xml:space="preserve">
-    <value>ä¸Šæ¬¡èµ¢åˆ†</value>
+    <value>上次赢分</value>
   </data>
   <data name="SlotSpins" xml:space="preserve">
-    <value>æ—‹è½¬æ¬¡æ•°</value>
+    <value>旋转次数</value>
   </data>
   <data name="SlotWinningSpins" xml:space="preserve">
-    <value>ä¸­å¥–æ¬¡æ•°</value>
+    <value>中奖次数</value>
   </data>
   <data name="SlotBestWin" xml:space="preserve">
-    <value>æœ€é«˜èµ¢åˆ†</value>
+    <value>最高赢分</value>
   </data>
   <data name="SlotJackpotAnimation" xml:space="preserve">
-    <value>ðŸ’¥ å¤´å¥–ï¼ï¼ï¼ðŸ’¥</value>
+    <value>💥 头奖！！！💥</value>
   </data>
   <data name="SlotWinAnimation" xml:space="preserve">
-    <value>âœ¨ ä½ èµ¢äº†ï¼âœ¨</value>
+    <value>✨ 你赢了！✨</value>
   </data>
   <data name="WinnerTag" xml:space="preserve">
-    <value>èµ¢å®¶</value>
+    <value>赢家</value>
   </data>
   <data name="PokerDifficultyBeginner" xml:space="preserve">
-    <value>æ–°æ‰‹</value>
+    <value>新手</value>
   </data>
   <data name="PokerDifficultyVeryEasy" xml:space="preserve">
-    <value>éžå¸¸ç®€å•</value>
+    <value>非常简单</value>
   </data>
   <data name="PokerDifficultyEasy" xml:space="preserve">
-    <value>ç®€å•</value>
+    <value>简单</value>
   </data>
   <data name="PokerDifficultyMedium" xml:space="preserve">
-    <value>ä¸­ç­‰</value>
+    <value>中等</value>
   </data>
   <data name="PokerDifficultyHard" xml:space="preserve">
-    <value>å›°éš¾</value>
+    <value>困难</value>
   </data>
   <data name="PokerDifficultyVeryHard" xml:space="preserve">
-    <value>éžå¸¸å›°éš¾</value>
+    <value>非常困难</value>
   </data>
   <data name="PokerDifficultyExpert" xml:space="preserve">
-    <value>ä¸“å®¶</value>
+    <value>专家</value>
   </data>
   <data name="MenuPoker" xml:space="preserve">
-    <value>æ‰‘å…‹</value>
+    <value>扑克</value>
   </data>
   <data name="MenuBlackjack" xml:space="preserve">
-    <value>äºŒåä¸€ç‚¹</value>
+    <value>二十一点</value>
   </data>
   <data name="MenuSlotMachine" xml:space="preserve">
-    <value>è€è™Žæœº</value>
+    <value>老虎机</value>
   </data>
   <data name="MenuLanguages" xml:space="preserve">
-    <value>è¯­è¨€</value>
+    <value>语言</value>
   </data>
   <data name="MenuBack" xml:space="preserve">
-    <value>è¿”å›ž</value>
+    <value>返回</value>
   </data>
   <data name="LanguageMenuTitle" xml:space="preserve">
-    <value>è¯­è¨€é€‰æ‹©</value>
+    <value>语言选择</value>
   </data>
   <data name="LanguageMenuChoice" xml:space="preserve">
-    <value>é€‰æ‹©è¯­è¨€ï¼š</value>
+    <value>选择语言：</value>
   </data>
   <data name="CurrentLanguageLabel" xml:space="preserve">
-    <value>å½“å‰è¯­è¨€</value>
+    <value>当前语言</value>
   </data>
   <data name="LanguageFrench" xml:space="preserve">
     <value>Français</value>
@@ -187,43 +187,43 @@
     <value>Español</value>
   </data>
   <data name="PotLabel" xml:space="preserve">
-    <value>åº•æ± </value>
+    <value>底池</value>
   </data>
   <data name="TotalLabel" xml:space="preserve">
-    <value>æ€»è®¡</value>
+    <value>总计</value>
   </data>
   <data name="BlackjackTitle" xml:space="preserve">
-    <value>äºŒåä¸€ç‚¹</value>
+    <value>二十一点</value>
   </data>
   <data name="SlotMachineHeader" xml:space="preserve">
-    <value>ðŸŽ° è€è™Žæœº ðŸŽ°</value>
+    <value>🎰 老虎机 🎰</value>
   </data>
   <data name="LanguageJapanese" xml:space="preserve">
     <value>日本語</value>
   </data>
   <data name="LanguageSimplifiedChinese" xml:space="preserve">
-    <value>ç®€ä½“ä¸­æ–‡</value>
+    <value>简体中文</value>
   </data>
   <data name="LanguageRussian" xml:space="preserve">
-    <value>Ð ÑƒÑÑÐºÐ¸Ð¹</value>
+    <value>Русский</value>
   </data>
   <data name="InvalidNumberInput" xml:space="preserve">
-    <value>è¾“å…¥æ— æ•ˆã€‚è¯·è¾“å…¥æ•°å­—ã€‚</value>
+    <value>输入无效。请输入数字。</value>
   </data>
   <data name="TypeNumberMenuHelp" xml:space="preserve">
-    <value>æç¤ºï¼šè¯·è¾“å…¥èœå•ä¸­çš„æ•°å­—ã€‚</value>
+    <value>提示：请输入菜单中的数字。</value>
   </data>
   <data name="ActionUnavailable" xml:space="preserve">
-    <value>é€‰é¡¹ {0} å½“å‰ä¸å¯ç”¨ã€‚</value>
+    <value>选项 {0} 当前不可用。</value>
   </data>
   <data name="RaiseTargetPromptWithConstraints" xml:space="preserve">
-    <value>è¯·è¾“å…¥åŠ æ³¨ç›®æ ‡ï¼ˆå½“å‰ä¸‹æ³¨ {0}cï¼Œä½ å·²æŠ•å…¥ {1}cï¼Œæœ€å¤§å…è®¸ {2}cï¼‰ï¼š</value>
+    <value>请输入加注目标（当前下注 {0}c，你已投入 {1}c，最大允许 {2}c）：</value>
   </data>
   <data name="RaiseAmountUnavailable" xml:space="preserve">
-    <value>åŠ æ³¨æ— æ•ˆã€‚ç›®æ ‡å¿…é¡»å¤§äºŽå½“å‰ä¸‹æ³¨ï¼ˆ{0}cï¼‰ä¸”ä¸è¶…è¿‡ {1}cã€‚</value>
+    <value>加注无效。目标必须大于当前下注（{0}c）且不超过 {1}c。</value>
   </data>
   <data name="InputCanceledUsingDefault" xml:space="preserve">
-    <value>å·²é€‰æ‹©è¿”å›žï¼Œä½¿ç”¨é»˜è®¤å€¼ï¼š{0}ã€‚</value>
+    <value>已选择返回，使用默认值：{0}。</value>
   </data>
   <data name="RouletteCredits" xml:space="preserve">
     <value>积分</value>
