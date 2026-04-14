@@ -107,7 +107,7 @@ public class ConsolePokerInputTests
             var action = ConsolePokerInput.GetPlayerAction(request);
 
             Assert.AreEqual(PokerTypeAction.Check, action.TypeAction);
-            Assert.IsTrue(writer.ToString().Contains(ConsoleText.ActionChoicePrompt));
+            Assert.Contains(ConsoleText.ActionChoicePrompt, writer.ToString());
             Assert.IsTrue(
                 writer.ToString().Contains(ConsoleText.InvalidNumberInput) ||
                 writer.ToString().Contains(ConsoleText.ActionUnavailable(999)));

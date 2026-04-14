@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -234,5 +234,62 @@
   </data>
   <data name="As" xml:space="preserve">
     <value>Туз</value>
+  </data>
+  <data name="RouletteWheelSpinning" xml:space="preserve">
+    <value>Колесо крутится... ({0}/{1})</value>
+  </data>
+  <data name="RouletteWinParity" xml:space="preserve">
+    <value>{0}! Ваша ставка на чет/нечет выигрывает {1} кредитов.</value>
+  </data>
+  <data name="RouletteGameName" xml:space="preserve">
+    <value>Рулетка</value>
+  </data>
+  <data name="RoulettePocketColored" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="RouletteWinNumber" xml:space="preserve">
+    <value>{0}! Выпал точный номер, вы выигрываете {1} кредитов.</value>
+  </data>
+  <data name="RouletteWelcome" xml:space="preserve">
+    <value>Добро пожаловать в европейскую рулетку. Сделайте ставку.</value>
+  </data>
+  <data name="RouletteThanks" xml:space="preserve">
+    <value>Спасибо за игру в рулетку.</value>
+  </data>
+  <data name="RouletteBetBlack" xml:space="preserve">
+    <value>Черное</value>
+  </data>
+  <data name="RouletteLose" xml:space="preserve">
+    <value>{0}. На этом спине выигрыша нет.</value>
+  </data>
+  <data name="RouletteColorRed" xml:space="preserve">
+    <value>красное</value>
+  </data>
+  <data name="RouletteChooseBet" xml:space="preserve">
+    <value>Сделайте ставку на следующий спин.</value>
+  </data>
+  <data name="RouletteWinColor" xml:space="preserve">
+    <value>{0}! Ваша внешняя ставка выигрывает {1} кредитов.</value>
+  </data>
+  <data name="RouletteColorBlack" xml:space="preserve">
+    <value>черное</value>
+  </data>
+  <data name="RouletteBetEven" xml:space="preserve">
+    <value>Чет</value>
+  </data>
+  <data name="RouletteBetStraightNumber" xml:space="preserve">
+    <value>Точное число {0}</value>
+  </data>
+  <data name="RouletteNoCredits" xml:space="preserve">
+    <value>У вас закончились кредиты для рулетки.</value>
+  </data>
+  <data name="RoulettePocketGreen" xml:space="preserve">
+    <value>{0} зеленое</value>
+  </data>
+  <data name="RouletteBetRed" xml:space="preserve">
+    <value>Красное</value>
+  </data>
+  <data name="RouletteBetOdd" xml:space="preserve">
+    <value>Нечет</value>
   </data>
 </root>

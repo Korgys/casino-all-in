@@ -35,4 +35,20 @@ public class ConsoleResourcesLocalizationTests
         Assert.AreEqual("ВЫБОР ЯЗЫКА", ResourceManager.GetString("LanguageMenuTitle", culture));
         Assert.AreEqual("Текущий язык", ResourceManager.GetString("CurrentLanguageLabel", culture));
     }
+
+    [TestMethod]
+    public void RouletteKeys_ArePresent_InEverySupportedCulture()
+    {
+        var cultures = new[] { "en", "fr-FR", "de-DE", "es-ES", "ja-JP", "zh-Hans", "ru-RU" };
+        var keys = new[] { "MenuRoulette", "RouletteHeader", "RouletteBetTypePrompt" };
+
+        foreach (var cultureName in cultures)
+        {
+            var culture = new CultureInfo(cultureName);
+            foreach (var key in keys)
+            {
+                Assert.IsFalse(string.IsNullOrWhiteSpace(ResourceManager.GetString(key, culture)), $"Missing '{key}' for {cultureName}.");
+            }
+        }
+    }
 }

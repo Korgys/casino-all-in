@@ -1,5 +1,6 @@
 ﻿using casino.console.Games.Blackjack;
 using casino.console.Games.Poker;
+using casino.console.Games.Roulette;
 using casino.console.Games.Slots;
 using casino.console.Localization;
 using casino.core;
@@ -9,6 +10,7 @@ using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
+using casino.core.Games.Roulette;
 using casino.core.Games.Slots;
 
 namespace casino.console.Games;
@@ -25,6 +27,7 @@ public class ConsoleGameFactory : IGameFactory
             "poker" => CreatePoker(humanActionSelector, continuePlaying),
             "blackjack" => CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, continuePlaying),
             "slot" or "slots" or "slot machine" => CreateSlotMachine(ConsoleSlotMachineInput.GetBet, continuePlaying),
+            "roulette" => CreateRoulette(ConsoleRouletteInput.GetBet, continuePlaying),
             _ => null
         };
     }
@@ -60,5 +63,10 @@ public class ConsoleGameFactory : IGameFactory
     public IGame CreateSlotMachine(Func<SlotMachineGameState, int> betSelector, Func<bool> continuePlaying)
     {
         return new SlotMachineGame(betSelector, continuePlaying);
+    }
+
+    public IGame CreateRoulette(Func<RouletteGameState, RouletteBet> betSelector, Func<bool> continuePlaying)
+    {
+        return new RouletteGame(betSelector, continuePlaying);
     }
 }

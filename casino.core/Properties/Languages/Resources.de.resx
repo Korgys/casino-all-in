@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -234,5 +234,62 @@
   </data>
   <data name="SlotNoWin" xml:space="preserve">
     <value>Diesmal kein Gewinn. Vielleicht beim nächsten Dreh!</value>
+  </data>
+  <data name="RouletteWheelSpinning" xml:space="preserve">
+    <value>Das Rad dreht sich... ({0}/{1})</value>
+  </data>
+  <data name="RouletteWinParity" xml:space="preserve">
+    <value>{0}! Ihr Gerade/Ungerade-Einsatz gewinnt {1} Credits.</value>
+  </data>
+  <data name="RouletteGameName" xml:space="preserve">
+    <value>Roulette</value>
+  </data>
+  <data name="RoulettePocketColored" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="RouletteWinNumber" xml:space="preserve">
+    <value>{0}! Plein getroffen, Sie gewinnen {1} Credits.</value>
+  </data>
+  <data name="RouletteWelcome" xml:space="preserve">
+    <value>Willkommen am europaeischen Roulette. Platzieren Sie Ihren Einsatz.</value>
+  </data>
+  <data name="RouletteThanks" xml:space="preserve">
+    <value>Danke fuers Roulette spielen.</value>
+  </data>
+  <data name="RouletteBetBlack" xml:space="preserve">
+    <value>Schwarz</value>
+  </data>
+  <data name="RouletteLose" xml:space="preserve">
+    <value>{0}. Diesmal kein Gewinn.</value>
+  </data>
+  <data name="RouletteColorRed" xml:space="preserve">
+    <value>rot</value>
+  </data>
+  <data name="RouletteChooseBet" xml:space="preserve">
+    <value>Platzieren Sie Ihren Einsatz fuer die naechste Runde.</value>
+  </data>
+  <data name="RouletteWinColor" xml:space="preserve">
+    <value>{0}! Ihr Ausseneinsatz gewinnt {1} Credits.</value>
+  </data>
+  <data name="RouletteColorBlack" xml:space="preserve">
+    <value>schwarz</value>
+  </data>
+  <data name="RouletteBetEven" xml:space="preserve">
+    <value>Gerade</value>
+  </data>
+  <data name="RouletteBetStraightNumber" xml:space="preserve">
+    <value>Plein {0}</value>
+  </data>
+  <data name="RouletteNoCredits" xml:space="preserve">
+    <value>Sie haben keine Roulette-Credits mehr.</value>
+  </data>
+  <data name="RoulettePocketGreen" xml:space="preserve">
+    <value>{0} gruen</value>
+  </data>
+  <data name="RouletteBetRed" xml:space="preserve">
+    <value>Rot</value>
+  </data>
+  <data name="RouletteBetOdd" xml:space="preserve">
+    <value>Ungerade</value>
   </data>
 </root>

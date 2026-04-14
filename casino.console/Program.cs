@@ -5,11 +5,13 @@ using casino.console.Games;
 using casino.console.Games.Blackjack;
 using casino.console.Games.Commons;
 using casino.console.Games.Poker;
+using casino.console.Games.Roulette;
 using casino.console.Games.Slots;
 using casino.console.Localization;
 using casino.core;
 using casino.core.Games.Blackjack;
 using casino.core.Games.Poker;
+using casino.core.Games.Roulette;
 using casino.core.Games.Slots;
 
 namespace casino.console;
@@ -92,6 +94,10 @@ public static class Program
             {
                 ConsoleSlotMachineRenderer.RenderTable(slotMachineState);
             }
+            if (e.State is RouletteGameState rouletteState)
+            {
+                ConsoleRouletteRenderer.RenderTable(rouletteState);
+            }
         };
 
         game.Run();
@@ -143,6 +149,13 @@ public static class Program
                     return factory.CreateSlotMachine(ConsoleSlotMachineInput.GetBet, ConsoleSlotMachineInput.AskContinueNewGame);
 
                 case "4":
+                case "roulette":
+                case "roulette wheel":
+                case "ruleta":
+                case "ruletka":
+                    return factory.CreateRoulette(ConsoleRouletteInput.GetBet, ConsoleRouletteInput.AskContinueNewGame);
+
+                case "5":
                 case "language":
                 case "languages":
                 case "langages":
@@ -160,7 +173,7 @@ public static class Program
                     ShowLanguageMenu();
                     break;
 
-                case "5":
+                case "6":
                 case "quit":
                 case "quitter":
                 case "beenden":
@@ -229,8 +242,9 @@ public static class Program
         ConsoleLayout.WriteFramedLine($" 1. {ConsoleText.MenuPoker} ", width);
         ConsoleLayout.WriteFramedLine($" 2. {ConsoleText.MenuBlackjack} ", width);
         ConsoleLayout.WriteFramedLine($" 3. {ConsoleText.MenuSlotMachine} ", width);
-        ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.MenuLanguages} ", width);
-        ConsoleLayout.WriteFramedLine($" 5. {ConsoleText.MenuQuit} ", width);
+        ConsoleLayout.WriteFramedLine($" 4. {ConsoleText.MenuRoulette} ", width);
+        ConsoleLayout.WriteFramedLine($" 5. {ConsoleText.MenuLanguages} ", width);
+        ConsoleLayout.WriteFramedLine($" 6. {ConsoleText.MenuQuit} ", width);
         ConsoleLayout.WriteBottomBorder(width);
         Console.WriteLine();
     }

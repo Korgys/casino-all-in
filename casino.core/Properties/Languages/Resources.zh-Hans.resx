@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -234,5 +234,62 @@
   </data>
   <data name="As" xml:space="preserve">
     <value>A</value>
+  </data>
+  <data name="RouletteWheelSpinning" xml:space="preserve">
+    <value>轮盘旋转中... ({0}/{1})</value>
+  </data>
+  <data name="RouletteWinParity" xml:space="preserve">
+    <value>{0}！你的单双下注赢得 {1} 积分。</value>
+  </data>
+  <data name="RouletteGameName" xml:space="preserve">
+    <value>轮盘</value>
+  </data>
+  <data name="RoulettePocketColored" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="RouletteWinNumber" xml:space="preserve">
+    <value>{0}！单号下注命中，你赢得 {1} 积分。</value>
+  </data>
+  <data name="RouletteWelcome" xml:space="preserve">
+    <value>欢迎来到欧式轮盘。请选择你的下注。</value>
+  </data>
+  <data name="RouletteThanks" xml:space="preserve">
+    <value>感谢游玩轮盘。</value>
+  </data>
+  <data name="RouletteBetBlack" xml:space="preserve">
+    <value>黑</value>
+  </data>
+  <data name="RouletteLose" xml:space="preserve">
+    <value>{0}。这次没有中奖。</value>
+  </data>
+  <data name="RouletteColorRed" xml:space="preserve">
+    <value>红</value>
+  </data>
+  <data name="RouletteChooseBet" xml:space="preserve">
+    <value>请为下一次旋转下注。</value>
+  </data>
+  <data name="RouletteWinColor" xml:space="preserve">
+    <value>{0}！你的外围下注赢得 {1} 积分。</value>
+  </data>
+  <data name="RouletteColorBlack" xml:space="preserve">
+    <value>黑</value>
+  </data>
+  <data name="RouletteBetEven" xml:space="preserve">
+    <value>双</value>
+  </data>
+  <data name="RouletteBetStraightNumber" xml:space="preserve">
+    <value>单号 {0}</value>
+  </data>
+  <data name="RouletteNoCredits" xml:space="preserve">
+    <value>你的轮盘积分已经用完。</value>
+  </data>
+  <data name="RoulettePocketGreen" xml:space="preserve">
+    <value>{0} 绿</value>
+  </data>
+  <data name="RouletteBetRed" xml:space="preserve">
+    <value>红</value>
+  </data>
+  <data name="RouletteBetOdd" xml:space="preserve">
+    <value>单</value>
   </data>
 </root>

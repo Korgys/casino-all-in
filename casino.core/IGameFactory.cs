@@ -1,6 +1,7 @@
 ﻿using casino.core.Games.Blackjack;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
+using casino.core.Games.Roulette;
 using casino.core.Games.Slots;
 
 namespace casino.core;
@@ -43,4 +44,12 @@ public interface IGameFactory
     /// <param name="continuePlaying">The callback that indicates whether to continue.</param>
     /// <returns>A slot machine game instance.</returns>
     IGame CreateSlotMachine(Func<SlotMachineGameState, int> betSelector, Func<bool> continuePlaying);
+
+    /// <summary>
+    /// Creates a roulette game.
+    /// </summary>
+    /// <param name="betSelector">The callback used to select the roulette bet.</param>
+    /// <param name="continuePlaying">The callback that indicates whether to continue.</param>
+    /// <returns>A roulette game instance.</returns>
+    IGame CreateRoulette(Func<RouletteGameState, RouletteBet> betSelector, Func<bool> continuePlaying);
 }

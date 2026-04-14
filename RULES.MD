@@ -143,10 +143,54 @@ Winnings are determined by the combination of symbols on all three reels and the
 
 ---
 
+## Roulette
+
+### Overview
+
+Roulette is a wheel game of chance. In this project, the table uses a single-zero European wheel with pockets from 0 to 36.
+
+### Available Bets
+
+- **Straight Up**: Bet on one exact number from 0 to 36
+- **Red**: Bet that the winning pocket will be a red number
+- **Black**: Bet that the winning pocket will be a black number
+- **Even**: Bet that the winning pocket will be an even number
+- **Odd**: Bet that the winning pocket will be an odd number
+
+### Payouts
+
+| Bet Type     | Winning Condition                  | Payout      |
+| ------------ | ---------------------------------- | ----------- |
+| Straight Up  | The exact chosen number lands      | Bet × 36    |
+| Red / Black  | The landed number matches the color| Bet × 2     |
+| Even / Odd   | The landed number matches parity   | Bet × 2     |
+
+### Important Rule
+
+- **0 is green** and loses against red, black, even, and odd bets
+
+### Gameplay
+
+1. **Choose Bet Type**: Pick one of the supported roulette bet categories
+2. **Choose Number**: If you selected a straight-up bet, choose a number between 0 and 36
+3. **Set Wager**: Enter the amount you want to risk on the spin
+4. **Spin**: The wheel spins and the ball lands on a single pocket
+5. **Resolve Winnings**: If your bet matches the result, the game pays out automatically
+6. **Continue**: Choose whether to play another spin or leave the table
+
+### Strategy
+
+- Straight-up bets have the highest payout but the lowest hit rate
+- Red/black and even/odd bets win more often but pay less
+- Zero is the house edge on outside bets, so short streaks can still swing quickly
+
+---
+
 ## General Tips
 
 - **Blackjack**: Requires strategy and skill. Learn basic strategy to improve your odds.
 - **Poker**: Combines skill and luck. Understand hand rankings and betting strategy.
 - **Slot Machine**: Pure chance. Enjoy responsibly and remember it's designed for entertainment.
+- **Roulette**: Outside bets are steadier, straight-up bets are riskier, and zero always beats outside bets.
 
 **Good luck and have fun!**

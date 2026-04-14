@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -234,5 +234,62 @@
   </data>
   <data name="As" xml:space="preserve">
     <value>As</value>
+  </data>
+  <data name="RouletteWelcome" xml:space="preserve">
+    <value>Bienvenue a la roulette europeenne. Placez votre mise.</value>
+  </data>
+  <data name="RouletteChooseBet" xml:space="preserve">
+    <value>Placez votre mise pour le prochain tour.</value>
+  </data>
+  <data name="RouletteThanks" xml:space="preserve">
+    <value>Merci d'avoir joue a la roulette.</value>
+  </data>
+  <data name="RouletteNoCredits" xml:space="preserve">
+    <value>Vous n'avez plus de credits a la roulette.</value>
+  </data>
+  <data name="RouletteGameName" xml:space="preserve">
+    <value>Roulette</value>
+  </data>
+  <data name="RouletteWheelSpinning" xml:space="preserve">
+    <value>La bille tourne... ({0}/{1})</value>
+  </data>
+  <data name="RouletteWinNumber" xml:space="preserve">
+    <value>{0} ! Plein gagnant, vous remportez {1} credits.</value>
+  </data>
+  <data name="RouletteWinColor" xml:space="preserve">
+    <value>{0} ! Votre mise exterieure gagne {1} credits.</value>
+  </data>
+  <data name="RouletteWinParity" xml:space="preserve">
+    <value>{0} ! Votre mise pair/impair gagne {1} credits.</value>
+  </data>
+  <data name="RouletteLose" xml:space="preserve">
+    <value>{0}. Rien ne va plus pour ce tour.</value>
+  </data>
+  <data name="RouletteBetStraightNumber" xml:space="preserve">
+    <value>Plein {0}</value>
+  </data>
+  <data name="RouletteBetRed" xml:space="preserve">
+    <value>Rouge</value>
+  </data>
+  <data name="RouletteBetBlack" xml:space="preserve">
+    <value>Noir</value>
+  </data>
+  <data name="RouletteBetEven" xml:space="preserve">
+    <value>Pair</value>
+  </data>
+  <data name="RouletteBetOdd" xml:space="preserve">
+    <value>Impair</value>
+  </data>
+  <data name="RoulettePocketGreen" xml:space="preserve">
+    <value>{0} vert</value>
+  </data>
+  <data name="RoulettePocketColored" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="RouletteColorRed" xml:space="preserve">
+    <value>rouge</value>
+  </data>
+  <data name="RouletteColorBlack" xml:space="preserve">
+    <value>noir</value>
   </data>
 </root>

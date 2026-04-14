@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -234,5 +234,62 @@
   </data>
   <data name="As" xml:space="preserve">
     <value>エース</value>
+  </data>
+  <data name="RouletteWheelSpinning" xml:space="preserve">
+    <value>ホイールが回転中... ({0}/{1})</value>
+  </data>
+  <data name="RouletteWinParity" xml:space="preserve">
+    <value>{0}！ 偶数/奇数ベットが的中し、{1}クレジット獲得です。</value>
+  </data>
+  <data name="RouletteGameName" xml:space="preserve">
+    <value>ルーレット</value>
+  </data>
+  <data name="RoulettePocketColored" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="RouletteWinNumber" xml:space="preserve">
+    <value>{0}！ ストレートアップ的中、{1}クレジット獲得です。</value>
+  </data>
+  <data name="RouletteWelcome" xml:space="preserve">
+    <value>ヨーロピアンルーレットへようこそ。ベットを選んでください。</value>
+  </data>
+  <data name="RouletteThanks" xml:space="preserve">
+    <value>ルーレットを遊んでくれてありがとう。</value>
+  </data>
+  <data name="RouletteBetBlack" xml:space="preserve">
+    <value>黒</value>
+  </data>
+  <data name="RouletteLose" xml:space="preserve">
+    <value>{0}。今回はハズレです。</value>
+  </data>
+  <data name="RouletteColorRed" xml:space="preserve">
+    <value>赤</value>
+  </data>
+  <data name="RouletteChooseBet" xml:space="preserve">
+    <value>次のスピンに賭けてください。</value>
+  </data>
+  <data name="RouletteWinColor" xml:space="preserve">
+    <value>{0}！ 外側ベットが的中し、{1}クレジット獲得です。</value>
+  </data>
+  <data name="RouletteColorBlack" xml:space="preserve">
+    <value>黒</value>
+  </data>
+  <data name="RouletteBetEven" xml:space="preserve">
+    <value>偶数</value>
+  </data>
+  <data name="RouletteBetStraightNumber" xml:space="preserve">
+    <value>ストレート {0}</value>
+  </data>
+  <data name="RouletteNoCredits" xml:space="preserve">
+    <value>ルーレット用のクレジットがなくなりました。</value>
+  </data>
+  <data name="RoulettePocketGreen" xml:space="preserve">
+    <value>{0} 緑</value>
+  </data>
+  <data name="RouletteBetRed" xml:space="preserve">
+    <value>赤</value>
+  </data>
+  <data name="RouletteBetOdd" xml:space="preserve">
+    <value>奇数</value>
   </data>
 </root>

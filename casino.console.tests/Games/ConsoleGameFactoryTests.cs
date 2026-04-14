@@ -5,6 +5,7 @@ using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Players.Strategies;
+using casino.core.Games.Roulette;
 using casino.core.Games.Slots;
 
 namespace casino.console.tests.Games;
@@ -17,7 +18,7 @@ public class ConsoleGameFactoryTests
     {
         var factory = new ConsoleGameFactory();
 
-        var result = factory.Create("roulette", _ => new GameAction(PokerTypeAction.Check), () => false);
+        var result = factory.Create("baccarat", _ => new GameAction(PokerTypeAction.Check), () => false);
 
         Assert.IsNull(result);
     }
@@ -96,6 +97,22 @@ public class ConsoleGameFactoryTests
     }
 
     [TestMethod]
+    public void Create_ReturnsRouletteGame_ForRouletteNameCaseInsensitive()
+    {
+        var factory = new ConsoleGameFactory();
+        Func<bool> continuePlaying = () => false;
+
+        var result = factory.Create("ROULETTE", _ => new GameAction(PokerTypeAction.Check), continuePlaying);
+
+        Assert.IsNotNull(result);
+        Assert.IsInstanceOfType<RouletteGame>(result);
+
+        var field = typeof(RouletteGame).GetField("_continuePlaying", BindingFlags.NonPublic | BindingFlags.Instance);
+        Assert.IsNotNull(field);
+        Assert.AreSame(continuePlaying, field.GetValue(result));
+    }
+
+    [TestMethod]
     public void CreateSlotMachine_ReturnsSlotMachineGame()
     {
         var factory = new ConsoleGameFactory();
@@ -103,5 +120,15 @@ public class ConsoleGameFactoryTests
         var result = factory.CreateSlotMachine(_ => 1, () => false);
 
         Assert.IsInstanceOfType<SlotMachineGame>(result);
+    }
+
+    [TestMethod]
+    public void CreateRoulette_ReturnsRouletteGame()
+    {
+        var factory = new ConsoleGameFactory();
+
+        var result = factory.CreateRoulette(_ => new RouletteBet(RouletteBetKind.Red, 1), () => false);
+
+        Assert.IsInstanceOfType<RouletteGame>(result);
     }
 }

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -234,5 +234,62 @@
   </data>
   <data name="As" xml:space="preserve">
     <value>As</value>
+  </data>
+  <data name="RouletteWheelSpinning" xml:space="preserve">
+    <value>La rueda esta girando... ({0}/{1})</value>
+  </data>
+  <data name="RouletteWinParity" xml:space="preserve">
+    <value>{0}! Tu apuesta par/impar gana {1} creditos.</value>
+  </data>
+  <data name="RouletteGameName" xml:space="preserve">
+    <value>Ruleta</value>
+  </data>
+  <data name="RoulettePocketColored" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="RouletteWinNumber" xml:space="preserve">
+    <value>{0}! Pleno acertado, ganas {1} creditos.</value>
+  </data>
+  <data name="RouletteWelcome" xml:space="preserve">
+    <value>Bienvenido a la ruleta europea. Haz tu apuesta.</value>
+  </data>
+  <data name="RouletteThanks" xml:space="preserve">
+    <value>Gracias por jugar a la ruleta.</value>
+  </data>
+  <data name="RouletteBetBlack" xml:space="preserve">
+    <value>Negro</value>
+  </data>
+  <data name="RouletteLose" xml:space="preserve">
+    <value>{0}. No hay premio en este giro.</value>
+  </data>
+  <data name="RouletteColorRed" xml:space="preserve">
+    <value>rojo</value>
+  </data>
+  <data name="RouletteChooseBet" xml:space="preserve">
+    <value>Haz tu apuesta para el proximo giro.</value>
+  </data>
+  <data name="RouletteWinColor" xml:space="preserve">
+    <value>{0}! Tu apuesta exterior gana {1} creditos.</value>
+  </data>
+  <data name="RouletteColorBlack" xml:space="preserve">
+    <value>negro</value>
+  </data>
+  <data name="RouletteBetEven" xml:space="preserve">
+    <value>Par</value>
+  </data>
+  <data name="RouletteBetStraightNumber" xml:space="preserve">
+    <value>Pleno {0}</value>
+  </data>
+  <data name="RouletteNoCredits" xml:space="preserve">
+    <value>Te has quedado sin creditos de ruleta.</value>
+  </data>
+  <data name="RoulettePocketGreen" xml:space="preserve">
+    <value>{0} verde</value>
+  </data>
+  <data name="RouletteBetRed" xml:space="preserve">
+    <value>Rojo</value>
+  </data>
+  <data name="RouletteBetOdd" xml:space="preserve">
+    <value>Impar</value>
   </data>
 </root>

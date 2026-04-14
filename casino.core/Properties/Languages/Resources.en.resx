@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:schema id="root">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -234,5 +234,62 @@
   </data>
   <data name="As" xml:space="preserve">
     <value>Ace</value>
+  </data>
+  <data name="RouletteWelcome" xml:space="preserve">
+    <value>Welcome to European roulette. Place your bet.</value>
+  </data>
+  <data name="RouletteChooseBet" xml:space="preserve">
+    <value>Place your bet for the next spin.</value>
+  </data>
+  <data name="RouletteThanks" xml:space="preserve">
+    <value>Thanks for playing roulette.</value>
+  </data>
+  <data name="RouletteNoCredits" xml:space="preserve">
+    <value>You are out of roulette credits.</value>
+  </data>
+  <data name="RouletteGameName" xml:space="preserve">
+    <value>Roulette</value>
+  </data>
+  <data name="RouletteWheelSpinning" xml:space="preserve">
+    <value>Wheel spinning... ({0}/{1})</value>
+  </data>
+  <data name="RouletteWinNumber" xml:space="preserve">
+    <value>{0}! Straight-up hit, you win {1} credits.</value>
+  </data>
+  <data name="RouletteWinColor" xml:space="preserve">
+    <value>{0}! Your outside bet wins {1} credits.</value>
+  </data>
+  <data name="RouletteWinParity" xml:space="preserve">
+    <value>{0}! Your parity bet wins {1} credits.</value>
+  </data>
+  <data name="RouletteLose" xml:space="preserve">
+    <value>{0}. No win on this spin.</value>
+  </data>
+  <data name="RouletteBetStraightNumber" xml:space="preserve">
+    <value>Straight {0}</value>
+  </data>
+  <data name="RouletteBetRed" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="RouletteBetBlack" xml:space="preserve">
+    <value>Black</value>
+  </data>
+  <data name="RouletteBetEven" xml:space="preserve">
+    <value>Even</value>
+  </data>
+  <data name="RouletteBetOdd" xml:space="preserve">
+    <value>Odd</value>
+  </data>
+  <data name="RoulettePocketGreen" xml:space="preserve">
+    <value>{0} green</value>
+  </data>
+  <data name="RoulettePocketColored" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="RouletteColorRed" xml:space="preserve">
+    <value>red</value>
+  </data>
+  <data name="RouletteColorBlack" xml:space="preserve">
+    <value>black</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -207,4 +207,82 @@
   <data name="LanguageRussian" xml:space="preserve">
     <value>Русский</value>
   </data>
-<data name="InvalidNumberInput" xml:space="preserve"><value>Ungültige Eingabe. Bitte eine Zahl eingeben.</value></data><data name="TypeNumberMenuHelp" xml:space="preserve"><value>Hinweis: Geben Sie eine Nummer aus dem Menü ein.</value></data><data name="ActionUnavailable" xml:space="preserve"><value>Auswahl {0} ist derzeit nicht verfügbar.</value></data><data name="RaiseTargetPromptWithConstraints" xml:space="preserve"><value>Geben Sie Ihr Raise-Ziel ein (aktueller Einsatz {0}c, Ihr Beitrag {1}c, maximal {2}c): </value></data><data name="RaiseAmountUnavailable" xml:space="preserve"><value>Ungültiges Raise. Ziel muss größer als der aktuelle Einsatz ({0}c) und höchstens {1}c sein.</value></data><data name="InputCanceledUsingDefault" xml:space="preserve"><value>Zurück gewählt, Standardwert wird verwendet: {0}.</value></data></root>
+  <data name="InvalidNumberInput" xml:space="preserve">
+    <value>Ungültige Eingabe. Bitte eine Zahl eingeben.</value>
+  </data>
+  <data name="TypeNumberMenuHelp" xml:space="preserve">
+    <value>Hinweis: Geben Sie eine Nummer aus dem Menü ein.</value>
+  </data>
+  <data name="ActionUnavailable" xml:space="preserve">
+    <value>Auswahl {0} ist derzeit nicht verfügbar.</value>
+  </data>
+  <data name="RaiseTargetPromptWithConstraints" xml:space="preserve">
+    <value>Geben Sie Ihr Raise-Ziel ein (aktueller Einsatz {0}c, Ihr Beitrag {1}c, maximal {2}c): </value>
+  </data>
+  <data name="RaiseAmountUnavailable" xml:space="preserve">
+    <value>Ungültiges Raise. Ziel muss größer als der aktuelle Einsatz ({0}c) und höchstens {1}c sein.</value>
+  </data>
+  <data name="InputCanceledUsingDefault" xml:space="preserve">
+    <value>Zurück gewählt, Standardwert wird verwendet: {0}.</value>
+  </data>
+  <data name="RouletteCredits" xml:space="preserve">
+    <value>Credits</value>
+  </data>
+  <data name="RoulettePocketLabel" xml:space="preserve">
+    <value>Fach</value>
+  </data>
+  <data name="RouletteOptionOdd" xml:space="preserve">
+    <value>Ungerade</value>
+  </data>
+  <data name="RouletteNumberPrompt" xml:space="preserve">
+    <value>Waehlen Sie eine Zahl (0-36, leer fuer 0): </value>
+  </data>
+  <data name="RouletteOptionEven" xml:space="preserve">
+    <value>Gerade</value>
+  </data>
+  <data name="RouletteWinAnimation" xml:space="preserve">
+    <value>Das Rad ist auf Ihrer Seite!</value>
+  </data>
+  <data name="RoulettePanelTitle" xml:space="preserve">
+    <value>Roulette</value>
+  </data>
+  <data name="RouletteOptionBlack" xml:space="preserve">
+    <value>Schwarz</value>
+  </data>
+  <data name="RouletteSpins" xml:space="preserve">
+    <value>Drehungen</value>
+  </data>
+  <data name="RouletteContinuePrompt" xml:space="preserve">
+    <value>Noch eine Roulette-Runde spielen? (j/n): </value>
+  </data>
+  <data name="RouletteBestWin" xml:space="preserve">
+    <value>Bester Gewinn</value>
+  </data>
+  <data name="RouletteWinningSpins" xml:space="preserve">
+    <value>Gewinnrunden</value>
+  </data>
+  <data name="RouletteMinMaxBet" xml:space="preserve">
+    <value>Min/Max Einsatz</value>
+  </data>
+  <data name="RouletteOptionStraight" xml:space="preserve">
+    <value>Plein (eine Zahl)</value>
+  </data>
+  <data name="MenuRoulette" xml:space="preserve">
+    <value>Roulette</value>
+  </data>
+  <data name="RouletteBetAmountPrompt" xml:space="preserve">
+    <value>Einsatz eingeben ({0} Standard): </value>
+  </data>
+  <data name="RouletteLastWin" xml:space="preserve">
+    <value>Letzter Gewinn</value>
+  </data>
+  <data name="RouletteHeader" xml:space="preserve">
+    <value>EUROPAEISCHES ROULETTE</value>
+  </data>
+  <data name="RouletteBetTypePrompt" xml:space="preserve">
+    <value>Waehlen Sie Ihren Einsatz (1-5): </value>
+  </data>
+  <data name="RouletteOptionRed" xml:space="preserve">
+    <value>Rot</value>
+  </data>
+</root>

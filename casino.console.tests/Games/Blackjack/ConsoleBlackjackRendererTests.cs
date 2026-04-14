@@ -46,7 +46,7 @@ public class ConsoleBlackjackRendererTests
         ConsoleBlackjackRenderer.RenderTable(second);
 
         Assert.AreEqual(1, target.ClearCalls, "Console.Clear should happen only on initial draw when dimensions are stable.");
-        Assert.IsTrue(target.CursorMoves.Count > cursorMovesAfterFirstRender, "Second render should use cursor movement for partial updates.");
+        Assert.IsGreaterThan(cursorMovesAfterFirstRender, target.CursorMoves.Count, "Second render should use cursor movement for partial updates.");
         Assert.IsTrue(target.Lines.Any(line => line.Contains("Player busts.", StringComparison.Ordinal)));
     }
 
@@ -63,7 +63,7 @@ public class ConsoleBlackjackRendererTests
         ConsoleBlackjackRenderer.RenderTable(BuildState(status: "Safe redirected output."));
         ConsoleBlackjackRenderer.RenderTable(BuildState(status: "Second redirected render."));
 
-        Assert.AreEqual(0, target.CursorMoves.Count, "No cursor movement should be attempted when output is non-interactive.");
+        Assert.IsEmpty(target.CursorMoves, "No cursor movement should be attempted when output is non-interactive.");
     }
 
     private static BlackjackGameState BuildState(string status, BlackjackRoundOutcome outcome = BlackjackRoundOutcome.InProgress)

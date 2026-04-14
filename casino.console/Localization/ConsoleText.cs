@@ -9,13 +9,16 @@ internal static class ConsoleText
     private static readonly ResourceManager ResourceManager = new("casino.console.Localization.ConsoleResources", typeof(ConsoleText).Assembly);
 
     private static string Get(string key)
-        => ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
+        => ResourceManager.GetString(key, CultureInfo.CurrentUICulture)
+            ?? ResourceManager.GetString(key, CultureInfo.GetCultureInfo("en"))
+            ?? key;
 
     public static string MainMenuChoice => Get(nameof(MainMenuChoice));
     public static string PressAnyKeyToQuit => Get(nameof(PressAnyKeyToQuit));
     public static string MenuPoker => Get(nameof(MenuPoker));
     public static string MenuBlackjack => Get(nameof(MenuBlackjack));
     public static string MenuSlotMachine => Get(nameof(MenuSlotMachine));
+    public static string MenuRoulette => Get(nameof(MenuRoulette));
     public static string MenuLanguages => Get(nameof(MenuLanguages));
     public static string MenuQuit => Get(nameof(MenuQuit));
     public static string MenuBack => Get(nameof(MenuBack));
@@ -54,16 +57,32 @@ internal static class ConsoleText
     public static string BlackjackHit => Get(nameof(BlackjackHit));
     public static string BlackjackStand => Get(nameof(BlackjackStand));
     public static string SlotContinuePrompt => Get(nameof(SlotContinuePrompt));
+    public static string RouletteContinuePrompt => Get(nameof(RouletteContinuePrompt));
     public static string SlotMachineHeader => Get(nameof(SlotMachineHeader));
+    public static string RouletteHeader => Get(nameof(RouletteHeader));
     public static string SlotPanelTitle => Get(nameof(SlotPanelTitle));
+    public static string RoulettePanelTitle => Get(nameof(RoulettePanelTitle));
     public static string SlotCredits => Get(nameof(SlotCredits));
+    public static string RouletteCredits => Get(nameof(RouletteCredits));
     public static string SlotMinMaxBet => Get(nameof(SlotMinMaxBet));
+    public static string RouletteMinMaxBet => Get(nameof(RouletteMinMaxBet));
     public static string SlotLastWin => Get(nameof(SlotLastWin));
+    public static string RouletteLastWin => Get(nameof(RouletteLastWin));
     public static string SlotSpins => Get(nameof(SlotSpins));
+    public static string RouletteSpins => Get(nameof(RouletteSpins));
     public static string SlotWinningSpins => Get(nameof(SlotWinningSpins));
+    public static string RouletteWinningSpins => Get(nameof(RouletteWinningSpins));
     public static string SlotBestWin => Get(nameof(SlotBestWin));
+    public static string RouletteBestWin => Get(nameof(RouletteBestWin));
     public static string SlotJackpotAnimation => Get(nameof(SlotJackpotAnimation));
     public static string SlotWinAnimation => Get(nameof(SlotWinAnimation));
+    public static string RouletteWinAnimation => Get(nameof(RouletteWinAnimation));
+    public static string RoulettePocketLabel => Get(nameof(RoulettePocketLabel));
+    public static string RouletteOptionStraight => Get(nameof(RouletteOptionStraight));
+    public static string RouletteOptionRed => Get(nameof(RouletteOptionRed));
+    public static string RouletteOptionBlack => Get(nameof(RouletteOptionBlack));
+    public static string RouletteOptionEven => Get(nameof(RouletteOptionEven));
+    public static string RouletteOptionOdd => Get(nameof(RouletteOptionOdd));
     public static string WinnerTag => Get(nameof(WinnerTag));
     public static string PokerDifficultyBeginner => Get(nameof(PokerDifficultyBeginner));
     public static string PokerDifficultyVeryEasy => Get(nameof(PokerDifficultyVeryEasy));
@@ -77,6 +96,9 @@ internal static class ConsoleText
     public static string DifficultyPrompt(string defaultValue) => string.Format(Get(nameof(DifficultyPrompt)), defaultValue);
     public static string RangeError(int min, int max) => string.Format(Get(nameof(RangeError)), min, max);
     public static string SlotBetPrompt(int bet) => string.Format(Get(nameof(SlotBetPrompt)), bet);
+    public static string RouletteBetTypePrompt => Get(nameof(RouletteBetTypePrompt));
+    public static string RouletteNumberPrompt => Get(nameof(RouletteNumberPrompt));
+    public static string RouletteBetAmountPrompt(int bet) => string.Format(Get(nameof(RouletteBetAmountPrompt)), bet);
     public static string RaiseTargetPromptWithConstraints(int currentBet, int contribution, int maxAllowed) =>
         string.Format(Get(nameof(RaiseTargetPromptWithConstraints)), currentBet, contribution, maxAllowed);
     public static string RaiseAmountUnavailable(int currentBet, int maxAllowed) =>

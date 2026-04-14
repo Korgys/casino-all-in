@@ -42,7 +42,7 @@ public class ConsoleSlotMachineRendererTests
         ConsoleSlotMachineRenderer.RenderTable(BuildState("Win!", payout: 20, roundOver: true));
 
         Assert.AreEqual(1, target.ClearCalls);
-        Assert.IsTrue(target.CursorMoves.Count > movesAfterFirstRender);
+        Assert.IsGreaterThan(movesAfterFirstRender, target.CursorMoves.Count);
         Assert.IsTrue(target.Lines.Any(line => line.Contains("Win!", StringComparison.Ordinal)));
     }
 
@@ -59,7 +59,7 @@ public class ConsoleSlotMachineRendererTests
         ConsoleSlotMachineRenderer.RenderTable(BuildState("Redirected output."));
         ConsoleSlotMachineRenderer.RenderTable(BuildState("Still redirected."));
 
-        Assert.AreEqual(0, target.CursorMoves.Count);
+        Assert.IsEmpty(target.CursorMoves);
     }
 
     private static SlotMachineGameState BuildState(string status, int payout = 0, bool roundOver = false)

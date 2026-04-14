@@ -27,6 +27,7 @@ Casino All-In is a console-based casino project built with .NET. It is designed 
 - **Texas Hold'em** game in the terminal with betting phases (Pre-Flop, Flop, Turn, River, Showdown).
 - **Blackjack** game in the terminal (hit/stand loop, dealer draw rules, winner resolution).
 - **Slot Machine** game in the terminal with animated reels, combo payouts, and jackpot spins.
+- **Roulette** game in the terminal with straight-up, red/black, and odd/even bets.
 - Computer players with multiple strategies (aggressive, conservative, opportunistic, random).
 - Poker action flow support: fold, check, call, raise, bet, all-in.
 - Poker hand evaluation and winner resolution.
@@ -62,7 +63,7 @@ docker run --rm -it casino-all-in
 ## Usage
 
 1. Launch the app (CLI or Docker).
-2. Choose a game (Poker, Blackjack, or Slot Machine).
+2. Choose a game (Poker, Blackjack, Slot Machine, or Roulette).
 3. Follow prompts in the terminal to choose actions (`check`, `call`, `raise`, `fold`, `all-in`, `hit`, `stand`, etc.).
 4. Play rounds until the game ends, then choose whether to start a new game.
 
@@ -100,7 +101,7 @@ dotnet test
 
 ```text
 casino-all-in/
-├── casino.core/           # Domain/game engine (rules, cards, scores, phases, players, slots)
+├── casino.core/           # Domain/game engine (rules, cards, scores, phases, players, slots, roulette)
 ├── casino.console/        # Console application (entrypoint, renderer, input handling)
 ├── casino.core.tests/     # Unit tests for core poker logic
 ├── casino.console.tests/  # Unit tests for console behaviors
@@ -120,7 +121,7 @@ This project implements a simplified Texas Hold'em loop:
 
 ## Roadmap
 
-- [ ] Add additional casino games (Roulette, Craps, etc.).
+- [ ] Add additional casino games (Craps, etc.).
 - [ ] Improve UI/UX with richer console animations/colors.
 - [ ] Add better poker AI.
 
