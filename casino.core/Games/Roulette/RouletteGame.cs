@@ -146,7 +146,7 @@ public class RouletteGame : GameBase
         };
     }
 
-    private int CalculatePayout(RouletteBet bet, int pocket)
+    private static int CalculatePayout(RouletteBet bet, int pocket)
     {
         var won = bet.Kind switch
         {
@@ -178,7 +178,7 @@ public class RouletteGame : GameBase
         };
     }
 
-    private string DescribeBet(RouletteBet bet)
+    private static string DescribeBet(RouletteBet bet)
     {
         return bet.Kind switch
         {
@@ -191,7 +191,7 @@ public class RouletteGame : GameBase
         };
     }
 
-    private string DescribePocket(int pocket)
+    private static string DescribePocket(int pocket)
     {
         if (pocket == 0)
             return string.Format(T("RoulettePocketGreen"), pocket);
@@ -207,3 +207,4 @@ public class RouletteGame : GameBase
     private static string T(string key)
         => Resources.ResourceManager.GetString(key, Resources.Culture) ?? key;
 }
+

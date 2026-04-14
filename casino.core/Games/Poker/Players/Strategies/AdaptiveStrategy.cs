@@ -21,6 +21,15 @@ public class AdaptiveStrategy(PokerAiProfile profile) : IPlayerStrategy
         if (ShouldBluff(actions))
             return CreateBluffAction(context, actions);
 
+        return DecideActionByThresholds(context, actions, metrics, thresholds);
+    }
+
+    private GameAction DecideActionByThresholds(
+        GameContext context,
+        HashSet<PokerTypeAction> actions,
+        StrategyMetrics metrics,
+        (double FoldThreshold, double CallThreshold, double RaiseThreshold, double AllInThreshold) thresholds)
+    {
         if (_profile.CanAllInWhenStrong
             && metrics.NormalizedProbability >= thresholds.AllInThreshold
             && actions.Contains(PokerTypeAction.AllIn))
@@ -29,29 +38,44 @@ public class AdaptiveStrategy(PokerAiProfile profile) : IPlayerStrategy
         }
 
         if (metrics.NormalizedProbability < thresholds.FoldThreshold)
-        {
-            if (actions.Contains(PokerTypeAction.Fold))
-                return new GameAction(PokerTypeAction.Fold);
-
-            if (actions.Contains(PokerTypeAction.Check))
-                return new GameAction(PokerTypeAction.Check);
-
-            if (actions.Contains(PokerTypeAction.Call))
-                return new GameAction(PokerTypeAction.Call);
-        }
+            return ChooseDefensiveAction(actions);
 
         if (metrics.NormalizedProbability < thresholds.RaiseThreshold)
-        {
-            if (actions.Contains(PokerTypeAction.Check))
-                return new GameAction(PokerTypeAction.Check);
+            return ChooseCautiousAction(context, actions);
 
-            if (actions.Contains(PokerTypeAction.Call))
-                return new GameAction(PokerTypeAction.Call);
+        return ChooseAggressiveAction(context, actions);
+    }
 
-            if (actions.Contains(PokerTypeAction.Bet))
-                return new GameAction(PokerTypeAction.Bet, context.MinimumBet);
-        }
+    private static GameAction ChooseDefensiveAction(IReadOnlySet<PokerTypeAction> actions)
+    {
+        if (actions.Contains(PokerTypeAction.Fold))
+            return new GameAction(PokerTypeAction.Fold);
 
+        if (actions.Contains(PokerTypeAction.Check))
+            return new GameAction(PokerTypeAction.Check);
+
+        if (actions.Contains(PokerTypeAction.Call))
+            return new GameAction(PokerTypeAction.Call);
+
+        return new GameAction(actions.First());
+    }
+
+    private GameAction ChooseCautiousAction(GameContext context, IReadOnlySet<PokerTypeAction> actions)
+    {
+        if (actions.Contains(PokerTypeAction.Check))
+            return new GameAction(PokerTypeAction.Check);
+
+        if (actions.Contains(PokerTypeAction.Call))
+            return new GameAction(PokerTypeAction.Call);
+
+        if (actions.Contains(PokerTypeAction.Bet))
+            return new GameAction(PokerTypeAction.Bet, context.MinimumBet);
+
+        return ChooseAggressiveAction(context, actions);
+    }
+
+    private GameAction ChooseAggressiveAction(GameContext context, IReadOnlySet<PokerTypeAction> actions)
+    {
         if (actions.Contains(PokerTypeAction.Raise))
             return new GameAction(PokerTypeAction.Raise, ComputeRaiseAmount(context));
 
@@ -133,3 +157,6 @@ public class AdaptiveStrategy(PokerAiProfile profile) : IPlayerStrategy
 
     private readonly record struct StrategyMetrics(int ActivePlayers, double NormalizedProbability, Phase Phase);
 }
+
+
+

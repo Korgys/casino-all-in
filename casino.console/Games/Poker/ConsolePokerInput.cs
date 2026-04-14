@@ -1,4 +1,4 @@
-﻿using casino.console.Games.Commons;
+using casino.console.Games.Commons;
 using casino.console.Localization;
 using casino.core.Games.Poker;
 using casino.core.Games.Poker.Actions;
@@ -22,7 +22,7 @@ public static class ConsolePokerInput
         var state = (PokerGameState)request.TableState;
         var player = state.Players.First(j => j.Name == request.PlayerName);
 
-        var choice = ReadActionChoice(state, request.AvailableActions, request.MinimumBet);
+        var choice = ReadActionChoice(request.AvailableActions, request.MinimumBet);
 
         return choice switch
         {
@@ -81,7 +81,7 @@ public static class ConsolePokerInput
         return wantsToContinue;
     }
 
-    private static PokerTypeAction ReadActionChoice(PokerGameState state, IReadOnlyList<PokerTypeAction> availableActions, int minimumBet)
+    private static PokerTypeAction ReadActionChoice(IReadOnlyList<PokerTypeAction> availableActions, int minimumBet)
     {
         ConsolePokerRenderer.RenderAvailableActions(availableActions, minimumBet);
         var invalidAttempts = 0;
@@ -222,3 +222,4 @@ public static class ConsolePokerInput
         }
     }
 }
+

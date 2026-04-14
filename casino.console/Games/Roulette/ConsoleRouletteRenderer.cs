@@ -84,11 +84,12 @@ public static class ConsoleRouletteRenderer
 
     private static void RenderStatus(RouletteGameState state)
     {
-        var color = state.IsWinningBet
-            ? ConsoleColor.Green
-            : state.IsSpinning
-                ? ConsoleColor.Cyan
-                : ConsoleColor.White;
+        var color = ConsoleColor.White;
+
+        if (state.IsWinningBet)
+            color = ConsoleColor.Green;
+        else if (state.IsSpinning)
+            color = ConsoleColor.Cyan;
 
         using (ConsoleColorScope.Foreground(color))
             Console.WriteLine(state.StatusMessage);
@@ -135,3 +136,5 @@ public static class ConsoleRouletteRenderer
         }
     }
 }
+
+
