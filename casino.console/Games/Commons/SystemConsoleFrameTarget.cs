@@ -1,8 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace casino.console.Games.Commons;
 
 /// <summary>
 /// Adapts <see cref="Console"/> operations for incremental frame rendering.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public sealed class SystemConsoleFrameTarget : IConsoleFrameTarget
 {
     public bool SupportsCursorPositioning => !Console.IsOutputRedirected;

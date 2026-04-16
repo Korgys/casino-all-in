@@ -417,5 +417,5 @@ FodyWeavers.xsd
 *.msm
 *.msp
 /.vscode
-/casino.console/Properties
+/casino.console/Properties/launchSettings.json
 /.editorconfig

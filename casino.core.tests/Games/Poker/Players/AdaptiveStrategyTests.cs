@@ -89,6 +89,72 @@ public class AdaptiveStrategyTests
     }
 
     [TestMethod]
+    public void DecideAction_BluffsWithRaise_WhenBluffFrequencyIsOne()
+    {
+        var profile = PokerAiProfile.Medium with
+        {
+            PreferCheckWhenAvailable = false,
+            BluffFrequency = 1.0,
+            CanAllInWhenStrong = false
+        };
+
+        var context = CreateContext(new[] { PokerTypeAction.Raise, PokerTypeAction.Call });
+        context.Round.SetCurrentBet(30);
+
+        var action = new AdaptiveStrategy(profile).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+        Assert.AreEqual(31, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_RaiseAmount_IsCappedByPlayerChips_WhenAggressive()
+    {
+        var profile = PokerAiProfile.Hard with
+        {
+            PreferCheckWhenAvailable = false,
+            BluffFrequency = 0.0,
+            FoldThresholdFactor = 0.0,
+            CallThresholdFactor = 0.0,
+            RaiseThresholdFactor = 0.000001,
+            AllInThresholdFactor = 10.0,
+            RaiseSizeMultiplier = 10.0
+        };
+
+        var context = CreateContext(
+            new[] { PokerTypeAction.Raise, PokerTypeAction.Call },
+            chips: 5,
+            hand: new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Roi, Suit.Hearts)));
+
+        context.Round.SetCurrentBet(20);
+
+        var action = new AdaptiveStrategy(profile).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+        Assert.AreEqual(5, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_UsesFirstAvailableAction_WhenDefensiveOptionsAreUnavailable()
+    {
+        var profile = PokerAiProfile.Beginner with
+        {
+            PreferCheckWhenAvailable = false,
+            BluffFrequency = 0.0,
+            FoldThresholdFactor = 10.0,
+            CallThresholdFactor = 10.0,
+            RaiseThresholdFactor = 10.0,
+            AllInThresholdFactor = 10.0
+        };
+
+        var context = CreateContext(new[] { PokerTypeAction.Raise, PokerTypeAction.Bet });
+
+        var action = new AdaptiveStrategy(profile).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+    }
+
+    [TestMethod]
     public void DecideAction_ChoosesAggressiveAction_WhenProbabilityIsAboveRaiseThreshold()
     {
         var profile = PokerAiProfile.Beginner with
@@ -113,9 +179,10 @@ public class AdaptiveStrategyTests
 
     private static GameContext CreateContext(
         IReadOnlyList<PokerTypeAction> availableActions,
-        HandCards? hand = null)
+        HandCards? hand = null,
+        int chips = 200)
     {
-        var player = new ComputerPlayer("Bot", 200);
+        var player = new ComputerPlayer("Bot", chips);
         var opponent = new ComputerPlayer("Opp", 200);
         var round = new Round(new List<Player> { player, opponent }, new FakeDeck(CreateDeckCards()), 0)
         {

@@ -114,7 +114,7 @@ public static class Program
     {
         while (true)
         {
-            Console.Clear();
+            ClearConsoleSafely();
             RenderMainMenu();
             Console.Write(ConsoleText.MainMenuChoice);
 
@@ -210,7 +210,7 @@ public static class Program
     {
         while (true)
         {
-            Console.Clear();
+            ClearConsoleSafely();
             RenderLanguageMenu();
             Console.Write(ConsoleText.LanguageMenuChoice);
 
@@ -274,6 +274,18 @@ public static class Program
     {
         var currentIsoCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         return LanguageOptionsByIsoCode.GetValueOrDefault(currentIsoCode, DefaultLanguageOption).DisplayName();
+    }
+
+    private static void ClearConsoleSafely()
+    {
+        try
+        {
+            Console.Clear();
+        }
+        catch
+        {
+            // Ignore clear failures in redirected output environments.
+        }
     }
 
     private sealed record LanguageOption(int MenuNumber, CultureInfo Culture, Func<string> DisplayName, IReadOnlyCollection<string> Aliases);
