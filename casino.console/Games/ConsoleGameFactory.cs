@@ -22,7 +22,7 @@ public class ConsoleGameFactory : IGameFactory
 {
     public IGame? Create(string gameName, Func<ActionRequest, GameAction> humanActionSelector, Func<bool> continuePlaying)
     {
-        return gameName.ToLower() switch
+        return gameName.ToLowerInvariant() switch
         {
             "poker" => CreatePoker(humanActionSelector, continuePlaying),
             "blackjack" => CreateBlackjack(ConsoleBlackjackInput.GetPlayerAction, continuePlaying),

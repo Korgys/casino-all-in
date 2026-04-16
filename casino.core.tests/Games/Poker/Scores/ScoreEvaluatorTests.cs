@@ -414,6 +414,26 @@ namespace casino.core.tests.Games.Poker.Scores
                 CardRank.Roi, CardRank.Dix, CardRank.Neuf, CardRank.Sept);
         }
 
+        [TestMethod]
+        public void EvaluerScore_TwoPair_IgnoreUnrelatedDuplicatesForKickerSelection()
+        {
+            var score = Eval(
+                main: Hand(
+                    Card(CardRank.Roi, Suit.Hearts),
+                    Card(CardRank.Roi, Suit.Spades)
+                ),
+                board: Board(
+                    Card(CardRank.Dame, Suit.Hearts),
+                    Card(CardRank.Dame, Suit.Spades),
+                    Card(CardRank.As, Suit.Clubs),
+                    Card(CardRank.As, Suit.Diamonds),
+                    Card(CardRank.Deux, Suit.Clubs)
+                )
+            );
+
+            AssertScore(score, HandRank.TwoPair, CardRank.As, CardRank.Roi, CardRank.Dame);
+        }
+
         // =========================
         // Helpers
         // =========================

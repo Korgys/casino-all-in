@@ -4,6 +4,9 @@ namespace casino.core.Games.Poker.Scores;
 
 public static class ScoreEvaluator
 {
+    private sealed record RankGroup(CardRank Rank, int Count);
+    private sealed record SuitGroup(Suit Suit, Card[] Cards);
+
     public static Score EvaluateScore(HandCards main, TableCards communityCards)
     {
         ArgumentNullException.ThrowIfNull(main);
@@ -12,43 +15,43 @@ public static class ScoreEvaluator
         // Hold'em: 2 private cards + 0..5 community cards => 2..7 cards
         var cards = main.AsEnumerable().Concat(communityCards.AsEnumerable()).ToArray();
 
-        // Compute sorted distinct ranks once (useful for high card / kickers)
-        // GroupBy computed only once
         var distinctRanksDesc = cards
             .Select(c => c.Rank)
             .Distinct()
             .OrderByDescending(r => r)
             .ToArray();
-        var groupsByRank = cards
+        var rankGroups = cards
             .GroupBy(c => c.Rank)
+            .Select(g => new RankGroup(g.Key, g.Count()))
             .ToArray();
-        var groupsBySuit = cards
+        var suitGroups = cards
             .GroupBy(c => c.Suit)
+            .Select(g => new SuitGroup(g.Key, g.ToArray()))
             .ToArray();
 
         // Standard poker ranking order (strongest to weakest)
 
         // Royal straight flush
-        if (ContainsRoyalStraightFlush(groupsBySuit))
+        if (ContainsRoyalStraightFlush(suitGroups))
             return new Score(HandRank.RoyalFlush, CardRank.As, kickers: Array.Empty<CardRank>());
 
         // Straight flush
-        if (GetStraightFlushValue(groupsBySuit) is CardRank straightFlushValue)
+        if (GetStraightFlushValue(suitGroups) is CardRank straightFlushValue)
             return new Score(HandRank.StraightFlush, straightFlushValue, kickers: Array.Empty<CardRank>());
 
         // Four of a kind
-        if (GetFourOfAKindValue(groupsByRank) is CardRank fourOfAKindValue)
+        if (GetFourOfAKindValue(rankGroups) is CardRank fourOfAKindValue)
         {
             var kicker = DetermineBestKickers(distinctRanksDesc, excludedRanks: new[] { fourOfAKindValue }, count: 1);
             return new Score(HandRank.FourOfAKind, fourOfAKindValue, kicker);
         }
 
         // Full house
-        if (GetFullHouseValues(groupsByRank, out var fullHouseThreeOfAKind, out var fullHousePair))
+        if (GetFullHouseValues(rankGroups, out var fullHouseThreeOfAKind, out var fullHousePair))
             return new Score(HandRank.FullHouse, fullHouseThreeOfAKind, new[] { fullHousePair });
 
         // Flush
-        if (TryGetFlushTop5(groupsBySuit, out var flushTop5))
+        if (TryGetFlushTop5(suitGroups, out var flushTop5))
             return new Score(HandRank.Flush, flushTop5[0], flushTop5.Skip(1).ToArray());
 
         // Straight
@@ -56,21 +59,21 @@ public static class ScoreEvaluator
             return new Score(HandRank.Straight, straightValue, kickers: Array.Empty<CardRank>());
 
         // Three of a kind
-        if (GetThreeOfAKindValue(groupsByRank) is CardRank threeOfAKindValue)
+        if (GetThreeOfAKindValue(rankGroups) is CardRank threeOfAKindValue)
         {
             var kickers = DetermineBestKickers(distinctRanksDesc, excludedRanks: new[] { threeOfAKindValue }, count: 2);
             return new Score(HandRank.ThreeOfAKind, threeOfAKindValue, kickers);
         }
 
         // Double pair
-        if (GetTwoPairValues(groupsByRank, out var higherPair, out var lowerPair))
+        if (GetTwoPairValues(rankGroups, out var higherPair, out var lowerPair))
         {
             var kicker = DetermineBestKickers(distinctRanksDesc, excludedRanks: new[] { higherPair, lowerPair }, count: 1);
             return new Score(HandRank.TwoPair, higherPair, new[] { lowerPair }.Concat(kicker).ToArray());
         }
 
         // One pair
-        if (GetPairValue(groupsByRank) is CardRank pairValue)
+        if (GetPairValue(rankGroups) is CardRank pairValue)
         {
             var kickers = DetermineBestKickers(distinctRanksDesc, excludedRanks: new[] { pairValue }, count: 3);
             return new Score(HandRank.OnePair, pairValue, kickers);
@@ -97,24 +100,25 @@ public static class ScoreEvaluator
         if (count <= 0) return Array.Empty<CardRank>();
         if (excludedRanks.Length == 0) return distinctRanksDesc.Take(count).ToArray();
 
+        var excluded = excludedRanks.ToHashSet();
         var result = new List<CardRank>(capacity: count);
         for (int i = 0; i < distinctRanksDesc.Length && result.Count < count; i++)
         {
             var r = distinctRanksDesc[i];
-            if (!excludedRanks.Contains(r))
+            if (!excluded.Contains(r))
                 result.Add(r);
         }
 
         return result.ToArray();
     }
 
-    private static bool TryGetFlushTop5(IEnumerable<IGrouping<Suit, Card>> groupsBySuit, out CardRank[] top5)
+    private static bool TryGetFlushTop5(IEnumerable<SuitGroup> groupsBySuit, out CardRank[] top5)
     {
         foreach (var grp in groupsBySuit)
         {
-            if (grp.Count() < 5) continue;
+            if (grp.Cards.Length < 5) continue;
 
-            var ranks = grp.Select(c => c.Rank)
+            var ranks = grp.Cards.Select(c => c.Rank)
                            .Distinct()
                            .OrderByDescending(r => r)
                            .Take(5)
@@ -131,14 +135,14 @@ public static class ScoreEvaluator
         return false;
     }
 
-    private static bool ContainsRoyalStraightFlush(IEnumerable<IGrouping<Suit, Card>> groupsBySuit)
+    private static bool ContainsRoyalStraightFlush(IEnumerable<SuitGroup> groupsBySuit)
     {
         // A straight flush whose high card is Ace (10-J-Q-K-A).
         foreach (var grp in groupsBySuit)
         {
-            if (grp.Count() < 5) continue;
+            if (grp.Cards.Length < 5) continue;
 
-            var distinctRanksDesc = grp.Select(c => c.Rank)
+            var distinctRanksDesc = grp.Cards.Select(c => c.Rank)
                                        .Distinct()
                                        .OrderByDescending(r => r)
                                        .ToArray();
@@ -152,15 +156,15 @@ public static class ScoreEvaluator
         return false;
     }
 
-    private static CardRank? GetStraightFlushValue(IEnumerable<IGrouping<Suit, Card>> groupsBySuit)
+    private static CardRank? GetStraightFlushValue(IEnumerable<SuitGroup> groupsBySuit)
     {
         CardRank? best = null;
 
         foreach (var grp in groupsBySuit)
         {
-            if (grp.Count() < 5) continue;
+            if (grp.Cards.Length < 5) continue;
 
-            var distinctRanksDesc = grp.Select(c => c.Rank)
+            var distinctRanksDesc = grp.Cards.Select(c => c.Rank)
                                        .Distinct()
                                        .OrderByDescending(r => r)
                                        .ToArray();
@@ -173,11 +177,11 @@ public static class ScoreEvaluator
         return best;
     }
 
-    private static CardRank? GetFourOfAKindValue(IEnumerable<IGrouping<CardRank, Card>> groupsByRank)
+    private static CardRank? GetFourOfAKindValue(IEnumerable<RankGroup> groupsByRank)
     {
         return groupsByRank
-            .Where(g => g.Count() == 4)
-            .Select(g => g.Key)
+            .Where(g => g.Count == 4)
+            .Select(g => g.Rank)
             .OrderByDescending(r => r)
             .Cast<CardRank?>()
             .FirstOrDefault();
@@ -189,7 +193,7 @@ public static class ScoreEvaluator
     /// - pair = highest pair excluding the selected three of a kind, or second three of a kind used as pair
     /// </summary>
     private static bool GetFullHouseValues(
-        IEnumerable<IGrouping<CardRank, Card>> groupsByRank,
+        IEnumerable<RankGroup> groupsByRank,
         out CardRank threeOfAKind,
         out CardRank pair)
     {
@@ -197,8 +201,8 @@ public static class ScoreEvaluator
         pair = default;
 
         var threeOfAKinds = groupsByRank
-            .Where(g => g.Count() >= 3)
-            .Select(g => g.Key)
+            .Where(g => g.Count >= 3)
+            .Select(g => g.Rank)
             .OrderByDescending(r => r)
             .ToArray();
 
@@ -208,8 +212,8 @@ public static class ScoreEvaluator
         threeOfAKind = threeOfAKinds[0];
 
         var pairs = groupsByRank
-            .Where(g => g.Key != threeOfAKinds[0] && g.Count() >= 2)
-            .Select(g => g.Key)
+            .Where(g => g.Rank != threeOfAKinds[0] && g.Count >= 2)
+            .Select(g => g.Rank)
             .OrderByDescending(r => r)
             .ToArray();
 
@@ -229,18 +233,18 @@ public static class ScoreEvaluator
         return false;
     }
 
-    private static CardRank? GetThreeOfAKindValue(IEnumerable<IGrouping<CardRank, Card>> groupsByRank)
+    private static CardRank? GetThreeOfAKindValue(IEnumerable<RankGroup> groupsByRank)
     {
         return groupsByRank
-            .Where(g => g.Count() >= 3)
-            .Select(g => g.Key)
+            .Where(g => g.Count >= 3)
+            .Select(g => g.Rank)
             .OrderByDescending(r => r)
             .Cast<CardRank?>()
             .FirstOrDefault();
     }
 
     private static bool GetTwoPairValues(
-        IEnumerable<IGrouping<CardRank, Card>> groupsByRank,
+        IEnumerable<RankGroup> groupsByRank,
         out CardRank higherPair,
         out CardRank lowerPair)
     {
@@ -248,8 +252,8 @@ public static class ScoreEvaluator
         lowerPair = default;
 
         var pairs = groupsByRank
-            .Where(g => g.Count() >= 2)
-            .Select(g => g.Key)
+            .Where(g => g.Count >= 2)
+            .Select(g => g.Rank)
             .OrderByDescending(r => r)
             .ToArray();
 
@@ -261,11 +265,11 @@ public static class ScoreEvaluator
         return true;
     }
 
-    private static CardRank? GetPairValue(IEnumerable<IGrouping<CardRank, Card>> groupsByRank)
+    private static CardRank? GetPairValue(IEnumerable<RankGroup> groupsByRank)
     {
         return groupsByRank
-            .Where(g => g.Count() >= 2)
-            .Select(g => g.Key)
+            .Where(g => g.Count >= 2)
+            .Select(g => g.Rank)
             .OrderByDescending(r => r)
             .Cast<CardRank?>()
             .FirstOrDefault();

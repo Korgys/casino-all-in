@@ -68,7 +68,8 @@ public static class Program
         var factory = new ConsoleGameFactory();
         var game = BuildGame(factory);
 
-        if (game is null) return;
+        if (game is null)
+            return;
 
         var refreshPokerTableAfterRoundEnd = false;
 
@@ -86,14 +87,17 @@ public static class Program
 
                 PokerRenderer.RenderTable(state);
             }
+
             if (e.State is BlackjackGameState blackjackState)
             {
                 ConsoleBlackjackRenderer.RenderTable(blackjackState);
             }
+
             if (e.State is SlotMachineGameState slotMachineState)
             {
                 ConsoleSlotMachineRenderer.RenderTable(slotMachineState);
             }
+
             if (e.State is RouletteGameState rouletteState)
             {
                 ConsoleRouletteRenderer.RenderTable(rouletteState);
@@ -166,7 +170,7 @@ public static class Program
                 case "sprache":
                 case "sprachen":
                 case "言語":
-                case "语言":
+                case "语音":
                 case "語言":
                 case "язык":
                 case "языки":
@@ -186,7 +190,6 @@ public static class Program
             }
         }
     }
-
 
     private static void SetCultureFromSystem()
     {
@@ -228,9 +231,6 @@ public static class Program
         }
     }
 
-    /// <summary>
-    /// Renders the main menu in an adaptive framed layout.
-    /// </summary>
     private static void RenderMainMenu()
     {
         const int preferredWidth = 46;
@@ -259,6 +259,7 @@ public static class Program
         ConsoleLayout.WriteSeparator(width);
         ConsoleLayout.WriteFramedLine($" {ConsoleText.CurrentLanguageLabel}: {GetCurrentLanguageName()} ", width);
         ConsoleLayout.WriteSeparator(width);
+
         foreach (var option in LanguageOptions)
         {
             ConsoleLayout.WriteFramedLine($" {option.MenuNumber}. {option.DisplayName()} ", width);
