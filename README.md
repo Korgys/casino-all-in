@@ -6,6 +6,8 @@
 
 Casino All-In is a console-based casino project built with .NET. It is designed as a portfolio showcase to demonstrate:
 
+- Architecture reference: [`docs/architecture.md`](docs/architecture.md)
+
 - Clean architecture separation (`casino.core` / `casino.console`)
 - Game logic modeling (deck, rounds, actions, scoring)
 - Automated tests for core rules and console behavior
@@ -98,6 +100,9 @@ dotnet test
 - Contributors should document any new public or protected types/members with XML comments (`<summary>`, and parameter/return tags where applicable), and keep comments synchronized with code changes.
 
 ## Project Structure
+
+See also: [`docs/architecture.md`](docs/architecture.md) for component boundaries, abstractions, testing split, localization approach, and design trade-offs.
+
 
 ```text
 casino-all-in/
