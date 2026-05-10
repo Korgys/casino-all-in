@@ -1,26 +1,27 @@
 using System.Globalization;
-using System.Reflection;
-using casino.console.Games;
-using casino.core;
-using casino.core.Games.Poker;
 
 namespace casino.console.tests;
 
 [TestClass]
+[DoNotParallelize]
 public class ProgramTests
 {
     private CultureInfo? originalCulture;
     private CultureInfo? originalUiCulture;
-    private TextReader? originalIn;
+    private CultureInfo? originalDefaultCulture;
+    private CultureInfo? originalDefaultUiCulture;
     private TextWriter? originalOut;
+    private TextWriter? originalError;
 
     [TestInitialize]
     public void Initialize()
     {
         originalCulture = CultureInfo.CurrentCulture;
         originalUiCulture = CultureInfo.CurrentUICulture;
-        originalIn = Console.In;
+        originalDefaultCulture = CultureInfo.DefaultThreadCurrentCulture;
+        originalDefaultUiCulture = CultureInfo.DefaultThreadCurrentUICulture;
         originalOut = Console.Out;
+        originalError = Console.Error;
     }
 
     [TestCleanup]
@@ -29,112 +30,47 @@ public class ProgramTests
         if (originalOut is not null)
             Console.SetOut(originalOut);
 
+        if (originalError is not null)
+            Console.SetError(originalError);
+
         if (originalCulture is not null)
             CultureInfo.CurrentCulture = originalCulture;
 
         if (originalUiCulture is not null)
             CultureInfo.CurrentUICulture = originalUiCulture;
 
-        if (originalIn is not null)
-            Console.SetIn(originalIn);
+        CultureInfo.DefaultThreadCurrentCulture = originalDefaultCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = originalDefaultUiCulture;
     }
 
     [TestMethod]
-    public void BuildGame_RoutesPokerBranch_AfterInvalidChoice_UsingAlias()
+    public void Main_WithHelp_PrintsUsageAndReturnsSuccess()
     {
-        using var _ = new ConsoleScope(string.Join(Environment.NewLine, "not-a-choice", "poker", "", "", "") + Environment.NewLine);
+        var output = new StringWriter();
+        var error = new StringWriter();
+        Console.SetOut(output);
+        Console.SetError(error);
 
-        var result = InvokeBuildGame();
+        var exitCode = Program.Main(["--help"]);
 
-        Assert.IsNotNull(result);
-        Assert.IsInstanceOfType<PokerGame>(result);
+        Assert.AreEqual(0, exitCode);
+        Assert.Contains("casino blackjack", output.ToString());
+        Assert.AreEqual(string.Empty, error.ToString());
     }
 
     [TestMethod]
-    public void BuildGame_RoutesLanguageBranch_ForPluralAlias_AndReturnsOnBack()
+    public void Main_WithoutCommand_PrintsUsageAndReturnsFailure()
     {
-        SetFrenchCulture();
+        var output = new StringWriter();
+        var error = new StringWriter();
+        Console.SetOut(output);
+        Console.SetError(error);
 
-        using var _ = new ConsoleScope(string.Join(Environment.NewLine, "languages", "back", "quit") + Environment.NewLine);
+        var exitCode = Program.Main([]);
 
-        var result = InvokeBuildGame();
-
-        Assert.IsNull(result);
-        Assert.AreEqual("fr-FR", CultureInfo.CurrentCulture.Name);
-        Assert.AreEqual("fr-FR", CultureInfo.CurrentUICulture.Name);
-    }
-
-    [TestMethod]
-    public void ShowLanguageMenu_ChangesCulture_ForNumericAlias()
-    {
-        SetFrenchCulture();
-
-        using var _ = new ConsoleScope("2" + Environment.NewLine);
-
-        InvokeShowLanguageMenu();
-
-        Assert.AreEqual("en", CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-        Assert.AreEqual("en", CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
-    }
-
-    [TestMethod]
-    public void ShowLanguageMenu_ChangesCulture_ForTextAlias_AfterInvalidChoice()
-    {
-        SetFrenchCulture();
-
-        using var _ = new ConsoleScope(string.Join(Environment.NewLine, "bogus", "english") + Environment.NewLine);
-
-        InvokeShowLanguageMenu();
-
-        Assert.AreEqual("en", CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-        Assert.AreEqual("en", CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
-    }
-
-    private static IGame? InvokeBuildGame()
-    {
-        var method = typeof(Program).GetMethod("BuildGame", BindingFlags.NonPublic | BindingFlags.Static);
-        Assert.IsNotNull(method);
-
-        return (IGame?)method.Invoke(null, [new ConsoleGameFactory()]);
-    }
-
-    private static void InvokeShowLanguageMenu()
-    {
-        var method = typeof(Program).GetMethod("ShowLanguageMenu", BindingFlags.NonPublic | BindingFlags.Static);
-        Assert.IsNotNull(method);
-
-        method.Invoke(null, null);
-    }
-
-    private static void SetFrenchCulture()
-    {
-        var culture = CultureInfo.GetCultureInfo("fr-FR");
-        CultureInfo.CurrentCulture = culture;
-        CultureInfo.CurrentUICulture = culture;
-    }
-
-    private sealed class ConsoleScope : IDisposable
-    {
-        private readonly TextReader? previousIn;
-        private readonly TextWriter? previousOut;
-
-        public ConsoleScope(string input)
-        {
-            previousIn = Console.In;
-            previousOut = Console.Out;
-
-            var output = new StringWriter();
-            Console.SetIn(new StringReader(input));
-            Console.SetOut(output);
-        }
-
-        public void Dispose()
-        {
-            if (previousIn is not null)
-                Console.SetIn(previousIn);
-
-            if (previousOut is not null)
-                Console.SetOut(previousOut);
-        }
+        Assert.AreEqual(1, exitCode);
+        Assert.AreEqual(string.Empty, output.ToString());
+        Assert.Contains("A game command is required.", error.ToString());
+        Assert.Contains("casino poker -p 4 -d 4 -c 1000", error.ToString());
     }
 }

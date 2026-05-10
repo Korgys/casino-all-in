@@ -35,7 +35,8 @@ Casino All-In is a console-based casino project built with .NET. It is designed 
 - Poker hand evaluation and winner resolution.
 - Console renderer for table state, actions, and game progression
 - Unit tests for game engine and console layer.
-- Localized UI support with language selection menu (🇫🇷 Français, 🇬🇧 English, 🇩🇪 Deutsch, 🇪🇸 Español, 🇯🇵 日本語, 🇨🇳 简体中文, 🇷🇺 Русский).
+- Command-line launch flow (`casino blackjack`, `casino poker -p 4 -d 4 -c 1000`).
+- Localized UI support based on the system UI culture.
 
 ## Installation
 
@@ -50,8 +51,11 @@ Casino All-In is a console-based casino project built with .NET. It is designed 
 git clone https://github.com/<your-username>/casino-all-in.git
 cd casino-all-in
 dotnet restore
-dotnet run --project casino.console
+dotnet run --project casino.console -- blackjack
+dotnet run --project casino.console -- poker -p 4 -d 4 -c 1000
 ```
+
+After publishing, the console executable is named `casino`.
 
 ### Option B — Run with Docker
 
@@ -59,27 +63,34 @@ dotnet run --project casino.console
 git clone https://github.com/<your-username>/casino-all-in.git
 cd casino-all-in
 docker build -t casino-all-in -f casino.console/Dockerfile .
-docker run --rm -it casino-all-in
+docker run --rm -it casino-all-in blackjack
+docker run --rm -it casino-all-in poker -p 4 -d 4 -c 1000
 ```
 
 ## Usage
 
-1. Launch the app (CLI or Docker).
-2. Choose a game (Poker, Blackjack, Slot Machine, or Roulette).
-3. Follow prompts in the terminal to choose actions (`check`, `call`, `raise`, `fold`, `all-in`, `hit`, `stand`, etc.).
-4. Play rounds until the game ends, then choose whether to start a new game.
+Launch a game directly from the command line:
+
+```bash
+casino blackjack
+casino poker -p 4 -d 4 -c 1000
+casino slots
+casino roulette
+```
+
+Poker options:
+
+```text
+-p, --players <2-6>       Total players, including you.
+-d, --difficulty <1-6>    AI difficulty for every opponent.
+-c, --chips <100-5000>    Initial chips for each player.
+```
+
+Then follow prompts in the terminal to choose actions (`check`, `call`, `raise`, `fold`, `all-in`, `hit`, `stand`, etc.).
 
 ### Localization
 
-Supported languages:
-
-- **🇬🇧 English**
-- **🇪🇸 Español**
-- **🇩🇪 Deutsch**
-- **🇫🇷 Français**
-- **🇯🇵 日本語**
-- **🇨🇳 简体中文**
-- **🇷🇺 Русский**
+The console UI uses the system UI culture when it matches a supported language, otherwise it falls back to English.
 
 ### Run tests
 

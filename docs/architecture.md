@@ -19,7 +19,7 @@ This project does **not** depend on console-specific rendering or input classes.
 
 `casino.console` is the presentation and orchestration layer:
 
-- Application entrypoint and game selection flow (`Program.cs`)
+- Application entrypoint and command-line flow (`Program.cs`, `Cli/*`)
 - Console-specific factory and adapters
 - Input parsing and output rendering for each game
 - Console localization resources (`casino.console/Localization/*.resx`)
@@ -42,6 +42,10 @@ This keeps domain correctness checks isolated from terminal I/O concerns.
 ### `IGameFactory`
 
 `IGameFactory` abstracts game creation, allowing callers to request a game without knowing constructor details. This is used to keep selection/orchestration logic separated from concrete game wiring.
+
+### CLI command model
+
+The console app accepts a game command instead of showing an interactive menu. `CasinoCliParser` validates command-line arguments and turns them into a `CasinoCliCommand`; `ConsoleGameBuilder` then wires that command to the existing game factory and console input callbacks.
 
 ### Poker strategy interfaces
 
@@ -69,7 +73,7 @@ Focus:
 - Input alias parsing and command translation
 - Rendering and frame buffer layout behavior
 - Console-specific localization text/access
-- Factory/program flow behavior at the console boundary
+- CLI parsing, command-to-game wiring, and program error/help behavior at the console boundary
 
 These tests verify that console interaction maps correctly to core contracts.
 

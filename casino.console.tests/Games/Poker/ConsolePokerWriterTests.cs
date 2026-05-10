@@ -61,7 +61,7 @@ public class ConsolePokerWriterTests
 
     private static void InvokeWriter(string methodName, params object[] arguments)
     {
-        var type = Type.GetType("casino.console.Games.Poker.ConsolePokerWriter, casino.console", throwOnError: true)!;
+        var type = typeof(Program).Assembly.GetType("casino.console.Games.Poker.ConsolePokerWriter", throwOnError: true)!;
         var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(method);
         method.Invoke(null, arguments);

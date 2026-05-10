@@ -18,4 +18,4 @@ RUN dotnet publish "casino.console.csproj" -c $configuration -o /app/publish /p:
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "casino.console.dll"]
+ENTRYPOINT ["dotnet", "casino.dll"]
