@@ -20,23 +20,18 @@ public class TurnManager
     public Player GetPlayerToAct()
     {
         if (!_round.IsInProgress())
-        {
             return _round.Players[CurrentPlayerIndex];
-        }
 
-        PositionOnAvailablePlayer();
+        TransitionToNextActingState();
 
         if (!_round.IsInProgress())
-        {
             return _round.Players[CurrentPlayerIndex];
-        }
 
-        if (NoPlayerCanAct())
-        {
+        var playerToAct = _round.Players[CurrentPlayerIndex];
+        if (!IsPlayerEligibleToActNow(playerToAct))
             throw new InvalidOperationException("No active player at the table.");
-        }
 
-        return _round.Players[CurrentPlayerIndex];
+        return playerToAct;
     }
 
     public void ExecutePlayerAction(Player player, GameAction action)
@@ -48,70 +43,62 @@ public class TurnManager
     private void EndPlayerTurn()
     {
         if (!_round.IsInProgress())
-        {
             return;
-        }
 
         if (_round.IsBettingRoundClosed())
         {
-            AdvanceUntilNextPhaseWithActions();
+            AdvanceToNextPhaseAndReselectActor();
+            TransitionToNextActingState();
             return;
         }
 
-        MoveIndexToNextPlayer();
-
-        if (NoPlayerCanAct())
-        {
-            AdvanceUntilNextPhaseWithActions();
-        }
+        MoveIndexToNextEligiblePlayer();
+        TransitionToNextActingState();
     }
 
-    private void PositionOnAvailablePlayer()
-    {
-        if (NoPlayerCanAct())
-        {
-            AdvanceUntilNextPhaseWithActions();
-            return;
-        }
-
-        if (!PlayerCanAct(_round.Players[CurrentPlayerIndex]))
-        {
-            MoveIndexToNextPlayer();
-        }
-    }
-
-    private void AdvanceUntilNextPhaseWithActions()
+    private void TransitionToNextActingState()
     {
         while (_round.IsInProgress())
         {
-            if (!NoPlayerCanAct() && !_round.IsBettingRoundClosed())
+            if (_round.IsBettingRoundClosed())
             {
-                MoveIndexToNextPlayer();
-                return;
+                AdvanceToNextPhaseAndReselectActor();
+                continue;
             }
 
-            _round.AdvancePhase();
-
-            if (!_round.IsInProgress())
+            if (NoPlayerCanAct())
             {
-                return;
+                if (_round.Players.Any(player => !player.IsFolded() && !player.IsAllIn()))
+                    throw new InvalidOperationException("No active player at the table.");
+
+                AdvanceToNextPhaseAndReselectActor();
+                continue;
             }
 
-            CurrentPlayerIndex = InitialPlayerIndex;
+            if (!IsPlayerEligibleToActNow(_round.Players[CurrentPlayerIndex]))
+                MoveIndexToNextEligiblePlayer();
 
-            if (!NoPlayerCanAct())
-            {
-                if (!PlayerCanAct(_round.Players[CurrentPlayerIndex]))
-                {
-                    MoveIndexToNextPlayer();
-                }
+            if (!IsPlayerEligibleToActNow(_round.Players[CurrentPlayerIndex]))
+                throw new InvalidOperationException("No active player at the table.");
 
-                return;
-            }
+            return;
         }
     }
 
-    private void MoveIndexToNextPlayer()
+    private void AdvanceToNextPhaseAndReselectActor()
+    {
+        _round.AdvancePhase();
+
+        if (!_round.IsInProgress())
+            return;
+
+        CurrentPlayerIndex = InitialPlayerIndex;
+
+        if (!NoPlayerCanAct() && !IsPlayerEligibleToActNow(_round.Players[CurrentPlayerIndex]))
+            MoveIndexToNextEligiblePlayer();
+    }
+
+    private void MoveIndexToNextEligiblePlayer()
     {
         var attempts = 0;
         do
@@ -119,11 +106,14 @@ public class TurnManager
             CurrentPlayerIndex = (CurrentPlayerIndex + 1) % _round.Players.Count;
             attempts++;
         }
-        while (!PlayerCanAct(_round.Players[CurrentPlayerIndex]) && attempts <= _round.Players.Count);
+        while (!IsPlayerEligibleToActNow(_round.Players[CurrentPlayerIndex]) && attempts < _round.Players.Count);
     }
 
-    private bool PlayerCanAct(Player player)
+    private bool IsPlayerEligibleToActNow(Player player)
     {
+        if (!_round.IsInProgress())
+            return false;
+
         if (player.LastAction == PokerTypeAction.Fold)
             return false;
 
@@ -133,5 +123,14 @@ public class TurnManager
         return _round.GetAvailableActions(player).Any();
     }
 
-    private bool NoPlayerCanAct() => !_round.Players.Any(PlayerCanAct);
+    private bool NoPlayerCanAct()
+    {
+        foreach (var player in _round.Players)
+        {
+            if (IsPlayerEligibleToActNow(player))
+                return false;
+        }
+
+        return true;
+    }
 }
