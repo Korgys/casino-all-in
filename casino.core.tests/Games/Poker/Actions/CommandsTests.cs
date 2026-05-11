@@ -69,6 +69,23 @@ public class CommandsTests
     }
 
     [TestMethod]
+    public void BetCommand_WhenPlayerAlreadyContributed_ShouldTreatAmountAsTargetContribution()
+    {
+        var player = new HumanPlayer("Bob", 100);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
+
+        round.SetBetFor(player, 10);
+
+        var command = new BetCommand(player, 25);
+        command.Execute(round);
+
+        Assert.AreEqual(85, player.Chips);
+        Assert.AreEqual(25, round.CurrentBet);
+        Assert.AreEqual(25, round.GetBetFor(player));
+        Assert.AreEqual(15, round.Pot);
+    }
+
+    [TestMethod]
     public void BetCommand_WhenAmountIsZero_ShouldThrowArgumentException()
     {
         var player = new HumanPlayer("Bob", 100);
@@ -131,6 +148,25 @@ public class CommandsTests
     }
 
     [TestMethod]
+    public void RaiseCommand_WhenPlayerAlreadyContributed_ShouldTreatAmountAsTargetContribution()
+    {
+        var player = new HumanPlayer("Carol", 200);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
+
+        PlayerTestHelper.SetCurrentBet(round, 30);
+        round.SetBetFor(player, 10);
+
+        var command = new RaiseCommand(player, 50);
+        command.Execute(round);
+
+        Assert.AreEqual(PokerTypeAction.Raise, player.LastAction);
+        Assert.AreEqual(160, player.Chips);
+        Assert.AreEqual(50, round.CurrentBet);
+        Assert.AreEqual(50, round.GetBetFor(player));
+        Assert.AreEqual(40, round.Pot);
+    }
+
+    [TestMethod]
     public void RaiseCommand_WhenAmountConsumesAllChips_ShouldBecomeAllIn()
     {
         var player = new HumanPlayer("Dave", 20);
@@ -144,6 +180,25 @@ public class CommandsTests
         Assert.AreEqual(20, round.GetBetFor(player));
         Assert.IsGreaterThanOrEqualTo(20, round.CurrentBet);
         Assert.IsGreaterThanOrEqualTo(20, round.Pot);
+    }
+
+    [TestMethod]
+    public void RaiseCommand_WhenTargetContributionConsumesRemainingChips_ShouldBecomeAllIn()
+    {
+        var player = new HumanPlayer("Dave", 30);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
+
+        PlayerTestHelper.SetCurrentBet(round, 20);
+        round.SetBetFor(player, 10);
+
+        var command = new RaiseCommand(player, 40);
+        command.Execute(round);
+
+        Assert.AreEqual(PokerTypeAction.AllIn, player.LastAction);
+        Assert.AreEqual(0, player.Chips);
+        Assert.AreEqual(40, round.GetBetFor(player));
+        Assert.AreEqual(40, round.CurrentBet);
+        Assert.AreEqual(30, round.Pot);
     }
 
     [TestMethod]
@@ -236,5 +291,62 @@ public class CommandsTests
         Assert.AreEqual(35, round.GetBetFor(player));
         Assert.IsGreaterThanOrEqualTo(35, round.CurrentBet);
         Assert.IsGreaterThanOrEqualTo(30, round.Pot);
+    }
+
+    [TestMethod]
+    public void ActionService_WhenCallSpecifiesAmount_ShouldRejectWithDeterministicMessage()
+    {
+        var player = new HumanPlayer("Ivy", 100);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
+        var service = new ActionService();
+
+        PlayerTestHelper.SetCurrentBet(round, 20);
+
+        var ex = Assert.Throws<ArgumentException>(() =>
+            service.ExecuteAction(round, player, new GameAction(PokerTypeAction.Call, 20)));
+
+        Assert.AreEqual("Only bet and raise actions can specify an amount.", ex.Message);
+    }
+
+    [TestMethod]
+    public void ActionService_WhenAllInSpecifiesAmount_ShouldRejectWithDeterministicMessage()
+    {
+        var player = new HumanPlayer("Ivy", 100);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
+        var service = new ActionService();
+
+        var ex = Assert.Throws<ArgumentException>(() =>
+            service.ExecuteAction(round, player, new GameAction(PokerTypeAction.AllIn, 100)));
+
+        Assert.AreEqual("Only bet and raise actions can specify an amount.", ex.Message);
+    }
+
+    [TestMethod]
+    public void ActionService_WhenRaiseAmountLooksLikeIncrement_ShouldRejectWithDeterministicMessage()
+    {
+        var player = new HumanPlayer("Ivy", 100);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
+        var service = new ActionService();
+
+        PlayerTestHelper.SetCurrentBet(round, 40);
+        round.SetBetFor(player, 10);
+
+        var ex = Assert.Throws<ArgumentException>(() =>
+            service.ExecuteAction(round, player, new GameAction(PokerTypeAction.Raise, 30)));
+
+        Assert.AreEqual("Raise amount must be a target contribution greater than the current bet and the player's current contribution.", ex.Message);
+    }
+
+    [TestMethod]
+    public void ActionService_WhenBetCannotBeCovered_ShouldRejectWithDeterministicMessage()
+    {
+        var player = new HumanPlayer("Ivy", 20);
+        var round = new Round(new List<Player> { player }, new FakeDeck(CreateSimpleCards()), 0);
+        var service = new ActionService();
+
+        var ex = Assert.Throws<ArgumentException>(() =>
+            service.ExecuteAction(round, player, new GameAction(PokerTypeAction.Bet, 25)));
+
+        Assert.AreEqual("Action amount exceeds the player's available chips.", ex.Message);
     }
 }

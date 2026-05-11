@@ -22,12 +22,14 @@ public class RandomStrategy : IPlayerStrategy
     private static int CalculerRelance(GameContext context)
     {
         var miseActuelle = context.Round.CurrentBet;
+        var contributionActuelle = context.Round.GetBetFor(context.CurrentPlayer);
         var minimum = Math.Max(miseActuelle + 1, context.MinimumBet);
-        var maximum = Math.Max(minimum, Math.Min(context.CurrentPlayer.Chips, miseActuelle + context.Round.StartingBet * 3));
+        var cibleMaximaleAutorisee = contributionActuelle + context.CurrentPlayer.Chips;
+        var maximum = Math.Max(minimum, Math.Min(cibleMaximaleAutorisee, miseActuelle + context.Round.StartingBet * 3));
 
-        if (minimum >= context.CurrentPlayer.Chips)
+        if (minimum >= cibleMaximaleAutorisee)
         {
-            return context.CurrentPlayer.Chips;
+            return cibleMaximaleAutorisee;
         }
 
         return Random.Shared.Next(minimum, maximum + 1);

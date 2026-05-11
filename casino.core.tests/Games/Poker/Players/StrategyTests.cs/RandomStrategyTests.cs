@@ -9,7 +9,7 @@ namespace casino.core.tests.Games.Poker.Players.StrategyTests.cs;
 public class RandomStrategyTests
 {
     [TestMethod]
-    public void DecideAction_WhenMinimumRaiseExceedsRemainingChips_ShouldUseAllChips()
+    public void DecideAction_WhenMinimumRaiseExceedsRemainingChips_ShouldUseAllChipsAsTargetContribution()
     {
         var player = new HumanPlayer("Alice", 8)
         {
@@ -18,14 +18,15 @@ public class RandomStrategyTests
                 new Card(CardRank.Roi, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
-        PlayerTestHelper.SetCurrentBet(round, 5);
+        PlayerTestHelper.SetCurrentBet(round, 11);
+        round.SetBetFor(player, 4);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise });
         var strategy = new RandomStrategy();
 
         var action = strategy.DecideAction(context);
 
         Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
-        Assert.AreEqual(player.Chips, action.Amount);
+        Assert.AreEqual(12, action.Amount);
     }
 
     [TestMethod]
@@ -62,7 +63,7 @@ public class RandomStrategyTests
         var strategy = new RandomStrategy();
 
         var minimum = Math.Max(context.Round.CurrentBet + 1, context.MinimumBet);
-        var maximum = Math.Max(minimum, Math.Min(context.CurrentPlayer.Chips, context.Round.CurrentBet + context.Round.StartingBet * 3));
+        var maximum = Math.Max(minimum, Math.Min(round.GetBetFor(player) + context.CurrentPlayer.Chips, context.Round.CurrentBet + context.Round.StartingBet * 3));
 
         for (var i = 0; i < 50; i++)
         {
@@ -74,7 +75,7 @@ public class RandomStrategyTests
     }
 
     [TestMethod]
-    public void DecideAction_WhenMinimumRaiseEqualsChips_ShouldRaiseAllChips()
+    public void DecideAction_WhenMinimumRaiseEqualsAllChips_ShouldReturnTargetContribution()
     {
         var player = new HumanPlayer("Dana", 6)
         {

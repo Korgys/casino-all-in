@@ -108,7 +108,7 @@ public class AdaptiveStrategyTests
     }
 
     [TestMethod]
-    public void DecideAction_RaiseAmount_IsCappedByPlayerChips_WhenAggressive()
+    public void DecideAction_RaiseAmount_IsCappedByTargetContribution_WhenAggressive()
     {
         var profile = PokerAiProfile.Hard with
         {
@@ -127,11 +127,12 @@ public class AdaptiveStrategyTests
             hand: new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Roi, Suit.Hearts)));
 
         context.Round.SetCurrentBet(20);
+        context.Round.SetBetFor(context.CurrentPlayer, 18);
 
         var action = new AdaptiveStrategy(profile).DecideAction(context);
 
         Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
-        Assert.AreEqual(5, action.Amount);
+        Assert.AreEqual(23, action.Amount);
     }
 
     [TestMethod]
