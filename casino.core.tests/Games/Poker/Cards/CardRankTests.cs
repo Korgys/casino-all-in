@@ -6,19 +6,19 @@ namespace casino.core.tests.Games.Poker.Cards;
 public class CardRankTests
 {
     [TestMethod]
-    [DataRow(CardRank.Deux, "2")]
-    [DataRow(CardRank.Trois, "3")]
-    [DataRow(CardRank.Quatre, "4")]
-    [DataRow(CardRank.Cinq, "5")]
+    [DataRow(CardRank.Two, "2")]
+    [DataRow(CardRank.Three, "3")]
+    [DataRow(CardRank.Four, "4")]
+    [DataRow(CardRank.Five, "5")]
     [DataRow(CardRank.Six, "6")]
-    [DataRow(CardRank.Sept, "7")]
-    [DataRow(CardRank.Huit, "8")]
-    [DataRow(CardRank.Neuf, "9")]
-    [DataRow(CardRank.Dix, "10")]
-    [DataRow(CardRank.Valet, "J")]
-    [DataRow(CardRank.Dame, "Q")]
-    [DataRow(CardRank.Roi, "K")]
-    [DataRow(CardRank.As, "A")]
+    [DataRow(CardRank.Seven, "7")]
+    [DataRow(CardRank.Eight, "8")]
+    [DataRow(CardRank.Nine, "9")]
+    [DataRow(CardRank.Ten, "10")]
+    [DataRow(CardRank.Jack, "J")]
+    [DataRow(CardRank.Queen, "Q")]
+    [DataRow(CardRank.King, "K")]
+    [DataRow(CardRank.Ace, "A")]
     public void ToShortString_ShouldReturnCorrectString(CardRank rank, string expected)
     {
         // Act

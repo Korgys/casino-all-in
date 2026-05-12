@@ -14,13 +14,13 @@ public class GameContextTests
         var player = new HumanPlayer("Alice", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.As, Suit.Hearts),
-                new Card(CardRank.Roi, Suit.Diamonds))
+                new Card(CardRank.Ace, Suit.Hearts),
+                new Card(CardRank.King, Suit.Diamonds))
         };
         var communityCards = PlayerTestHelper.CreateCommunityCards(
-            new Card(CardRank.As, Suit.Spades),
-            new Card(CardRank.Dame, Suit.Clubs),
-            new Card(CardRank.Neuf, Suit.Diamonds));
+            new Card(CardRank.Ace, Suit.Spades),
+            new Card(CardRank.Queen, Suit.Clubs),
+            new Card(CardRank.Nine, Suit.Diamonds));
         var availableActions = new List<PokerTypeAction> { PokerTypeAction.Check, PokerTypeAction.Bet };
 
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, communityCards);
@@ -28,7 +28,7 @@ public class GameContextTests
         var context = new GameContext(round, player, availableActions);
 
         Assert.AreEqual(HandRank.OnePair, context.PlayerScore.Rank);
-        Assert.AreEqual(CardRank.As, context.PlayerScore.CardValue);
+        Assert.AreEqual(CardRank.Ace, context.PlayerScore.CardValue);
         CollectionAssert.AreEquivalent(availableActions, context.AvailableActions.ToList());
         Assert.AreEqual(round.StartingBet, context.MinimumBet);
     }
@@ -39,8 +39,8 @@ public class GameContextTests
         var player = new HumanPlayer("Bob", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.Dix, Suit.Hearts),
-                new Card(CardRank.Neuf, Suit.Diamonds))
+                new Card(CardRank.Ten, Suit.Hearts),
+                new Card(CardRank.Nine, Suit.Diamonds))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
         PlayerTestHelper.SetCurrentBet(round, 45);

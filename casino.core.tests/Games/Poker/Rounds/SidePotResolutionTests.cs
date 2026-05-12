@@ -13,22 +13,22 @@ public class SidePotResolutionTests
     [TestMethod]
     public void EndGame_SingleAllInAgainstDeeperStacks_ShouldResolveMainAndSidePotIndependently()
     {
-        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Spades), 10));
+        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Two, Suit.Spades), 10));
         var alice = new HumanPlayer("Alice", 0) { LastAction = PokerTypeAction.AllIn };
         var bob = new HumanPlayer("Bob", 100) { LastAction = PokerTypeAction.Call };
         var charlie = new HumanPlayer("Charlie", 100) { LastAction = PokerTypeAction.Call };
         var round = new Round(new List<Player> { alice, bob, charlie }, deck, 0);
 
         round.SetCommunityCards(PlayerTestHelper.CreateCommunityCards(
-            new Card(CardRank.Deux, Suit.Hearts),
-            new Card(CardRank.Sept, Suit.Diamonds),
-            new Card(CardRank.Neuf, Suit.Clubs),
-            new Card(CardRank.Valet, Suit.Spades),
-            new Card(CardRank.Dame, Suit.Hearts)));
+            new Card(CardRank.Two, Suit.Hearts),
+            new Card(CardRank.Seven, Suit.Diamonds),
+            new Card(CardRank.Nine, Suit.Clubs),
+            new Card(CardRank.Jack, Suit.Spades),
+            new Card(CardRank.Queen, Suit.Hearts)));
 
-        alice.Hand = new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.As, Suit.Diamonds));
-        bob.Hand = new HandCards(new Card(CardRank.Roi, Suit.Clubs), new Card(CardRank.Dame, Suit.Diamonds));
-        charlie.Hand = new HandCards(new Card(CardRank.Dix, Suit.Clubs), new Card(CardRank.Dix, Suit.Hearts));
+        alice.Hand = new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.Ace, Suit.Diamonds));
+        bob.Hand = new HandCards(new Card(CardRank.King, Suit.Clubs), new Card(CardRank.Queen, Suit.Diamonds));
+        charlie.Hand = new HandCards(new Card(CardRank.Ten, Suit.Clubs), new Card(CardRank.Ten, Suit.Hearts));
 
         round.AddToPot(alice, 100);
         round.AddToPot(bob, 200);
@@ -44,7 +44,7 @@ public class SidePotResolutionTests
     [TestMethod]
     public void EndGame_MultipleAllInsAtDifferentAmounts_ShouldBuildThreePots()
     {
-        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Trois, Suit.Clubs), 10));
+        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Three, Suit.Clubs), 10));
         var alice = new HumanPlayer("Alice", 0) { LastAction = PokerTypeAction.AllIn };
         var bob = new HumanPlayer("Bob", 0) { LastAction = PokerTypeAction.AllIn };
         var charlie = new HumanPlayer("Charlie", 0) { LastAction = PokerTypeAction.AllIn };
@@ -52,16 +52,16 @@ public class SidePotResolutionTests
         var round = new Round(new List<Player> { alice, bob, charlie, diana }, deck, 0);
 
         round.SetCommunityCards(PlayerTestHelper.CreateCommunityCards(
-            new Card(CardRank.Deux, Suit.Hearts),
-            new Card(CardRank.Cinq, Suit.Diamonds),
-            new Card(CardRank.Neuf, Suit.Clubs),
-            new Card(CardRank.Valet, Suit.Spades),
-            new Card(CardRank.Dame, Suit.Hearts)));
+            new Card(CardRank.Two, Suit.Hearts),
+            new Card(CardRank.Five, Suit.Diamonds),
+            new Card(CardRank.Nine, Suit.Clubs),
+            new Card(CardRank.Jack, Suit.Spades),
+            new Card(CardRank.Queen, Suit.Hearts)));
 
-        alice.Hand = new HandCards(new Card(CardRank.Trois, Suit.Spades), new Card(CardRank.Quatre, Suit.Spades));
-        bob.Hand = new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.As, Suit.Diamonds));
-        charlie.Hand = new HandCards(new Card(CardRank.Roi, Suit.Hearts), new Card(CardRank.Roi, Suit.Diamonds));
-        diana.Hand = new HandCards(new Card(CardRank.Dix, Suit.Clubs), new Card(CardRank.Dix, Suit.Hearts));
+        alice.Hand = new HandCards(new Card(CardRank.Three, Suit.Spades), new Card(CardRank.Four, Suit.Spades));
+        bob.Hand = new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.Ace, Suit.Diamonds));
+        charlie.Hand = new HandCards(new Card(CardRank.King, Suit.Hearts), new Card(CardRank.King, Suit.Diamonds));
+        diana.Hand = new HandCards(new Card(CardRank.Ten, Suit.Clubs), new Card(CardRank.Ten, Suit.Hearts));
 
         round.AddToPot(alice, 50);
         round.AddToPot(bob, 120);
@@ -79,22 +79,22 @@ public class SidePotResolutionTests
     [TestMethod]
     public void EndGame_TieInSingleSidePot_ShouldSplitThatPotWithDeterministicRemainder()
     {
-        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Quatre, Suit.Clubs), 10));
+        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Four, Suit.Clubs), 10));
         var alice = new HumanPlayer("Alice", 0) { LastAction = PokerTypeAction.AllIn };
         var bob = new HumanPlayer("Bob", 0) { LastAction = PokerTypeAction.AllIn };
         var charlie = new HumanPlayer("Charlie", 0) { LastAction = PokerTypeAction.AllIn };
         var round = new Round(new List<Player> { alice, bob, charlie }, deck, 0);
 
         round.SetCommunityCards(PlayerTestHelper.CreateCommunityCards(
-            new Card(CardRank.Roi, Suit.Clubs),
-            new Card(CardRank.Roi, Suit.Diamonds),
-            new Card(CardRank.Huit, Suit.Hearts),
-            new Card(CardRank.Huit, Suit.Clubs),
-            new Card(CardRank.Deux, Suit.Spades)));
+            new Card(CardRank.King, Suit.Clubs),
+            new Card(CardRank.King, Suit.Diamonds),
+            new Card(CardRank.Eight, Suit.Hearts),
+            new Card(CardRank.Eight, Suit.Clubs),
+            new Card(CardRank.Two, Suit.Spades)));
 
-        alice.Hand = new HandCards(new Card(CardRank.Deux, Suit.Hearts), new Card(CardRank.Deux, Suit.Diamonds));
-        bob.Hand = new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Dame, Suit.Hearts));
-        charlie.Hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Valet, Suit.Spades));
+        alice.Hand = new HandCards(new Card(CardRank.Two, Suit.Hearts), new Card(CardRank.Two, Suit.Diamonds));
+        bob.Hand = new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.Queen, Suit.Hearts));
+        charlie.Hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.Jack, Suit.Spades));
 
         round.AddToPot(alice, 100);
         round.AddToPot(bob, 200);

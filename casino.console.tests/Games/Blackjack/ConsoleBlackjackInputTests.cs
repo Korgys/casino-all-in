@@ -88,8 +88,8 @@ public class ConsoleBlackjackInputTests
 
     private static BlackjackGameState CreateState() => new()
     {
-        PlayerCards = [new Card(CardRank.As, Suit.Spades), new Card(CardRank.Huit, Suit.Hearts)],
-        DealerCards = [new Card(CardRank.Roi, Suit.Clubs), new Card(CardRank.Six, Suit.Diamonds)],
+        PlayerCards = [new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.Eight, Suit.Hearts)],
+        DealerCards = [new Card(CardRank.King, Suit.Clubs), new Card(CardRank.Six, Suit.Diamonds)],
         IsDealerHoleCardHidden = true,
         IsRoundOver = false,
         StatusMessage = "Votre tour.",

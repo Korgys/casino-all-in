@@ -14,8 +14,8 @@ public class ConservativeStrategyTests
         var player = new HumanPlayer("Alice", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.As, Suit.Hearts),
-                new Card(CardRank.Dix, Suit.Diamonds))
+                new Card(CardRank.Ace, Suit.Hearts),
+                new Card(CardRank.Ten, Suit.Diamonds))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Check, PokerTypeAction.Call });
@@ -32,13 +32,13 @@ public class ConservativeStrategyTests
         var player = new HumanPlayer("Bob", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.As, Suit.Hearts),
-                new Card(CardRank.As, Suit.Diamonds))
+                new Card(CardRank.Ace, Suit.Hearts),
+                new Card(CardRank.Ace, Suit.Diamonds))
         };
         var communityCards = PlayerTestHelper.CreateCommunityCards(
-            new Card(CardRank.Roi, Suit.Spades),
-            new Card(CardRank.Roi, Suit.Clubs),
-            new Card(CardRank.Dame, Suit.Hearts));
+            new Card(CardRank.King, Suit.Spades),
+            new Card(CardRank.King, Suit.Clubs),
+            new Card(CardRank.Queen, Suit.Hearts));
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, communityCards);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Call, PokerTypeAction.Bet });
         var strategy = new ConservativeStrategy();
@@ -54,8 +54,8 @@ public class ConservativeStrategyTests
         var player = new HumanPlayer("Cara", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.As, Suit.Hearts),
-                new Card(CardRank.As, Suit.Spades))
+                new Card(CardRank.Ace, Suit.Hearts),
+                new Card(CardRank.Ace, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 15);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet, PokerTypeAction.Fold });
@@ -73,13 +73,13 @@ public class ConservativeStrategyTests
         var player = new HumanPlayer("Dana", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.As, Suit.Hearts),
-                new Card(CardRank.As, Suit.Spades))
+                new Card(CardRank.Ace, Suit.Hearts),
+                new Card(CardRank.Ace, Suit.Spades))
         };
         var communityCards = PlayerTestHelper.CreateCommunityCards(
-            new Card(CardRank.Roi, Suit.Hearts),
-            new Card(CardRank.Roi, Suit.Diamonds),
-            new Card(CardRank.Roi, Suit.Clubs));
+            new Card(CardRank.King, Suit.Hearts),
+            new Card(CardRank.King, Suit.Diamonds),
+            new Card(CardRank.King, Suit.Clubs));
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, communityCards, startingBet: 20);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise, PokerTypeAction.Call, PokerTypeAction.Fold });
         var strategy = new ConservativeStrategy();
@@ -95,13 +95,13 @@ public class ConservativeStrategyTests
         var player = new HumanPlayer("Claire", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.Deux, Suit.Diamonds),
-                new Card(CardRank.Sept, Suit.Clubs))
+                new Card(CardRank.Two, Suit.Diamonds),
+                new Card(CardRank.Seven, Suit.Clubs))
         };
         var communityCards = PlayerTestHelper.CreateCommunityCards(
-            new Card(CardRank.Dix, Suit.Spades),
-            new Card(CardRank.Neuf, Suit.Clubs),
-            new Card(CardRank.Huit, Suit.Hearts));
+            new Card(CardRank.Ten, Suit.Spades),
+            new Card(CardRank.Nine, Suit.Clubs),
+            new Card(CardRank.Eight, Suit.Hearts));
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, communityCards);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Fold });
         var strategy = new ConservativeStrategy();
@@ -117,8 +117,8 @@ public class ConservativeStrategyTests
         var player = new HumanPlayer("Eve", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.Deux, Suit.Diamonds),
-                new Card(CardRank.Sept, Suit.Clubs))
+                new Card(CardRank.Two, Suit.Diamonds),
+                new Card(CardRank.Seven, Suit.Clubs))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 30);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet, PokerTypeAction.AllIn });
@@ -136,8 +136,8 @@ public class ConservativeStrategyTests
         var player = new HumanPlayer("Finn", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.Deux, Suit.Hearts),
-                new Card(CardRank.Neuf, Suit.Spades))
+                new Card(CardRank.Two, Suit.Hearts),
+                new Card(CardRank.Nine, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.AllIn, PokerTypeAction.Raise });

@@ -17,7 +17,7 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_Throws_WhenCommunityCardsIsNull()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts));
 
         Assert.Throws<ArgumentNullException>(() =>
             ProbabilityEvaluator.EstimateWinProbability(hand, null!, numberOfOpponents: 1));
@@ -26,7 +26,7 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_Throws_WhenNumberOfOpponentsIsNegative()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts));
 
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             ProbabilityEvaluator.EstimateWinProbability(hand, new TableCards(), numberOfOpponents: -1));
@@ -35,7 +35,7 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_Throws_WhenSimulationsIsLessThanOne()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts));
 
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             ProbabilityEvaluator.EstimateWinProbability(hand, new TableCards(), numberOfOpponents: 1, simulations: 0));
@@ -44,7 +44,7 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_Returns100_WhenNoOpponent()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts));
 
         var probability = ProbabilityEvaluator.EstimateWinProbability(hand, new TableCards(), numberOfOpponents: 0);
 
@@ -54,8 +54,8 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_Throws_WhenKnownCardsContainDuplicates()
     {
-        var duplicate = new Card(CardRank.As, Suit.Spades);
-        var hand = new HandCards(duplicate, new Card(CardRank.Roi, Suit.Hearts));
+        var duplicate = new Card(CardRank.Ace, Suit.Spades);
+        var hand = new HandCards(duplicate, new Card(CardRank.King, Suit.Hearts));
         var board = new TableCards { Flop1 = duplicate };
 
         Assert.Throws<ArgumentException>(() =>
@@ -65,13 +65,13 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_Throws_WhenNotEnoughCardsToDeal()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts));
         var board = new TableCards
         {
-            Flop1 = new Card(CardRank.Deux, Suit.Clubs),
-            Flop2 = new Card(CardRank.Trois, Suit.Clubs),
-            Flop3 = new Card(CardRank.Quatre, Suit.Clubs),
-            Turn = new Card(CardRank.Cinq, Suit.Clubs),
+            Flop1 = new Card(CardRank.Two, Suit.Clubs),
+            Flop2 = new Card(CardRank.Three, Suit.Clubs),
+            Flop3 = new Card(CardRank.Four, Suit.Clubs),
+            Turn = new Card(CardRank.Five, Suit.Clubs),
             River = new Card(CardRank.Six, Suit.Clubs)
         };
 
@@ -82,14 +82,14 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_WithDeterministicRandom_CanReturnZero_WhenOpponentAlwaysBetter()
     {
-        var hand = new HandCards(new Card(CardRank.Trois, Suit.Diamonds), new Card(CardRank.Quatre, Suit.Diamonds));
+        var hand = new HandCards(new Card(CardRank.Three, Suit.Diamonds), new Card(CardRank.Four, Suit.Diamonds));
         var board = new TableCards
         {
-            Flop1 = new Card(CardRank.As, Suit.Spades),
-            Flop2 = new Card(CardRank.As, Suit.Diamonds),
-            Flop3 = new Card(CardRank.Roi, Suit.Clubs),
-            Turn = new Card(CardRank.Sept, Suit.Clubs),
-            River = new Card(CardRank.Deux, Suit.Clubs)
+            Flop1 = new Card(CardRank.Ace, Suit.Spades),
+            Flop2 = new Card(CardRank.Ace, Suit.Diamonds),
+            Flop3 = new Card(CardRank.King, Suit.Clubs),
+            Turn = new Card(CardRank.Seven, Suit.Clubs),
+            River = new Card(CardRank.Two, Suit.Clubs)
         };
 
         var probability = ProbabilityEvaluator.EstimateWinProbability(
@@ -105,14 +105,14 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_WithDeterministicRandom_CanReturnHundred_WhenMainPlayerAlwaysBetter()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.As, Suit.Clubs));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.Ace, Suit.Clubs));
         var board = new TableCards
         {
-            Flop1 = new Card(CardRank.Roi, Suit.Diamonds),
-            Flop2 = new Card(CardRank.Dame, Suit.Diamonds),
-            Flop3 = new Card(CardRank.Neuf, Suit.Clubs),
-            Turn = new Card(CardRank.Trois, Suit.Spades),
-            River = new Card(CardRank.Cinq, Suit.Hearts)
+            Flop1 = new Card(CardRank.King, Suit.Diamonds),
+            Flop2 = new Card(CardRank.Queen, Suit.Diamonds),
+            Flop3 = new Card(CardRank.Nine, Suit.Clubs),
+            Turn = new Card(CardRank.Three, Suit.Spades),
+            River = new Card(CardRank.Five, Suit.Hearts)
         };
 
         var probability = ProbabilityEvaluator.EstimateWinProbability(
@@ -128,14 +128,14 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_ReturnsSplitShare_WhenBoardForcesTie()
     {
-        var hand = new HandCards(new Card(CardRank.Deux, Suit.Hearts), new Card(CardRank.Trois, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Two, Suit.Hearts), new Card(CardRank.Three, Suit.Hearts));
         var board = new TableCards
         {
-            Flop1 = new Card(CardRank.Dix, Suit.Spades),
-            Flop2 = new Card(CardRank.Valet, Suit.Spades),
-            Flop3 = new Card(CardRank.Dame, Suit.Spades),
-            Turn = new Card(CardRank.Roi, Suit.Spades),
-            River = new Card(CardRank.As, Suit.Spades)
+            Flop1 = new Card(CardRank.Ten, Suit.Spades),
+            Flop2 = new Card(CardRank.Jack, Suit.Spades),
+            Flop3 = new Card(CardRank.Queen, Suit.Spades),
+            Turn = new Card(CardRank.King, Suit.Spades),
+            River = new Card(CardRank.Ace, Suit.Spades)
         };
 
         var probability = ProbabilityEvaluator.EstimateWinProbability(
@@ -151,7 +151,7 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_UsesProvidedRandom_InSequentialMode()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts));
         var board = new TableCards();
         var random = new CountingRandom();
 
@@ -169,7 +169,7 @@ public class ProbabilityEvaluatorTests
     [TestMethod]
     public void EstimateWinProbability_ParallelBranch_ReturnsValueInRange()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts));
         var board = new TableCards();
 
         var probability = ProbabilityEvaluator.EstimateWinProbability(

@@ -14,8 +14,8 @@ public class RandomStrategyTests
         var player = new HumanPlayer("Alice", 8)
         {
             Hand = new HandCards(
-                new Card(CardRank.As, Suit.Hearts),
-                new Card(CardRank.Roi, Suit.Spades))
+                new Card(CardRank.Ace, Suit.Hearts),
+                new Card(CardRank.King, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
         PlayerTestHelper.SetCurrentBet(round, 11);
@@ -35,8 +35,8 @@ public class RandomStrategyTests
         var player = new HumanPlayer("Bob", 100)
         {
             Hand = new HandCards(
-                new Card(CardRank.Dame, Suit.Diamonds),
-                new Card(CardRank.Neuf, Suit.Clubs))
+                new Card(CardRank.Queen, Suit.Diamonds),
+                new Card(CardRank.Nine, Suit.Clubs))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 25);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Bet });
@@ -54,8 +54,8 @@ public class RandomStrategyTests
         var player = new HumanPlayer("Cara", 120)
         {
             Hand = new HandCards(
-                new Card(CardRank.Dix, Suit.Hearts),
-                new Card(CardRank.Huit, Suit.Spades))
+                new Card(CardRank.Ten, Suit.Hearts),
+                new Card(CardRank.Eight, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 10);
         PlayerTestHelper.SetCurrentBet(round, 15);
@@ -80,8 +80,8 @@ public class RandomStrategyTests
         var player = new HumanPlayer("Dana", 6)
         {
             Hand = new HandCards(
-                new Card(CardRank.As, Suit.Hearts),
-                new Card(CardRank.Roi, Suit.Spades))
+                new Card(CardRank.Ace, Suit.Hearts),
+                new Card(CardRank.King, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 1);
         PlayerTestHelper.SetCurrentBet(round, 5);

@@ -18,8 +18,8 @@ public class CallCommand : IPlayerCommand
 
     public void Execute(Round round)
     {
-        var contributionActuelle = round.GetBetFor(_player);
-        var diff = round.CurrentBet - contributionActuelle;
+        var currentContribution = round.GetBetFor(_player);
+        var diff = round.CurrentBet - currentContribution;
 
         if (diff <= 0)
             throw new InvalidOperationException(Resources.ErrorNoAdditionalBetToCall);

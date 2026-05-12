@@ -130,7 +130,7 @@ public class ConsolePokerRenderer
             if (action == PokerTypeAction.Bet)
                 label += $" ({minimumBet}c)";
 
-            ConsoleLayout.WriteFramedLine(label, tableWidth, '¦', '¦');
+            ConsoleLayout.WriteFramedLine(label, tableWidth, 'ï¿½', 'ï¿½');
         }
 
         Console.WriteLine("+" + new string('-', tableWidth) + "+");

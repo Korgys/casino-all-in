@@ -11,7 +11,7 @@ namespace casino.core.tests.Games.Poker.Actions.Commands;
 [TestClass]
 public class CommandsTests
 {
-    private static IEnumerable<Card> CreateSimpleCards() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10);
+    private static IEnumerable<Card> CreateSimpleCards() => Enumerable.Repeat(new Card(CardRank.Two, Suit.Hearts), 10);
 
     [TestMethod]
     public void CheckCommand_WhenThereIsNoBet_ShouldSetLastActionToCheck()

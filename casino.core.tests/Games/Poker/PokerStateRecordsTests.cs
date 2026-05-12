@@ -10,7 +10,7 @@ public class PokerStateRecordsTests
     [TestMethod]
     public void PokerPlayerState_Constructor_ShouldMapAllProperties()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts));
         var playerState = new PokerPlayerState(
             Name: "Charlie",
             Chips: 800,
@@ -36,9 +36,9 @@ public class PokerStateRecordsTests
     {
         var communityCards = new TableCards
         {
-            Flop1 = new Card(CardRank.Dix, Suit.Clubs),
-            Flop2 = new Card(CardRank.Valet, Suit.Clubs),
-            Flop3 = new Card(CardRank.Dame, Suit.Clubs)
+            Flop1 = new Card(CardRank.Ten, Suit.Clubs),
+            Flop2 = new Card(CardRank.Jack, Suit.Clubs),
+            Flop3 = new Card(CardRank.Queen, Suit.Clubs)
         };
 
         var players = new List<PokerPlayerState>

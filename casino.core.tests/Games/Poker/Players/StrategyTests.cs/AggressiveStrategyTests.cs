@@ -14,8 +14,8 @@ public class AggressiveStrategyTests
         var player = new ComputerPlayer("Bot", 50, new AggressiveStrategy())
         {
             Hand = new HandCards(
-                new Card(CardRank.As, Suit.Hearts),
-                new Card(CardRank.Roi, Suit.Spades))
+                new Card(CardRank.Ace, Suit.Hearts),
+                new Card(CardRank.King, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand, startingBet: 15);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise, PokerTypeAction.Bet, PokerTypeAction.Call });
@@ -33,8 +33,8 @@ public class AggressiveStrategyTests
         var player = new ComputerPlayer("Bot", 10, new AggressiveStrategy())
         {
             Hand = new HandCards(
-                new Card(CardRank.Valet, Suit.Diamonds),
-                new Card(CardRank.Dix, Suit.Clubs))
+                new Card(CardRank.Jack, Suit.Diamonds),
+                new Card(CardRank.Ten, Suit.Clubs))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
         PlayerTestHelper.SetCurrentBet(round, 20);
@@ -53,8 +53,8 @@ public class AggressiveStrategyTests
         var player = new ComputerPlayer("Bot", 10, new AggressiveStrategy())
         {
             Hand = new HandCards(
-                new Card(CardRank.Quatre, Suit.Diamonds),
-                new Card(CardRank.Cinq, Suit.Clubs))
+                new Card(CardRank.Four, Suit.Diamonds),
+                new Card(CardRank.Five, Suit.Clubs))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Check });
@@ -71,8 +71,8 @@ public class AggressiveStrategyTests
         var player = new ComputerPlayer("Bot", 10, new AggressiveStrategy())
         {
             Hand = new HandCards(
-                new Card(CardRank.Deux, Suit.Hearts),
-                new Card(CardRank.Trois, Suit.Spades))
+                new Card(CardRank.Two, Suit.Hearts),
+                new Card(CardRank.Three, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Fold });
@@ -89,8 +89,8 @@ public class AggressiveStrategyTests
         var player = new ComputerPlayer("Bot", 20, new AggressiveStrategy())
         {
             Hand = new HandCards(
-                new Card(CardRank.Dix, Suit.Hearts),
-                new Card(CardRank.Neuf, Suit.Spades))
+                new Card(CardRank.Ten, Suit.Hearts),
+                new Card(CardRank.Nine, Suit.Spades))
         };
         var round = PlayerTestHelper.CreateRoundWithPlayer(player, player.Hand);
         PlayerTestHelper.SetCurrentBet(round, 20);

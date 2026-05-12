@@ -1,5 +1,7 @@
+using System.Globalization;
 using casino.core.Games.Blackjack;
 using casino.core.Games.Poker.Cards;
+using casino.core.Properties.Languages;
 using casino.core.tests.Fakes;
 
 namespace casino.core.tests.Games.Blackjack;
@@ -10,33 +12,44 @@ public class BlackjackGameTests
     [TestMethod]
     public void Run_PlayerBusts_DealerWinsRound()
     {
-        var cards = new List<Card>
+        var previousCulture = Resources.Culture;
+
+        try
         {
-            new(CardRank.Dix, Suit.Hearts),
-            new(CardRank.Neuf, Suit.Hearts),
-            new(CardRank.Six, Suit.Spades),
-            new(CardRank.Sept, Suit.Clubs),
-            new(CardRank.Huit, Suit.Diamonds)
-        };
+            Resources.Culture = CultureInfo.GetCultureInfo("en");
 
-        var game = new BlackjackGame(
-            _ => BlackjackAction.Hit,
-            () => false,
-            () => new FakeDeck(cards));
+            var cards = new List<Card>
+            {
+                new(CardRank.Ten, Suit.Hearts),
+                new(CardRank.Nine, Suit.Hearts),
+                new(CardRank.Six, Suit.Spades),
+                new(CardRank.Seven, Suit.Clubs),
+                new(CardRank.Eight, Suit.Diamonds)
+            };
 
-        string? winner = null;
-        BlackjackGameState? finalState = null;
-        game.GameEnded += (_, e) => winner = e.WinnerName;
-        game.StateUpdated += (_, e) => finalState = (BlackjackGameState)e.State;
+            var game = new BlackjackGame(
+                _ => BlackjackAction.Hit,
+                () => false,
+                () => new FakeDeck(cards));
 
-        game.Run();
+            string? winner = null;
+            BlackjackGameState? finalState = null;
+            game.GameEnded += (_, e) => winner = e.WinnerName;
+            game.StateUpdated += (_, e) => finalState = (BlackjackGameState)e.State;
 
-        Assert.AreEqual("Le croupier", winner);
-        Assert.IsNotNull(finalState);
-        Assert.AreEqual(BlackjackRoundOutcome.DealerWin, finalState.RoundOutcome);
-        Assert.AreEqual(0, finalState.PlayerWins);
-        Assert.AreEqual(1, finalState.DealerWins);
-        Assert.AreEqual(0, finalState.Pushes);
+            game.Run();
+
+            Assert.AreEqual("Dealer", winner);
+            Assert.IsNotNull(finalState);
+            Assert.AreEqual(BlackjackRoundOutcome.DealerWin, finalState.RoundOutcome);
+            Assert.AreEqual(0, finalState.PlayerWins);
+            Assert.AreEqual(1, finalState.DealerWins);
+            Assert.AreEqual(0, finalState.Pushes);
+        }
+        finally
+        {
+            Resources.Culture = previousCulture;
+        }
     }
 
     [TestMethod]
@@ -44,19 +57,19 @@ public class BlackjackGameTests
     {
         var firstRoundCards = new List<Card>
         {
-            new(CardRank.Dix, Suit.Spades),
-            new(CardRank.Neuf, Suit.Hearts),
-            new(CardRank.Neuf, Suit.Clubs),
-            new(CardRank.Sept, Suit.Diamonds),
-            new(CardRank.Cinq, Suit.Spades)
+            new(CardRank.Ten, Suit.Spades),
+            new(CardRank.Nine, Suit.Hearts),
+            new(CardRank.Nine, Suit.Clubs),
+            new(CardRank.Seven, Suit.Diamonds),
+            new(CardRank.Five, Suit.Spades)
         };
 
         var secondRoundCards = new List<Card>
         {
-            new(CardRank.Dix, Suit.Hearts),
-            new(CardRank.Neuf, Suit.Spades),
-            new(CardRank.Dame, Suit.Diamonds),
-            new(CardRank.Sept, Suit.Clubs)
+            new(CardRank.Ten, Suit.Hearts),
+            new(CardRank.Nine, Suit.Spades),
+            new(CardRank.Queen, Suit.Diamonds),
+            new(CardRank.Seven, Suit.Clubs)
         };
 
         var allCards = firstRoundCards.Concat(secondRoundCards).ToList();

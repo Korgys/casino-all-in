@@ -69,16 +69,16 @@ public class OpportunisticStrategyTests
 
         var cards = new List<Card>
         {
-            new(CardRank.As, Suit.Spades),
-            new(CardRank.As, Suit.Hearts),
-            new(CardRank.Deux, Suit.Clubs),
-            new(CardRank.Trois, Suit.Diamonds),
-            new(CardRank.Quatre, Suit.Spades),
-            new(CardRank.Cinq, Suit.Hearts),
+            new(CardRank.Ace, Suit.Spades),
+            new(CardRank.Ace, Suit.Hearts),
+            new(CardRank.Two, Suit.Clubs),
+            new(CardRank.Three, Suit.Diamonds),
+            new(CardRank.Four, Suit.Spades),
+            new(CardRank.Five, Suit.Hearts),
             new(CardRank.Six, Suit.Clubs),
-            new(CardRank.Sept, Suit.Diamonds),
-            new(CardRank.Huit, Suit.Spades),
-            new(CardRank.Neuf, Suit.Hearts)
+            new(CardRank.Seven, Suit.Diamonds),
+            new(CardRank.Eight, Suit.Spades),
+            new(CardRank.Nine, Suit.Hearts)
         };
 
         var round = new Round(players, new FakeDeck(cards), 0);
@@ -183,8 +183,8 @@ public class OpportunisticStrategyTests
         var player = new Player("bob", 1000)
         {
             Hand = new HandCards(
-                new Card(CardRank.Deux, Suit.Clubs),
-                new Card(CardRank.Sept, Suit.Diamonds))
+                new Card(CardRank.Two, Suit.Clubs),
+                new Card(CardRank.Seven, Suit.Diamonds))
         };
         var players = new List<Player>
         {
@@ -197,16 +197,16 @@ public class OpportunisticStrategyTests
 
         var cards = new List<Card>
         {
-            new(CardRank.As, Suit.Spades),
-            new(CardRank.Roi, Suit.Hearts),
-            new(CardRank.Dame, Suit.Clubs),
-            new(CardRank.Valet, Suit.Diamonds),
-            new(CardRank.Dix, Suit.Spades),
-            new(CardRank.Neuf, Suit.Hearts),
-            new(CardRank.Huit, Suit.Clubs),
-            new(CardRank.Cinq, Suit.Diamonds),
-            new(CardRank.Quatre, Suit.Spades),
-            new(CardRank.Trois, Suit.Hearts)
+            new(CardRank.Ace, Suit.Spades),
+            new(CardRank.King, Suit.Hearts),
+            new(CardRank.Queen, Suit.Clubs),
+            new(CardRank.Jack, Suit.Diamonds),
+            new(CardRank.Ten, Suit.Spades),
+            new(CardRank.Nine, Suit.Hearts),
+            new(CardRank.Eight, Suit.Clubs),
+            new(CardRank.Five, Suit.Diamonds),
+            new(CardRank.Four, Suit.Spades),
+            new(CardRank.Three, Suit.Hearts)
         };
 
         var round = new Round(players, new FakeDeck(cards), 0);
@@ -218,5 +218,5 @@ public class OpportunisticStrategyTests
         Assert.AreEqual(PokerTypeAction.Call, action.TypeAction);
     }
 
-    private static IEnumerable<Card> CreateSimpleCards() => Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10);
+    private static IEnumerable<Card> CreateSimpleCards() => Enumerable.Repeat(new Card(CardRank.Two, Suit.Hearts), 10);
 }

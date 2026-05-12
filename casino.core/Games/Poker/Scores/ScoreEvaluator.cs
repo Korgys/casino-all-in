@@ -33,7 +33,7 @@ public static class ScoreEvaluator
 
         // Royal straight flush
         if (ContainsRoyalStraightFlush(suitGroups))
-            return new Score(HandRank.RoyalFlush, CardRank.As, kickers: Array.Empty<CardRank>());
+            return new Score(HandRank.RoyalFlush, CardRank.Ace, kickers: Array.Empty<CardRank>());
 
         // Straight flush
         if (GetStraightFlushValue(suitGroups) is CardRank straightFlushValue)
@@ -81,7 +81,7 @@ public static class ScoreEvaluator
 
         // High card
         if (distinctRanksDesc.Length == 0)
-            return new Score(HandRank.HighCard, CardRank.Deux, Array.Empty<CardRank>());
+            return new Score(HandRank.HighCard, CardRank.Two, Array.Empty<CardRank>());
 
         var highestHighCard = distinctRanksDesc[0];
         var highCardKickers = distinctRanksDesc.Skip(1).Take(4).ToArray();
@@ -149,7 +149,7 @@ public static class ScoreEvaluator
 
             // For "royal", the straight high card must be Ace and Ten must be present.
             var high = GetStraightValue(distinctRanksDesc);
-            if (high == CardRank.As && distinctRanksDesc.Contains(CardRank.Dix))
+            if (high == CardRank.Ace && distinctRanksDesc.Contains(CardRank.Ten))
                 return true;
         }
 
@@ -292,7 +292,7 @@ public static class ScoreEvaluator
             return null;
 
         // Wheel straight: if Ace (14) exists, insert 1 to represent low Ace
-        if (values.Contains((int)CardRank.As))
+        if (values.Contains((int)CardRank.Ace))
             values.Insert(0, 1);
 
         int consecutive = 1;

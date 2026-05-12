@@ -12,8 +12,8 @@ public class ScoreTests
     {
         // Arrange
         var rank = HandRank.OnePair;
-        var cardValue = CardRank.As;
-        var kickers = new[] { CardRank.Roi, CardRank.Dame };
+        var cardValue = CardRank.Ace;
+        var kickers = new[] { CardRank.King, CardRank.Queen };
 
         // Act
         var score = new Score(rank, cardValue, kickers);
@@ -22,8 +22,8 @@ public class ScoreTests
         Assert.AreEqual(rank, score.Rank);
         Assert.AreEqual(cardValue, score.CardValue);
         Assert.HasCount(2, score.Kickers);
-        Assert.AreEqual(CardRank.Roi, score.Kickers[0]);
-        Assert.AreEqual(CardRank.Dame, score.Kickers[1]);
+        Assert.AreEqual(CardRank.King, score.Kickers[0]);
+        Assert.AreEqual(CardRank.Queen, score.Kickers[1]);
     }
 
     [TestMethod]
@@ -31,7 +31,7 @@ public class ScoreTests
     {
         // Arrange
         var rank = HandRank.HighCard;
-        var cardValue = CardRank.Dix;
+        var cardValue = CardRank.Ten;
 
         // Act
         var score = new Score(rank, cardValue);
@@ -46,7 +46,7 @@ public class ScoreTests
     public void CompareTo_NullOther_Returns1()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score.CompareTo(null);
@@ -59,8 +59,8 @@ public class ScoreTests
     public void CompareTo_DifferentRanks_ReturnsRankComparison()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As);
-        var score2 = new Score(HandRank.ThreeOfAKind, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace);
+        var score2 = new Score(HandRank.ThreeOfAKind, CardRank.Ace);
 
         // Act
         var result1 = score1.CompareTo(score2);
@@ -75,8 +75,8 @@ public class ScoreTests
     public void CompareTo_SameRankDifferentCardValue_ReturnsCardValueComparison()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.Roi);
-        var score2 = new Score(HandRank.OnePair, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.King);
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score1.CompareTo(score2);
@@ -89,8 +89,8 @@ public class ScoreTests
     public void CompareTo_SameRankSameCardValue_DifferentKickers_ReturnsKickerComparison()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi, CardRank.Dame });
-        var score2 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi, CardRank.Valet });
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King, CardRank.Queen });
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King, CardRank.Jack });
 
         // Act
         var result = score1.CompareTo(score2);
@@ -103,8 +103,8 @@ public class ScoreTests
     public void CompareTo_SameRankSameCardValue_SameKickers_Returns0()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi, CardRank.Dame });
-        var score2 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi, CardRank.Dame });
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King, CardRank.Queen });
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King, CardRank.Queen });
 
         // Act
         var result = score1.CompareTo(score2);
@@ -117,8 +117,8 @@ public class ScoreTests
     public void CompareTo_DifferentKickerLengths_ReturnsCorrectComparison()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi });
-        var score2 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi, CardRank.Dame });
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King });
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King, CardRank.Queen });
 
         // Act
         var result1 = score1.CompareTo(score2);
@@ -133,7 +133,7 @@ public class ScoreTests
     public void Equals_Score_Null_ReturnsFalse()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score.Equals((Score?)null);
@@ -146,8 +146,8 @@ public class ScoreTests
     public void Equals_Score_DifferentScores_ReturnsFalse()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As);
-        var score2 = new Score(HandRank.ThreeOfAKind, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace);
+        var score2 = new Score(HandRank.ThreeOfAKind, CardRank.Ace);
 
         // Act
         var result = score1.Equals(score2);
@@ -160,8 +160,8 @@ public class ScoreTests
     public void Equals_Score_SameScores_ReturnsTrue()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi });
-        var score2 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi });
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King });
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King });
 
         // Act
         var result = score1.Equals(score2);
@@ -174,7 +174,7 @@ public class ScoreTests
     public void Equals_Object_Null_ReturnsFalse()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score.Equals((object?)null);
@@ -187,7 +187,7 @@ public class ScoreTests
     public void Equals_Object_DifferentType_ReturnsFalse()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score.Equals("not a score");
@@ -200,8 +200,8 @@ public class ScoreTests
     public void Equals_Object_SameScore_ReturnsTrue()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As);
-        var score2 = new Score(HandRank.OnePair, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace);
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score1.Equals((object)score2);
@@ -214,8 +214,8 @@ public class ScoreTests
     public void GetHashCode_SameScores_ReturnsSameHashCode()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi });
-        var score2 = new Score(HandRank.OnePair, CardRank.As, new[] { CardRank.Roi });
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King });
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace, new[] { CardRank.King });
 
         // Act
         var hash1 = score1.GetHashCode();
@@ -239,7 +239,7 @@ public class ScoreTests
     public void OperatorEqual_LeftNullRightNotNull_ReturnsFalse()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = (Score?)null == score;
@@ -252,8 +252,8 @@ public class ScoreTests
     public void OperatorEqual_SameScores_ReturnsTrue()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As);
-        var score2 = new Score(HandRank.OnePair, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace);
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score1 == score2;
@@ -266,8 +266,8 @@ public class ScoreTests
     public void OperatorNotEqual_DifferentScores_ReturnsTrue()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As);
-        var score2 = new Score(HandRank.ThreeOfAKind, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace);
+        var score2 = new Score(HandRank.ThreeOfAKind, CardRank.Ace);
 
         // Act
         var result = score1 != score2;
@@ -280,7 +280,7 @@ public class ScoreTests
     public void OperatorLessThan_LeftNull_ReturnsTrue()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = (Score?)null < score;
@@ -293,7 +293,7 @@ public class ScoreTests
     public void OperatorLessThan_RightNull_ReturnsFalse()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score < (Score?)null;
@@ -306,8 +306,8 @@ public class ScoreTests
     public void OperatorLessThan_LeftLessThanRight_ReturnsTrue()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.Roi);
-        var score2 = new Score(HandRank.OnePair, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.King);
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score1 < score2;
@@ -320,7 +320,7 @@ public class ScoreTests
     public void OperatorLessThanOrEqual_LeftNull_ReturnsTrue()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = (Score?)null <= score;
@@ -333,7 +333,7 @@ public class ScoreTests
     public void OperatorLessThanOrEqual_RightNull_ReturnsFalse()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score <= (Score?)null;
@@ -346,8 +346,8 @@ public class ScoreTests
     public void OperatorLessThanOrEqual_EqualScores_ReturnsTrue()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As);
-        var score2 = new Score(HandRank.OnePair, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace);
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score1 <= score2;
@@ -360,7 +360,7 @@ public class ScoreTests
     public void OperatorGreaterThan_LeftNull_ReturnsFalse()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = (Score?)null > score;
@@ -373,7 +373,7 @@ public class ScoreTests
     public void OperatorGreaterThan_RightNull_ReturnsTrue()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score > (Score?)null;
@@ -386,8 +386,8 @@ public class ScoreTests
     public void OperatorGreaterThan_LeftGreaterThanRight_ReturnsTrue()
     {
         // Arrange
-        var score1 = new Score(HandRank.ThreeOfAKind, CardRank.As);
-        var score2 = new Score(HandRank.OnePair, CardRank.As);
+        var score1 = new Score(HandRank.ThreeOfAKind, CardRank.Ace);
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score1 > score2;
@@ -410,7 +410,7 @@ public class ScoreTests
     public void OperatorGreaterThanOrEqual_LeftNullRightNotNull_ReturnsFalse()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = (Score?)null >= score;
@@ -423,7 +423,7 @@ public class ScoreTests
     public void OperatorGreaterThanOrEqual_RightNull_ReturnsTrue()
     {
         // Arrange
-        var score = new Score(HandRank.OnePair, CardRank.As);
+        var score = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score >= (Score?)null;
@@ -436,8 +436,8 @@ public class ScoreTests
     public void OperatorGreaterThanOrEqual_EqualScores_ReturnsTrue()
     {
         // Arrange
-        var score1 = new Score(HandRank.OnePair, CardRank.As);
-        var score2 = new Score(HandRank.OnePair, CardRank.As);
+        var score1 = new Score(HandRank.OnePair, CardRank.Ace);
+        var score2 = new Score(HandRank.OnePair, CardRank.Ace);
 
         // Act
         var result = score1 >= score2;
@@ -454,7 +454,7 @@ public class ScoreTests
         try
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr");
-            var score = new Score(HandRank.OnePair, CardRank.As);
+            var score = new Score(HandRank.OnePair, CardRank.Ace);
 
             var result = score.ToString();
 
@@ -474,7 +474,7 @@ public class ScoreTests
         try
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de");
-            var score = new Score(HandRank.OnePair, CardRank.As);
+            var score = new Score(HandRank.OnePair, CardRank.Ace);
 
             var result = score.ToString();
 

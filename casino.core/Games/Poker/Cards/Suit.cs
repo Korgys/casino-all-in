@@ -10,15 +10,15 @@ public enum Suit
 
 public static class SuitExtensions
 {
-    public static string ToSymbol(this Suit couleur)
+    public static string ToSymbol(this Suit suit)
     {
-        return couleur switch
+        return suit switch
         {
             Suit.Hearts => "♥",
             Suit.Diamonds => "♦",
             Suit.Clubs => "♣",
             Suit.Spades => "♠",
-            _ => throw new ArgumentOutOfRangeException(nameof(couleur), couleur, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(suit), suit, null)
         };
     }
 }

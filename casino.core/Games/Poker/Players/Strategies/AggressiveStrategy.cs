@@ -7,13 +7,13 @@ public class AggressiveStrategy : IPlayerStrategy
     public Actions.GameAction DecideAction(GameContext context)
     {
         var actions = context.AvailableActions;
-        var Player = context.CurrentPlayer;
-        var relanceMinimum = Math.Max(context.Round.CurrentBet + context.Round.StartingBet, context.MinimumBet);
+        var player = context.CurrentPlayer;
+        var minimumRaise = Math.Max(context.Round.CurrentBet + context.Round.StartingBet, context.MinimumBet);
 
-        if (actions.Contains(PokerTypeAction.Raise) && Player.Chips > context.Round.CurrentBet)
+        if (actions.Contains(PokerTypeAction.Raise) && player.Chips > context.Round.CurrentBet)
         {
-            int mise = Math.Min(Player.Chips, relanceMinimum);
-            return new Actions.GameAction(PokerTypeAction.Raise, mise);
+            int amount = Math.Min(player.Chips, minimumRaise);
+            return new Actions.GameAction(PokerTypeAction.Raise, amount);
         }
 
         if (actions.Contains(PokerTypeAction.Bet))

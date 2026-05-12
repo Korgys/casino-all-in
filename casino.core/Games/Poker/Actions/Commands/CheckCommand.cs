@@ -22,9 +22,9 @@ public class CheckCommand : IPlayerCommand
 
     public void Execute(Round round)
     {
-        var contributionActuelle = round.GetBetFor(_player);
+        var currentContribution = round.GetBetFor(_player);
 
-        if (round.CurrentBet - contributionActuelle > 0)
+        if (round.CurrentBet - currentContribution > 0)
             throw new InvalidOperationException(Resources.ErrorThePlayerCannotCheckBecauseThereIsABetOnTheTable);
 
         _player.LastAction = PokerTypeAction.Check;

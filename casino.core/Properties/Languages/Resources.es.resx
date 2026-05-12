@@ -196,43 +196,43 @@
   <data name="ScoreOfFormat" xml:space="preserve">
     <value>{0} de {1}</value>
   </data>
-  <data name="Deux" xml:space="preserve">
+  <data name="Two" xml:space="preserve">
     <value>Dos</value>
   </data>
-  <data name="Trois" xml:space="preserve">
+  <data name="Three" xml:space="preserve">
     <value>Tres</value>
   </data>
-  <data name="Quatre" xml:space="preserve">
+  <data name="Four" xml:space="preserve">
     <value>Cuatro</value>
   </data>
-  <data name="Cinq" xml:space="preserve">
+  <data name="Five" xml:space="preserve">
     <value>Cinco</value>
   </data>
   <data name="Six" xml:space="preserve">
     <value>Seis</value>
   </data>
-  <data name="Sept" xml:space="preserve">
+  <data name="Seven" xml:space="preserve">
     <value>Siete</value>
   </data>
-  <data name="Huit" xml:space="preserve">
+  <data name="Eight" xml:space="preserve">
     <value>Ocho</value>
   </data>
-  <data name="Neuf" xml:space="preserve">
+  <data name="Nine" xml:space="preserve">
     <value>Nueve</value>
   </data>
-  <data name="Dix" xml:space="preserve">
+  <data name="Ten" xml:space="preserve">
     <value>Diez</value>
   </data>
-  <data name="Valet" xml:space="preserve">
+  <data name="Jack" xml:space="preserve">
     <value>Jota</value>
   </data>
-  <data name="Dame" xml:space="preserve">
+  <data name="Queen" xml:space="preserve">
     <value>Reina</value>
   </data>
-  <data name="Roi" xml:space="preserve">
+  <data name="King" xml:space="preserve">
     <value>Rey</value>
   </data>
-  <data name="As" xml:space="preserve">
+  <data name="Ace" xml:space="preserve">
     <value>As</value>
   </data>
   <data name="RouletteWheelSpinning" xml:space="preserve">

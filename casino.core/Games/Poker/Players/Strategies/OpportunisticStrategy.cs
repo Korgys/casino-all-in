@@ -54,36 +54,32 @@ public class OpportunisticStrategy : IPlayerStrategy
         var opponents = Math.Max(0, activePlayers - 1);
         var phase = context.Round.Phase;
 
-        // pBrut est en 0..100
-        var pBrut = ProbabilityEvaluator.EstimateWinProbability(
+        var rawProbability = ProbabilityEvaluator.EstimateWinProbability(
             context.CurrentPlayer.Hand,
             context.Round.CommunityCards,
             opponents,
             simulations: 1000);
 
-        // Normalisation 0..1
-        var normalizedProbability = BornerEntre0Et1(pBrut / 100.0);
+        var normalizedProbability = Clamp01(rawProbability / 100.0);
 
         return new OpportunisticMetrics(activePlayers, normalizedProbability, phase);
     }
 
     private static OpportunisticThresholds ComputeThresholds(int activePlayers, Phase phase)
     {
-        var nbActives = Math.Max(2, activePlayers);
-        var neutre = 1.0 / nbActives;
+        var activeCount = Math.Max(2, activePlayers);
+        var neutralProbability = 1.0 / activeCount;
 
-        // Multiplicateurs par rapport au neutre (à ajuster)
-        // Préflop on est + prudent (moins d'infos)
-        var foldK = phase < Phase.Flop ? 0.75 : 0.70;  // fold si p < foldK * neutre
-        var callK = phase < Phase.Flop ? 1.05 : 1.00;  // call si p < callK * neutre
-        var raiseK = phase < Phase.Flop ? 1.35 : 1.25;  // raise/bet si p >= raiseK * neutre
-        var shoveK = phase < Phase.Flop ? 1.90 : 1.70;  // shove si p >= shoveK * neutre
+        var foldMultiplier = phase < Phase.Flop ? 0.75 : 0.70;
+        var callMultiplier = phase < Phase.Flop ? 1.05 : 1.00;
+        var raiseMultiplier = phase < Phase.Flop ? 1.35 : 1.25;
+        var shoveMultiplier = phase < Phase.Flop ? 1.90 : 1.70;
 
         return new OpportunisticThresholds(
-            FoldThreshold: foldK * neutre,
-            CallThreshold: callK * neutre,
-            RaiseThreshold: raiseK * neutre,
-            AllInThreshold: shoveK * neutre);
+            FoldThreshold: foldMultiplier * neutralProbability,
+            CallThreshold: callMultiplier * neutralProbability,
+            RaiseThreshold: raiseMultiplier * neutralProbability,
+            AllInThreshold: shoveMultiplier * neutralProbability);
     }
 
     private static GameAction ResolveBestLegalAction(GameContext context, double probability, OpportunisticThresholds thresholds)
@@ -131,7 +127,7 @@ public class OpportunisticStrategy : IPlayerStrategy
         return GetFirstGameAction(context);
     }
 
-    private static double BornerEntre0Et1(double x)
+    private static double Clamp01(double x)
     {
         if (x < 0)
             return 0;

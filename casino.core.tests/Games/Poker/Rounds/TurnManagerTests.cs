@@ -25,7 +25,7 @@ public class TurnManagerTests
         var actionable = new HumanPlayer("Actionable", 100);
         var round = new Round(
             [folded, allIn, actionable],
-            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 20)), 0);
+            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Two, Suit.Hearts), 20)), 0);
         var sut = new TurnManager(round, 0);
 
         var playerToAct = sut.GetPlayerToAct();
@@ -41,7 +41,7 @@ public class TurnManagerTests
         var bob = new HumanPlayer("Bob", 100);
         var round = new Round(
             [alice, bob],
-            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Trois, Suit.Clubs), 20)), 0);
+            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Three, Suit.Clubs), 20)), 0);
         var sut = new TurnManager(round, 0);
         PlayerTestHelper.SetCurrentBet(round, 0);
 
@@ -60,7 +60,7 @@ public class TurnManagerTests
         var bob = new HumanPlayer("Bob", 100) { LastAction = PokerTypeAction.AllIn };
         var round = new Round(
             [alice, bob],
-            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Quatre, Suit.Spades), 20)), 0);
+            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Four, Suit.Spades), 20)), 0);
         var sut = new TurnManager(round, 0);
 
         var player = sut.GetPlayerToAct();
@@ -78,7 +78,7 @@ public class TurnManagerTests
         var bob = new HumanPlayer("Bob", 100);
         var round = new Round(
             [alice, bob],
-            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Cinq, Suit.Diamonds), 20)), 0);
+            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Five, Suit.Diamonds), 20)), 0);
         round.PhaseState = new SingleWindowActionPhaseState(bob);
         var sut = new TurnManager(round, 0);
 
@@ -112,7 +112,7 @@ public class TurnManagerTests
         var active = new HumanPlayer("Active", 100);
         var round = new Round(
             [allInA, allInB, active],
-            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Sept, Suit.Clubs), 20)), 0);
+            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Seven, Suit.Clubs), 20)), 0);
         var sut = new TurnManager(round, 0);
 
         var playerToAct = sut.GetPlayerToAct();
@@ -129,7 +129,7 @@ public class TurnManagerTests
         var caller = new HumanPlayer("Caller", 100);
         var round = new Round(
             [foldedInitial, bettor, caller],
-            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Huit, Suit.Spades), 20)), 0);
+            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Eight, Suit.Spades), 20)), 0);
         var sut = new TurnManager(round, 0);
         PlayerTestHelper.SetCurrentBet(round, 0);
 
@@ -148,7 +148,7 @@ public class TurnManagerTests
         var bob = new HumanPlayer("Bob", 100);
         var round = new Round(
             [alice, bob],
-            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Neuf, Suit.Diamonds), 20)), 0);
+            new FakeDeck(Enumerable.Repeat(new Card(CardRank.Nine, Suit.Diamonds), 20)), 0);
         round.PhaseState = new NoActionsAfterAdvancePhaseState();
         alice.LastAction = PokerTypeAction.Check;
         bob.LastAction = PokerTypeAction.Check;

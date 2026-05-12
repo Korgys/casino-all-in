@@ -12,30 +12,30 @@ public class TablePokerTests
 {
     private static IEnumerable<Card> CreateDefaultCards() => new[]
     {
-        new Card(CardRank.As, Suit.Spades),
-        new Card(CardRank.Roi, Suit.Hearts),
-        new Card(CardRank.Dame, Suit.Clubs),
-        new Card(CardRank.Valet, Suit.Diamonds),
-        new Card(CardRank.Neuf, Suit.Spades),
-        new Card(CardRank.Huit, Suit.Diamonds),
-        new Card(CardRank.Sept, Suit.Spades),
+        new Card(CardRank.Ace, Suit.Spades),
+        new Card(CardRank.King, Suit.Hearts),
+        new Card(CardRank.Queen, Suit.Clubs),
+        new Card(CardRank.Jack, Suit.Diamonds),
+        new Card(CardRank.Nine, Suit.Spades),
+        new Card(CardRank.Eight, Suit.Diamonds),
+        new Card(CardRank.Seven, Suit.Spades),
         new Card(CardRank.Six, Suit.Hearts),
-        new Card(CardRank.Cinq, Suit.Clubs)
+        new Card(CardRank.Five, Suit.Clubs)
     };
 
     private static IEnumerable<Card> CreateAllInCards() => new[]
     {
-        new Card(CardRank.As, Suit.Hearts),
-        new Card(CardRank.Roi, Suit.Hearts),
-        new Card(CardRank.Dame, Suit.Spades),
-        new Card(CardRank.Valet, Suit.Spades),
-        new Card(CardRank.Dix, Suit.Clubs),
-        new Card(CardRank.Neuf, Suit.Clubs),
-        new Card(CardRank.Huit, Suit.Hearts),
-        new Card(CardRank.Sept, Suit.Hearts),
+        new Card(CardRank.Ace, Suit.Hearts),
+        new Card(CardRank.King, Suit.Hearts),
+        new Card(CardRank.Queen, Suit.Spades),
+        new Card(CardRank.Jack, Suit.Spades),
+        new Card(CardRank.Ten, Suit.Clubs),
+        new Card(CardRank.Nine, Suit.Clubs),
+        new Card(CardRank.Eight, Suit.Hearts),
+        new Card(CardRank.Seven, Suit.Hearts),
         new Card(CardRank.Six, Suit.Hearts),
-        new Card(CardRank.Cinq, Suit.Diamonds),
-        new Card(CardRank.Quatre, Suit.Diamonds)
+        new Card(CardRank.Five, Suit.Diamonds),
+        new Card(CardRank.Four, Suit.Diamonds)
     };
 
     [TestMethod]

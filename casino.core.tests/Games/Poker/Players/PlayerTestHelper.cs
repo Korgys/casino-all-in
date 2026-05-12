@@ -9,7 +9,7 @@ internal static class PlayerTestHelper
 {
     internal static Round CreateRoundWithPlayer(Player player, HandCards? hand = null, TableCards? communityCards = null, int startingBet = 10)
     {
-        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Deux, Suit.Hearts), 10));
+        var deck = new FakeDeck(Enumerable.Repeat(new Card(CardRank.Two, Suit.Hearts), 10));
         var round = new Round(new List<Player> { player }, deck, 0);
         round.StartingBet = startingBet;
 
@@ -54,7 +54,7 @@ internal static class PlayerTestHelper
 
         public Card DrawCard()
         {
-            return _cards.Count > 0 ? _cards.Dequeue() : new Card(CardRank.Deux, Suit.Diamonds);
+            return _cards.Count > 0 ? _cards.Dequeue() : new Card(CardRank.Two, Suit.Diamonds);
         }
 
         public void Shuffle()

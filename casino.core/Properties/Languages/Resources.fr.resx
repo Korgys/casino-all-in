@@ -1,110 +1,51 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
+﻿<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -130,13 +71,13 @@
     <value>La mise doit augmenter la contribution du joueur.</value>
   </data>
   <data name="ErrorPlayerHasNotEnoughChips" xml:space="preserve">
-    <value>Le joueur n'a pas assez de jetons pour miser autant.</value>
+    <value>Le joueur n&apos;a pas assez de jetons pour miser autant.</value>
   </data>
   <data name="ErrorNoAdditionalBetToCall" xml:space="preserve">
     <value>Aucune mise supplémentaire à suivre.</value>
   </data>
   <data name="ErrorThePlayerDoesNotHaveEnoughChipsToCallTheCurrentBet" xml:space="preserve">
-    <value>Le joueur n'a pas assez de jetons pour suivre la mise actuelle.</value>
+    <value>Le joueur n&apos;a pas assez de jetons pour suivre la mise actuelle.</value>
   </data>
   <data name="ErrorThePlayerCannotCheckBecauseThereIsABetOnTheTable" xml:space="preserve">
     <value>Le joueur ne peut pas checker car il y a une mise sur la table.</value>
@@ -145,7 +86,7 @@
     <value>La relance doit être supérieure ou égale à la mise actuelle.</value>
   </data>
   <data name="ErrorThePlayerDoesNotHaveEnoughChipsToRaiseThatAmount" xml:space="preserve">
-    <value>Le joueur n'a pas assez de jetons pour relancer autant.</value>
+    <value>Le joueur n&apos;a pas assez de jetons pour relancer autant.</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>Aucune</value>
@@ -194,5 +135,161 @@
   </data>
   <data name="RoyalFlush" xml:space="preserve">
     <value>Quinte Flush Royale</value>
+  </data>
+  <data name="BlackjackPlayerTurn" xml:space="preserve">
+    <value>Votre tour.</value>
+  </data>
+  <data name="BlackjackChooseAction" xml:space="preserve">
+    <value>Choisissez votre action.</value>
+  </data>
+  <data name="BlackjackCardDrawn" xml:space="preserve">
+    <value>Carte tirée.</value>
+  </data>
+  <data name="BlackjackDealer" xml:space="preserve">
+    <value>Le croupier</value>
+  </data>
+  <data name="BlackjackPlayer" xml:space="preserve">
+    <value>Joueur</value>
+  </data>
+  <data name="BlackjackPushWinner" xml:space="preserve">
+    <value>Égalité</value>
+  </data>
+  <data name="BlackjackRoundWonByPlayer" xml:space="preserve">
+    <value>Bravo ! Vous remportez cette manche.</value>
+  </data>
+  <data name="BlackjackRoundWonByDealer" xml:space="preserve">
+    <value>Le croupier remporte cette manche.</value>
+  </data>
+  <data name="BlackjackRoundPush" xml:space="preserve">
+    <value>Push : égalité.</value>
+  </data>
+  <data name="SlotWelcome" xml:space="preserve">
+    <value>Bienvenue à la machine à sous néon ! Choisissez votre mise.</value>
+  </data>
+  <data name="SlotChooseBet" xml:space="preserve">
+    <value>Choisissez votre mise puis lancez les rouleaux.</value>
+  </data>
+  <data name="SlotThanks" xml:space="preserve">
+    <value>Merci d&apos;avoir joué à la machine à sous !</value>
+  </data>
+  <data name="SlotNoCredits" xml:space="preserve">
+    <value>Vous n&apos;avez plus de crédits. Fin de partie.</value>
+  </data>
+  <data name="SlotGameName" xml:space="preserve">
+    <value>Machine à sous</value>
+  </data>
+  <data name="SlotReelsSpinning" xml:space="preserve">
+    <value>🎰 Les rouleaux tournent... ({0}/{1})</value>
+  </data>
+  <data name="SlotJackpotWin" xml:space="preserve">
+    <value>💥 JACKPOT ! Triple 7 ! Vous gagnez {0} crédits.</value>
+  </data>
+  <data name="SlotSuperComboWin" xml:space="preserve">
+    <value>✨ Super combinaison ! Vous gagnez {0} crédits.</value>
+  </data>
+  <data name="SlotRegularWin" xml:space="preserve">
+    <value>🎉 Gain de {0} crédits ! Relancez pour tenter mieux.</value>
+  </data>
+  <data name="SlotNoWin" xml:space="preserve">
+    <value>Pas de gain cette fois. La prochaine sera peut-être la bonne !</value>
+  </data>
+  <data name="ScoreOfFormat" xml:space="preserve">
+    <value>{0} de {1}</value>
+  </data>
+  <data name="Two" xml:space="preserve">
+    <value>Deux</value>
+  </data>
+  <data name="Three" xml:space="preserve">
+    <value>Trois</value>
+  </data>
+  <data name="Four" xml:space="preserve">
+    <value>Quatre</value>
+  </data>
+  <data name="Five" xml:space="preserve">
+    <value>Cinq</value>
+  </data>
+  <data name="Six" xml:space="preserve">
+    <value>Six</value>
+  </data>
+  <data name="Seven" xml:space="preserve">
+    <value>Sept</value>
+  </data>
+  <data name="Eight" xml:space="preserve">
+    <value>Huit</value>
+  </data>
+  <data name="Nine" xml:space="preserve">
+    <value>Neuf</value>
+  </data>
+  <data name="Ten" xml:space="preserve">
+    <value>Dix</value>
+  </data>
+  <data name="Jack" xml:space="preserve">
+    <value>Valet</value>
+  </data>
+  <data name="Queen" xml:space="preserve">
+    <value>Dame</value>
+  </data>
+  <data name="King" xml:space="preserve">
+    <value>Roi</value>
+  </data>
+  <data name="Ace" xml:space="preserve">
+    <value>As</value>
+  </data>
+  <data name="RouletteWelcome" xml:space="preserve">
+    <value>Bienvenue a la roulette europeenne. Placez votre mise.</value>
+  </data>
+  <data name="RouletteChooseBet" xml:space="preserve">
+    <value>Placez votre mise pour le prochain tour.</value>
+  </data>
+  <data name="RouletteThanks" xml:space="preserve">
+    <value>Merci d&apos;avoir joue a la roulette.</value>
+  </data>
+  <data name="RouletteNoCredits" xml:space="preserve">
+    <value>Vous n&apos;avez plus de credits a la roulette.</value>
+  </data>
+  <data name="RouletteGameName" xml:space="preserve">
+    <value>Roulette</value>
+  </data>
+  <data name="RouletteWheelSpinning" xml:space="preserve">
+    <value>La bille tourne... ({0}/{1})</value>
+  </data>
+  <data name="RouletteWinNumber" xml:space="preserve">
+    <value>{0} ! Plein gagnant, vous remportez {1} credits.</value>
+  </data>
+  <data name="RouletteWinColor" xml:space="preserve">
+    <value>{0} ! Votre mise exterieure gagne {1} credits.</value>
+  </data>
+  <data name="RouletteWinParity" xml:space="preserve">
+    <value>{0} ! Votre mise pair/impair gagne {1} credits.</value>
+  </data>
+  <data name="RouletteLose" xml:space="preserve">
+    <value>{0}. Rien ne va plus pour ce tour.</value>
+  </data>
+  <data name="RouletteBetStraightNumber" xml:space="preserve">
+    <value>Plein {0}</value>
+  </data>
+  <data name="RouletteBetRed" xml:space="preserve">
+    <value>Rouge</value>
+  </data>
+  <data name="RouletteBetBlack" xml:space="preserve">
+    <value>Noir</value>
+  </data>
+  <data name="RouletteBetEven" xml:space="preserve">
+    <value>Pair</value>
+  </data>
+  <data name="RouletteBetOdd" xml:space="preserve">
+    <value>Impair</value>
+  </data>
+  <data name="RoulettePocketGreen" xml:space="preserve">
+    <value>{0} vert</value>
+  </data>
+  <data name="RoulettePocketColored" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="RouletteColorRed" xml:space="preserve">
+    <value>rouge</value>
+  </data>
+  <data name="RouletteColorBlack" xml:space="preserve">
+    <value>noir</value>
   </data>
 </root>

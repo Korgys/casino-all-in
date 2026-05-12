@@ -11,19 +11,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.As, Suit.Hearts),
-                    Card(CardRank.Roi, Suit.Hearts)
+                    Card(CardRank.Ace, Suit.Hearts),
+                    Card(CardRank.King, Suit.Hearts)
                 ),
                 board: Board(
-                    Card(CardRank.Dame, Suit.Hearts),
-                    Card(CardRank.Valet, Suit.Hearts),
-                    Card(CardRank.Dix, Suit.Hearts),
-                    Card(CardRank.Deux, Suit.Clubs),
-                    Card(CardRank.Trois, Suit.Spades)
+                    Card(CardRank.Queen, Suit.Hearts),
+                    Card(CardRank.Jack, Suit.Hearts),
+                    Card(CardRank.Ten, Suit.Hearts),
+                    Card(CardRank.Two, Suit.Clubs),
+                    Card(CardRank.Three, Suit.Spades)
                 )
             );
 
-            AssertScore(score, HandRank.RoyalFlush, CardRank.As);
+            AssertScore(score, HandRank.RoyalFlush, CardRank.Ace);
         }
 
         [TestMethod]
@@ -31,19 +31,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.As, Suit.Spades),
-                    Card(CardRank.Deux, Suit.Spades)
+                    Card(CardRank.Ace, Suit.Spades),
+                    Card(CardRank.Two, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Trois, Suit.Spades),
-                    Card(CardRank.Quatre, Suit.Spades),
-                    Card(CardRank.Cinq, Suit.Spades),
-                    Card(CardRank.Neuf, Suit.Diamonds),
-                    Card(CardRank.Dame, Suit.Hearts)
+                    Card(CardRank.Three, Suit.Spades),
+                    Card(CardRank.Four, Suit.Spades),
+                    Card(CardRank.Five, Suit.Spades),
+                    Card(CardRank.Nine, Suit.Diamonds),
+                    Card(CardRank.Queen, Suit.Hearts)
                 )
             );
 
-            AssertScore(score, HandRank.StraightFlush, CardRank.Cinq);
+            AssertScore(score, HandRank.StraightFlush, CardRank.Five);
         }
 
         [TestMethod]
@@ -51,19 +51,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Roi, Suit.Hearts),
-                    Card(CardRank.Roi, Suit.Spades)
+                    Card(CardRank.King, Suit.Hearts),
+                    Card(CardRank.King, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Roi, Suit.Diamonds),
-                    Card(CardRank.Roi, Suit.Clubs),
-                    Card(CardRank.Dix, Suit.Hearts),
-                    Card(CardRank.Deux, Suit.Clubs),
-                    Card(CardRank.Trois, Suit.Spades)
+                    Card(CardRank.King, Suit.Diamonds),
+                    Card(CardRank.King, Suit.Clubs),
+                    Card(CardRank.Ten, Suit.Hearts),
+                    Card(CardRank.Two, Suit.Clubs),
+                    Card(CardRank.Three, Suit.Spades)
                 )
             );
 
-            AssertScore(score, HandRank.FourOfAKind, CardRank.Roi, CardRank.Dix);
+            AssertScore(score, HandRank.FourOfAKind, CardRank.King, CardRank.Ten);
         }
 
         [TestMethod]
@@ -71,19 +71,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Dame, Suit.Hearts),
-                    Card(CardRank.Dame, Suit.Spades)
+                    Card(CardRank.Queen, Suit.Hearts),
+                    Card(CardRank.Queen, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Dame, Suit.Diamonds),
-                    Card(CardRank.Deux, Suit.Clubs),
-                    Card(CardRank.Deux, Suit.Hearts),
-                    Card(CardRank.Neuf, Suit.Spades),
-                    Card(CardRank.Valet, Suit.Diamonds)
+                    Card(CardRank.Queen, Suit.Diamonds),
+                    Card(CardRank.Two, Suit.Clubs),
+                    Card(CardRank.Two, Suit.Hearts),
+                    Card(CardRank.Nine, Suit.Spades),
+                    Card(CardRank.Jack, Suit.Diamonds)
                 )
             );
 
-            AssertScore(score, HandRank.FullHouse, CardRank.Dame, CardRank.Deux);
+            AssertScore(score, HandRank.FullHouse, CardRank.Queen, CardRank.Two);
         }
 
         [TestMethod]
@@ -91,19 +91,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.As, Suit.Diamonds),
-                    Card(CardRank.Neuf, Suit.Diamonds)
+                    Card(CardRank.Ace, Suit.Diamonds),
+                    Card(CardRank.Nine, Suit.Diamonds)
                 ),
                 board: Board(
-                    Card(CardRank.Deux, Suit.Diamonds),
-                    Card(CardRank.Quatre, Suit.Diamonds),
-                    Card(CardRank.Huit, Suit.Diamonds),
-                    Card(CardRank.Roi, Suit.Hearts),
-                    Card(CardRank.Dix, Suit.Spades)
+                    Card(CardRank.Two, Suit.Diamonds),
+                    Card(CardRank.Four, Suit.Diamonds),
+                    Card(CardRank.Eight, Suit.Diamonds),
+                    Card(CardRank.King, Suit.Hearts),
+                    Card(CardRank.Ten, Suit.Spades)
                 )
             );
 
-            AssertScore(score, HandRank.Flush, CardRank.As, CardRank.Neuf, CardRank.Huit, CardRank.Quatre, CardRank.Deux);
+            AssertScore(score, HandRank.Flush, CardRank.Ace, CardRank.Nine, CardRank.Eight, CardRank.Four, CardRank.Two);
         }
 
         [TestMethod]
@@ -111,19 +111,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Cinq, Suit.Hearts),
+                    Card(CardRank.Five, Suit.Hearts),
                     Card(CardRank.Six, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Sept, Suit.Diamonds),
-                    Card(CardRank.Huit, Suit.Clubs),
-                    Card(CardRank.Neuf, Suit.Hearts),
-                    Card(CardRank.As, Suit.Clubs),
-                    Card(CardRank.Deux, Suit.Hearts)
+                    Card(CardRank.Seven, Suit.Diamonds),
+                    Card(CardRank.Eight, Suit.Clubs),
+                    Card(CardRank.Nine, Suit.Hearts),
+                    Card(CardRank.Ace, Suit.Clubs),
+                    Card(CardRank.Two, Suit.Hearts)
                 )
             );
 
-            AssertScore(score, HandRank.Straight, CardRank.Neuf);
+            AssertScore(score, HandRank.Straight, CardRank.Nine);
         }
 
         [TestMethod]
@@ -131,19 +131,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Sept, Suit.Hearts),
-                    Card(CardRank.Sept, Suit.Spades)
+                    Card(CardRank.Seven, Suit.Hearts),
+                    Card(CardRank.Seven, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Sept, Suit.Diamonds),
-                    Card(CardRank.As, Suit.Clubs),
-                    Card(CardRank.Dix, Suit.Hearts),
-                    Card(CardRank.Deux, Suit.Clubs),
-                    Card(CardRank.Trois, Suit.Spades)
+                    Card(CardRank.Seven, Suit.Diamonds),
+                    Card(CardRank.Ace, Suit.Clubs),
+                    Card(CardRank.Ten, Suit.Hearts),
+                    Card(CardRank.Two, Suit.Clubs),
+                    Card(CardRank.Three, Suit.Spades)
                 )
             );
 
-            AssertScore(score, HandRank.ThreeOfAKind, CardRank.Sept, CardRank.As, CardRank.Dix);
+            AssertScore(score, HandRank.ThreeOfAKind, CardRank.Seven, CardRank.Ace, CardRank.Ten);
         }
 
         [TestMethod]
@@ -151,19 +151,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Dame, Suit.Hearts),
-                    Card(CardRank.Cinq, Suit.Spades)
+                    Card(CardRank.Queen, Suit.Hearts),
+                    Card(CardRank.Five, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Dame, Suit.Diamonds),
-                    Card(CardRank.Cinq, Suit.Hearts),
-                    Card(CardRank.As, Suit.Clubs),
-                    Card(CardRank.Deux, Suit.Clubs),
-                    Card(CardRank.Trois, Suit.Spades)
+                    Card(CardRank.Queen, Suit.Diamonds),
+                    Card(CardRank.Five, Suit.Hearts),
+                    Card(CardRank.Ace, Suit.Clubs),
+                    Card(CardRank.Two, Suit.Clubs),
+                    Card(CardRank.Three, Suit.Spades)
                 )
             );
 
-            AssertScore(score, HandRank.TwoPair, CardRank.Dame, CardRank.Cinq, CardRank.As);
+            AssertScore(score, HandRank.TwoPair, CardRank.Queen, CardRank.Five, CardRank.Ace);
         }
 
         [TestMethod]
@@ -171,19 +171,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Valet, Suit.Hearts),
-                    Card(CardRank.Valet, Suit.Spades)
+                    Card(CardRank.Jack, Suit.Hearts),
+                    Card(CardRank.Jack, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.As, Suit.Diamonds),
-                    Card(CardRank.Dix, Suit.Clubs),
-                    Card(CardRank.Neuf, Suit.Hearts),
-                    Card(CardRank.Deux, Suit.Clubs),
-                    Card(CardRank.Trois, Suit.Spades)
+                    Card(CardRank.Ace, Suit.Diamonds),
+                    Card(CardRank.Ten, Suit.Clubs),
+                    Card(CardRank.Nine, Suit.Hearts),
+                    Card(CardRank.Two, Suit.Clubs),
+                    Card(CardRank.Three, Suit.Spades)
                 )
             );
 
-            AssertScore(score, HandRank.OnePair, CardRank.Valet, CardRank.As, CardRank.Dix, CardRank.Neuf);
+            AssertScore(score, HandRank.OnePair, CardRank.Jack, CardRank.Ace, CardRank.Ten, CardRank.Nine);
         }
 
         [TestMethod]
@@ -191,19 +191,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.As, Suit.Hearts),
-                    Card(CardRank.Dix, Suit.Spades)
+                    Card(CardRank.Ace, Suit.Hearts),
+                    Card(CardRank.Ten, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Neuf, Suit.Diamonds),
-                    Card(CardRank.Huit, Suit.Clubs),
+                    Card(CardRank.Nine, Suit.Diamonds),
+                    Card(CardRank.Eight, Suit.Clubs),
                     Card(CardRank.Six, Suit.Hearts),
-                    Card(CardRank.Quatre, Suit.Spades),
-                    Card(CardRank.Deux, Suit.Clubs)
+                    Card(CardRank.Four, Suit.Spades),
+                    Card(CardRank.Two, Suit.Clubs)
                 )
             );
 
-            AssertScore(score, HandRank.HighCard, CardRank.As, CardRank.Dix, CardRank.Neuf, CardRank.Huit, CardRank.Six);
+            AssertScore(score, HandRank.HighCard, CardRank.Ace, CardRank.Ten, CardRank.Nine, CardRank.Eight, CardRank.Six);
         }
 
         // =========================
@@ -215,19 +215,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Roi, Suit.Hearts),
-                    Card(CardRank.Roi, Suit.Spades)
+                    Card(CardRank.King, Suit.Hearts),
+                    Card(CardRank.King, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Roi, Suit.Diamonds),
-                    Card(CardRank.Roi, Suit.Clubs),
-                    Card(CardRank.As, Suit.Diamonds),
-                    Card(CardRank.Dame, Suit.Clubs),
-                    Card(CardRank.Deux, Suit.Clubs)
+                    Card(CardRank.King, Suit.Diamonds),
+                    Card(CardRank.King, Suit.Clubs),
+                    Card(CardRank.Ace, Suit.Diamonds),
+                    Card(CardRank.Queen, Suit.Clubs),
+                    Card(CardRank.Two, Suit.Clubs)
                 )
             );
 
-            AssertScore(score, HandRank.FourOfAKind, CardRank.Roi, CardRank.As);
+            AssertScore(score, HandRank.FourOfAKind, CardRank.King, CardRank.Ace);
         }
 
         [TestMethod]
@@ -235,19 +235,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.As, Suit.Hearts),
-                    Card(CardRank.As, Suit.Spades)
+                    Card(CardRank.Ace, Suit.Hearts),
+                    Card(CardRank.Ace, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.As, Suit.Diamonds),
-                    Card(CardRank.Roi, Suit.Hearts),
-                    Card(CardRank.Roi, Suit.Spades),
-                    Card(CardRank.Roi, Suit.Diamonds),
-                    Card(CardRank.Deux, Suit.Clubs)
+                    Card(CardRank.Ace, Suit.Diamonds),
+                    Card(CardRank.King, Suit.Hearts),
+                    Card(CardRank.King, Suit.Spades),
+                    Card(CardRank.King, Suit.Diamonds),
+                    Card(CardRank.Two, Suit.Clubs)
                 )
             );
 
-            AssertScore(score, HandRank.FullHouse, CardRank.As, CardRank.Roi);
+            AssertScore(score, HandRank.FullHouse, CardRank.Ace, CardRank.King);
         }
 
         [TestMethod]
@@ -255,19 +255,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Dame, Suit.Hearts),
-                    Card(CardRank.Dame, Suit.Spades)
+                    Card(CardRank.Queen, Suit.Hearts),
+                    Card(CardRank.Queen, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Dame, Suit.Diamonds),
-                    Card(CardRank.As, Suit.Clubs),
-                    Card(CardRank.As, Suit.Hearts),
-                    Card(CardRank.Deux, Suit.Clubs),
-                    Card(CardRank.Deux, Suit.Hearts)
+                    Card(CardRank.Queen, Suit.Diamonds),
+                    Card(CardRank.Ace, Suit.Clubs),
+                    Card(CardRank.Ace, Suit.Hearts),
+                    Card(CardRank.Two, Suit.Clubs),
+                    Card(CardRank.Two, Suit.Hearts)
                 )
             );
 
-            AssertScore(score, HandRank.FullHouse, CardRank.Dame, CardRank.As);
+            AssertScore(score, HandRank.FullHouse, CardRank.Queen, CardRank.Ace);
         }
 
         [TestMethod]
@@ -275,21 +275,21 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.As, Suit.Diamonds),
-                    Card(CardRank.Roi, Suit.Diamonds)
+                    Card(CardRank.Ace, Suit.Diamonds),
+                    Card(CardRank.King, Suit.Diamonds)
                 ),
                 board: Board(
-                    Card(CardRank.Dame, Suit.Diamonds),
-                    Card(CardRank.Neuf, Suit.Diamonds),
-                    Card(CardRank.Quatre, Suit.Diamonds),
-                    Card(CardRank.Deux, Suit.Diamonds),
-                    Card(CardRank.Dix, Suit.Spades)
+                    Card(CardRank.Queen, Suit.Diamonds),
+                    Card(CardRank.Nine, Suit.Diamonds),
+                    Card(CardRank.Four, Suit.Diamonds),
+                    Card(CardRank.Two, Suit.Diamonds),
+                    Card(CardRank.Ten, Suit.Spades)
                 )
             );
 
             // Valeur = top1, Kickers = top2..top5
-            AssertScore(score, HandRank.Flush, CardRank.As,
-                CardRank.Roi, CardRank.Dame, CardRank.Neuf, CardRank.Quatre);
+            AssertScore(score, HandRank.Flush, CardRank.Ace,
+                CardRank.King, CardRank.Queen, CardRank.Nine, CardRank.Four);
         }
 
         [TestMethod]
@@ -297,19 +297,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.As, Suit.Hearts),
-                    Card(CardRank.Deux, Suit.Spades)
+                    Card(CardRank.Ace, Suit.Hearts),
+                    Card(CardRank.Two, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Trois, Suit.Diamonds),
-                    Card(CardRank.Quatre, Suit.Clubs),
-                    Card(CardRank.Cinq, Suit.Hearts),
-                    Card(CardRank.Dame, Suit.Clubs),
-                    Card(CardRank.Neuf, Suit.Spades)
+                    Card(CardRank.Three, Suit.Diamonds),
+                    Card(CardRank.Four, Suit.Clubs),
+                    Card(CardRank.Five, Suit.Hearts),
+                    Card(CardRank.Queen, Suit.Clubs),
+                    Card(CardRank.Nine, Suit.Spades)
                 )
             );
 
-            AssertScore(score, HandRank.Straight, CardRank.Cinq);
+            AssertScore(score, HandRank.Straight, CardRank.Five);
         }
 
         [TestMethod]
@@ -321,15 +321,15 @@ namespace casino.core.tests.Games.Poker.Scores
                     Card(CardRank.Six, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Cinq, Suit.Diamonds),
-                    Card(CardRank.Sept, Suit.Clubs),
-                    Card(CardRank.Huit, Suit.Hearts),
-                    Card(CardRank.Neuf, Suit.Spades),
-                    Card(CardRank.As, Suit.Clubs)
+                    Card(CardRank.Five, Suit.Diamonds),
+                    Card(CardRank.Seven, Suit.Clubs),
+                    Card(CardRank.Eight, Suit.Hearts),
+                    Card(CardRank.Nine, Suit.Spades),
+                    Card(CardRank.Ace, Suit.Clubs)
                 )
             );
 
-            AssertScore(score, HandRank.Straight, CardRank.Neuf);
+            AssertScore(score, HandRank.Straight, CardRank.Nine);
         }
 
         [TestMethod]
@@ -337,19 +337,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Sept, Suit.Hearts),
-                    Card(CardRank.Sept, Suit.Spades)
+                    Card(CardRank.Seven, Suit.Hearts),
+                    Card(CardRank.Seven, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Sept, Suit.Diamonds),
-                    Card(CardRank.As, Suit.Clubs),
-                    Card(CardRank.Roi, Suit.Hearts),
-                    Card(CardRank.Dame, Suit.Spades),
-                    Card(CardRank.Deux, Suit.Clubs)
+                    Card(CardRank.Seven, Suit.Diamonds),
+                    Card(CardRank.Ace, Suit.Clubs),
+                    Card(CardRank.King, Suit.Hearts),
+                    Card(CardRank.Queen, Suit.Spades),
+                    Card(CardRank.Two, Suit.Clubs)
                 )
             );
 
-            AssertScore(score, HandRank.ThreeOfAKind, CardRank.Sept, CardRank.As, CardRank.Roi);
+            AssertScore(score, HandRank.ThreeOfAKind, CardRank.Seven, CardRank.Ace, CardRank.King);
         }
 
         [TestMethod]
@@ -357,20 +357,20 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Dame, Suit.Hearts),
-                    Card(CardRank.Cinq, Suit.Spades)
+                    Card(CardRank.Queen, Suit.Hearts),
+                    Card(CardRank.Five, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Dame, Suit.Diamonds),
-                    Card(CardRank.Cinq, Suit.Hearts),
-                    Card(CardRank.As, Suit.Clubs),
-                    Card(CardRank.Roi, Suit.Clubs),
-                    Card(CardRank.Deux, Suit.Spades)
+                    Card(CardRank.Queen, Suit.Diamonds),
+                    Card(CardRank.Five, Suit.Hearts),
+                    Card(CardRank.Ace, Suit.Clubs),
+                    Card(CardRank.King, Suit.Clubs),
+                    Card(CardRank.Two, Suit.Spades)
                 )
             );
 
             // Dans ton Score: Valeur = paire haute; Kickers = [paire basse, kicker]
-            AssertScore(score, HandRank.TwoPair, CardRank.Dame, CardRank.Cinq, CardRank.As);
+            AssertScore(score, HandRank.TwoPair, CardRank.Queen, CardRank.Five, CardRank.Ace);
         }
 
         [TestMethod]
@@ -378,19 +378,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Valet, Suit.Hearts),
-                    Card(CardRank.Valet, Suit.Spades)
+                    Card(CardRank.Jack, Suit.Hearts),
+                    Card(CardRank.Jack, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.As, Suit.Diamonds),
-                    Card(CardRank.Roi, Suit.Clubs),
-                    Card(CardRank.Neuf, Suit.Hearts),
-                    Card(CardRank.Huit, Suit.Spades),
-                    Card(CardRank.Deux, Suit.Clubs)
+                    Card(CardRank.Ace, Suit.Diamonds),
+                    Card(CardRank.King, Suit.Clubs),
+                    Card(CardRank.Nine, Suit.Hearts),
+                    Card(CardRank.Eight, Suit.Spades),
+                    Card(CardRank.Two, Suit.Clubs)
                 )
             );
 
-            AssertScore(score, HandRank.OnePair, CardRank.Valet, CardRank.As, CardRank.Roi, CardRank.Neuf);
+            AssertScore(score, HandRank.OnePair, CardRank.Jack, CardRank.Ace, CardRank.King, CardRank.Nine);
         }
 
         [TestMethod]
@@ -398,20 +398,20 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.As, Suit.Hearts),
-                    Card(CardRank.Quatre, Suit.Spades)
+                    Card(CardRank.Ace, Suit.Hearts),
+                    Card(CardRank.Four, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Roi, Suit.Diamonds),
-                    Card(CardRank.Dix, Suit.Clubs),
-                    Card(CardRank.Neuf, Suit.Hearts),
-                    Card(CardRank.Sept, Suit.Spades),
-                    Card(CardRank.Deux, Suit.Clubs)
+                    Card(CardRank.King, Suit.Diamonds),
+                    Card(CardRank.Ten, Suit.Clubs),
+                    Card(CardRank.Nine, Suit.Hearts),
+                    Card(CardRank.Seven, Suit.Spades),
+                    Card(CardRank.Two, Suit.Clubs)
                 )
             );
 
-            AssertScore(score, HandRank.HighCard, CardRank.As,
-                CardRank.Roi, CardRank.Dix, CardRank.Neuf, CardRank.Sept);
+            AssertScore(score, HandRank.HighCard, CardRank.Ace,
+                CardRank.King, CardRank.Ten, CardRank.Nine, CardRank.Seven);
         }
 
         [TestMethod]
@@ -419,19 +419,19 @@ namespace casino.core.tests.Games.Poker.Scores
         {
             var score = Eval(
                 main: Hand(
-                    Card(CardRank.Roi, Suit.Hearts),
-                    Card(CardRank.Roi, Suit.Spades)
+                    Card(CardRank.King, Suit.Hearts),
+                    Card(CardRank.King, Suit.Spades)
                 ),
                 board: Board(
-                    Card(CardRank.Dame, Suit.Hearts),
-                    Card(CardRank.Dame, Suit.Spades),
-                    Card(CardRank.As, Suit.Clubs),
-                    Card(CardRank.As, Suit.Diamonds),
-                    Card(CardRank.Deux, Suit.Clubs)
+                    Card(CardRank.Queen, Suit.Hearts),
+                    Card(CardRank.Queen, Suit.Spades),
+                    Card(CardRank.Ace, Suit.Clubs),
+                    Card(CardRank.Ace, Suit.Diamonds),
+                    Card(CardRank.Two, Suit.Clubs)
                 )
             );
 
-            AssertScore(score, HandRank.TwoPair, CardRank.As, CardRank.Roi, CardRank.Dame);
+            AssertScore(score, HandRank.TwoPair, CardRank.Ace, CardRank.King, CardRank.Queen);
         }
 
         // =========================
@@ -441,10 +441,10 @@ namespace casino.core.tests.Games.Poker.Scores
         private static Score Eval(HandCards main, TableCards board)
             => ScoreEvaluator.EvaluateScore(main, board);
 
-        private static void AssertScore(Score score, HandRank expectedRang, CardRank expectedValeur, params CardRank[] expectedKickers)
+        private static void AssertScore(Score score, HandRank expectedRank, CardRank expectedValue, params CardRank[] expectedKickers)
         {
-            Assert.AreEqual(expectedRang, score.Rank);
-            Assert.AreEqual(expectedValeur, score.CardValue);
+            Assert.AreEqual(expectedRank, score.Rank);
+            Assert.AreEqual(expectedValue, score.CardValue);
 
             CollectionAssert.AreEqual(expectedKickers, score.Kickers.ToArray(),
                 $"Kickers attendus: [{string.Join(", ", expectedKickers)}] / Obtenus: [{string.Join(", ", score.Kickers)}]");

@@ -196,43 +196,43 @@
   <data name="ScoreOfFormat" xml:space="preserve">
     <value>{0} из {1}</value>
   </data>
-  <data name="Deux" xml:space="preserve">
+  <data name="Two" xml:space="preserve">
     <value>Двойка</value>
   </data>
-  <data name="Trois" xml:space="preserve">
+  <data name="Three" xml:space="preserve">
     <value>Тройка</value>
   </data>
-  <data name="Quatre" xml:space="preserve">
+  <data name="Four" xml:space="preserve">
     <value>Четвёрка</value>
   </data>
-  <data name="Cinq" xml:space="preserve">
+  <data name="Five" xml:space="preserve">
     <value>Пятёрка</value>
   </data>
   <data name="Six" xml:space="preserve">
     <value>Шестёрка</value>
   </data>
-  <data name="Sept" xml:space="preserve">
+  <data name="Seven" xml:space="preserve">
     <value>Семёрка</value>
   </data>
-  <data name="Huit" xml:space="preserve">
+  <data name="Eight" xml:space="preserve">
     <value>Восьмёрка</value>
   </data>
-  <data name="Neuf" xml:space="preserve">
+  <data name="Nine" xml:space="preserve">
     <value>Девятка</value>
   </data>
-  <data name="Dix" xml:space="preserve">
+  <data name="Ten" xml:space="preserve">
     <value>Десятка</value>
   </data>
-  <data name="Valet" xml:space="preserve">
+  <data name="Jack" xml:space="preserve">
     <value>Валет</value>
   </data>
-  <data name="Dame" xml:space="preserve">
+  <data name="Queen" xml:space="preserve">
     <value>Дама</value>
   </data>
-  <data name="Roi" xml:space="preserve">
+  <data name="King" xml:space="preserve">
     <value>Король</value>
   </data>
-  <data name="As" xml:space="preserve">
+  <data name="Ace" xml:space="preserve">
     <value>Туз</value>
   </data>
   <data name="RouletteWheelSpinning" xml:space="preserve">

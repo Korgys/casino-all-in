@@ -18,8 +18,8 @@ public class AllInCommand : IPlayerCommand
 
     public void Execute(Round round)
     {
-        var miseAvant = round.GetBetFor(_player);
-        var contribution = miseAvant + _player.Chips;
+        var previousBet = round.GetBetFor(_player);
+        var contribution = previousBet + _player.Chips;
         _player.LastAction = PokerTypeAction.AllIn;
         round.AddToPot(_player, _player.Chips);
         round.SetBetFor(_player, contribution);

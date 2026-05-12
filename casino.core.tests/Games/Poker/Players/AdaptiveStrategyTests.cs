@@ -37,7 +37,7 @@ public class AdaptiveStrategyTests
 
         var context = CreateContext(
             new[] { PokerTypeAction.AllIn, PokerTypeAction.Raise, PokerTypeAction.Call },
-            hand: new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Spades)));
+            hand: new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Spades)));
 
         var action = new AdaptiveStrategy(profile).DecideAction(context);
 
@@ -59,7 +59,7 @@ public class AdaptiveStrategyTests
 
         var context = CreateContext(
             new[] { PokerTypeAction.Fold, PokerTypeAction.Call, PokerTypeAction.Raise },
-            hand: new HandCards(new Card(CardRank.Deux, Suit.Hearts), new Card(CardRank.Sept, Suit.Clubs)));
+            hand: new HandCards(new Card(CardRank.Two, Suit.Hearts), new Card(CardRank.Seven, Suit.Clubs)));
 
         var action = new AdaptiveStrategy(profile).DecideAction(context);
 
@@ -81,7 +81,7 @@ public class AdaptiveStrategyTests
 
         var context = CreateContext(
             new[] { PokerTypeAction.Check, PokerTypeAction.Call, PokerTypeAction.Bet },
-            hand: new HandCards(new Card(CardRank.Dix, Suit.Hearts), new Card(CardRank.Neuf, Suit.Clubs)));
+            hand: new HandCards(new Card(CardRank.Ten, Suit.Hearts), new Card(CardRank.Nine, Suit.Clubs)));
 
         var action = new AdaptiveStrategy(profile).DecideAction(context);
 
@@ -124,7 +124,7 @@ public class AdaptiveStrategyTests
         var context = CreateContext(
             new[] { PokerTypeAction.Raise, PokerTypeAction.Call },
             chips: 5,
-            hand: new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Roi, Suit.Hearts)));
+            hand: new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.King, Suit.Hearts)));
 
         context.Round.SetCurrentBet(20);
         context.Round.SetBetFor(context.CurrentPlayer, 18);
@@ -171,7 +171,7 @@ public class AdaptiveStrategyTests
 
         var context = CreateContext(
             new[] { PokerTypeAction.Raise, PokerTypeAction.Call },
-            hand: new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Roi, Suit.Diamonds)));
+            hand: new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.King, Suit.Diamonds)));
 
         var action = new AdaptiveStrategy(profile).DecideAction(context);
 
@@ -191,31 +191,31 @@ public class AdaptiveStrategyTests
         };
 
         player.Hand = hand ?? new HandCards(
-            new Card(CardRank.As, Suit.Hearts),
-            new Card(CardRank.Roi, Suit.Spades));
+            new Card(CardRank.Ace, Suit.Hearts),
+            new Card(CardRank.King, Suit.Spades));
 
         return new GameContext(round, player, availableActions);
     }
 
     private static IEnumerable<Card> CreateDeckCards()
     {
-        yield return new Card(CardRank.Deux, Suit.Hearts);
-        yield return new Card(CardRank.Trois, Suit.Hearts);
-        yield return new Card(CardRank.Quatre, Suit.Hearts);
-        yield return new Card(CardRank.Cinq, Suit.Hearts);
+        yield return new Card(CardRank.Two, Suit.Hearts);
+        yield return new Card(CardRank.Three, Suit.Hearts);
+        yield return new Card(CardRank.Four, Suit.Hearts);
+        yield return new Card(CardRank.Five, Suit.Hearts);
         yield return new Card(CardRank.Six, Suit.Hearts);
-        yield return new Card(CardRank.Sept, Suit.Hearts);
-        yield return new Card(CardRank.Huit, Suit.Hearts);
-        yield return new Card(CardRank.Neuf, Suit.Hearts);
-        yield return new Card(CardRank.Dix, Suit.Hearts);
-        yield return new Card(CardRank.Valet, Suit.Hearts);
+        yield return new Card(CardRank.Seven, Suit.Hearts);
+        yield return new Card(CardRank.Eight, Suit.Hearts);
+        yield return new Card(CardRank.Nine, Suit.Hearts);
+        yield return new Card(CardRank.Ten, Suit.Hearts);
+        yield return new Card(CardRank.Jack, Suit.Hearts);
     }
 
     private sealed class FakeDeck(IEnumerable<Card> cards) : IDeck
     {
         private readonly Queue<Card> cards = new(cards);
 
-        public Card DrawCard() => this.cards.Count > 0 ? this.cards.Dequeue() : new Card(CardRank.Deux, Suit.Diamonds);
+        public Card DrawCard() => this.cards.Count > 0 ? this.cards.Dequeue() : new Card(CardRank.Two, Suit.Diamonds);
 
         public void Shuffle()
         {

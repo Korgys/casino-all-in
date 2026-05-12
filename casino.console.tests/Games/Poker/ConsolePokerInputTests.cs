@@ -187,7 +187,7 @@ public class ConsolePokerInputTests
             IsHuman: true,
             IsFolded: false,
             LastAction: PokerTypeAction.None,
-            Hand: new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts)),
+            Hand: new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts)),
             IsWinner: false);
 
         var state = new PokerGameState(

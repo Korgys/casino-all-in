@@ -19,7 +19,7 @@ namespace casino.core.Properties.Languages {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,7 +61,16 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Tapis.
+        ///   Recherche une chaîne localisée semblable à Ace.
+        /// </summary>
+        internal static string Ace {
+            get {
+                return ResourceManager.GetString("Ace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à AllIn.
         /// </summary>
         internal static string AllIn {
             get {
@@ -70,16 +79,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à As.
-        /// </summary>
-        internal static string As {
-            get {
-                return ResourceManager.GetString("As", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Miser.
+        ///   Recherche une chaîne localisée semblable à Bet.
         /// </summary>
         internal static string Bet {
             get {
@@ -88,7 +88,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Carte tirée..
+        ///   Recherche une chaîne localisée semblable à Card drawn..
         /// </summary>
         internal static string BlackjackCardDrawn {
             get {
@@ -97,7 +97,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Choisissez votre action..
+        ///   Recherche une chaîne localisée semblable à Choose your action..
         /// </summary>
         internal static string BlackjackChooseAction {
             get {
@@ -106,7 +106,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Le croupier.
+        ///   Recherche une chaîne localisée semblable à Dealer.
         /// </summary>
         internal static string BlackjackDealer {
             get {
@@ -115,7 +115,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Joueur.
+        ///   Recherche une chaîne localisée semblable à Player.
         /// </summary>
         internal static string BlackjackPlayer {
             get {
@@ -124,7 +124,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Votre tour..
+        ///   Recherche une chaîne localisée semblable à Your turn..
         /// </summary>
         internal static string BlackjackPlayerTurn {
             get {
@@ -133,7 +133,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Égalité.
+        ///   Recherche une chaîne localisée semblable à Push.
         /// </summary>
         internal static string BlackjackPushWinner {
             get {
@@ -142,7 +142,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Push : égalité..
+        ///   Recherche une chaîne localisée semblable à Push: tie..
         /// </summary>
         internal static string BlackjackRoundPush {
             get {
@@ -151,7 +151,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Le croupier remporte cette manche..
+        ///   Recherche une chaîne localisée semblable à Dealer wins this round..
         /// </summary>
         internal static string BlackjackRoundWonByDealer {
             get {
@@ -160,7 +160,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Bravo ! Vous remportez cette manche..
+        ///   Recherche une chaîne localisée semblable à Great! You win this round..
         /// </summary>
         internal static string BlackjackRoundWonByPlayer {
             get {
@@ -169,7 +169,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Suivre.
+        ///   Recherche une chaîne localisée semblable à Call.
         /// </summary>
         internal static string Call {
             get {
@@ -187,43 +187,16 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Cinq.
+        ///   Recherche une chaîne localisée semblable à Eight.
         /// </summary>
-        internal static string Cinq {
+        internal static string Eight {
             get {
-                return ResourceManager.GetString("Cinq", resourceCulture);
+                return ResourceManager.GetString("Eight", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Dame.
-        /// </summary>
-        internal static string Dame {
-            get {
-                return ResourceManager.GetString("Dame", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Deux.
-        /// </summary>
-        internal static string Deux {
-            get {
-                return ResourceManager.GetString("Deux", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Dix.
-        /// </summary>
-        internal static string Dix {
-            get {
-                return ResourceManager.GetString("Dix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Aucune mise supplémentaire à suivre..
+        ///   Recherche une chaîne localisée semblable à No additional bet to call..
         /// </summary>
         internal static string ErrorNoAdditionalBetToCall {
             get {
@@ -232,7 +205,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Le joueur n&apos;a pas assez de jetons pour miser autant..
+        ///   Recherche une chaîne localisée semblable à The player has not enough chips..
         /// </summary>
         internal static string ErrorPlayerHasNotEnoughChips {
             get {
@@ -241,7 +214,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à La mise ne peut pas être inférieure à la mise de départ/actuelle..
+        ///   Recherche une chaîne localisée semblable à The bet amount cannot be lower than the initial bet amount..
         /// </summary>
         internal static string ErrorTheBetAmountCannotBeLowerThanTheInitialBetAmount {
             get {
@@ -250,7 +223,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Le montant de mise doit être supérieur à zéro..
+        ///   Recherche une chaîne localisée semblable à The bet amount should be greater than zero..
         /// </summary>
         internal static string ErrorTheBetAmountShouldBeGreaterThanZero {
             get {
@@ -259,7 +232,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à La mise doit augmenter la contribution du joueur..
+        ///   Recherche une chaîne localisée semblable à The bet should increase the player contribution.
         /// </summary>
         internal static string ErrorTheBetShouldIncreaseThePlayerContribution {
             get {
@@ -268,7 +241,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Le joueur ne peut pas checker car il y a une mise sur la table..
+        ///   Recherche une chaîne localisée semblable à The player cannot check because there is a bet on the table..
         /// </summary>
         internal static string ErrorThePlayerCannotCheckBecauseThereIsABetOnTheTable {
             get {
@@ -277,7 +250,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Le joueur n&apos;a pas assez de jetons pour suivre la mise actuelle..
+        ///   Recherche une chaîne localisée semblable à The player does not have enough chips to call the current bet..
         /// </summary>
         internal static string ErrorThePlayerDoesNotHaveEnoughChipsToCallTheCurrentBet {
             get {
@@ -286,7 +259,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Le joueur n&apos;a pas assez de jetons pour relancer autant..
+        ///   Recherche une chaîne localisée semblable à The player does not have enough chips to raise that amount..
         /// </summary>
         internal static string ErrorThePlayerDoesNotHaveEnoughChipsToRaiseThatAmount {
             get {
@@ -295,7 +268,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à La relance doit être supérieure ou égale à la mise actuelle..
+        ///   Recherche une chaîne localisée semblable à The raise must be greater than or equal to the current bet..
         /// </summary>
         internal static string ErrorTheRaiseMustBeGreaterOrEqualThanTheCurrentBet {
             get {
@@ -304,7 +277,16 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Couleur.
+        ///   Recherche une chaîne localisée semblable à Five.
+        /// </summary>
+        internal static string Five {
+            get {
+                return ResourceManager.GetString("Five", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Flush.
         /// </summary>
         internal static string Flush {
             get {
@@ -313,7 +295,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Se Coucher.
+        ///   Recherche une chaîne localisée semblable à Fold.
         /// </summary>
         internal static string Fold {
             get {
@@ -322,7 +304,16 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Carré.
+        ///   Recherche une chaîne localisée semblable à Four.
+        /// </summary>
+        internal static string Four {
+            get {
+                return ResourceManager.GetString("Four", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Four Of A Kind.
         /// </summary>
         internal static string FourOfAKind {
             get {
@@ -331,7 +322,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Full.
+        ///   Recherche une chaîne localisée semblable à Full House.
         /// </summary>
         internal static string FullHouse {
             get {
@@ -340,7 +331,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Carte Haute.
+        ///   Recherche une chaîne localisée semblable à High Card.
         /// </summary>
         internal static string HighCard {
             get {
@@ -349,25 +340,34 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Huit.
+        ///   Recherche une chaîne localisée semblable à Jack.
         /// </summary>
-        internal static string Huit {
+        internal static string Jack {
             get {
-                return ResourceManager.GetString("Huit", resourceCulture);
+                return ResourceManager.GetString("Jack", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Neuf.
+        ///   Recherche une chaîne localisée semblable à King.
         /// </summary>
-        internal static string Neuf {
+        internal static string King {
             get {
-                return ResourceManager.GetString("Neuf", resourceCulture);
+                return ResourceManager.GetString("King", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Aucune.
+        ///   Recherche une chaîne localisée semblable à Nine.
+        /// </summary>
+        internal static string Nine {
+            get {
+                return ResourceManager.GetString("Nine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à None.
         /// </summary>
         internal static string None {
             get {
@@ -376,7 +376,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Paire.
+        ///   Recherche une chaîne localisée semblable à One Pair.
         /// </summary>
         internal static string OnePair {
             get {
@@ -385,16 +385,16 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Quatre.
+        ///   Recherche une chaîne localisée semblable à Queen.
         /// </summary>
-        internal static string Quatre {
+        internal static string Queen {
             get {
-                return ResourceManager.GetString("Quatre", resourceCulture);
+                return ResourceManager.GetString("Queen", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Relancer.
+        ///   Recherche une chaîne localisée semblable à Raise.
         /// </summary>
         internal static string Raise {
             get {
@@ -403,16 +403,178 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Roi.
+        ///   Recherche une chaîne localisée semblable à Black.
         /// </summary>
-        internal static string Roi {
+        internal static string RouletteBetBlack {
             get {
-                return ResourceManager.GetString("Roi", resourceCulture);
+                return ResourceManager.GetString("RouletteBetBlack", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Quinte Flush Royale.
+        ///   Recherche une chaîne localisée semblable à Even.
+        /// </summary>
+        internal static string RouletteBetEven {
+            get {
+                return ResourceManager.GetString("RouletteBetEven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Odd.
+        /// </summary>
+        internal static string RouletteBetOdd {
+            get {
+                return ResourceManager.GetString("RouletteBetOdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Red.
+        /// </summary>
+        internal static string RouletteBetRed {
+            get {
+                return ResourceManager.GetString("RouletteBetRed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Straight {0}.
+        /// </summary>
+        internal static string RouletteBetStraightNumber {
+            get {
+                return ResourceManager.GetString("RouletteBetStraightNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Place your bet for the next spin..
+        /// </summary>
+        internal static string RouletteChooseBet {
+            get {
+                return ResourceManager.GetString("RouletteChooseBet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à black.
+        /// </summary>
+        internal static string RouletteColorBlack {
+            get {
+                return ResourceManager.GetString("RouletteColorBlack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à red.
+        /// </summary>
+        internal static string RouletteColorRed {
+            get {
+                return ResourceManager.GetString("RouletteColorRed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Roulette.
+        /// </summary>
+        internal static string RouletteGameName {
+            get {
+                return ResourceManager.GetString("RouletteGameName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0}. No win on this spin..
+        /// </summary>
+        internal static string RouletteLose {
+            get {
+                return ResourceManager.GetString("RouletteLose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à You are out of roulette credits..
+        /// </summary>
+        internal static string RouletteNoCredits {
+            get {
+                return ResourceManager.GetString("RouletteNoCredits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} {1}.
+        /// </summary>
+        internal static string RoulettePocketColored {
+            get {
+                return ResourceManager.GetString("RoulettePocketColored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} green.
+        /// </summary>
+        internal static string RoulettePocketGreen {
+            get {
+                return ResourceManager.GetString("RoulettePocketGreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Thanks for playing roulette..
+        /// </summary>
+        internal static string RouletteThanks {
+            get {
+                return ResourceManager.GetString("RouletteThanks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Welcome to European roulette. Place your bet..
+        /// </summary>
+        internal static string RouletteWelcome {
+            get {
+                return ResourceManager.GetString("RouletteWelcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Wheel spinning... ({0}/{1}).
+        /// </summary>
+        internal static string RouletteWheelSpinning {
+            get {
+                return ResourceManager.GetString("RouletteWheelSpinning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0}! Your outside bet wins {1} credits..
+        /// </summary>
+        internal static string RouletteWinColor {
+            get {
+                return ResourceManager.GetString("RouletteWinColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0}! Straight-up hit, you win {1} credits..
+        /// </summary>
+        internal static string RouletteWinNumber {
+            get {
+                return ResourceManager.GetString("RouletteWinNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0}! Your parity bet wins {1} credits..
+        /// </summary>
+        internal static string RouletteWinParity {
+            get {
+                return ResourceManager.GetString("RouletteWinParity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Royal Flush.
         /// </summary>
         internal static string RoyalFlush {
             get {
@@ -421,7 +583,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} de {1}.
+        ///   Recherche une chaîne localisée semblable à {0} of {1}.
         /// </summary>
         internal static string ScoreOfFormat {
             get {
@@ -430,11 +592,11 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Sept.
+        ///   Recherche une chaîne localisée semblable à Seven.
         /// </summary>
-        internal static string Sept {
+        internal static string Seven {
             get {
-                return ResourceManager.GetString("Sept", resourceCulture);
+                return ResourceManager.GetString("Seven", resourceCulture);
             }
         }
         
@@ -448,7 +610,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Choisissez votre mise puis lancez les rouleaux..
+        ///   Recherche une chaîne localisée semblable à Choose your bet then spin the reels..
         /// </summary>
         internal static string SlotChooseBet {
             get {
@@ -457,7 +619,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Machine à sous.
+        ///   Recherche une chaîne localisée semblable à Slot Machine.
         /// </summary>
         internal static string SlotGameName {
             get {
@@ -466,7 +628,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à 💥 JACKPOT ! Triple 7 ! Vous gagnez {0} crédits..
+        ///   Recherche une chaîne localisée semblable à 💥 JACKPOT! Triple 7! You win {0} credits..
         /// </summary>
         internal static string SlotJackpotWin {
             get {
@@ -475,7 +637,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Vous n&apos;avez plus de crédits. Fin de partie..
+        ///   Recherche une chaîne localisée semblable à You have no credits left. Game over..
         /// </summary>
         internal static string SlotNoCredits {
             get {
@@ -484,7 +646,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Pas de gain cette fois. La prochaine sera peut-être la bonne !.
+        ///   Recherche une chaîne localisée semblable à No win this time. Maybe next spin!.
         /// </summary>
         internal static string SlotNoWin {
             get {
@@ -493,7 +655,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à 🎰 Les rouleaux tournent... ({0}/{1}).
+        ///   Recherche une chaîne localisée semblable à 🎰 Reels spinning... ({0}/{1}).
         /// </summary>
         internal static string SlotReelsSpinning {
             get {
@@ -502,7 +664,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à 🎉 Gain de {0} crédits ! Relancez pour tenter mieux..
+        ///   Recherche une chaîne localisée semblable à 🎉 You win {0} credits! Spin again to try for better..
         /// </summary>
         internal static string SlotRegularWin {
             get {
@@ -511,7 +673,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à ✨ Super combinaison ! Vous gagnez {0} crédits..
+        ///   Recherche une chaîne localisée semblable à ✨ Super combo! You win {0} credits..
         /// </summary>
         internal static string SlotSuperComboWin {
             get {
@@ -520,7 +682,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Merci d&apos;avoir joué à la machine à sous !.
+        ///   Recherche une chaîne localisée semblable à Thanks for playing the slot machine!.
         /// </summary>
         internal static string SlotThanks {
             get {
@@ -529,7 +691,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Bienvenue à la machine à sous néon ! Choisissez votre mise..
+        ///   Recherche une chaîne localisée semblable à Welcome to the neon slot machine! Choose your bet..
         /// </summary>
         internal static string SlotWelcome {
             get {
@@ -538,7 +700,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Suite.
+        ///   Recherche une chaîne localisée semblable à Straight.
         /// </summary>
         internal static string Straight {
             get {
@@ -547,7 +709,7 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Quinte Flush.
+        ///   Recherche une chaîne localisée semblable à Straight Flush.
         /// </summary>
         internal static string StraightFlush {
             get {
@@ -556,7 +718,25 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Brelan.
+        ///   Recherche une chaîne localisée semblable à Ten.
+        /// </summary>
+        internal static string Ten {
+            get {
+                return ResourceManager.GetString("Ten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Three.
+        /// </summary>
+        internal static string Three {
+            get {
+                return ResourceManager.GetString("Three", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Three Of A Kind.
         /// </summary>
         internal static string ThreeOfAKind {
             get {
@@ -565,29 +745,20 @@ namespace casino.core.Properties.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Trois.
+        ///   Recherche une chaîne localisée semblable à Two.
         /// </summary>
-        internal static string Trois {
+        internal static string Two {
             get {
-                return ResourceManager.GetString("Trois", resourceCulture);
+                return ResourceManager.GetString("Two", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Deux Paires.
+        ///   Recherche une chaîne localisée semblable à Two Pair.
         /// </summary>
         internal static string TwoPair {
             get {
                 return ResourceManager.GetString("TwoPair", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Valet.
-        /// </summary>
-        internal static string Valet {
-            get {
-                return ResourceManager.GetString("Valet", resourceCulture);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using casino.core.Games.Poker.Cards;
+using casino.core.Games.Poker.Cards;
 
 using casino.core.Properties.Languages;
 
@@ -10,14 +10,14 @@ public sealed class Score : IComparable<Score>, IEquatable<Score>
     public CardRank CardValue { get; }
 
     /// <summary>
-    /// Stocker les valeurs de départage dans l'ordre décroissant (kickers).
+    /// Stores tie-breaker values in descending order.
     /// </summary>
     public IReadOnlyList<CardRank> Kickers { get; }
 
-    public Score(HandRank rangMain, CardRank valeur, IEnumerable<CardRank>? kickers = null)
+    public Score(HandRank handRank, CardRank cardValue, IEnumerable<CardRank>? kickers = null)
     {
-        Rank = rangMain;
-        CardValue = valeur;
+        Rank = handRank;
+        CardValue = cardValue;
         Kickers = (kickers ?? Array.Empty<CardRank>()).ToList().AsReadOnly();
     }
 
@@ -25,15 +25,12 @@ public sealed class Score : IComparable<Score>, IEquatable<Score>
     {
         if (other is null) return 1;
 
-        // Comparer d'abord le type de main.
         int cmp = Rank.CompareTo(other.Rank);
         if (cmp != 0) return cmp;
 
-        // Comparer ensuite la valeur principale (ex: valeur de la paire/brelan/...).
         cmp = CardValue.CompareTo(other.CardValue);
         if (cmp != 0) return cmp;
 
-        // Comparer enfin les kickers (lexicographique).
         int len = Math.Max(Kickers.Count, other.Kickers.Count);
         for (int i = 0; i < len; i++)
         {

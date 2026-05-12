@@ -24,19 +24,19 @@ public class ConsolePokerWriterTests
     [TestMethod]
     public void WriteAmount_WriteCard_WriteHand_AndWriteCommunityCards_ShouldRenderExpectedText()
     {
-        var hand = new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Roi, Suit.Spades));
+        var hand = new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.King, Suit.Spades));
         var tableCards = new TableCards
         {
-            Flop1 = new Card(CardRank.Dame, Suit.Clubs),
-            Flop2 = new Card(CardRank.Valet, Suit.Diamonds),
-            Turn = new Card(CardRank.Dix, Suit.Hearts)
+            Flop1 = new Card(CardRank.Queen, Suit.Clubs),
+            Flop2 = new Card(CardRank.Jack, Suit.Diamonds),
+            Turn = new Card(CardRank.Ten, Suit.Hearts)
         };
 
         var output = CaptureConsole(() =>
         {
             InvokeWriter("WriteAmount", 120);
             Console.Write('|');
-            InvokeWriter("WriteCard", new Card(CardRank.As, Suit.Hearts));
+            InvokeWriter("WriteCard", new Card(CardRank.Ace, Suit.Hearts));
             Console.Write('|');
             InvokeWriter("WriteHand", hand);
             Console.Write('|');
@@ -55,7 +55,7 @@ public class ConsolePokerWriterTests
             IsHuman: isHuman,
             IsFolded: isFolded,
             LastAction: lastAction,
-            Hand: new HandCards(new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts)),
+            Hand: new HandCards(new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts)),
             IsWinner: false);
     }
 

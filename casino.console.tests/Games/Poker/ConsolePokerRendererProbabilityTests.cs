@@ -150,7 +150,7 @@ public class ConsolePokerRendererProbabilityTests
             IsHuman: true,
             IsFolded: false,
             LastAction: PokerTypeAction.None,
-            Hand: new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Roi, Suit.Spades)),
+            Hand: new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.King, Suit.Spades)),
             IsWinner: false);
 
         var villain1 = new PokerPlayerState(
@@ -160,7 +160,7 @@ public class ConsolePokerRendererProbabilityTests
             IsHuman: false,
             IsFolded: false,
             LastAction: PokerTypeAction.Call,
-            Hand: new HandCards(new Card(CardRank.Dame, Suit.Clubs), new Card(CardRank.Valet, Suit.Clubs)),
+            Hand: new HandCards(new Card(CardRank.Queen, Suit.Clubs), new Card(CardRank.Jack, Suit.Clubs)),
             IsWinner: false);
 
         var villain2 = new PokerPlayerState(
@@ -170,7 +170,7 @@ public class ConsolePokerRendererProbabilityTests
             IsHuman: false,
             IsFolded: !includeSecondOpponent,
             LastAction: PokerTypeAction.Fold,
-            Hand: new HandCards(new Card(CardRank.Dix, Suit.Hearts), new Card(CardRank.Neuf, Suit.Hearts)),
+            Hand: new HandCards(new Card(CardRank.Ten, Suit.Hearts), new Card(CardRank.Nine, Suit.Hearts)),
             IsWinner: false);
 
         return new PokerGameState(
@@ -180,9 +180,9 @@ public class ConsolePokerRendererProbabilityTests
             CurrentBet: 10,
             CommunityCards: new TableCards
             {
-                Flop1 = new Card(CardRank.As, Suit.Diamonds),
-                Flop2 = new Card(CardRank.Sept, Suit.Clubs),
-                Flop3 = new Card(CardRank.Cinq, Suit.Spades)
+                Flop1 = new Card(CardRank.Ace, Suit.Diamonds),
+                Flop2 = new Card(CardRank.Seven, Suit.Clubs),
+                Flop3 = new Card(CardRank.Five, Suit.Spades)
             },
             Players: [hero, villain1, villain2],
             CurrentPlayer: "Hero");

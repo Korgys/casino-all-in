@@ -76,7 +76,7 @@ public class ConsolePokerRendererFrameBufferTests
             IsHuman: true,
             IsFolded: false,
             LastAction: PokerTypeAction.None,
-            Hand: new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Roi, Suit.Spades)),
+            Hand: new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.King, Suit.Spades)),
             IsWinner: false);
 
         var villain = new PokerPlayerState(
@@ -86,7 +86,7 @@ public class ConsolePokerRendererFrameBufferTests
             IsHuman: false,
             IsFolded: false,
             LastAction: PokerTypeAction.Check,
-            Hand: new HandCards(new Card(CardRank.Dame, Suit.Clubs), new Card(CardRank.Valet, Suit.Clubs)),
+            Hand: new HandCards(new Card(CardRank.Queen, Suit.Clubs), new Card(CardRank.Jack, Suit.Clubs)),
             IsWinner: false);
 
         return new PokerGameState(
@@ -96,9 +96,9 @@ public class ConsolePokerRendererFrameBufferTests
             CurrentBet: 10,
             CommunityCards: new TableCards
             {
-                Flop1 = new Card(CardRank.As, Suit.Diamonds),
-                Flop2 = new Card(CardRank.Sept, Suit.Clubs),
-                Flop3 = new Card(CardRank.Cinq, Suit.Spades)
+                Flop1 = new Card(CardRank.Ace, Suit.Diamonds),
+                Flop2 = new Card(CardRank.Seven, Suit.Clubs),
+                Flop3 = new Card(CardRank.Five, Suit.Spades)
             },
             Players: [hero, villain],
             CurrentPlayer: currentPlayer);

@@ -13,17 +13,17 @@ public class WinnerEvaluatorTests
     {
         // Arrange
         var cartesCommunes = Communes(
-            C(CardRank.Deux, Suit.Hearts),
-            C(CardRank.Trois, Suit.Diamonds),
-            C(CardRank.Quatre, Suit.Spades),
-            C(CardRank.Cinq, Suit.Clubs),
+            C(CardRank.Two, Suit.Hearts),
+            C(CardRank.Three, Suit.Diamonds),
+            C(CardRank.Four, Suit.Spades),
+            C(CardRank.Five, Suit.Clubs),
             C(CardRank.Six, Suit.Hearts)
         );
 
         var players = new List<Player>
         {
-            CreerHumanPlayer("J1", Hand(C(CardRank.As, Suit.Hearts), C(CardRank.Roi, Suit.Diamonds)), PokerTypeAction.Fold),
-            CreerHumanPlayer("J2", Hand(C(CardRank.Dame, Suit.Hearts), C(CardRank.Valet, Suit.Diamonds)), PokerTypeAction.Fold)
+            CreateHumanPlayer("J1", Hand(C(CardRank.Ace, Suit.Hearts), C(CardRank.King, Suit.Diamonds)), PokerTypeAction.Fold),
+            CreateHumanPlayer("J2", Hand(C(CardRank.Queen, Suit.Hearts), C(CardRank.Jack, Suit.Diamonds)), PokerTypeAction.Fold)
         };
 
         // Act + Assert
@@ -35,21 +35,21 @@ public class WinnerEvaluatorTests
     {
         // Arrange
         var cartesCommunes = Communes(
-            C(CardRank.Deux, Suit.Hearts),
-            C(CardRank.Trois, Suit.Diamonds),
-            C(CardRank.Quatre, Suit.Spades),
-            C(CardRank.Huit, Suit.Clubs),
-            C(CardRank.Neuf, Suit.Hearts)
+            C(CardRank.Two, Suit.Hearts),
+            C(CardRank.Three, Suit.Diamonds),
+            C(CardRank.Four, Suit.Spades),
+            C(CardRank.Eight, Suit.Clubs),
+            C(CardRank.Nine, Suit.Hearts)
         );
 
-        var j1 = CreerHumanPlayer(
+        var j1 = CreateHumanPlayer(
             "J1",
-            Hand(C(CardRank.As, Suit.Hearts), C(CardRank.Roi, Suit.Diamonds)),
+            Hand(C(CardRank.Ace, Suit.Hearts), C(CardRank.King, Suit.Diamonds)),
             PokerTypeAction.Fold);
 
-        var j2 = CreerHumanPlayer(
+        var j2 = CreateHumanPlayer(
             "J2",
-            Hand(C(CardRank.Dame, Suit.Hearts), C(CardRank.Valet, Suit.Diamonds)),
+            Hand(C(CardRank.Queen, Suit.Hearts), C(CardRank.Jack, Suit.Diamonds)),
             PokerTypeAction.Bet);
 
         var players = new List<Player> { j1, j2 };
@@ -67,21 +67,21 @@ public class WinnerEvaluatorTests
     {
         // Arrange
         var cartesCommunes = Communes(
-            C(CardRank.Deux, Suit.Hearts),
-            C(CardRank.Trois, Suit.Diamonds),
-            C(CardRank.Quatre, Suit.Spades),
-            C(CardRank.Cinq, Suit.Clubs),
-            C(CardRank.Neuf, Suit.Hearts)
+            C(CardRank.Two, Suit.Hearts),
+            C(CardRank.Three, Suit.Diamonds),
+            C(CardRank.Four, Suit.Spades),
+            C(CardRank.Five, Suit.Clubs),
+            C(CardRank.Nine, Suit.Hearts)
         );
 
-        var j1 = CreerHumanPlayer(
+        var j1 = CreateHumanPlayer(
             "J1",
-            Hand(C(CardRank.As, Suit.Spades), C(CardRank.Dame, Suit.Hearts)),
+            Hand(C(CardRank.Ace, Suit.Spades), C(CardRank.Queen, Suit.Hearts)),
             PokerTypeAction.Bet);
 
-        var j2 = CreerHumanPlayer(
+        var j2 = CreateHumanPlayer(
             "J2",
-            Hand(C(CardRank.Roi, Suit.Spades), C(CardRank.Valet, Suit.Diamonds)),
+            Hand(C(CardRank.King, Suit.Spades), C(CardRank.Jack, Suit.Diamonds)),
             PokerTypeAction.Bet);
 
         var players = new List<Player> { j1, j2 };
@@ -99,21 +99,21 @@ public class WinnerEvaluatorTests
     {
         // Arrange
         var cartesCommunes = Communes(
-            C(CardRank.Dame, Suit.Hearts),
-            C(CardRank.Deux, Suit.Diamonds),
-            C(CardRank.Cinq, Suit.Spades),
-            C(CardRank.Huit, Suit.Clubs),
-            C(CardRank.Neuf, Suit.Hearts)
+            C(CardRank.Queen, Suit.Hearts),
+            C(CardRank.Two, Suit.Diamonds),
+            C(CardRank.Five, Suit.Spades),
+            C(CardRank.Eight, Suit.Clubs),
+            C(CardRank.Nine, Suit.Hearts)
         );
 
-        var j1 = CreerHumanPlayer(
+        var j1 = CreateHumanPlayer(
             "J1",
-            Hand(C(CardRank.Dame, Suit.Spades), C(CardRank.Trois, Suit.Hearts)),
+            Hand(C(CardRank.Queen, Suit.Spades), C(CardRank.Three, Suit.Hearts)),
             PokerTypeAction.Bet);
 
-        var j2 = CreerHumanPlayer(
+        var j2 = CreateHumanPlayer(
             "J2",
-            Hand(C(CardRank.Neuf, Suit.Spades), C(CardRank.Quatre, Suit.Hearts)),
+            Hand(C(CardRank.Nine, Suit.Spades), C(CardRank.Four, Suit.Hearts)),
             PokerTypeAction.Bet);
 
         var players = new List<Player> { j1, j2 };
@@ -131,23 +131,23 @@ public class WinnerEvaluatorTests
     {
         // Arrange
         var cartesCommunes = Communes(
-            C(CardRank.As, Suit.Spades),
-            C(CardRank.Sept, Suit.Diamonds),
+            C(CardRank.Ace, Suit.Spades),
+            C(CardRank.Seven, Suit.Diamonds),
             C(CardRank.Six, Suit.Spades),
-            C(CardRank.Cinq, Suit.Clubs),
-            C(CardRank.Deux, Suit.Hearts)
+            C(CardRank.Five, Suit.Clubs),
+            C(CardRank.Two, Suit.Hearts)
         );
 
         // Paire d'As pour les deux.
         // Kickers : K > Q => J1 gagne.
-        var j1 = CreerHumanPlayer(
+        var j1 = CreateHumanPlayer(
             "J1",
-            Hand(C(CardRank.As, Suit.Hearts), C(CardRank.Roi, Suit.Diamonds)),
+            Hand(C(CardRank.Ace, Suit.Hearts), C(CardRank.King, Suit.Diamonds)),
             PokerTypeAction.Bet);
 
-        var j2 = CreerHumanPlayer(
+        var j2 = CreateHumanPlayer(
             "J2",
-            Hand(C(CardRank.As, Suit.Diamonds), C(CardRank.Dame, Suit.Hearts)),
+            Hand(C(CardRank.Ace, Suit.Diamonds), C(CardRank.Queen, Suit.Hearts)),
             PokerTypeAction.Bet);
 
         var players = new List<Player> { j1, j2 };
@@ -166,15 +166,15 @@ public class WinnerEvaluatorTests
         // Arrange
         // Board "quinte max" : 10-J-Q-K-A, tout le monde a la même main -> égalité parfaite
         var cartesCommunes = Communes(
-            C(CardRank.Dix, Suit.Hearts),
-            C(CardRank.Valet, Suit.Diamonds),
-            C(CardRank.Dame, Suit.Spades),
-            C(CardRank.Roi, Suit.Clubs),
-            C(CardRank.As, Suit.Hearts)
+            C(CardRank.Ten, Suit.Hearts),
+            C(CardRank.Jack, Suit.Diamonds),
+            C(CardRank.Queen, Suit.Spades),
+            C(CardRank.King, Suit.Clubs),
+            C(CardRank.Ace, Suit.Hearts)
         );
 
-        var j1 = CreerHumanPlayer("J1", Hand(C(CardRank.Deux, Suit.Spades), C(CardRank.Trois, Suit.Hearts)), PokerTypeAction.Bet);
-        var j2 = CreerHumanPlayer("J2", Hand(C(CardRank.Quatre, Suit.Spades), C(CardRank.Cinq, Suit.Hearts)), PokerTypeAction.Bet);
+        var j1 = CreateHumanPlayer("J1", Hand(C(CardRank.Two, Suit.Spades), C(CardRank.Three, Suit.Hearts)), PokerTypeAction.Bet);
+        var j2 = CreateHumanPlayer("J2", Hand(C(CardRank.Four, Suit.Spades), C(CardRank.Five, Suit.Hearts)), PokerTypeAction.Bet);
 
         var players = new List<Player> { j1, j2 };
 
@@ -196,7 +196,7 @@ public class WinnerEvaluatorTests
     private static TableCards Communes(Card a, Card b, Card c, Card d, Card e)
         => new TableCards { Flop1 = a, Flop2 = b, Flop3 = c, Turn = d, River = e };
 
-    private static Player CreerHumanPlayer(string name, HandCards main, PokerTypeAction lastAction)
+    private static Player CreateHumanPlayer(string name, HandCards main, PokerTypeAction lastAction)
     {
         var j = new HumanPlayer(name, 1000);
         j.Hand = main;

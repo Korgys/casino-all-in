@@ -70,8 +70,8 @@ public class ConsoleBlackjackRendererTests
     {
         return new BlackjackGameState
         {
-            PlayerCards = [new Card(CardRank.As, Suit.Spades), new Card(CardRank.Roi, Suit.Hearts)],
-            DealerCards = [new Card(CardRank.Neuf, Suit.Clubs), new Card(CardRank.Sept, Suit.Diamonds)],
+            PlayerCards = [new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts)],
+            DealerCards = [new Card(CardRank.Nine, Suit.Clubs), new Card(CardRank.Seven, Suit.Diamonds)],
             IsDealerHoleCardHidden = false,
             IsRoundOver = false,
             StatusMessage = status,

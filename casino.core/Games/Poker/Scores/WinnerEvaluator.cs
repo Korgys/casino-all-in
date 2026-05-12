@@ -1,4 +1,4 @@
-﻿using casino.core.Games.Poker.Actions;
+using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 
@@ -7,34 +7,31 @@ namespace casino.core.Games.Poker.Scores;
 public static class WinnerEvaluator
 {
     /// <summary>
-    /// Evaluate the winner of the table.
+    /// Evaluates the winner of the table.
     /// </summary>
-    /// <param name="players"></param>
-    /// <param name="tableCards"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="players">The players to compare.</param>
+    /// <param name="tableCards">The community cards available at showdown.</param>
+    /// <returns>The player or players tied with the best hand.</returns>
+    /// <exception cref="ArgumentException">Thrown when no active player remains.</exception>
     public static IReadOnlyList<Player> DetermineWinnersByHand(IEnumerable<Player> players, TableCards tableCards)
     {
-        // Calcule le score des Players en jeu
         var inGamePlayers = players
-            .Where(j => j.LastAction != PokerTypeAction.Fold)
-            .Select(j => new
+            .Where(player => player.LastAction != PokerTypeAction.Fold)
+            .Select(player => new
             {
-                Player = j,
-                Score = ScoreEvaluator.EvaluateScore(j.Hand, tableCards)
+                Player = player,
+                Score = ScoreEvaluator.EvaluateScore(player.Hand, tableCards)
             });
 
         if (!inGamePlayers.Any())
         {
-            throw new ArgumentException("Au moins un Player doit être encore en jeu pour déterminer le gagnant par la main.");
+            throw new ArgumentException("At least one player must still be in game to determine winners by hand.");
         }
 
-        // Récupère le meilleur score
-        var meilleurScore = inGamePlayers.Max(x => x.Score);
+        var bestScore = inGamePlayers.Max(x => x.Score);
 
-        // Retourne tous ceux à égalité parfaite
         return inGamePlayers
-            .Where(j => j.Score.CompareTo(meilleurScore) == 0)
+            .Where(playerScore => playerScore.Score.CompareTo(bestScore) == 0)
             .Select(x => x.Player)
             .ToList();
     }

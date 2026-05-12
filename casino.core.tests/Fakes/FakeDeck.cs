@@ -13,7 +13,7 @@ public class FakeDeck : IDeck
 
     public Card DrawCard()
     {
-        return _cards.Count > 0 ? _cards.Dequeue() : new Card(CardRank.Deux, Suit.Diamonds);
+        return _cards.Count > 0 ? _cards.Dequeue() : new Card(CardRank.Two, Suit.Diamonds);
     }
 
     public void Shuffle()

@@ -13,12 +13,12 @@ public static class BlackjackScoreCalculator
         {
             switch (rank)
             {
-                case CardRank.Valet:
-                case CardRank.Dame:
-                case CardRank.Roi:
+                case CardRank.Jack:
+                case CardRank.Queen:
+                case CardRank.King:
                     total += 10;
                     break;
-                case CardRank.As:
+                case CardRank.Ace:
                     total += 11;
                     aces++;
                     break;

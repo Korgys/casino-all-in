@@ -16,15 +16,14 @@ public class Deck : IDeck
     }
 
     /// <summary>
-    /// Reconstruire un paquet standard (52 cartes) puis mélanger réellement.
+    /// Rebuilds a standard 52-card deck and shuffles it.
     /// </summary>
     public void Shuffle()
     {
-        // Reconstruire le paquet.
         _cards.Clear();
         _cards.AddRange(CreateDeck());
 
-        // Mélanger le paquet (Fisher–Yates).
+        // Fisher-Yates shuffle.
         for (int i = _cards.Count - 1; i > 0; i--)
         {
             int j = _random.Next(i + 1);
@@ -33,30 +32,28 @@ public class Deck : IDeck
     }
 
     /// <summary>
-    /// Tire une carte du dessus (index 0) pour simplifier et rendre testable.
+    /// Draws the top card to keep deck behavior deterministic in tests.
     /// </summary>
     public Card DrawCard()
     {
         if (_cards.Count == 0)
-            throw new InvalidOperationException("Le paquet est vide.");
+            throw new InvalidOperationException("The deck is empty.");
 
-        // Retirer la première carte : déterministe après mélange.
         var card = _cards[0];
         _cards.RemoveAt(0);
         return card;
     }
 
     /// <summary>
-    /// Crée un jeu de cartes avec 52 cartes (4 couleurs, 13 rangs).
+    /// Creates a 52-card deck with four suits and thirteen ranks.
     /// </summary>
-    /// <returns></returns>
     private static IEnumerable<Card> CreateDeck()
     {
-        foreach (Suit couleur in Enum.GetValues<Suit>())
+        foreach (Suit suit in Enum.GetValues<Suit>())
         {
-            foreach (CardRank rang in Enum.GetValues<CardRank>())
+            foreach (CardRank rank in Enum.GetValues<CardRank>())
             {
-                yield return new Card(rang, couleur);
+                yield return new Card(rank, suit);
             }
         }
     }

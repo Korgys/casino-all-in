@@ -11,8 +11,8 @@ public class BlackjackScoreCalculatorTests
     {
         var cards = new List<Card>
         {
-            new(CardRank.Roi, Suit.Hearts),
-            new(CardRank.Dame, Suit.Spades)
+            new(CardRank.King, Suit.Hearts),
+            new(CardRank.Queen, Suit.Spades)
         };
 
         var score = BlackjackScoreCalculator.Calculate(cards);
@@ -25,9 +25,9 @@ public class BlackjackScoreCalculatorTests
     {
         var cards = new List<Card>
         {
-            new(CardRank.As, Suit.Hearts),
-            new(CardRank.Neuf, Suit.Spades),
-            new(CardRank.Huit, Suit.Clubs)
+            new(CardRank.Ace, Suit.Hearts),
+            new(CardRank.Nine, Suit.Spades),
+            new(CardRank.Eight, Suit.Clubs)
         };
 
         var score = BlackjackScoreCalculator.Calculate(cards);

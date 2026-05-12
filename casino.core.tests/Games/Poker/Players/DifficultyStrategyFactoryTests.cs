@@ -34,7 +34,7 @@ public class DifficultyStrategyFactoryTests
         };
 
         // Set the controlled hand after Round dealt cards to avoid FakeDeck overwriting it
-        player.Hand = new HandCards(new Card(CardRank.As, Suit.Hearts), new Card(CardRank.Roi, Suit.Spades));
+        player.Hand = new HandCards(new Card(CardRank.Ace, Suit.Hearts), new Card(CardRank.King, Suit.Spades));
 
         var context = new GameContext(round, player, new List<PokerTypeAction> { PokerTypeAction.Raise });
 

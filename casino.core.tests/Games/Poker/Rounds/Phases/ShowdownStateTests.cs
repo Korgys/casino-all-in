@@ -47,7 +47,7 @@ public class ShowdownStateTests
 
     private static IEnumerable<Card> CreateCards() =>
     [
-        new Card(CardRank.As, Suit.Hearts),
-        new Card(CardRank.Roi, Suit.Spades)
+        new Card(CardRank.Ace, Suit.Hearts),
+        new Card(CardRank.King, Suit.Spades)
     ];
 }

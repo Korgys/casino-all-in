@@ -9,7 +9,7 @@ public class CarteTests
     public void Constructeur_DoitInitialiserRangEtSuit()
     {
         // Arrange
-        var rank = CardRank.As;
+        var rank = CardRank.Ace;
         var suit = Suit.Hearts;
 
         // Act
@@ -24,7 +24,7 @@ public class CarteTests
     public void ToString_DoitRetournerRangCourtEtSuit()
     {
         // Arrange
-        var carte = new Card(CardRank.As, Suit.Spades);
+        var carte = new Card(CardRank.Ace, Suit.Spades);
 
         // Act
         var result = carte.ToString();
@@ -37,7 +37,7 @@ public class CarteTests
     public void ToString_DoitEtreDeterministe()
     {
         // Arrange
-        var carte = new Card(CardRank.Dix, Suit.Diamonds);
+        var carte = new Card(CardRank.Ten, Suit.Diamonds);
 
         // Act
         var first = carte.ToString();
@@ -51,8 +51,8 @@ public class CarteTests
     public void Equals_DeuxCartesIdentiques_DoitRetournerTrue()
     {
         // Arrange
-        var carte1 = new Card(CardRank.Roi, Suit.Clubs);
-        var carte2 = new Card(CardRank.Roi, Suit.Clubs);
+        var carte1 = new Card(CardRank.King, Suit.Clubs);
+        var carte2 = new Card(CardRank.King, Suit.Clubs);
 
         // Act
         var equals = carte1.Equals(carte2);
@@ -65,8 +65,8 @@ public class CarteTests
     public void Equals_DeuxCartesDifferentes_DoitRetournerFalse()
     {
         // Arrange
-        var carte1 = new Card(CardRank.Roi, Suit.Clubs);
-        var carte2 = new Card(CardRank.Roi, Suit.Hearts);
+        var carte1 = new Card(CardRank.King, Suit.Clubs);
+        var carte2 = new Card(CardRank.King, Suit.Hearts);
 
         // Act
         var equals = carte1.Equals(carte2);
@@ -79,8 +79,8 @@ public class CarteTests
     public void GetHashCode_DeuxCartesIdentiques_DoitRetournerMemeValeur()
     {
         // Arrange
-        var carte1 = new Card(CardRank.Dame, Suit.Hearts);
-        var carte2 = new Card(CardRank.Dame, Suit.Hearts);
+        var carte1 = new Card(CardRank.Queen, Suit.Hearts);
+        var carte2 = new Card(CardRank.Queen, Suit.Hearts);
 
         // Act
         var hash1 = carte1.GetHashCode();

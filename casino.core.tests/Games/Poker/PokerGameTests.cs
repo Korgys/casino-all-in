@@ -18,15 +18,15 @@ public class PokerGameTests
 
         var deckCards = new[]
         {
-            new Card(CardRank.As, Suit.Spades),        // Alice 1
-            new Card(CardRank.Roi, Suit.Hearts),       // Alice 2
-            new Card(CardRank.Neuf, Suit.Clubs),     // Bob 1
-            new Card(CardRank.Huit, Suit.Diamonds),    // Bob 2
-            new Card(CardRank.As, Suit.Hearts),        // Flop 1 (paire d'As pour Alice)
-            new Card(CardRank.Deux, Suit.Hearts),      // Flop 2
-            new Card(CardRank.Trois, Suit.Clubs),    // Flop 3
-            new Card(CardRank.Sept, Suit.Spades),      // Turn
-            new Card(CardRank.Dame, Suit.Diamonds)     // River
+            new Card(CardRank.Ace, Suit.Spades),        // Alice 1
+            new Card(CardRank.King, Suit.Hearts),       // Alice 2
+            new Card(CardRank.Nine, Suit.Clubs),     // Bob 1
+            new Card(CardRank.Eight, Suit.Diamonds),    // Bob 2
+            new Card(CardRank.Ace, Suit.Hearts),        // Flop 1 (paire d'As pour Alice)
+            new Card(CardRank.Two, Suit.Hearts),      // Flop 2
+            new Card(CardRank.Three, Suit.Clubs),    // Flop 3
+            new Card(CardRank.Seven, Suit.Spades),      // Turn
+            new Card(CardRank.Queen, Suit.Diamonds)     // River
         };
 
         var deckFactory = () => new FakeDeck(deckCards);
@@ -86,14 +86,14 @@ public class PokerGameTests
         var autreHumain = new HumanPlayer("Bob", 100);
         var deckCards = new[]
         {
-            new Card(CardRank.As, Suit.Spades),        // Alice 1
-            new Card(CardRank.Roi, Suit.Hearts),       // Alice 2
-            new Card(CardRank.Neuf, Suit.Clubs),     // Bob 1
-            new Card(CardRank.Huit, Suit.Diamonds),    // Bob 2
-            new Card(CardRank.Deux, Suit.Hearts),      // Flop 1
-            new Card(CardRank.Trois, Suit.Clubs),    // Flop 2
-            new Card(CardRank.Quatre, Suit.Diamonds),  // Flop 3
-            new Card(CardRank.Cinq, Suit.Spades),      // Turn
+            new Card(CardRank.Ace, Suit.Spades),        // Alice 1
+            new Card(CardRank.King, Suit.Hearts),       // Alice 2
+            new Card(CardRank.Nine, Suit.Clubs),     // Bob 1
+            new Card(CardRank.Eight, Suit.Diamonds),    // Bob 2
+            new Card(CardRank.Two, Suit.Hearts),      // Flop 1
+            new Card(CardRank.Three, Suit.Clubs),    // Flop 2
+            new Card(CardRank.Four, Suit.Diamonds),  // Flop 3
+            new Card(CardRank.Five, Suit.Spades),      // Turn
             new Card(CardRank.Six, Suit.Hearts)        // River
         };
 
@@ -149,14 +149,14 @@ public class PokerGameTests
         var autreHumain = new HumanPlayer("Bob", 100);
         var deckCards = new[]
         {
-            new Card(CardRank.As, Suit.Spades),
-            new Card(CardRank.Roi, Suit.Hearts),
-            new Card(CardRank.Neuf, Suit.Clubs),
-            new Card(CardRank.Huit, Suit.Diamonds),
-            new Card(CardRank.Deux, Suit.Hearts),
-            new Card(CardRank.Trois, Suit.Clubs),
-            new Card(CardRank.Quatre, Suit.Diamonds),
-            new Card(CardRank.Cinq, Suit.Spades),
+            new Card(CardRank.Ace, Suit.Spades),
+            new Card(CardRank.King, Suit.Hearts),
+            new Card(CardRank.Nine, Suit.Clubs),
+            new Card(CardRank.Eight, Suit.Diamonds),
+            new Card(CardRank.Two, Suit.Hearts),
+            new Card(CardRank.Three, Suit.Clubs),
+            new Card(CardRank.Four, Suit.Diamonds),
+            new Card(CardRank.Five, Suit.Spades),
             new Card(CardRank.Six, Suit.Hearts)
         };
 
