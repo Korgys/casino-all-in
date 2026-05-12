@@ -164,7 +164,7 @@ public class RouletteGame : GameBase
         return bet.Kind == RouletteBetKind.Number ? bet.Amount * 36 : bet.Amount * 2;
     }
 
-    private string BuildResultMessage(RouletteBet bet, int pocket, int payout)
+    private static string BuildResultMessage(RouletteBet bet, int pocket, int payout)
     {
         if (payout <= 0)
             return string.Format(T("RouletteLose"), DescribePocket(pocket));
@@ -207,4 +207,3 @@ public class RouletteGame : GameBase
     private static string T(string key)
         => Resources.ResourceManager.GetString(key, Resources.Culture) ?? key;
 }
-

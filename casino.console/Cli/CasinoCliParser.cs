@@ -9,6 +9,12 @@ internal static class CasinoCliParser
     private const int MinimumInitialChips = 100;
     private const int MaximumInitialChips = 5000;
     private const PokerDifficulty DefaultPokerDifficulty = PokerDifficulty.Medium;
+    private static readonly PokerOptionDefinition[] PokerOptions =
+    [
+        new(PokerOptionKind.Players, "players", "-p", "--players"),
+        new(PokerOptionKind.Difficulty, "difficulty", "-d", "--difficulty"),
+        new(PokerOptionKind.Chips, "chips", "-c", "--chips")
+    ];
 
     public const string Usage = """
         Usage:
@@ -64,63 +70,11 @@ internal static class CasinoCliParser
 
         for (var index = 0; index < args.Count; index++)
         {
-            var option = args[index];
+            if (!TryReadPokerOption(args, ref index, out var option, out var value, out var error))
+                return CasinoCliParseResult.Failure(error);
 
-            if (TryReadInlineOption(option, "-p", "--players", out var inlinePlayers))
-            {
-                if (!TryParseIntOption("players", inlinePlayers, MinimumPokerPlayers, MaximumPokerPlayers, out playerCount, out var error))
-                    return CasinoCliParseResult.Failure(error);
-                continue;
-            }
-
-            if (TryReadInlineOption(option, "-d", "--difficulty", out var inlineDifficulty))
-            {
-                if (!TryParseDifficulty(inlineDifficulty, out difficulty, out var error))
-                    return CasinoCliParseResult.Failure(error);
-                continue;
-            }
-
-            if (TryReadInlineOption(option, "-c", "--chips", out var inlineChips))
-            {
-                if (!TryParseIntOption("chips", inlineChips, MinimumInitialChips, MaximumInitialChips, out initialChips, out var error))
-                    return CasinoCliParseResult.Failure(error);
-                continue;
-            }
-
-            if (IsOption(option, "-p", "--players"))
-            {
-                if (!TryReadNextValue(args, ref index, option, out var value, out var error)
-                    || !TryParseIntOption("players", value, MinimumPokerPlayers, MaximumPokerPlayers, out playerCount, out error))
-                {
-                    return CasinoCliParseResult.Failure(error);
-                }
-
-                continue;
-            }
-
-            if (IsOption(option, "-d", "--difficulty"))
-            {
-                if (!TryReadNextValue(args, ref index, option, out var value, out var error)
-                    || !TryParseDifficulty(value, out difficulty, out error))
-                {
-                    return CasinoCliParseResult.Failure(error);
-                }
-
-                continue;
-            }
-
-            if (IsOption(option, "-c", "--chips"))
-            {
-                if (!TryReadNextValue(args, ref index, option, out var value, out var error)
-                    || !TryParseIntOption("chips", value, MinimumInitialChips, MaximumInitialChips, out initialChips, out error))
-                {
-                    return CasinoCliParseResult.Failure(error);
-                }
-
-                continue;
-            }
-
-            return CasinoCliParseResult.Failure($"Unknown poker option '{option}'.");
+            if (!TryApplyPokerOption(option, value, ref playerCount, ref difficulty, ref initialChips, out error))
+                return CasinoCliParseResult.Failure(error);
         }
 
         var defaultSetup = PokerGameSetup.CreateDefault();
@@ -135,6 +89,66 @@ internal static class CasinoCliParser
         return CasinoCliParseResult.Success(new CasinoCliCommand(
             CasinoGameKind.Poker,
             new PokerGameSetup(resolvedInitialChips, resolvedPlayerCount, opponents)));
+    }
+
+    private static bool TryReadPokerOption(
+        IReadOnlyList<string> args,
+        ref int index,
+        out PokerOptionDefinition option,
+        out string value,
+        out string error)
+    {
+        var token = args[index];
+
+        foreach (var candidate in PokerOptions)
+        {
+            if (TryReadInlineOption(token, candidate.ShortName, candidate.LongName, out value))
+            {
+                option = candidate;
+                error = string.Empty;
+                return true;
+            }
+
+            if (IsOption(token, candidate.ShortName, candidate.LongName))
+            {
+                option = candidate;
+                return TryReadNextValue(args, ref index, token, out value, out error);
+            }
+        }
+
+        option = default;
+        value = string.Empty;
+        error = $"Unknown poker option '{token}'.";
+        return false;
+    }
+
+    private static bool TryApplyPokerOption(
+        PokerOptionDefinition option,
+        string value,
+        ref int? playerCount,
+        ref PokerDifficulty? difficulty,
+        ref int? initialChips,
+        out string error)
+    {
+        return option.Kind switch
+        {
+            PokerOptionKind.Players => TryParseIntOption(
+                option.Name,
+                value,
+                MinimumPokerPlayers,
+                MaximumPokerPlayers,
+                out playerCount,
+                out error),
+            PokerOptionKind.Difficulty => TryParseDifficulty(value, out difficulty, out error),
+            PokerOptionKind.Chips => TryParseIntOption(
+                option.Name,
+                value,
+                MinimumInitialChips,
+                MaximumInitialChips,
+                out initialChips,
+                out error),
+            _ => FailUnknownPokerOption(out error)
+        };
     }
 
     private static bool TryParseGame(string value, out CasinoGameKind game)
@@ -266,5 +280,20 @@ internal static class CasinoCliParser
         }
 
         return false;
+    }
+
+    private static bool FailUnknownPokerOption(out string error)
+    {
+        error = "Unknown poker option.";
+        return false;
+    }
+
+    private readonly record struct PokerOptionDefinition(PokerOptionKind Kind, string Name, string ShortName, string LongName);
+
+    private enum PokerOptionKind
+    {
+        Players,
+        Difficulty,
+        Chips
     }
 }

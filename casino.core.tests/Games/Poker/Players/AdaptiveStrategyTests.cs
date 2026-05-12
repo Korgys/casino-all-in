@@ -156,6 +156,57 @@ public class AdaptiveStrategyTests
     }
 
     [TestMethod]
+    public void DecideAction_ChoosesCheck_WhenDefensiveAndFoldIsUnavailable()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.Check, PokerTypeAction.Call });
+
+        var action = new AdaptiveStrategy(CreateDefensiveProfile()).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Check, action.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_ChoosesCall_WhenDefensiveAndOnlyCallFallbackExists()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.Call, PokerTypeAction.Raise });
+
+        var action = new AdaptiveStrategy(CreateDefensiveProfile()).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Call, action.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_ChoosesCall_WhenCautiousAndCheckIsUnavailable()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.Call, PokerTypeAction.Bet });
+
+        var action = new AdaptiveStrategy(CreateCautiousProfile()).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Call, action.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_ChoosesBet_WhenCautiousAndOnlyBetFallbackExists()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.Bet, PokerTypeAction.Raise });
+
+        var action = new AdaptiveStrategy(CreateCautiousProfile()).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_ChoosesAggressiveFallback_WhenCautiousOptionsAreUnavailable()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.Raise });
+
+        var action = new AdaptiveStrategy(CreateCautiousProfile()).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+    }
+
+    [TestMethod]
     public void DecideAction_ChoosesAggressiveAction_WhenProbabilityIsAboveRaiseThreshold()
     {
         var profile = PokerAiProfile.Beginner with
@@ -176,6 +227,105 @@ public class AdaptiveStrategyTests
         var action = new AdaptiveStrategy(profile).DecideAction(context);
 
         Assert.AreEqual(PokerTypeAction.Raise, action.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_BluffsWithBet_WhenRaiseIsUnavailable()
+    {
+        var profile = PokerAiProfile.Medium with
+        {
+            PreferCheckWhenAvailable = false,
+            BluffFrequency = 1.0,
+            CanAllInWhenStrong = false
+        };
+
+        var context = CreateContext(new[] { PokerTypeAction.Bet, PokerTypeAction.Call });
+
+        var action = new AdaptiveStrategy(profile).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_ChoosesBet_WhenAggressiveAndRaiseIsUnavailable()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.Bet, PokerTypeAction.Call });
+
+        var action = new AdaptiveStrategy(CreateAggressiveProfile()).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Bet, action.TypeAction);
+        Assert.AreEqual(context.MinimumBet, action.Amount);
+    }
+
+    [TestMethod]
+    public void DecideAction_ChoosesCall_WhenAggressiveAndOnlyCallFallbackExists()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.Call, PokerTypeAction.Check });
+
+        var action = new AdaptiveStrategy(CreateAggressiveProfile(bluffFrequency: 1.0)).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Call, action.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_ChoosesCheck_WhenAggressiveAndOnlyCheckFallbackExists()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.Check, PokerTypeAction.Fold });
+
+        var action = new AdaptiveStrategy(CreateAggressiveProfile()).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.Check, action.TypeAction);
+    }
+
+    [TestMethod]
+    public void DecideAction_UsesFirstAvailableAction_WhenAggressiveFallbacksAreUnavailable()
+    {
+        var context = CreateContext(new[] { PokerTypeAction.AllIn });
+
+        var action = new AdaptiveStrategy(CreateAggressiveProfile(canAllInWhenStrong: false)).DecideAction(context);
+
+        Assert.AreEqual(PokerTypeAction.AllIn, action.TypeAction);
+    }
+
+    private static PokerAiProfile CreateDefensiveProfile()
+    {
+        return PokerAiProfile.Beginner with
+        {
+            PreferCheckWhenAvailable = false,
+            BluffFrequency = 0.0,
+            FoldThresholdFactor = 10.0,
+            CallThresholdFactor = 10.0,
+            RaiseThresholdFactor = 10.0,
+            AllInThresholdFactor = 10.0
+        };
+    }
+
+    private static PokerAiProfile CreateCautiousProfile()
+    {
+        return PokerAiProfile.Beginner with
+        {
+            PreferCheckWhenAvailable = false,
+            BluffFrequency = 0.0,
+            FoldThresholdFactor = 0.0,
+            CallThresholdFactor = 0.0,
+            RaiseThresholdFactor = 10.0,
+            AllInThresholdFactor = 10.0
+        };
+    }
+
+    private static PokerAiProfile CreateAggressiveProfile(double bluffFrequency = 0.0, bool canAllInWhenStrong = true)
+    {
+        return PokerAiProfile.Beginner with
+        {
+            PreferCheckWhenAvailable = false,
+            BluffFrequency = bluffFrequency,
+            FoldThresholdFactor = 0.0,
+            CallThresholdFactor = 0.0,
+            RaiseThresholdFactor = 0.0,
+            AllInThresholdFactor = 10.0,
+            CanAllInWhenStrong = canAllInWhenStrong
+        };
     }
 
     private static GameContext CreateContext(
