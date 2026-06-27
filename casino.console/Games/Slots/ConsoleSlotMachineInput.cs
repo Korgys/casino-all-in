@@ -11,8 +11,6 @@ namespace casino.console.Games.Slots;
 [ExcludeFromCodeCoverage]
 public static class ConsoleSlotMachineInput
 {
-    private const int InvalidInputHintThreshold = 2;
-
     /// <summary>
     /// Gets the current bet from user input.
     /// </summary>
@@ -21,37 +19,11 @@ public static class ConsoleSlotMachineInput
     public static int GetBet(SlotMachineGameState state)
     {
         RenderBetPrompt(state);
-        var invalidAttempts = 0;
-
-        while (true)
-        {
-            Console.Write(ConsoleText.SlotBetPrompt(state.MinBet));
-            var input = (Console.ReadLine() ?? string.Empty).Trim();
-
-            if (string.IsNullOrEmpty(input))
-                return state.MinBet;
-
-            if (ConsoleInputAliases.IsBack(input))
-            {
-                Console.WriteLine(ConsoleText.InputCanceledUsingDefault(state.MinBet.ToString()));
-                return state.MinBet;
-            }
-
-            if (int.TryParse(input, out var bet) && bet >= state.MinBet && bet <= state.MaxBet)
-                return bet;
-
-            invalidAttempts++;
-            Console.WriteLine(int.TryParse(input, out _) ? ConsoleText.RangeError(state.MinBet, state.MaxBet) : ConsoleText.InvalidNumberInput);
-            WriteNumberMenuHintIfNeeded(invalidAttempts);
-        }
-    }
-
-    private static void WriteNumberMenuHintIfNeeded(int invalidAttempts)
-    {
-        if (invalidAttempts < InvalidInputHintThreshold)
-            return;
-
-        Console.WriteLine(ConsoleText.TypeNumberMenuHelp);
+        return ConsolePromptReader.ReadIntInRange(
+            ConsoleText.SlotBetPrompt(state.MinBet),
+            state.MinBet,
+            state.MaxBet,
+            state.MinBet);
     }
 
     /// <summary>

@@ -10,12 +10,7 @@ public class OpportunisticStrategy : IPlayerStrategy
     {
         var actions = context.AvailableActions;
         if (actions.Count == 1)
-        {
-            if (actions[0] == PokerTypeAction.Raise)
-                return new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context));
-            else
-                return GetFirstGameAction(context);
-        }
+            return GetFirstGameAction(context);
 
         var metrics = ComputeMetrics(context);
         var thresholds = ComputeThresholds(metrics.ActivePlayers, metrics.Phase);
@@ -42,10 +37,12 @@ public class OpportunisticStrategy : IPlayerStrategy
 
     private static GameAction GetFirstGameAction(GameContext context)
     {
-        if (context.AvailableActions[0] == PokerTypeAction.Bet)
-            return new GameAction(context.AvailableActions[0], context.MinimumBet);
-        else
-            return new GameAction(context.AvailableActions[0]);
+        return context.AvailableActions[0] switch
+        {
+            PokerTypeAction.Bet => new GameAction(PokerTypeAction.Bet, context.MinimumBet),
+            PokerTypeAction.Raise => new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context)),
+            var action => new GameAction(action)
+        };
     }
 
     private static OpportunisticMetrics ComputeMetrics(GameContext context)
@@ -60,7 +57,7 @@ public class OpportunisticStrategy : IPlayerStrategy
             opponents,
             simulations: 1000);
 
-        var normalizedProbability = Clamp01(rawProbability / 100.0);
+        var normalizedProbability = Math.Clamp(rawProbability / 100.0, 0.0, 1.0);
 
         return new OpportunisticMetrics(activePlayers, normalizedProbability, phase);
     }
@@ -71,13 +68,11 @@ public class OpportunisticStrategy : IPlayerStrategy
         var neutralProbability = 1.0 / activeCount;
 
         var foldMultiplier = phase < Phase.Flop ? 0.75 : 0.70;
-        var callMultiplier = phase < Phase.Flop ? 1.05 : 1.00;
         var raiseMultiplier = phase < Phase.Flop ? 1.35 : 1.25;
         var shoveMultiplier = phase < Phase.Flop ? 1.90 : 1.70;
 
         return new OpportunisticThresholds(
             FoldThreshold: foldMultiplier * neutralProbability,
-            CallThreshold: callMultiplier * neutralProbability,
             RaiseThreshold: raiseMultiplier * neutralProbability,
             AllInThreshold: shoveMultiplier * neutralProbability);
     }
@@ -104,7 +99,7 @@ public class OpportunisticStrategy : IPlayerStrategy
             (() => probability < thresholds.RaiseThreshold && availableActions.Contains(PokerTypeAction.Bet),
                 () => new GameAction(PokerTypeAction.Bet, context.MinimumBet)),
             (() => probability < thresholds.RaiseThreshold,
-                () => new GameAction(actions[0])),
+                () => GetFirstGameAction(context)),
 
             (() => availableActions.Contains(PokerTypeAction.Raise),
                 () => new GameAction(PokerTypeAction.Raise, GetMinimumRaiseAmount(context))),
@@ -127,18 +122,7 @@ public class OpportunisticStrategy : IPlayerStrategy
         return GetFirstGameAction(context);
     }
 
-    private static double Clamp01(double x)
-    {
-        if (x < 0)
-            return 0;
-
-        if (x > 1)
-            return 1;
-
-        return x;
-    }
-
     private readonly record struct OpportunisticMetrics(int ActivePlayers, double NormalizedProbability, Phase Phase);
 
-    private readonly record struct OpportunisticThresholds(double FoldThreshold, double CallThreshold, double RaiseThreshold, double AllInThreshold);
+    private readonly record struct OpportunisticThresholds(double FoldThreshold, double RaiseThreshold, double AllInThreshold);
 }

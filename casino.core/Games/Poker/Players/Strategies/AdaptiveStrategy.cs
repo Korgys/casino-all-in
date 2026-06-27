@@ -41,7 +41,9 @@ public class AdaptiveStrategy(PokerAiProfile profile) : IPlayerStrategy
 
         if (actions.Contains(PokerTypeAction.Raise))
         {
-            action = new GameAction(PokerTypeAction.Raise, Math.Max(context.Round.CurrentBet + 1, context.MinimumBet));
+            var minimumRaise = Math.Max(context.Round.CurrentBet + 1, context.MinimumBet);
+            var maxAllowedTarget = context.Round.GetBetFor(context.CurrentPlayer) + context.CurrentPlayer.Chips;
+            action = new GameAction(PokerTypeAction.Raise, Math.Min(minimumRaise, maxAllowedTarget));
             return true;
         }
 

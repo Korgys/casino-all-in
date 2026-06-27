@@ -6,8 +6,6 @@ namespace casino.console.Games.Roulette;
 
 public static class ConsoleRouletteInput
 {
-    private const int InvalidInputHintThreshold = 2;
-
     public static RouletteBet GetBet(RouletteGameState state)
     {
         RenderBetPrompt(state);
@@ -31,7 +29,7 @@ public static class ConsoleRouletteInput
             {
                 invalidAttempts++;
                 Console.WriteLine(ConsoleText.InvalidNumberInput);
-                WriteNumberMenuHintIfNeeded(invalidAttempts);
+                ConsolePromptReader.WriteNumberMenuHintIfNeeded(invalidAttempts);
                 continue;
             }
 
@@ -49,58 +47,14 @@ public static class ConsoleRouletteInput
     }
 
     private static int PromptAmount(RouletteGameState state)
-    {
-        var invalidAttempts = 0;
-
-        while (true)
-        {
-            Console.Write(ConsoleText.RouletteBetAmountPrompt(state.MinBet));
-            var input = (Console.ReadLine() ?? string.Empty).Trim();
-
-            if (string.IsNullOrEmpty(input))
-                return state.MinBet;
-
-            if (ConsoleInputAliases.IsBack(input))
-            {
-                Console.WriteLine(ConsoleText.InputCanceledUsingDefault(state.MinBet.ToString()));
-                return state.MinBet;
-            }
-
-            if (int.TryParse(input, out var amount) && amount >= state.MinBet && amount <= state.MaxBet)
-                return amount;
-
-            invalidAttempts++;
-            Console.WriteLine(int.TryParse(input, out _) ? ConsoleText.RangeError(state.MinBet, state.MaxBet) : ConsoleText.InvalidNumberInput);
-            WriteNumberMenuHintIfNeeded(invalidAttempts);
-        }
-    }
+        => ConsolePromptReader.ReadIntInRange(
+            ConsoleText.RouletteBetAmountPrompt(state.MinBet),
+            state.MinBet,
+            state.MaxBet,
+            state.MinBet);
 
     private static int PromptNumber()
-    {
-        var invalidAttempts = 0;
-
-        while (true)
-        {
-            Console.Write(ConsoleText.RouletteNumberPrompt);
-            var input = (Console.ReadLine() ?? string.Empty).Trim();
-
-            if (string.IsNullOrEmpty(input))
-                return 0;
-
-            if (ConsoleInputAliases.IsBack(input))
-            {
-                Console.WriteLine(ConsoleText.InputCanceledUsingDefault("0"));
-                return 0;
-            }
-
-            if (int.TryParse(input, out var number) && number is >= 0 and <= 36)
-                return number;
-
-            invalidAttempts++;
-            Console.WriteLine(ConsoleText.RangeError(0, 36));
-            WriteNumberMenuHintIfNeeded(invalidAttempts);
-        }
-    }
+        => ConsolePromptReader.ReadIntInRange(ConsoleText.RouletteNumberPrompt, 0, 36, 0);
 
     private static bool TryParseBetKind(string input, out RouletteBetKind kind)
     {
@@ -131,14 +85,6 @@ public static class ConsoleRouletteInput
                 kind = RouletteBetKind.Red;
                 return false;
         }
-    }
-
-    private static void WriteNumberMenuHintIfNeeded(int invalidAttempts)
-    {
-        if (invalidAttempts < InvalidInputHintThreshold)
-            return;
-
-        Console.WriteLine(ConsoleText.TypeNumberMenuHelp);
     }
 
     private static void RenderBetPrompt(RouletteGameState state)

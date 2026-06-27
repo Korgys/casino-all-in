@@ -1,4 +1,5 @@
 using casino.console.Games.Roulette;
+using casino.console.Localization;
 using casino.core.Games.Roulette;
 
 namespace casino.console.tests.Games.Roulette;
@@ -15,14 +16,16 @@ public class ConsoleRouletteInputTests
 
         try
         {
-            Console.SetIn(new StringReader("9\n1\n17\n4\n"));
-            Console.SetOut(new StringWriter());
+            Console.SetIn(new StringReader("9\n1\nabc\n17\n4\n"));
+            var output = new StringWriter();
+            Console.SetOut(output);
 
             var bet = ConsoleRouletteInput.GetBet(state);
 
             Assert.AreEqual(RouletteBetKind.Number, bet.Kind);
             Assert.AreEqual(17, bet.Number);
             Assert.AreEqual(4, bet.Amount);
+            Assert.Contains(ConsoleText.InvalidNumberInput, output.ToString());
         }
         finally
         {

@@ -52,8 +52,7 @@ public static class ProbabilityEvaluator
 
         ValidateKnownCards(knownCards);
 
-        int missingCommunityCards = TOTAL_TABLE_CARDS - knownCommunityCards.Count;
-        int requiredCards = missingCommunityCards + numberOfOpponents * 2;
+        int requiredCards = TOTAL_TABLE_CARDS - knownCommunityCards.Count + numberOfOpponents * 2;
 
         var remainingDeck = BuildRemainingDeck(knownCards);
         if (requiredCards > remainingDeck.Count)
@@ -64,8 +63,7 @@ public static class ProbabilityEvaluator
             communityCards,
             numberOfOpponents,
             remainingDeck,
-            requiredCards,
-            missingCommunityCards);
+            requiredCards);
 
         // If an RNG is provided, stay sequential to preserve test reproducibility.
         if (random is not null || simulations < 1000)
@@ -260,15 +258,7 @@ public static class ProbabilityEvaluator
         return remainingDeck[indices[drawIndex++]];
     }
 
-    private static int[] CreateIndices(int n)
-    {
-        var indices = new int[n];
-        for (int i = 0; i < n; i++)
-        {
-            indices[i] = i;
-        }
-        return indices;
-    }
+    private static int[] CreateIndices(int n) => Enumerable.Range(0, n).ToArray();
 
     /// <summary>
     /// Partial Fisher-Yates shuffle: only randomizes the first requiredCards positions.
@@ -290,8 +280,7 @@ public static class ProbabilityEvaluator
         TableCards CommunityCards,
         int NumberOfOpponents,
         IReadOnlyList<Card> RemainingDeck,
-        int RequiredCards,
-        int MissingCommunityCards)
+        int RequiredCards)
     {
         public int TotalRemaining => RemainingDeck.Count;
     }

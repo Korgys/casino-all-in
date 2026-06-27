@@ -15,7 +15,6 @@ public static class ConsolePokerInput
     private const int MaximumPlayers = 6;
     private const int MinimumInitialChips = 100;
     private const int MaximumInitialChips = 5000;
-    private const int InvalidInputHintThreshold = 2;
 
     public static ActionModel GetPlayerAction(ActionRequest request)
     {
@@ -93,7 +92,7 @@ public static class ConsolePokerInput
             {
                 invalidAttempts++;
                 Console.WriteLine(ConsoleText.InvalidNumberInput);
-                WriteNumberMenuHintIfNeeded(invalidAttempts);
+                ConsolePromptReader.WriteNumberMenuHintIfNeeded(invalidAttempts);
                 continue;
             }
 
@@ -102,7 +101,7 @@ public static class ConsolePokerInput
 
             invalidAttempts++;
             Console.WriteLine(ConsoleText.ActionUnavailable(raw));
-            WriteNumberMenuHintIfNeeded(invalidAttempts);
+            ConsolePromptReader.WriteNumberMenuHintIfNeeded(invalidAttempts);
         }
     }
 
@@ -132,7 +131,7 @@ public static class ConsolePokerInput
             {
                 invalidAttempts++;
                 Console.WriteLine(ConsoleText.InvalidNumberInput);
-                WriteNumberMenuHintIfNeeded(invalidAttempts);
+                ConsolePromptReader.WriteNumberMenuHintIfNeeded(invalidAttempts);
                 continue;
             }
 
@@ -141,34 +140,17 @@ public static class ConsolePokerInput
 
             invalidAttempts++;
             Console.WriteLine(ConsoleText.RaiseAmountUnavailable(actualBet, maxAllowedTarget));
-            WriteNumberMenuHintIfNeeded(invalidAttempts);
+            ConsolePromptReader.WriteNumberMenuHintIfNeeded(invalidAttempts);
         }
     }
 
     private static int ReadIntInRange(string prompt, int minValue, int maxValue, int defaultValue)
-    {
-        var invalidAttempts = 0;
-
-        while (true)
-        {
-            Console.Write(prompt);
-            var input = (Console.ReadLine() ?? string.Empty).Trim();
-
-            if (string.IsNullOrEmpty(input) || IsCancelInput(input))
-            {
-                if (IsCancelInput(input))
-                    Console.WriteLine(ConsoleText.InputCanceledUsingDefault(defaultValue.ToString()));
-                return defaultValue;
-            }
-
-            if (int.TryParse(input, out var value) && value >= minValue && value <= maxValue)
-                return value;
-
-            invalidAttempts++;
-            Console.WriteLine(ConsoleText.RangeError(minValue, maxValue));
-            WriteNumberMenuHintIfNeeded(invalidAttempts);
-        }
-    }
+        => ConsolePromptReader.ReadIntInRange(
+            prompt,
+            minValue,
+            maxValue,
+            defaultValue,
+            ConsoleText.RangeError(minValue, maxValue));
 
     private static PokerDifficulty ReadDifficulty(string prompt, PokerDifficulty defaultDifficulty)
     {
@@ -179,9 +161,9 @@ public static class ConsolePokerInput
             Console.Write(prompt);
             var input = (Console.ReadLine() ?? string.Empty).Trim();
 
-            if (string.IsNullOrEmpty(input) || IsCancelInput(input))
+            if (string.IsNullOrEmpty(input) || ConsoleInputAliases.IsBack(input))
             {
-                if (IsCancelInput(input))
+                if (ConsoleInputAliases.IsBack(input))
                     Console.WriteLine(ConsoleText.InputCanceledUsingDefault(ConsoleText.PokerDifficultyLabel(defaultDifficulty)));
                 return defaultDifficulty;
             }
@@ -194,21 +176,8 @@ public static class ConsolePokerInput
 
             invalidAttempts++;
             Console.WriteLine(ConsoleText.InvalidDifficulty);
-            WriteNumberMenuHintIfNeeded(invalidAttempts);
+            ConsolePromptReader.WriteNumberMenuHintIfNeeded(invalidAttempts);
         }
-    }
-
-    private static bool IsCancelInput(string input)
-    {
-        return ConsoleInputAliases.IsBack(input);
-    }
-
-    private static void WriteNumberMenuHintIfNeeded(int invalidAttempts)
-    {
-        if (invalidAttempts < InvalidInputHintThreshold)
-            return;
-
-        Console.WriteLine(ConsoleText.TypeNumberMenuHelp);
     }
 
     /// <summary>
@@ -222,4 +191,3 @@ public static class ConsolePokerInput
         }
     }
 }
-
