@@ -3,10 +3,10 @@
 namespace casino.core.tests.Games.Poker.Cards;
 
 [TestClass]
-public class CartesCommunesTests
+public class TableCardsTests
 {
     [TestMethod]
-    public void AsEnumerable_QuandAucuneCarte_DoitRetournerListeVide()
+    public void AsEnumerable_WhenNoCards_ShouldReturnEmptyList()
     {
         // Arrange
         var communityCards = new TableCards();
@@ -19,7 +19,7 @@ public class CartesCommunesTests
     }
 
     [TestMethod]
-    public void AsEnumerable_DoitRetournerCartesNonNull_DansLOrdreFlopTurnRiver()
+    public void AsEnumerable_ShouldReturnNonNullCardsInFlopTurnRiverOrder()
     {
         // Arrange
         var flop1 = new Card(CardRank.Two, Suit.Diamonds);
@@ -50,7 +50,7 @@ public class CartesCommunesTests
     }
 
     [TestMethod]
-    public void ToString_QuandAucuneCarte_DoitRetournerChaineVide()
+    public void ToString_WhenNoCards_ShouldReturnEmptyString()
     {
         // Arrange
         var communityCards = new TableCards();
@@ -63,13 +63,13 @@ public class CartesCommunesTests
     }
 
     [TestMethod]
-    public void ToString_QuandCartesPresentes_DoitFaireJoinAvecVirgules()
+    public void ToString_WhenCardsArePresent_ShouldJoinWithCommas()
     {
         // Arrange
         var communityCards = new TableCards
         {
-            Flop1 = new Card(CardRank.Ace, Suit.Spades),   // "A Pique"
-            Turn = new Card(CardRank.Ten, Suit.Hearts)    // "10 Coeur"
+            Flop1 = new Card(CardRank.Ace, Suit.Spades),   // "A spade"
+            Turn = new Card(CardRank.Ten, Suit.Hearts)    // "10 heart"
         };
 
         // Act
@@ -80,7 +80,7 @@ public class CartesCommunesTests
     }
 
     [TestMethod]
-    public void AsEnumerable_QuandCartesIntermediairesNull_DoitIgnorerLesNulls()
+    public void AsEnumerable_WhenIntermediateCardsAreNull_ShouldIgnoreNulls()
     {
         // Arrange
         var flop1 = new Card(CardRank.Ace, Suit.Spades);

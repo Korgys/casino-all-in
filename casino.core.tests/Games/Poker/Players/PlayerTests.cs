@@ -7,64 +7,64 @@ namespace casino.core.tests.Games.Poker.Players;
 public class PlayerTests
 {
     [TestMethod]
-    public void Constructeur_DoitInitialiserNomEtJetons()
+    public void Constructor_ShouldInitializeNameAndChips()
     {
         // Arrange
         const string name = "Alice";
         const int chips = 150;
 
         // Act
-        var Player = new Player(name, chips);
+        var player = new Player(name, chips);
 
         // Assert
-        Assert.AreEqual(name, Player.Name, "Le nom doit correspondre au paramètre du constructeur.");
-        Assert.AreEqual(chips, Player.Chips, "Le nombre de jetons doit correspondre au paramètre du constructeur.");
+        Assert.AreEqual(name, player.Name, "The name should match the constructor value.");
+        Assert.AreEqual(chips, player.Chips, "The chip count should match the constructor value.");
     }
 
     [TestMethod]
-    public void Jetons_Negatifs_DoitEtreRameneAZero()
+    public void Chips_WhenNegative_ShouldBeClampedToZero()
     {
         // Arrange
-        var Player = new Player("Bob", 50);
+        var player = new Player("Bob", 50);
 
         // Act
-        Player.Chips = -25;
+        player.Chips = -25;
 
         // Assert
-        Assert.AreEqual(0, Player.Chips, "Le nombre de jetons ne peut pas être négatif.");
+        Assert.AreEqual(0, player.Chips, "Chip count cannot be negative.");
     }
 
     [TestMethod]
-    public void HumanPlayer_DoitHerediterDuComportementDeBase()
+    public void HumanPlayer_ShouldUseBasePlayerBehavior()
     {
         // Act
-        var Player = new HumanPlayer("Elena", 75);
+        var player = new HumanPlayer("Elena", 75);
 
         // Assert
-        Assert.AreEqual("Elena", Player.Name, "Le nom du Player humain doit provenir du constructeur.");
-        Assert.AreEqual(75, Player.Chips, "Le nombre de jetons doit être initialisé via le constructeur de base.");
+        Assert.AreEqual("Elena", player.Name, "The human player name should come from the constructor.");
+        Assert.AreEqual(75, player.Chips, "The chip count should be initialized by the base constructor.");
     }
 
     [TestMethod]
-    public void ComputerPlayer_SansStrategy_DoitUtiliserRandomStrategy()
+    public void ComputerPlayer_WithoutStrategy_ShouldUseRandomStrategy()
     {
         // Act
-        var Player = new ComputerPlayer("Bot", 120);
+        var player = new ComputerPlayer("Bot", 120);
 
         // Assert
-        Assert.IsInstanceOfType(Player.Strategy, typeof(RandomStrategy), "La stratégie par défaut doit être aléatoire.");
+        Assert.IsInstanceOfType(player.Strategy, typeof(RandomStrategy), "The default strategy should be random.");
     }
 
     [TestMethod]
-    public void ComputerPlayer_AvecStrategy_DoitUtiliserCelleFournie()
+    public void ComputerPlayer_WithStrategy_ShouldUseProvidedStrategy()
     {
         // Arrange
         var strategy = new ConservativeStrategy();
 
         // Act
-        var Player = new ComputerPlayer("Bot", 120, strategy);
+        var player = new ComputerPlayer("Bot", 120, strategy);
 
         // Assert
-        Assert.AreSame(strategy, Player.Strategy, "La stratégie fournie doit être utilisée telle quelle.");
+        Assert.AreSame(strategy, player.Strategy, "The provided strategy should be used as-is.");
     }
 }

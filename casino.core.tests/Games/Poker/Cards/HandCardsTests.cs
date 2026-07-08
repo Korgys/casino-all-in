@@ -3,33 +3,33 @@
 namespace casino.core.tests.Games.Poker.Cards;
 
 [TestClass]
-public class CartesMainTests
+public class HandCardsTests
 {
     [TestMethod]
-    public void Constructeur_DoitInitialiserFirstEtSecond()
+    public void Constructor_ShouldInitializeFirstAndSecond()
     {
         // Arrange
         var c1 = new Card(CardRank.Ace, Suit.Spades);
         var c2 = new Card(CardRank.King, Suit.Hearts);
 
         // Act
-        var main = new HandCards(c1, c2);
+        var hand = new HandCards(c1, c2);
 
         // Assert
-        Assert.AreSame(c1, main.First);
-        Assert.AreSame(c2, main.Second);
+        Assert.AreSame(c1, hand.First);
+        Assert.AreSame(c2, hand.Second);
     }
 
     [TestMethod]
-    public void AsEnumerable_DoitRetournerDeuxCartes_DansLeBonOrdre()
+    public void AsEnumerable_ShouldReturnTwoCardsInOrder()
     {
         // Arrange
         var c1 = new Card(CardRank.Ace, Suit.Spades);
         var c2 = new Card(CardRank.King, Suit.Hearts);
-        var main = new HandCards(c1, c2);
+        var hand = new HandCards(c1, c2);
 
         // Act
-        var cards = main.AsEnumerable().ToList();
+        var cards = hand.AsEnumerable().ToList();
 
         // Assert
         Assert.HasCount(2, cards);
@@ -38,14 +38,14 @@ public class CartesMainTests
     }
 
     [TestMethod]
-    public void AsEnumerable_QuandSecondEstNull_DoitRetournerSeulementFirst()
+    public void AsEnumerable_WhenSecondIsNull_ShouldReturnOnlyFirst()
     {
         // Arrange
         var c1 = new Card(CardRank.Ace, Suit.Spades);
-        var main = new HandCards(c1, second: null!);
+        var hand = new HandCards(c1, second: null!);
 
         // Act
-        var cards = main.AsEnumerable().ToList();
+        var cards = hand.AsEnumerable().ToList();
 
         // Assert
         Assert.HasCount(1, cards);
@@ -53,15 +53,15 @@ public class CartesMainTests
     }
 
     [TestMethod]
-    public void ToString_DoitConcatenerLesDeuxCartes()
+    public void ToString_ShouldConcatenateBothCards()
     {
         // Arrange
-        var c1 = new Card(CardRank.Ace, Suit.Spades);     // "A Pique"
-        var c2 = new Card(CardRank.King, Suit.Hearts);    // "K Coeur"
-        var main = new HandCards(c1, c2);
+        var c1 = new Card(CardRank.Ace, Suit.Spades);     // "A spade"
+        var c2 = new Card(CardRank.King, Suit.Hearts);    // "K heart"
+        var hand = new HandCards(c1, c2);
 
         // Act
-        var s = main.ToString();
+        var s = hand.ToString();
 
         // Assert
         Assert.AreEqual("A♠, K♥", s);

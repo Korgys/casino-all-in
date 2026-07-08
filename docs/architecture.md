@@ -86,6 +86,10 @@ Localization is resource-driven with `.resx` files in both layers:
 
 This separation lets domain text and presentation text evolve independently, while still supporting the same language set. Generated designer classes provide strongly typed accessors and culture-aware lookup.
 
+## Naming and language policy
+
+The repository stays multilingual for product text through resource files, but source code stays English-only. Use English for identifiers, comments, exception messages, test names, and documentation. Add or update user-facing translations in the relevant `.resx` files instead of embedding localized text directly in code.
+
 ## Design trade-offs
 
 1. **Separation of core vs. console projects**  

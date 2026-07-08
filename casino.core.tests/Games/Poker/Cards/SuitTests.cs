@@ -10,7 +10,7 @@ public class SuitTests
     [DataRow(Suit.Diamonds, "♦")]
     [DataRow(Suit.Clubs, "♣")]
     [DataRow(Suit.Spades, "♠")]
-    public void ToSymbol_DoitRetournerLeBonSymbole(Suit suit, string expected)
+    public void ToSymbol_ShouldReturnExpectedSymbol(Suit suit, string expected)
     {
         // Act
         var result = suit.ToSymbol();
@@ -20,12 +20,12 @@ public class SuitTests
     }
 
     [TestMethod]
-    public void ToSymbol_QuandSuitInvalide_DoitLeverArgumentOutOfRangeException()
+    public void ToSymbol_WhenSuitIsInvalid_ShouldThrowArgumentOutOfRangeException()
     {
         // Arrange
-        var couleurInvalide = (Suit)999;
+        var invalidSuit = (Suit)999;
 
         // Act + Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => couleurInvalide.ToSymbol());
+        Assert.Throws<ArgumentOutOfRangeException>(() => invalidSuit.ToSymbol());
     }
 }

@@ -47,7 +47,7 @@ public class ConsoleGameFactory : IGameFactory
         {
             var opponent = configuration.Opponents[index];
             players.Add(new ComputerPlayer(
-                $"Ordi {index + 1} ({ConsoleText.PokerDifficultyLabel(opponent.Difficulty)})",
+                $"Computer {index + 1} ({ConsoleText.PokerDifficultyLabel(opponent.Difficulty)})",
                 configuration.InitialChips,
                 DifficultyStrategyFactory.Create(opponent.Difficulty)));
         }

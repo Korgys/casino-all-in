@@ -10,11 +10,11 @@ namespace casino.core.tests.Games.Poker;
 public class PokerGameTests
 {
     [TestMethod]
-    public void Run_SimpleRoundDeuxPlayersUnGagnant()
+    public void Run_SimpleRoundTwoPlayersOneWinner()
     {
         // Arrange
         var human = new HumanPlayer("Alice", 100);
-        var autreHumain = new HumanPlayer("Bob", 100);
+        var otherHuman = new HumanPlayer("Bob", 100);
 
         var deckCards = new[]
         {
@@ -31,12 +31,12 @@ public class PokerGameTests
 
         var deckFactory = () => new FakeDeck(deckCards);
 
-        // 1er tour : Alice (premier Player) doit miser, Bob peut suivre.
-        var actionsParPlayer = new Dictionary<string, Queue<GameAction>>
+        // First turn: Alice, the first player, must bet and Bob can call.
+        var actionsByPlayer = new Dictionary<string, Queue<GameAction>>
         {
             ["Alice"] = new Queue<GameAction>(new[]
             {
-                new GameAction(PokerTypeAction.Bet, 10), // 1er tour, 1er Player : mise obligatoire (>= 10 géré dans PokerGame)
+                new GameAction(PokerTypeAction.Bet, 10), // First turn, first player: mandatory bet (>= 10 handled in PokerGame)
                 new GameAction(PokerTypeAction.Check),
                 new GameAction(PokerTypeAction.Check),
                 new GameAction(PokerTypeAction.Check)
@@ -50,40 +50,40 @@ public class PokerGameTests
             })
         };
 
-        PokerGameState? etatFinal = null;
+        PokerGameState? finalState = null;
         string? winnerName = null;
 
         var pokerGame = new PokerGame(
-            new[] { human, autreHumain },
+            new[] { human, otherHuman },
             deckFactory,
-            context => actionsParPlayer[context.PlayerName].Dequeue(),
+            context => actionsByPlayer[context.PlayerName].Dequeue(),
             () => false,
             new NoOpWaitStrategy());
 
-        pokerGame.StateUpdated += (_, args) => etatFinal = args.State as PokerGameState;
+        pokerGame.StateUpdated += (_, args) => finalState = args.State as PokerGameState;
         pokerGame.GameEnded += (_, args) => winnerName = args.WinnerName;
 
         // Act
         pokerGame.Run();
 
         // Assert
-        Assert.IsNotNull(etatFinal);
-        Assert.AreEqual("Showdown", etatFinal.Phase);
+        Assert.IsNotNull(finalState);
+        Assert.AreEqual("Showdown", finalState.Phase);
 
-        // Ici WinnerName doit être "Alice" 
+        // WinnerName should be "Alice".
         Assert.AreEqual("Alice", winnerName);
 
-        Assert.IsTrue(etatFinal.Players.Single(j => j.Name == "Alice").IsWinner);
-        Assert.IsFalse(etatFinal.Players.Single(j => j.Name == "Bob").IsWinner);
+        Assert.IsTrue(finalState.Players.Single(j => j.Name == "Alice").IsWinner);
+        Assert.IsFalse(finalState.Players.Single(j => j.Name == "Bob").IsWinner);
     }
 
 
     [TestMethod]
-    public void Run_SimpleRoundDeuxPlayersDeuxGagnants()
+    public void Run_SimpleRoundTwoPlayersTwoWinners()
     {
         // Arrange
         var human = new HumanPlayer("Alice", 100);
-        var autreHumain = new HumanPlayer("Bob", 100);
+        var otherHuman = new HumanPlayer("Bob", 100);
         var deckCards = new[]
         {
             new Card(CardRank.Ace, Suit.Spades),        // Alice 1
@@ -99,8 +99,8 @@ public class PokerGameTests
 
         var deckFactory = () => new FakeDeck(deckCards);
 
-        // Idem : 1er tour, Alice doit miser, Bob suit.
-        var actionsParPlayer = new Dictionary<string, Queue<GameAction>>
+        // Same setup: Alice must bet first and Bob calls.
+        var actionsByPlayer = new Dictionary<string, Queue<GameAction>>
         {
             ["Alice"] = new Queue<GameAction>(new[]
             {
@@ -118,35 +118,35 @@ public class PokerGameTests
             })
         };
 
-        PokerGameState? etatFinal = null;
+        PokerGameState? finalState = null;
         string? winnerName = null;
 
         var pokerGame = new PokerGame(
-            new[] { human, autreHumain },
+            new[] { human, otherHuman },
             deckFactory,
-            context => actionsParPlayer[context.PlayerName].Dequeue(),
+            context => actionsByPlayer[context.PlayerName].Dequeue(),
             () => false,
             new NoOpWaitStrategy());
 
-        pokerGame.StateUpdated += (_, args) => etatFinal = args.State as PokerGameState;
+        pokerGame.StateUpdated += (_, args) => finalState = args.State as PokerGameState;
         pokerGame.GameEnded += (_, args) => winnerName = args.WinnerName;
 
         // Act
         pokerGame.Run();
 
         // Assert
-        Assert.IsNotNull(etatFinal);
-        Assert.AreEqual("Showdown", etatFinal.Phase);
+        Assert.IsNotNull(finalState);
+        Assert.AreEqual("Showdown", finalState.Phase);
         Assert.AreEqual("Alice, Bob", winnerName);
-        Assert.IsTrue(etatFinal.Players.All(j => j.IsWinner));
+        Assert.IsTrue(finalState.Players.All(j => j.IsWinner));
     }
 
     [TestMethod]
-    public void Run_ContinueTantQueJetonsEtDemandePourRelancer()
+    public void Run_ContinuesWhilePlayersHaveChipsAndRequestContinue()
     {
         // Arrange
         var human = new HumanPlayer("Alice", 100);
-        var autreHumain = new HumanPlayer("Bob", 100);
+        var otherHuman = new HumanPlayer("Bob", 100);
         var deckCards = new[]
         {
             new Card(CardRank.Ace, Suit.Spades),
@@ -162,7 +162,7 @@ public class PokerGameTests
 
         var deckFactory = () => new FakeDeck(deckCards);
 
-        var actionsParPlayer = new Dictionary<string, Queue<GameAction>>
+        var actionsByPlayer = new Dictionary<string, Queue<GameAction>>
         {
             ["Alice"] = new Queue<GameAction>(new[]
             {
@@ -188,16 +188,16 @@ public class PokerGameTests
             })
         };
 
-        var continuer = new Queue<bool>(new[] { true, false });
+        var continueResponses = new Queue<bool>(new[] { true, false });
         var continueCalled = 0;
         var pokerGame = new PokerGame(
-            new[] { human, autreHumain },
+            new[] { human, otherHuman },
             deckFactory,
-            context => actionsParPlayer[context.PlayerName].Dequeue(),
+            context => actionsByPlayer[context.PlayerName].Dequeue(),
             () =>
             {
                 continueCalled++;
-                return continuer.Dequeue();
+                return continueResponses.Dequeue();
             },
             new NoOpWaitStrategy());
 
@@ -219,6 +219,6 @@ public class PokerGameTests
             .ToList();
 
         Assert.IsTrue(indexesGameEnded.All(idx => events.Skip(idx + 1).Any(e => e == "state")),
-            "StateUpdated doit être déclenché après chaque fin de round.");
+            "StateUpdated should be raised after each round ends.");
     }
 }

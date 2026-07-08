@@ -7,10 +7,10 @@ namespace casino.core.tests.Games.Poker.Cards;
 public class DeckTests
 {
     [TestMethod]
-    public void Shuffle_DoitCreer52CartesUniques()
+    public void Shuffle_ShouldCreate52UniqueCards()
     {
         // Arrange
-        var deck = new Deck(new FakeRandomToujoursZero());
+        var deck = new Deck(new FakeRandomAlwaysZero());
 
         // Act
         deck.Shuffle();
@@ -18,70 +18,70 @@ public class DeckTests
         // Assert
         Assert.AreEqual(52, deck.RemainingCards);
 
-        var cards = TirerTout(deck);
+        var cards = DrawAll(deck);
         Assert.HasCount(52, cards);
 
-        // Vérifier unicité (rank + suit)
+        // Verify uniqueness by rank and suit.
         var uniques = cards
             .Select(c => (c.Rank, c.Suit))
             .Distinct()
             .Count();
 
-        Assert.AreEqual(52, uniques, "Le paquet devrait contenir 52 cards uniques.");
+        Assert.AreEqual(52, uniques, "The deck should contain 52 unique cards.");
     }
 
     [TestMethod]
-    public void DrawCard_DoitDiminuerLeNombreDeCartes()
+    public void DrawCard_ShouldDecreaseRemainingCardCount()
     {
         // Arrange
-        var deck = new Deck(new FakeRandomToujoursZero());
+        var deck = new Deck(new FakeRandomAlwaysZero());
         deck.Shuffle();
-        int avant = deck.RemainingCards;
+        int before = deck.RemainingCards;
 
         // Act
-        var carte = deck.DrawCard();
+        var card = deck.DrawCard();
 
         // Assert
-        Assert.IsNotNull(carte);
-        Assert.AreEqual(avant - 1, deck.RemainingCards);
+        Assert.IsNotNull(card);
+        Assert.AreEqual(before - 1, deck.RemainingCards);
     }
 
     [TestMethod]
-    public void DrawCard_QuandPaquetVide_DoitLeverException()
+    public void DrawCard_WhenDeckIsEmpty_ShouldThrowException()
     {
         // Arrange
-        var deck = new Deck(new FakeRandomToujoursZero());
+        var deck = new Deck(new FakeRandomAlwaysZero());
 
-        // Vider le paquet
-        TirerTout(deck);
+        // Empty the deck.
+        DrawAll(deck);
 
         // Act + Assert
         Assert.Throws<InvalidOperationException>(() => deck.DrawCard());
     }
 
     [TestMethod]
-    public void Shuffle_AvecRandomDeterministe_DoitProduireUnOrdreDeterministe()
+    public void Shuffle_WithDeterministicRandom_ShouldProduceDeterministicOrder()
     {
         // Arrange
-        // Ce fake renvoie une séquence contrôlée : on obtient un ordre stable de run en run.
+        // This fake returns a controlled sequence, yielding a stable order across runs.
         var fakeRandom = new FakeRandomSequence(new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
         var deck1 = new Deck(fakeRandom);
         var deck2 = new Deck(new FakeRandomSequence(Enumerable.Repeat(0, 51).ToArray()));
 
         // Act
-        var seq1 = TirerTout(deck1).Select(c => (c.Rank, c.Suit)).ToList();
-        var seq2 = TirerTout(deck2).Select(c => (c.Rank, c.Suit)).ToList();
+        var seq1 = DrawAll(deck1).Select(c => (c.Rank, c.Suit)).ToList();
+        var seq2 = DrawAll(deck2).Select(c => (c.Rank, c.Suit)).ToList();
 
         // Assert
-        CollectionAssert.AreEqual(seq1, seq2, "Avec le même random déterministe, l'ordre doit être identique.");
+        CollectionAssert.AreEqual(seq1, seq2, "The same deterministic random sequence should produce the same order.");
     }
 
     // --------------------
     // Helpers
     // --------------------
 
-    private static List<Card> TirerTout(Deck deck)
+    private static List<Card> DrawAll(Deck deck)
     {
         var cards = new List<Card>();
         while (deck.RemainingCards > 0)
@@ -91,17 +91,17 @@ public class DeckTests
         return cards;
     }
 
-    private sealed class FakeRandomToujoursZero : IRandom
+    private sealed class FakeRandomAlwaysZero : IRandom
     {
         public int Next(int maxExclusive)
         {
-            // Retourner 0 pour rendre le mélange déterministe.
+            // Return 0 to make shuffling deterministic.
             return 0;
         }
 
         public int Next(int minInclusive, int maxExclusive)
         {
-            // Retourner minInclusive pour rendre le mélange déterministe.
+            // Return minInclusive to make shuffling deterministic.
             return minInclusive;
         }
     }
@@ -119,13 +119,13 @@ public class DeckTests
 
         public int Next(int maxExclusive)
         {
-            // Retourner une value de séquence, bornée, pour éviter les sorties de plage.
+            // Return a bounded sequence value to avoid out-of-range values.
             if (_values.Length == 0) return 0;
 
             int v = _values[_index % _values.Length];
             _index++;
 
-            // Ramener dans [0; maxExclusive[
+            // Clamp to [0, maxExclusive).
             return maxExclusive == 0 ? 0 : Math.Abs(v) % maxExclusive;
         }
 

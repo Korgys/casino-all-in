@@ -1,4 +1,4 @@
-using casino.core.Games.Poker.Actions;
+﻿using casino.core.Games.Poker.Actions;
 using casino.core.Games.Poker.Cards;
 using casino.core.Games.Poker.Players;
 using casino.core.Games.Poker.Rounds;
@@ -49,7 +49,7 @@ public class TablePokerTests
         };
         var table = new TablePoker();
 
-        // Act - première round
+        // Act - first round
         table.StartRound(players, new FakeDeck(CreateDefaultCards()));
 
         // Assert
@@ -58,7 +58,7 @@ public class TablePokerTests
         Assert.IsTrue(table.Players.All(j => j.LastAction == (j.Chips > 0 ? PokerTypeAction.None : PokerTypeAction.Fold)));
         Assert.IsTrue(table.Players.All(j => !j.IsFolded() || j.Chips == 0));
 
-        // Act - deuxième round pour vérifier la rotation
+        // Act - second round to verify rotation
         table.StartRound(players, new FakeDeck(CreateDefaultCards()));
 
         // Assert
@@ -79,7 +79,7 @@ public class TablePokerTests
         var table = new TablePoker();
         table.StartRound(players, new FakeDeck(CreateDefaultCards()));
 
-        // Act - Alice puis Bob se couchent
+        // Act - Alice then Bob fold
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Bet, 10));
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Fold));
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Raise, 20));
@@ -149,7 +149,7 @@ public class TablePokerTests
         var table = new TablePoker();
         table.StartRound(players, new FakeDeck(CreateAllInCards()));
 
-        // Act : Alice ouvre en relançant son tapis, Bob et Charlie suivent en tapis
+        // Act - Alice opens by raising all-in, then Bob and Charlie call all-in
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Raise, 100));
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.AllIn));
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.AllIn));
@@ -179,15 +179,15 @@ public class TablePokerTests
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Bet, 10));
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Call));
 
-        // Charlie mise tardivement
+        // Charlie raises late
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Raise, 20));
 
-        // La phase ne doit pas avancer sans que les premiers players rejouent
+        // The phase should not advance until the earlier players act again
         Assert.AreEqual(Phase.PreFlop, table.Round.Phase);
         Assert.AreEqual(table.InitialPlayerIndex, table.CurrentPlayerIndex);
         Assert.AreEqual(20, table.Round.CurrentBet);
 
-        // Alice et Bob doivent suivre avant d'avancer
+        // Alice and Bob must call before the phase advances
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Call));
         table.ProcessPlayerAction(table.GetPlayerToAct(), new GameAction(PokerTypeAction.Call));
 

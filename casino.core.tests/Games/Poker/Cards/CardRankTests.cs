@@ -29,12 +29,12 @@ public class CardRankTests
     }
 
     [TestMethod]
-    public void ToShortString_QuandRangInvalide_DoitLeverArgumentOutOfRangeException()
+    public void ToShortString_WhenRankIsInvalid_ShouldThrowArgumentOutOfRangeException()
     {
         // Arrange
-        var rangInvalide = (CardRank)999;
+        var invalidRank = (CardRank)999;
 
         // Act + Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => rangInvalide.ToShortString());
+        Assert.Throws<ArgumentOutOfRangeException>(() => invalidRank.ToShortString());
     }
 }

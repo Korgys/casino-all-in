@@ -22,12 +22,12 @@ public sealed record PokerOpponentSetup(PokerDifficulty Difficulty)
 {
     public string Label => Difficulty switch
     {
-        PokerDifficulty.Beginner => "Débutant",
-        PokerDifficulty.VeryEasy => "Très facile",
-        PokerDifficulty.Easy => "Facile",
-        PokerDifficulty.Medium => "Moyen",
-        PokerDifficulty.Hard => "Difficile",
-        PokerDifficulty.VeryHard => "Très difficile",
+        PokerDifficulty.Beginner => "Beginner",
+        PokerDifficulty.VeryEasy => "Very easy",
+        PokerDifficulty.Easy => "Easy",
+        PokerDifficulty.Medium => "Medium",
+        PokerDifficulty.Hard => "Hard",
+        PokerDifficulty.VeryHard => "Very hard",
         _ => Difficulty.ToString()
     };
 }

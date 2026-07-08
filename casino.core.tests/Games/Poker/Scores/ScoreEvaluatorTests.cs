@@ -7,10 +7,10 @@ namespace casino.core.tests.Games.Poker.Scores
     public class ScoreEvaluatorTests
     {
         [TestMethod]
-        public void EvaluerScore_QuinteFlushRoyale_RetourneQuinteFlushRoyale_As()
+        public void EvaluateScore_RoyalFlush_ShouldReturnRoyalFlushWithAce()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Ace, Suit.Hearts),
                     Card(CardRank.King, Suit.Hearts)
                 ),
@@ -27,10 +27,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_QuinteFlush_Wheel_RetourneQuinteFlush_5()
+        public void EvaluateScore_WheelStraightFlush_ShouldReturnStraightFlushWithFive()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Ace, Suit.Spades),
                     Card(CardRank.Two, Suit.Spades)
                 ),
@@ -47,10 +47,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Carre_RetourneCarre_ValeurDuCarre()
+        public void EvaluateScore_FourOfAKind_ShouldReturnFourOfAKindValue()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.King, Suit.Hearts),
                     Card(CardRank.King, Suit.Spades)
                 ),
@@ -67,10 +67,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Full_RetourneFull_ValeurDuBrelan()
+        public void EvaluateScore_FullHouse_ShouldReturnTripsValue()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Queen, Suit.Hearts),
                     Card(CardRank.Queen, Suit.Spades)
                 ),
@@ -87,10 +87,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Suit_RetourneSuit_PlusHauteCarteDeLaSuit()
+        public void EvaluateScore_Flush_ShouldReturnHighestFlushCard()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Ace, Suit.Diamonds),
                     Card(CardRank.Nine, Suit.Diamonds)
                 ),
@@ -107,10 +107,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Suite_RetourneSuite_CarteHaute()
+        public void EvaluateScore_Straight_ShouldReturnHighCard()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Five, Suit.Hearts),
                     Card(CardRank.Six, Suit.Spades)
                 ),
@@ -127,10 +127,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Brelan_RetourneBrelan_ValeurDuBrelan()
+        public void EvaluateScore_ThreeOfAKind_ShouldReturnTripsValue()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Seven, Suit.Hearts),
                     Card(CardRank.Seven, Suit.Spades)
                 ),
@@ -147,10 +147,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_DoublePaire_RetourneDoublePaire_PaireLaPlusHaute()
+        public void EvaluateScore_TwoPair_ShouldReturnHighestPair()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Queen, Suit.Hearts),
                     Card(CardRank.Five, Suit.Spades)
                 ),
@@ -167,10 +167,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Paire_RetournePaire_ValeurDeLaPaire()
+        public void EvaluateScore_OnePair_ShouldReturnPairValue()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Jack, Suit.Hearts),
                     Card(CardRank.Jack, Suit.Spades)
                 ),
@@ -187,10 +187,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_CarteHaute_RetourneCarteHaute_MaxRang()
+        public void EvaluateScore_HighCard_ShouldReturnHighestRank()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Ace, Suit.Hearts),
                     Card(CardRank.Ten, Suit.Spades)
                 ),
@@ -207,14 +207,14 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         // =========================
-        // Départages / cas limites / priorités
+        // Tie-breakers / edge cases / priorities
         // =========================
 
         [TestMethod]
-        public void EvaluerScore_Carre_AjouteLeMeilleurKicker()
+        public void EvaluateScore_FourOfAKind_ShouldAddBestKicker()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.King, Suit.Hearts),
                     Card(CardRank.King, Suit.Spades)
                 ),
@@ -231,10 +231,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Full_DeuxBrelans_RetourneFull_MeilleurBrelanCommeTrips()
+        public void EvaluateScore_FullHouse_WithTwoTrips_ShouldUseBestTrips()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Ace, Suit.Hearts),
                     Card(CardRank.Ace, Suit.Spades)
                 ),
@@ -251,10 +251,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Full_ChoisitLaMeilleurePaireDispo()
+        public void EvaluateScore_FullHouse_ShouldUseBestAvailablePair()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Queen, Suit.Hearts),
                     Card(CardRank.Queen, Suit.Spades)
                 ),
@@ -271,10 +271,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Suit_PrendTop5Sur6CartesDeLaSuit()
+        public void EvaluateScore_Flush_ShouldTakeTopFiveOfSixFlushCards()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Ace, Suit.Diamonds),
                     Card(CardRank.King, Suit.Diamonds)
                 ),
@@ -287,16 +287,16 @@ namespace casino.core.tests.Games.Poker.Scores
                 )
             );
 
-            // Valeur = top1, Kickers = top2..top5
+            // Value = top1, kickers = top2..top5
             AssertScore(score, HandRank.Flush, CardRank.Ace,
                 CardRank.King, CardRank.Queen, CardRank.Nine, CardRank.Four);
         }
 
         [TestMethod]
-        public void EvaluerScore_Suite_Wheel_RetourneSuite_5()
+        public void EvaluateScore_WheelStraight_ShouldReturnStraightWithFive()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Ace, Suit.Hearts),
                     Card(CardRank.Two, Suit.Spades)
                 ),
@@ -313,10 +313,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Suite_AvecDoublons_RetourneBonneCarteHaute()
+        public void EvaluateScore_Straight_WithDuplicates_ShouldReturnCorrectHighCard()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Six, Suit.Hearts),
                     Card(CardRank.Six, Suit.Spades)
                 ),
@@ -333,10 +333,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_Brelan_ChoisitLesDeuxMeilleursKickers()
+        public void EvaluateScore_ThreeOfAKind_ShouldUseTwoBestKickers()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Seven, Suit.Hearts),
                     Card(CardRank.Seven, Suit.Spades)
                 ),
@@ -353,10 +353,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_DoublePaire_ContientPaireBasseEtKicker()
+        public void EvaluateScore_TwoPair_ShouldIncludeLowPairAndKicker()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Queen, Suit.Hearts),
                     Card(CardRank.Five, Suit.Spades)
                 ),
@@ -369,15 +369,15 @@ namespace casino.core.tests.Games.Poker.Scores
                 )
             );
 
-            // Dans ton Score: Valeur = paire haute; Kickers = [paire basse, kicker]
+            // Score uses value = high pair and kickers = [low pair, kicker].
             AssertScore(score, HandRank.TwoPair, CardRank.Queen, CardRank.Five, CardRank.Ace);
         }
 
         [TestMethod]
-        public void EvaluerScore_Paire_ChoisitLesTroisMeilleursKickers()
+        public void EvaluateScore_OnePair_ShouldUseThreeBestKickers()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Jack, Suit.Hearts),
                     Card(CardRank.Jack, Suit.Spades)
                 ),
@@ -394,10 +394,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_CarteHaute_RetourneTop5RangsEnKickers()
+        public void EvaluateScore_HighCard_ShouldReturnTopFiveRanksAsKickers()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.Ace, Suit.Hearts),
                     Card(CardRank.Four, Suit.Spades)
                 ),
@@ -415,10 +415,10 @@ namespace casino.core.tests.Games.Poker.Scores
         }
 
         [TestMethod]
-        public void EvaluerScore_TwoPair_IgnoreUnrelatedDuplicatesForKickerSelection()
+        public void EvaluateScore_TwoPair_ShouldIgnoreUnrelatedDuplicatesForKickerSelection()
         {
             var score = Eval(
-                main: Hand(
+                hand: Hand(
                     Card(CardRank.King, Suit.Hearts),
                     Card(CardRank.King, Suit.Spades)
                 ),
@@ -438,8 +438,8 @@ namespace casino.core.tests.Games.Poker.Scores
         // Helpers
         // =========================
 
-        private static Score Eval(HandCards main, TableCards board)
-            => ScoreEvaluator.EvaluateScore(main, board);
+        private static Score Eval(HandCards hand, TableCards board)
+            => ScoreEvaluator.EvaluateScore(hand, board);
 
         private static void AssertScore(Score score, HandRank expectedRank, CardRank expectedValue, params CardRank[] expectedKickers)
         {
@@ -447,7 +447,7 @@ namespace casino.core.tests.Games.Poker.Scores
             Assert.AreEqual(expectedValue, score.CardValue);
 
             CollectionAssert.AreEqual(expectedKickers, score.Kickers.ToArray(),
-                $"Kickers attendus: [{string.Join(", ", expectedKickers)}] / Obtenus: [{string.Join(", ", score.Kickers)}]");
+                $"Expected kickers: [{string.Join(", ", expectedKickers)}] / Actual: [{string.Join(", ", score.Kickers)}]");
         }
 
         private static Card Card(CardRank rank, Suit suit)

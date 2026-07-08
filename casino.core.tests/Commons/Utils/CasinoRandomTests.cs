@@ -6,7 +6,7 @@ namespace casino.core.tests.Commons.Utils;
 public class CasinoRandomTests
 {
     [TestMethod]
-    public void Shuffle_DoitCreer52CartesUniques()
+    public void Next_WithMaxExclusive_ShouldStayWithinBounds()
     {
         // Arrange
         IRandom random = new CasinoRandom();
