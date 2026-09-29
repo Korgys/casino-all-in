@@ -221,4 +221,89 @@ public class PokerGameTests
         Assert.IsTrue(indexesGameEnded.All(idx => events.Skip(idx + 1).Any(e => e == "state")),
             "StateUpdated should be raised after each round ends.");
     }
+
+    [TestMethod]
+    public void Run_HumanWinsLastOpponent_EndsSessionWithoutRequestingContinuation()
+    {
+        var human = new HumanPlayer("Alice", 100);
+        var opponent = new HumanPlayer("Bob", 10);
+        var continueCalled = 0;
+        PokerGameState? finalState = null;
+        string? winnerName = null;
+
+        var game = new PokerGame(
+            new[] { human, opponent },
+            CreateDeckFactory(firstPlayerWins: true),
+            _ => new GameAction(PokerTypeAction.AllIn),
+            () =>
+            {
+                continueCalled++;
+                return true;
+            },
+            new NoOpWaitStrategy());
+
+        game.StateUpdated += (_, args) => finalState = args.State as PokerGameState;
+        game.GameEnded += (_, args) => winnerName = args.WinnerName;
+
+        game.Run();
+
+        Assert.AreEqual(0, continueCalled);
+        Assert.AreEqual("Alice", winnerName);
+        Assert.IsNotNull(finalState);
+        Assert.AreEqual(110, finalState.Players.Single(player => player.Name == "Alice").Chips);
+        Assert.AreEqual(0, finalState.Players.Single(player => player.Name == "Bob").Chips);
+    }
+
+    [TestMethod]
+    public void Run_HumanLosesAllChips_EndsSessionWithoutRequestingContinuation()
+    {
+        var human = new HumanPlayer("Alice", 10);
+        var opponent = new HumanPlayer("Bob", 100);
+        var continueCalled = 0;
+        PokerGameState? finalState = null;
+        string? winnerName = null;
+
+        var game = new PokerGame(
+            new[] { human, opponent },
+            CreateDeckFactory(firstPlayerWins: false),
+            _ => new GameAction(PokerTypeAction.AllIn),
+            () =>
+            {
+                continueCalled++;
+                return true;
+            },
+            new NoOpWaitStrategy());
+
+        game.StateUpdated += (_, args) => finalState = args.State as PokerGameState;
+        game.GameEnded += (_, args) => winnerName = args.WinnerName;
+
+        game.Run();
+
+        Assert.AreEqual(0, continueCalled);
+        Assert.AreEqual("Bob", winnerName);
+        Assert.IsNotNull(finalState);
+        Assert.AreEqual(0, finalState.Players.Single(player => player.Name == "Alice").Chips);
+        Assert.AreEqual(110, finalState.Players.Single(player => player.Name == "Bob").Chips);
+    }
+
+    private static Func<IDeck> CreateDeckFactory(bool firstPlayerWins)
+    {
+        var firstPlayerCards = firstPlayerWins
+            ? new[] { new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts) }
+            : new[] { new Card(CardRank.Nine, Suit.Clubs), new Card(CardRank.Eight, Suit.Diamonds) };
+        var secondPlayerCards = firstPlayerWins
+            ? new[] { new Card(CardRank.Nine, Suit.Clubs), new Card(CardRank.Eight, Suit.Diamonds) }
+            : new[] { new Card(CardRank.Ace, Suit.Spades), new Card(CardRank.King, Suit.Hearts) };
+
+        var deckCards = firstPlayerCards.Concat(secondPlayerCards).Concat(new[]
+        {
+            new Card(CardRank.Ace, Suit.Hearts),
+            new Card(CardRank.Two, Suit.Hearts),
+            new Card(CardRank.Three, Suit.Clubs),
+            new Card(CardRank.Seven, Suit.Spades),
+            new Card(CardRank.Queen, Suit.Diamonds)
+        }).ToArray();
+
+        return () => new FakeDeck(deckCards);
+    }
 }
